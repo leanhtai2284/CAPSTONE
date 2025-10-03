@@ -1,10 +1,10 @@
 import express from "express";
+import { login } from "../controllers/authController.js";
+
 const router = express.Router();
 
 // POST /api/auth/login
-router.post("/login", (req, res) => {
-  res.json({ message: "Login API working!" });
-});
+router.post("/login", login);
 
 // POST /api/auth/register
 router.post("/register", (req, res) => {
