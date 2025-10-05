@@ -3,7 +3,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import jwt from "jsonwebtoken";
 
 // Tạo JWT token
-const generateToken = (id) => {
+export const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });

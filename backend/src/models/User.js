@@ -21,6 +21,11 @@ var userSchema = new mongoose.Schema({
     required: [true, "Vui lòng nhập mật khẩu"],
     minLength: [6, "Mật khẩu phải có ít nhất 6 ký tự"],
   },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
 });
 
 // Mã hóa mật khẩu trước khi lưu
