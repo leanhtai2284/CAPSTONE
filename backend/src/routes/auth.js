@@ -1,7 +1,7 @@
 import express from "express";
 import passport from "passport";
-import { login } from "../controllers/authController.js";
-import { generateToken } from "../controllers/authController.js";
+import { login, generateToken } from "../controllers/authController.js";
+import { Register } from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -22,6 +22,9 @@ router.get("/google", (req, res, next) => {
     prompt: "select_account", // Thêm này để luôn hiện form chọn tài khoản Google
   })(req, res, next);
 });
+
+// POST /api/auth/Register
+router.post("/register", Register);
 
 router.get(
   "/google/callback",
