@@ -1,2 +1,41 @@
-"backend/.env" 
+# Environment variables
 .env
+*.env
+.env.*
+!.env.example
+
+# Dependencies
+/node_modules
+package-lock.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+.DS_Store
+
+# Config files containing secrets
+src/config/secrets.js
+**/config/*.key
+**/config/*.pem
+**/*.key
+**/*.pem
+
+# Build output
+/dist
+/build
+/coverage
