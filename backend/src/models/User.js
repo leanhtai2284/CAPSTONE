@@ -9,6 +9,8 @@ var userSchema = new mongoose.Schema({
     trim: true,
     maxLength: [50, "Tên người dùng không được vượt quá 50 ký tự"],
   },
+  resetPasswordToken: String,
+  resetPasswordExpire: Date,
   email: {
     type: String,
     required: [true, "Vui lòng nhập email"],

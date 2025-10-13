@@ -1,12 +1,21 @@
 import express from "express";
 import passport from "passport";
-import { login, generateToken } from "../controllers/authController.js";
+import {
+  login,
+  generateToken,
+  logout,
+  forgotPassword,
+  resetPassword,
+} from "../controllers/authController.js";
 import { Register } from "../controllers/userController.js";
 
 const router = express.Router();
 
 // POST /api/auth/login
 router.post("/login", login);
+
+// POST /api/auth/register
+router.post("/register", Register);
 
 // Debug middleware
 router.use((req, res, next) => {
@@ -23,9 +32,6 @@ router.get("/google", (req, res, next) => {
   })(req, res, next);
 });
 
-// POST /api/auth/Register
-router.post("/register", Register);
-
 router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
@@ -34,5 +40,14 @@ router.get(
     res.redirect(`${process.env.FRONTEND_URL}/login-success?token=${token}`);
   }
 );
+
+// POST /api/auth/logout
+router.post("/logout", logout);
+
+// POST /api/auth/forgot-password
+router.post("/forgot-password", forgotPassword);
+
+// POST /api/auth/reset-password/:resetToken
+router.post("/reset-password/:resetToken", resetPassword);
 
 export default router;
