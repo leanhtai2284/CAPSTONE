@@ -1,68 +1,134 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* =============================
+   🌙 Global + Dark Mode Styles
+   ============================= */
+@layer base {
+  html,
+  body,
+  #root {
+    @apply bg-gray-100 text-black dark:bg-black dark:text-white transition-colors duration-300;
+  }
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
+/* =============================
+   🎨 Custom Theme Variables
+   ============================= */
+@layer base {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    --color-primary: #66ff33; /* Màu xanh neon */
+    --color-secondary: #0cfa48; /* Màu xanh lá */
+
+    --font-sans: "Inter", system-ui, sans-serif;
+    --font-serif: "Merriweather", serif;
+
+    --container-max-width: 100%;
+    --container-padding: 16px;
+    --container-padding-sm: 1.5rem;
+    --container-padding-lg: 2rem;
+    --container-padding-xl: 3rem;
   }
-  a:hover {
-    color: #747bff;
+}
+
+/* =============================
+   📦 Container Utility
+   ============================== */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: var(--container-max-width);
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: var(--container-padding-sm);
+    padding-right: var(--container-padding-sm);
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: var(--container-padding-lg);
+    padding-right: var(--container-padding-lg);
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    padding-left: var(--container-padding-xl);
+    padding-right: var(--container-padding-xl);
+  }
+}
+
+/* =============================
+   🌀 Swiper Custom Styles
+   ============================== */
+/* === Swiper Custom Styles === */
+
+/* Nút trượt ngang (prev/next) */
+.swiper-button-prev,
+.swiper-button-next {
+  color: #ffffff !important;
+  transition: all 0.3s ease;
+  opacity: 0.8;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  color: #40ff00 !important; /* Màu đỏ khi hover */
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Dark mode */
+.dark .swiper-button-prev,
+.dark .swiper-button-next {
+  color: #ebebeb !important; /* Vàng trong dark mode */
+}
+
+/* Phân trang (dots) */
+.swiper-pagination-bullet {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #1eff00 !important;
+}
+
+.dark .swiper-pagination-bullet {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.dark .swiper-pagination-bullet-active {
+  background-color: #39f400 !important;
+}
+
+/* Tăng kích thước mũi tên */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 28px !important;
+}
+
+/* === Custom Animations === */
+@layer utilities {
+  @keyframes slideDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.98);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .animate-slideDown {
+    animation: slideDown 0.25s ease-out forwards;
   }
 }
