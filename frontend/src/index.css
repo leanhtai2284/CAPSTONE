@@ -34,81 +34,101 @@
 
 /* =============================
    📦 Container Utility
-   ============================= */
-@layer components {
+   ============================== */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: var(--container-max-width);
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+@media (min-width: 640px) {
   .container {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: var(--container-max-width);
-    padding-left: var(--container-padding);
-    padding-right: var(--container-padding);
+    padding-left: var(--container-padding-sm);
+    padding-right: var(--container-padding-sm);
   }
+}
 
-  @media (min-width: 640px) {
-    .container {
-      padding-left: var(--container-padding-sm);
-      padding-right: var(--container-padding-sm);
-    }
+@media (min-width: 1024px) {
+  .container {
+    padding-left: var(--container-padding-lg);
+    padding-right: var(--container-padding-lg);
   }
+}
 
-  @media (min-width: 1024px) {
-    .container {
-      padding-left: var(--container-padding-lg);
-      padding-right: var(--container-padding-lg);
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .container {
-      padding-left: var(--container-padding-xl);
-      padding-right: var(--container-padding-xl);
-    }
+@media (min-width: 1280px) {
+  .container {
+    padding-left: var(--container-padding-xl);
+    padding-right: var(--container-padding-xl);
   }
 }
 
 /* =============================
    🌀 Swiper Custom Styles
-   ============================= */
-@layer components {
-  .swiper-button-prev,
-  .swiper-button-next {
-    color: #ffffff !important;
-    transition: all 0.3s ease;
-    opacity: 0.8;
+   ============================== */
+/* === Swiper Custom Styles === */
+
+/* Nút trượt ngang (prev/next) */
+.swiper-button-prev,
+.swiper-button-next {
+  color: #ffffff !important;
+  transition: all 0.3s ease;
+  opacity: 0.8;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  color: #40ff00 !important; /* Màu đỏ khi hover */
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Dark mode */
+.dark .swiper-button-prev,
+.dark .swiper-button-next {
+  color: #ebebeb !important; /* Vàng trong dark mode */
+}
+
+/* Phân trang (dots) */
+.swiper-pagination-bullet {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #1eff00 !important;
+}
+
+.dark .swiper-pagination-bullet {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.dark .swiper-pagination-bullet-active {
+  background-color: #39f400 !important;
+}
+
+/* Tăng kích thước mũi tên */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 28px !important;
+}
+
+/* === Custom Animations === */
+@layer utilities {
+  @keyframes slideDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.98);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
 
-  .swiper-button-prev:hover,
-  .swiper-button-next:hover {
-    color: #40ff00 !important;
-    opacity: 1;
-    transform: scale(1.2);
-  }
-
-  .dark .swiper-button-prev,
-  .dark .swiper-button-next {
-    color: #ebebeb !important;
-  }
-
-  .swiper-pagination-bullet {
-    background-color: rgba(255, 255, 255, 0.6) !important;
-    opacity: 1;
-  }
-
-  .swiper-pagination-bullet-active {
-    background-color: #1eff00 !important;
-  }
-
-  .dark .swiper-pagination-bullet {
-    background-color: rgba(255, 255, 255, 0.4) !important;
-  }
-
-  .dark .swiper-pagination-bullet-active {
-    background-color: #39f400 !important;
-  }
-
-  .swiper-button-prev::after,
-  .swiper-button-next::after {
-    font-size: 28px !important;
+  .animate-slideDown {
+    animation: slideDown 0.25s ease-out forwards;
   }
 }
