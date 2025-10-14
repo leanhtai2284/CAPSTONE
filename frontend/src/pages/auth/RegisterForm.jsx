@@ -6,65 +6,75 @@ import {
   ArrowRightIcon,
   AlertCircleIcon,
   LoaderIcon,
+  EyeIcon,
+  EyeOffIcon,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export function RegisterForm() {
   const { register, loading, error, clearError } = useAuth();
-
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [formErrors, setFormErrors] = useState({}); // Sử dụng object JS bình thường
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+  // ✅ Handle submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    clearError();
+    if (!validateForm()) return;
 
-  // Validate form
+    try {
+      await register(name, email, password);
+
+      alert("🎉 Đăng ký thành công!");
+      // 🟢 Reset form
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setAcceptTerms(false);
+
+      // 🟢 Điều hướng về trang chủ
+      navigate("/");
+    } catch (err) {
+      console.error("Registration failed:", err);
+    }
+  };
+
+  // ✅ Validate form
   const validateForm = () => {
     const errors = {};
 
-    if (!name.trim()) {
-      errors.name = "Họ và tên không được để trống";
-    }
+    if (!name.trim()) errors.name = "Họ và tên không được để trống";
 
-    if (!email) {
-      errors.email = "Email không được để trống";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Email không hợp lệ";
-    }
+    if (!email) errors.email = "Email không được để trống";
+    else if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Email không hợp lệ";
 
-    if (!password) {
-      errors.password = "Mật khẩu không được để trống";
-    } else if (password.length < 8) {
+    if (!password) errors.password = "Mật khẩu không được để trống";
+    else if (password.length < 8)
       errors.password = "Mật khẩu phải có ít nhất 8 ký tự";
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+    else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password))
       errors.password = "Mật khẩu phải chứa chữ hoa, chữ thường và số";
-    }
 
-    if (!confirmPassword) {
-      errors.confirmPassword = "Vui lòng xác nhận mật khẩu";
-    } else if (confirmPassword !== password) {
+    if (!confirmPassword) errors.confirmPassword = "Vui lòng xác nhận mật khẩu";
+    else if (confirmPassword !== password)
       errors.confirmPassword = "Mật khẩu xác nhận không khớp";
-    }
 
-    if (!acceptTerms) {
-      errors.terms = "Bạn phải đồng ý với điều khoản sử dụng";
-    }
+    if (!acceptTerms) errors.terms = "Bạn phải đồng ý với điều khoản sử dụng";
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    clearError();
-    if (!validateForm()) return;
-    await register(name, email, password);
-  };
-
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
+      {/* Thông báo lỗi chung */}
       {error && (
         <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-start">
           <AlertCircleIcon className="h-5 w-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" />
@@ -131,9 +141,9 @@ export function RegisterForm() {
             <KeyIcon className="h-5 w-5 text-white" />
           </div>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Mật khẩu"
-            className={`w-full py-3 pl-10 pr-3 border-b-2 text-gray-200 ${
+            className={`w-full py-3 pl-10 pr-10 border-b-2 text-gray-200 ${
               formErrors?.password
                 ? "border-red-500"
                 : "border-gray-200 focus:border-green-500"
@@ -146,6 +156,17 @@ export function RegisterForm() {
             }}
             required
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-300 hover:text-white"
+          >
+            {showPassword ? (
+              <EyeOffIcon className="h-5 w-5" />
+            ) : (
+              <EyeIcon className="h-5 w-5" />
+            )}
+          </button>
           {formErrors?.password && (
             <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>
           )}
@@ -157,9 +178,9 @@ export function RegisterForm() {
             <KeyIcon className="h-5 w-5 text-white" />
           </div>
           <input
-            type="password"
+            type={showConfirm ? "text" : "password"}
             placeholder="Xác nhận mật khẩu"
-            className={`w-full py-3 pl-10 pr-3 border-b-2 text-gray-200 ${
+            className={`w-full py-3 pl-10 pr-10 border-b-2 text-gray-200 ${
               formErrors?.confirmPassword
                 ? "border-red-500"
                 : "border-gray-200 focus:border-green-500"
@@ -172,6 +193,17 @@ export function RegisterForm() {
             }}
             required
           />
+          <button
+            type="button"
+            onClick={() => setShowConfirm(!showConfirm)}
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-300 hover:text-white"
+          >
+            {showConfirm ? (
+              <EyeOffIcon className="h-5 w-5" />
+            ) : (
+              <EyeIcon className="h-5 w-5" />
+            )}
+          </button>
           {formErrors?.confirmPassword && (
             <p className="mt-1 text-sm text-red-500">
               {formErrors.confirmPassword}
@@ -236,6 +268,7 @@ export function RegisterForm() {
         </span>
         <div className="flex-grow border-t border-gray-200"></div>
       </div>
+
       <div className="flex space-x-4">
         <button
           type="button"

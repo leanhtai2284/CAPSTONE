@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AtSignIcon,
   KeyIcon,
@@ -7,41 +7,52 @@ import {
   LoaderIcon,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export function LoginForm() {
-  const { login, loading, error, clearError } = useAuth();
+  const { login, loading, error, clearError, user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formErrors, setFormErrors] = useState({});
+  const navigate = useNavigate();
 
-  // Validate form
+  // ✅ Nếu user đã đăng nhập (ví dụ reload lại trang) → về Home luôn
+  useEffect(() => {
+    if (user) navigate("/");
+  }, [user, navigate]);
+
+  // ✅ Validate form
   const validateForm = () => {
     const errors = {};
 
-    if (!email) {
-      errors.email = "Email không được để trống";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Email không hợp lệ";
-    }
+    if (!email) errors.email = "Email không được để trống";
+    else if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Email không hợp lệ";
 
-    if (!password) {
-      errors.password = "Mật khẩu không được để trống";
-    }
+    if (!password) errors.password = "Mật khẩu không được để trống";
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  // Handle form submission
+  // ✅ Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     clearError();
+
     if (!validateForm()) return;
+
     await login(email, password);
+
+    // ⚡ Nếu login thành công → điều hướng ngay
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      navigate("/"); // ✅ Chuyển về HomePage liền
+    }
   };
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
+      {/* Hiển thị lỗi */}
       {error && (
         <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-start">
           <AlertCircleIcon className="h-5 w-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" />
@@ -51,7 +62,7 @@ export function LoginForm() {
 
       <div className="space-y-4">
         {/* Email */}
-        <div className="relative ">
+        <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <AtSignIcon className="h-5 w-5 text-gray-100" />
           </div>
@@ -61,7 +72,7 @@ export function LoginForm() {
             className={`w-full py-3 pl-10 pr-3 border-b-2 text-gray-200 ${
               formErrors.email
                 ? "border-red-500"
-                : "border-gray-100 focus:border-green-500"
+                : "border-gray-200 focus:border-green-500"
             } focus:outline-none transition-colors bg-transparent`}
             value={email}
             onChange={(e) => {
@@ -69,7 +80,6 @@ export function LoginForm() {
               if (formErrors.email)
                 setFormErrors({ ...formErrors, email: undefined });
             }}
-            required
           />
           {formErrors.email && (
             <p className="mt-1 text-sm text-red-500">{formErrors.email}</p>
@@ -95,7 +105,6 @@ export function LoginForm() {
               if (formErrors.password)
                 setFormErrors({ ...formErrors, password: undefined });
             }}
-            required
           />
           {formErrors.password && (
             <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>
@@ -118,6 +127,7 @@ export function LoginForm() {
           </>
         )}
       </button>
+
       {/* Quên mật khẩu */}
       <div className="flex justify-end">
         <a
@@ -127,7 +137,8 @@ export function LoginForm() {
           Quên mật khẩu?
         </a>
       </div>
-      {/* Đăng nhập với MXH */}
+
+      {/* Đăng nhập MXH */}
       <div className="relative flex items-center py-2">
         <div className="flex-grow border-t border-gray-200"></div>
         <span className="flex-shrink mx-4 text-gray-300 text-sm">
