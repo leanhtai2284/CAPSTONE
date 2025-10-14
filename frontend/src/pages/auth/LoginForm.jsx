@@ -6,15 +6,34 @@ import {
   AlertCircleIcon,
   LoaderIcon,
 } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
+import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 export function LoginForm() {
-  const { login, loading, error, clearError, user } = useAuth();
+  const { login, loading, error, clearError, user, loginWithGoogle } =
+    useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        await loginWithGoogle(response.access_token);
+        toast.success("🎉 Đăng nhập thành công!");
+        navigate("/");
+      } catch (err) {
+        toast.error(err.message || "Đăng nhập thất bại");
+      }
+    },
+    onError: () => {
+      toast.error("Đăng nhập bằng Google thất bại");
+    },
+  });
 
   // ✅ Nếu user đã đăng nhập (ví dụ reload lại trang) → về Home luôn
   useEffect(() => {
@@ -42,12 +61,8 @@ export function LoginForm() {
     if (!validateForm()) return;
 
     await login(email, password);
-
-    // ⚡ Nếu login thành công → điều hướng ngay
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      navigate("/"); // ✅ Chuyển về HomePage liền
-    }
+    toast.success("🎉 Đăng nhập thành công!");
+    navigate("/"); // Chuyển về HomePage sau khi đăng nhập thành công
   };
 
   return (
@@ -130,12 +145,12 @@ export function LoginForm() {
 
       {/* Quên mật khẩu */}
       <div className="flex justify-end">
-        <a
-          href="#"
+        <Link
+          to="/forgot-password"
           className="text-sm text-green-600 hover:text-green-700 transition-colors"
         >
           Quên mật khẩu?
-        </a>
+        </Link>
       </div>
 
       {/* Đăng nhập MXH */}
@@ -150,7 +165,9 @@ export function LoginForm() {
       <div className="flex space-x-4">
         <button
           type="button"
+          onClick={handleGoogleLogin}
           className="w-1/2 py-2.5 border border-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
+          disabled={loading}
         >
           <img
             src="https://www.svgrepo.com/show/355037/google.svg"
@@ -163,6 +180,7 @@ export function LoginForm() {
         <button
           type="button"
           className="w-1/2 py-2.5 border border-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
+          disabled={loading}
         >
           <img
             src="https://www.svgrepo.com/show/448224/facebook.svg"

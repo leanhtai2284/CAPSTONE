@@ -1,9 +1,6 @@
-import React, { useEffect, useState, createContext, useContext } from "react";
-
-// ---------------------------
-// Tạo AuthContext
-// ---------------------------
-const AuthContext = createContext();
+import React, { useEffect, useState } from "react";
+import { authService } from "../services/authService";
+import { AuthContext } from "./auth";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -29,61 +26,53 @@ export function AuthProvider({ children }) {
   }, []);
 
   // ---------------------------
-  // Mock API Register
+  // API Register
   // ---------------------------
-  const register = async (name, email, password) => {
+  const register = async (name, email, password, confirmPassword) => {
     try {
       setLoading(true);
       setError(null);
 
-      await new Promise((resolve) => setTimeout(resolve, 800)); // giả lập API delay
+      const data = await authService.register({
+        name,
+        email,
+        password,
+        confirmPassword,
+      });
 
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const existingUser = users.find((u) => u.email === email);
-      if (existingUser) throw new Error("Email đã được sử dụng");
+      // Lưu thông tin user và token vào localStorage
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
 
-      const newUser = { name, email, password };
-      localStorage.setItem("users", JSON.stringify([...users, newUser]));
-
-      // Giả lập token
-      const fakeToken = `token-${Date.now()}`;
-
-      const userData = { name, email };
-      localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("token", fakeToken);
-      setUser(userData);
+      return data; // Trả về data để component có thể xử lý thành công
     } catch (err) {
-      setError(err.message || "Đăng ký thất bại");
+      setError(err.message);
+      throw err; // Ném lỗi để component có thể bắt và hiển thị
     } finally {
       setLoading(false);
     }
   };
 
   // ---------------------------
-  // Mock API Login
+  // API Login
   // ---------------------------
   const login = async (email, password) => {
     try {
       setLoading(true);
       setError(null);
 
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      const data = await authService.login({ email, password });
 
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const foundUser = users.find(
-        (u) => u.email === email && u.password === password
-      );
+      // Lưu thông tin user và token vào localStorage
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
 
-      if (!foundUser) throw new Error("Email hoặc mật khẩu không chính xác");
-
-      const fakeToken = `token-${Date.now()}`;
-
-      const userData = { name: foundUser.name, email: foundUser.email };
-      localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("token", fakeToken);
-      setUser(userData);
+      return data; // Trả về data để component có thể xử lý thành công
     } catch (err) {
-      setError(err.message || "Đăng nhập thất bại");
+      setError(err.message);
+      throw err; // Ném lỗi để component có thể bắt và hiển thị
     } finally {
       setLoading(false);
     }
@@ -92,10 +81,76 @@ export function AuthProvider({ children }) {
   // ---------------------------
   // Đăng xuất
   // ---------------------------
-  const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setUser(null);
+  const logout = async () => {
+    try {
+      setLoading(true);
+      const data = await authService.logout();
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      setUser(null);
+      return data; // Trả về data để component có thể xử lý thành công
+    } catch (err) {
+      setError(err.message);
+      throw err; // Ném lỗi để component có thể bắt và hiển thị
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ---------------------------
+  // Quên mật khẩu
+  // ---------------------------
+  const forgotPassword = async (email) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await authService.forgotPassword(email);
+      return data; // Trả về data để component có thể xử lý thành công
+    } catch (err) {
+      setError(err.message);
+      throw err; // Ném lỗi để component có thể bắt và hiển thị
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ---------------------------
+  // Đặt lại mật khẩu
+  // ---------------------------
+  const resetPassword = async (resetToken, newPassword) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await authService.resetPassword(resetToken, newPassword);
+      return data; // Trả về data để component có thể xử lý thành công
+    } catch (err) {
+      setError(err.message);
+      throw err; // Ném lỗi để component có thể bắt và hiển thị
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ---------------------------
+  // Đăng nhập với Google
+  // ---------------------------
+  const loginWithGoogle = async (credential) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await authService.loginWithGoogle(credential);
+
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
+
+      return data;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
   };
 
   // ---------------------------
@@ -113,17 +168,11 @@ export function AuthProvider({ children }) {
     register,
     login,
     logout,
+    forgotPassword,
+    resetPassword,
+    loginWithGoogle,
     clearError,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-
-// ---------------------------
-// Custom hook để dùng context
-// ---------------------------
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth phải được dùng trong AuthProvider");
-  return context;
-};

@@ -1,6 +1,15 @@
 import nodemailer from "nodemailer";
 
 const sendEmail = async (options) => {
+  // Log cấu hình email (không log password)
+  console.log("Email Configuration:", {
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    auth: {
+      user: process.env.SMTP_EMAIL,
+    },
+  });
+
   // Tạo một transporter
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -19,9 +28,15 @@ const sendEmail = async (options) => {
     html: options.html,
   };
 
-  // Gửi email
-  const info = await transporter.sendMail(message);
-  console.log("Email sent: %s", info.messageId);
+  try {
+    // Gửi email
+    const info = await transporter.sendMail(message);
+    console.log("Email sent successfully:", info.messageId);
+    return info;
+  } catch (error) {
+    console.error("Email sending error:", error.message);
+    throw error;
+  }
 };
 
 export default sendEmail;

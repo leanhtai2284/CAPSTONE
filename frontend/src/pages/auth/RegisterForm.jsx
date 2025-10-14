@@ -9,7 +9,8 @@ import {
   EyeIcon,
   EyeOffIcon,
 } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 export function RegisterForm() {
@@ -30,9 +31,9 @@ export function RegisterForm() {
     if (!validateForm()) return;
 
     try {
-      await register(name, email, password);
+      await register(name, email, password, confirmPassword);
 
-      alert("🎉 Đăng ký thành công!");
+      toast.success("🎉 Đăng ký thành công!");
       // 🟢 Reset form
       setName("");
       setEmail("");
@@ -44,6 +45,9 @@ export function RegisterForm() {
       navigate("/");
     } catch (err) {
       console.error("Registration failed:", err);
+      const errorMessage =
+        err.response?.data?.message || "Đăng ký thất bại. Vui lòng thử lại.";
+      toast.error(errorMessage);
     }
   };
 

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { useNavigate, useLocation } from "react-router-dom";
+import { motion as Motion } from "framer-motion";
 import { LoginForm } from "./auth/LoginForm";
 import { RegisterForm } from "./auth/RegisterForm";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { LogOutIcon, UserIcon } from "lucide-react";
 
 function Welcome() {
@@ -32,16 +34,26 @@ function Welcome() {
 
 function AuthContent() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState("login");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState(() => {
+    if (location.pathname.includes("register")) return "register";
+    return "login";
+  });
 
   if (user) return <Welcome />;
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    navigate(`/auth/${tab}`);
+  };
 
   return (
     <>
       {/* Tabs */}
       <div className="flex mb-8 relative">
         <button
-          onClick={() => setActiveTab("login")}
+          onClick={() => handleTabChange("login")}
           className={`w-1/2 py-2 text-center font-semibold text-lg ${
             activeTab === "login" ? "text-green-600" : "text-white"
           }`}
@@ -49,14 +61,14 @@ function AuthContent() {
           ĐĂNG NHẬP
         </button>
         <button
-          onClick={() => setActiveTab("register")}
+          onClick={() => handleTabChange("register")}
           className={`w-1/2 py-2 text-center font-semibold text-lg ${
             activeTab === "register" ? "text-green-600" : "text-white"
           }`}
         >
           ĐĂNG KÝ
         </button>
-        <motion.div
+        <Motion.div
           className="absolute bottom-0 h-0.5 bg-green-600"
           initial={false}
           animate={{
@@ -73,7 +85,7 @@ function AuthContent() {
 
       {/* Forms */}
       <AnimatePresence mode="wait">
-        <motion.div
+        <Motion.div
           key={activeTab}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -81,7 +93,7 @@ function AuthContent() {
           transition={{ duration: 0.2 }}
         >
           {activeTab === "login" ? <LoginForm /> : <RegisterForm />}
-        </motion.div>
+        </Motion.div>
       </AnimatePresence>
     </>
   );

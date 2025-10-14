@@ -3,13 +3,29 @@ import User from "../models/User.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 
 export const Register = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, confirmPassword } = req.body;
 
   // Kiểm tra các trường bắt buộc
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !confirmPassword) {
     return res.status(400).json({
       success: false,
       message: "Vui lòng điền tất cả các trường",
+    });
+  }
+
+  // Kiểm tra mật khẩu xác nhận
+  if (password !== confirmPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "Mật khẩu xác nhận không khớp",
+    });
+  }
+
+  // Kiểm tra độ dài mật khẩu
+  if (password.length < 6) {
+    return res.status(400).json({
+      success: false,
+      message: "Mật khẩu phải có ít nhất 6 ký tự",
     });
   }
 

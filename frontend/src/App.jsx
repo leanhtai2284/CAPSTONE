@@ -1,6 +1,9 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, useLocation } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AuthProvider } from "./context/AuthProvider";
 import NavBar from "./components/layout/NavBar";
 import AppRouter from "./AppRouter";
 
@@ -23,13 +26,26 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Suspense
-          fallback={<div className="text-center mt-10">Đang tải...</div>}
-        >
-          <AppContent />
-        </Suspense>
-      </AuthProvider>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+        <AuthProvider>
+          <Suspense
+            fallback={<div className="text-center mt-10">Đang tải...</div>}
+          >
+            <AppContent />
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+          </Suspense>
+        </AuthProvider>
+      </GoogleOAuthProvider>
     </BrowserRouter>
   );
 }
