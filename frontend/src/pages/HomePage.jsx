@@ -5,8 +5,10 @@ import EditorsPicksSection from "../components/section/EditorsPicksSection";
 import PersonalizedRecommendationsSection from "../components/section/PersonalizedRecommedationsSection";
 import NutritionCorner from "../components/section/NutritionCorner";
 import { FinalCTA } from "../components/section/FinalCTA";
+import { useAuth } from "../context/AuthContext";
 
 const HomePage = () => {
+  const { user } = useAuth();
   return (
     <div>
       {/* hero section */}
@@ -20,7 +22,7 @@ const HomePage = () => {
       {/* góc dinh dưỡng */}
       <NutritionCorner />
       {/* kêu gọi hành động cuối trang */}
-      <FinalCTA />
+      {!user && <FinalCTA />}
       {/* footer */}
       <Footer />
     </div>

@@ -7,10 +7,12 @@ import UserMenu from "../ui/UserMenu";
 import SearchBar from "../ui/SearchBar";
 import NotificationBell from "../ui/NotificationBell";
 import MailDropdown from "../ui/MailDropdown";
+import { useAuth } from "../../context/AuthContext";
 
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const { user } = useAuth(); // 🔥 lấy trạng thái đăng nhập
 
   // Đóng menu khi click ra ngoài
   useEffect(() => {
@@ -24,20 +26,10 @@ const NavBar = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 left-0 w-full bg-white/80 dark:bg-black/80 backdrop-blur-lg text-gray-950 dark:text-gray-100 shadow-md transition-colors duration-300 z-50">
+    <header className="sticky top-0 left-0 w-full bg-white/80 dark:bg-black/70 backdrop-blur-lg text-gray-950 dark:text-gray-100 shadow-md transition-colors duration-300 z-50">
       <div className="container mx-auto flex items-center justify-between px-4 py-2">
         {/* Logo */}
-        <Link
-          to="/"
-          onClick={(e) => {
-            // Nếu đang ở trang chủ thì reload lại
-            if (location.pathname === "/") {
-              e.preventDefault(); // Ngăn React Router điều hướng lại
-              window.location.reload(); // Reload thật sự
-            }
-          }}
-          className="flex items-center h-14 space-x-2"
-        >
+        <Link to="/" className="flex items-center h-14 space-x-2">
           <img
             src={logo}
             alt="Logo"
@@ -72,7 +64,18 @@ const NavBar = () => {
           <DarkModeToggle />
           <NotificationBell />
           <MailDropdown />
-          <UserMenu />
+
+          {/* 🔥 Hiển thị tùy theo trạng thái user */}
+          {!user ? (
+            <Link
+              to="/auth"
+              className="bg-green-500 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded-full transition-colors"
+            >
+              Đăng ký ngay!
+            </Link>
+          ) : (
+            <UserMenu />
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -114,12 +117,23 @@ const NavBar = () => {
               </Link>
             </div>
 
-            {/* Icons */}
+            {/* Icons + User */}
             <div className="flex justify-around items-center pt-3 border-t border-gray-200 dark:border-gray-700">
               <DarkModeToggle />
               <NotificationBell />
               <MailDropdown />
-              <UserMenu />
+
+              {!user ? (
+                <Link
+                  to="/auth"
+                  onClick={() => setMenuOpen(false)}
+                  className="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-full transition-colors"
+                >
+                  Đăng ký
+                </Link>
+              ) : (
+                <UserMenu />
+              )}
             </div>
           </div>
         </div>

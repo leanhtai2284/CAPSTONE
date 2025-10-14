@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   UserIcon,
   AtSignIcon,
@@ -12,8 +12,9 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export function RegisterForm() {
+export function RegisterForm({ isActive }) {
   const { register, loading, error, clearError } = useAuth();
+
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,6 +24,19 @@ export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+
+  // ✅ Reset form khi user logout hoặc quay lại trang đăng ký
+  useEffect(() => {
+    if (isActive) {
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setAcceptTerms(false);
+      setFormErrors({});
+      clearError();
+    }
+  }, [isActive, clearError]);
   // ✅ Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();

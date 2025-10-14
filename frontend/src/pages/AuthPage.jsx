@@ -80,7 +80,11 @@ function AuthContent() {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.2 }}
         >
-          {activeTab === "login" ? <LoginForm /> : <RegisterForm />}
+          {activeTab === "login" ? (
+            <LoginForm key="login-form" />
+          ) : (
+            <RegisterForm key="register-form" />
+          )}
         </motion.div>
       </AnimatePresence>
     </>

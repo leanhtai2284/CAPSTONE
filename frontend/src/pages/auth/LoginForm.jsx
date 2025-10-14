@@ -9,12 +9,20 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export function LoginForm() {
+export function LoginForm({ isActive }) {
   const { login, loading, error, clearError, user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
+  // ✅ Reset form khi user logout hoặc quay lại trang login
+  useEffect(() => {
+    if (isActive) {
+      setEmail("");
+      setPassword("");
+      clearError();
+    }
+  }, [isActive, clearError]);
 
   // ✅ Nếu user đã đăng nhập (ví dụ reload lại trang) → về Home luôn
   useEffect(() => {
