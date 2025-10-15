@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import logo from "../../assets/logo/LOGO1.png";
+import logo from "../../assets/logo/LOGO2.png";
 import DarkModeToggle from "../ui/DarkModeToggle";
 import UserMenu from "../ui/UserMenu";
 import SearchBar from "../ui/SearchBar";

@@ -14,8 +14,8 @@ import { useNavigate } from "react-router-dom";
 
 export function RegisterForm({ isActive }) {
   const { register, loading, error, clearError } = useAuth();
-
   const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +25,6 @@ export function RegisterForm({ isActive }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
-  // ✅ Reset form khi user logout hoặc quay lại trang đăng ký
   useEffect(() => {
     if (isActive) {
       setName("");
@@ -34,10 +33,10 @@ export function RegisterForm({ isActive }) {
       setConfirmPassword("");
       setAcceptTerms(false);
       setFormErrors({});
-      clearError();
     }
-  }, [isActive, clearError]);
-  // ✅ Handle submit
+  }, [isActive]);
+
+  // ✅ Xử lý khi submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     clearError();
@@ -46,16 +45,17 @@ export function RegisterForm({ isActive }) {
     try {
       await register(name, email, password);
 
-      alert("🎉 Đăng ký thành công!");
-      // 🟢 Reset form
-      setName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      setAcceptTerms(false);
+      // 🟢 Lưu user đã đăng ký
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      const storedToken = localStorage.getItem("token");
 
-      // 🟢 Điều hướng về trang chủ
-      navigate("/");
+      // 🟢 Kiểm tra nếu đăng ký thành công -> điều hướng
+      if (storedUser && storedToken) {
+        alert("🎉 Đăng ký thành công!");
+        navigate("/");
+      } else {
+        alert("❌ Đăng ký thất bại, vui lòng thử lại.");
+      }
     } catch (err) {
       console.error("Registration failed:", err);
     }
@@ -66,7 +66,6 @@ export function RegisterForm({ isActive }) {
     const errors = {};
 
     if (!name.trim()) errors.name = "Họ và tên không được để trống";
-
     if (!email) errors.email = "Email không được để trống";
     else if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Email không hợp lệ";
 
@@ -273,40 +272,6 @@ export function RegisterForm({ isActive }) {
           </>
         )}
       </button>
-
-      {/* Mạng xã hội */}
-      <div className="relative flex items-center py-2">
-        <div className="flex-grow border-t border-gray-200"></div>
-        <span className="flex-shrink mx-4 text-white text-sm">
-          hoặc đăng ký với
-        </span>
-        <div className="flex-grow border-t border-gray-200"></div>
-      </div>
-
-      <div className="flex space-x-4">
-        <button
-          type="button"
-          className="w-1/2 py-2.5 border border-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
-        >
-          <img
-            src="https://www.svgrepo.com/show/355037/google.svg"
-            alt="Google"
-            className="h-5 w-5 mr-2"
-          />
-          <span className="text-sm text-white">Google</span>
-        </button>
-        <button
-          type="button"
-          className="w-1/2 py-2.5 border border-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
-        >
-          <img
-            src="https://www.svgrepo.com/show/448224/facebook.svg"
-            alt="Facebook"
-            className="h-5 w-5 mr-2"
-          />
-          <span className="text-sm text-white">Facebook</span>
-        </button>
-      </div>
     </form>
   );
 }

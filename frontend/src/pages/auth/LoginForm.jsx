@@ -20,9 +20,8 @@ export function LoginForm({ isActive }) {
     if (isActive) {
       setEmail("");
       setPassword("");
-      clearError();
     }
-  }, [isActive, clearError]);
+  }, [isActive]);
 
   // ✅ Nếu user đã đăng nhập (ví dụ reload lại trang) → về Home luôn
   useEffect(() => {

@@ -1,8 +1,5 @@
 import React, { useEffect, useState, createContext, useContext } from "react";
 
-// ---------------------------
-// Tạo AuthContext
-// ---------------------------
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -24,8 +21,9 @@ export function AuthProvider({ children }) {
       console.warn("Lỗi khi đọc localStorage:", e);
       localStorage.removeItem("user");
       localStorage.removeItem("token");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   // ---------------------------
@@ -36,24 +34,30 @@ export function AuthProvider({ children }) {
       setLoading(true);
       setError(null);
 
-      await new Promise((resolve) => setTimeout(resolve, 800)); // giả lập API delay
+      // Giả lập độ trễ API
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
       const users = JSON.parse(localStorage.getItem("users") || "[]");
       const existingUser = users.find((u) => u.email === email);
       if (existingUser) throw new Error("Email đã được sử dụng");
 
+      // Lưu user mới vào danh sách
       const newUser = { name, email, password };
       localStorage.setItem("users", JSON.stringify([...users, newUser]));
 
       // Giả lập token
       const fakeToken = `token-${Date.now()}`;
 
+      // Lưu thông tin người dùng hiện tại
       const userData = { name, email };
       localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("token", fakeToken);
-      setUser(userData);
+      setUser(userData); // ✅ Cập nhật context ngay để HomePage nhận user
+
+      return true; // báo thành công cho RegisterForm
     } catch (err) {
       setError(err.message || "Đăng ký thất bại");
+      return false;
     } finally {
       setLoading(false);
     }
@@ -77,13 +81,15 @@ export function AuthProvider({ children }) {
       if (!foundUser) throw new Error("Email hoặc mật khẩu không chính xác");
 
       const fakeToken = `token-${Date.now()}`;
-
       const userData = { name: foundUser.name, email: foundUser.email };
       localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("token", fakeToken);
       setUser(userData);
+
+      return true; // báo thành công cho LoginForm
     } catch (err) {
       setError(err.message || "Đăng nhập thất bại");
+      return false;
     } finally {
       setLoading(false);
     }
