@@ -24,7 +24,7 @@ export function LoginForm() {
     onSuccess: async (response) => {
       try {
         await loginWithGoogle(response.access_token);
-        toast.success("🎉 Đăng nhập thành công!");
+        toast.success(" Đăng nhập thành công!");
         navigate("/");
       } catch (err) {
         toast.error(err.message || "Đăng nhập thất bại");
@@ -35,12 +35,12 @@ export function LoginForm() {
     },
   });
 
-  // ✅ Nếu user đã đăng nhập (ví dụ reload lại trang) → về Home luôn
+  //  Nếu user đã đăng nhập (ví dụ reload lại trang) → về Home luôn
   useEffect(() => {
     if (user) navigate("/");
   }, [user, navigate]);
 
-  // ✅ Validate form
+  //  Validate form
   const validateForm = () => {
     const errors = {};
 
@@ -53,7 +53,7 @@ export function LoginForm() {
     return Object.keys(errors).length === 0;
   };
 
-  // ✅ Submit form
+  //  Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     clearError();
