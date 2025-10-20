@@ -11,7 +11,7 @@ export function LoginSuccessRedirect() {
     const token = searchParams.get("token");
     if (token) {
       localStorage.setItem("token", token);
-      toast.success("🎉 Đăng nhập thành công!");
+      toast.success(" Đăng nhập thành công!");
       navigate("/");
     } else {
       toast.error("Đăng nhập thất bại");

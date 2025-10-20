@@ -7,7 +7,7 @@ import {
   forgotPassword,
   resetPassword,
 } from "../controllers/authController.js";
-import { Register } from "../controllers/userController.js";
+import { Register } from "../controllers/authController.js";
 
 const router = express.Router();
 

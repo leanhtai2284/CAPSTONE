@@ -7,33 +7,23 @@ import {
   LoaderIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useGoogleLogin } from "@react-oauth/google";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 export function LoginForm() {
-  const { login, loading, error, clearError, user, loginWithGoogle } =
-    useAuth();
+  const { login, loading, error, clearError, user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleGoogleLogin = useGoogleLogin({
-    onSuccess: async (response) => {
-      try {
-        await loginWithGoogle(response.access_token);
-        toast.success(" Đăng nhập thành công!");
-        navigate("/");
-      } catch (err) {
-        toast.error(err.message || "Đăng nhập thất bại");
-      }
-    },
-    onError: () => {
-      toast.error("Đăng nhập bằng Google thất bại");
-    },
-  });
+  // Xử lí đăng nhập bằng google
+  const handleGoogleLogin = () => {
+    window.location.href = `${
+      import.meta.env.VITE_API_URL || "http://localhost:5000"
+    }/api/auth/google`;
+  };
 
   //  Nếu user đã đăng nhập (ví dụ reload lại trang) → về Home luôn
   useEffect(() => {
