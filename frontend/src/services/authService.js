@@ -35,9 +35,9 @@ export const authService = {
     if (!response.ok) {
       throw new Error(data.message || "Có lỗi xảy ra khi đăng nhập với Google");
     }
-    this.setToken(data.token);
-    this.setUser(data.user);
-    return data;
+    this.setToken(data.data.token);
+    this.setUser(data.data);
+    return { token: data.data.token, user: data.data };
   },
 
   // Đăng ký
@@ -53,6 +53,8 @@ export const authService = {
     if (!response.ok) {
       throw new Error(data.message || "Có lỗi xảy ra khi đăng ký");
     }
+    this.setToken(data.token);
+    this.setUser(data.user);
     return data;
   },
 
@@ -69,9 +71,9 @@ export const authService = {
     if (!response.ok) {
       throw new Error(data.message || "Có lỗi xảy ra khi đăng nhập");
     }
-    this.setToken(data.token);
-    this.setUser(data.user);
-    return data;
+    this.setToken(data.data.token);
+    this.setUser(data.data);
+    return { token: data.data.token, user: data.data };
   },
 
   // Đăng xuất

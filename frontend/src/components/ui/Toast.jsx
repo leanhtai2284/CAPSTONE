@@ -16,7 +16,7 @@ export function Toast({
   showButton = true,
   duration = 3000,
 }) {
-  // ✅ Tự động hiển thị nếu autoShow = true
+  //  Tự động hiển thị nếu autoShow = true
   useEffect(() => {
     if (autoShow) {
       toast[type](message, {
@@ -27,7 +27,7 @@ export function Toast({
     }
   }, [autoShow, message, type, duration]);
 
-  // ✅ Hiển thị toast khi click
+  //  Hiển thị toast khi click
   const handleClick = () => {
     toast[type](message, {
       position: "top-right",

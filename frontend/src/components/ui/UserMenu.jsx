@@ -3,11 +3,12 @@ import { User } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 import Button from "./Button";
-
+import { useAuth } from "../../hooks/useAuth";
 // Giả lập trạng thái đăng nhập, bạn thay bằng logic thực tế
-const isLoggedIn = false; // true nếu đã đăng nhập
 
 const UserMenu = () => {
+  const { user } = useAuth(); //  Gọi hook bên trong component
+  const isLoggedIn = !!user;
   const [showProfileCard, setShowProfileCard] = useState(false);
   const profileRef = useRef(null);
 

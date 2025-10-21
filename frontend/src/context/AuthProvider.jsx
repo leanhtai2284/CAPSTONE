@@ -48,21 +48,28 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    // Kiểm tra xem có token trong localStorage không
-    const token = localStorage.getItem("token");
-    if (token) {
-      const userData = authService.getCurrentUser();
-      setUser(userData);
-    }
+    // Kiểm tra user khi mount
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
       } catch (err) {
         console.error("Error parsing stored user:", err);
-        localStorage.removeItem("user"); // Remove invalid data
       }
     }
+
+    // Lắng nghe thay đổi localStorage từ tab khác
+    const handleStorageChange = () => {
+      const updatedUser = localStorage.getItem("user");
+      if (updatedUser) {
+        setUser(JSON.parse(updatedUser));
+      } else {
+        setUser(null);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const loginWithGoogle = async (credential) => {

@@ -1,6 +1,6 @@
 import React from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+
 import Button from "../ui/Button";
 
 export function FinalCTA() {

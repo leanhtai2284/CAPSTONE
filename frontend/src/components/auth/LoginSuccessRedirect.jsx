@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
+import { authService } from "../../services/authService";
 import { toast } from "react-toastify";
 
 export function LoginSuccessRedirect() {
@@ -9,9 +9,22 @@ export function LoginSuccessRedirect() {
 
   useEffect(() => {
     const token = searchParams.get("token");
+    const user = searchParams.get("user"); // Lấy dữ liệu user từ URL params
+
     if (token) {
-      localStorage.setItem("token", token);
-      toast.success(" Đăng nhập thành công!");
+      authService.setToken(token);
+
+      // Parse và lưu user nếu có
+      if (user) {
+        try {
+          const userData = JSON.parse(decodeURIComponent(user));
+          authService.setUser(userData);
+        } catch (err) {
+          console.error("Lỗi khi parse dữ liệu user:", err);
+        }
+      }
+
+      toast.success("Đăng nhập thành công!");
       navigate("/");
     } else {
       toast.error("Đăng nhập thất bại");
