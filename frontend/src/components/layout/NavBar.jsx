@@ -101,14 +101,14 @@ const NavBar = () => {
               <Link
                 to="/"
                 onClick={() => setMenuOpen(false)}
-                className="block py-2 px-3 rounded-lg text-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                className="block py-2 px-3 rounded-lg text-lg font-semibold hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-800 transition"
               >
                 Trang Chủ
               </Link>
               <Link
                 to="/foryou"
                 onClick={() => setMenuOpen(false)}
-                className="block py-2 px-3 rounded-lg text-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                className="block py-2 px-3 rounded-lg text-lg font-semibold hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-800 transition"
               >
                 Dành Cho Bạn
               </Link>

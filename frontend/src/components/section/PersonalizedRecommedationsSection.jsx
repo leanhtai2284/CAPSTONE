@@ -85,7 +85,7 @@ const PersonalizedRecommendationsSection = () => {
       badges: ["Giàu protein"],
     },
     {
-      id: 5,
+      id: 7,
       image:
         "https://images.unsplash.com/photo-1591814252471-007cc864938c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80",
       title: "Bánh Mì Thịt Nướng",
@@ -95,7 +95,7 @@ const PersonalizedRecommendationsSection = () => {
       badges: ["Bữa sáng"],
     },
     {
-      id: 6,
+      id: 8,
       image:
         "https://cdnv2.tgdd.vn/mwg-static/common/Common/05052025%20-%202025-05-09T154044.858.jpg",
       title: "Cá Kho Tộ",
@@ -105,7 +105,7 @@ const PersonalizedRecommendationsSection = () => {
       badges: ["Giàu protein"],
     },
     {
-      id: 5,
+      id: 9,
       image:
         "https://dienlanhsanaky.com/fileman/Uploads/banh_mi_thit_nuong.jpg",
       title: "Bánh Mì Thịt Nướng",
@@ -115,7 +115,7 @@ const PersonalizedRecommendationsSection = () => {
       badges: ["Bữa sáng"],
     },
     {
-      id: 6,
+      id: 10,
       image:
         "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       title: "Cá Kho Tộ",
@@ -125,7 +125,7 @@ const PersonalizedRecommendationsSection = () => {
       badges: ["Giàu protein"],
     },
     {
-      id: 5,
+      id: 11,
       image:
         "https://images.unsplash.com/photo-1591814252471-007cc864938c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80",
       title: "Bánh Mì Thịt Nướng",
@@ -135,7 +135,7 @@ const PersonalizedRecommendationsSection = () => {
       badges: ["Bữa sáng"],
     },
     {
-      id: 6,
+      id: 12,
       image:
         "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       title: "Cá Kho Tộ",
@@ -157,13 +157,13 @@ const PersonalizedRecommendationsSection = () => {
         <div className="flex items-center space-x-2">
           <button
             onClick={scrollLeft}
-            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition"
+            className="p-2 rounded-full bg-gray-100 dark:bg-slate-950 hover:bg-gray-200 text-gray-600 transition"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={scrollRight}
-            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition"
+            className="p-2 rounded-full bg-gray-100 dark:bg-slate-950 hover:bg-gray-200 text-gray-600 transition"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

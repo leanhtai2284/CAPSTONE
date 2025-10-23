@@ -33,7 +33,7 @@ function NotificationBell() {
   return (
     <div className="relative" ref={bellRef}>
       <button
-        className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition hover:text-secondary relative"
+        className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-200 text-gray-600 transition hover:text-secondary relative"
         onClick={() => setOpen(!open)}
       >
         <Bell size={28} />
@@ -58,7 +58,7 @@ function NotificationBell() {
               notifications.map((n) => (
                 <li
                   key={n.id}
-                  className="p-3 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  className="p-3 text-sm hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-700 cursor-pointer"
                 >
                   {n.message}
                 </li>

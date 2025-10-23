@@ -1,7 +1,9 @@
 import React from "react";
 import { Clock, Heart, User } from "lucide-react";
+import SaveButton from "../ui/SaveButton";
 
 const MealCard = ({
+  id,
   image,
   title,
   cookTime,
@@ -10,8 +12,19 @@ const MealCard = ({
   likes,
   badges = [],
 }) => {
+  const meal = {
+    id,
+    image,
+    title,
+    cookTime,
+    calories,
+    quantityUser,
+    likes,
+    badges,
+  };
+
   return (
-    <div className="group bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
+    <div className="group bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-xl shadow-sm overflow-hidden hover:shadow-md transition relative">
       {/* Image container */}
       <div className="relative h-48 overflow-hidden">
         <img
@@ -19,6 +32,9 @@ const MealCard = ({
           alt={title}
           className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
         />
+
+        {/* Save button (trái tim) */}
+        <SaveButton meal={meal} />
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-wrap gap-2">

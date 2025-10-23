@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 import Button from "./Button";
 import { useAuth } from "../../hooks/useAuth";
-// Giả lập trạng thái đăng nhập, bạn thay bằng logic thực tế
 
 const UserMenu = () => {
   const { user } = useAuth(); //  Gọi hook bên trong component
@@ -39,7 +38,7 @@ const UserMenu = () => {
   return (
     <div className="relative" ref={profileRef}>
       <button
-        className={`p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition`}
+        className={`p-2 rounded-full bg-gray-100 dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-200 text-gray-600 transition`}
         onClick={() => setShowProfileCard((prev) => !prev)}
       >
         <User

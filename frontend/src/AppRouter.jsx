@@ -8,6 +8,8 @@ import { ResetPasswordForm } from "./pages/auth/ResetPasswordForm";
 import { LoginSuccessRedirect } from "./components/auth/LoginSuccessRedirect";
 import { LoginForm } from "./pages/auth/LoginForm";
 import { RegisterForm } from "./pages/auth/RegisterForm";
+import SavedMenusPage from "./pages/SavedMenusPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const AppRouter = () => {
   return (
@@ -22,6 +24,9 @@ const AppRouter = () => {
       <Route path="/forgot-password" element={<ForgotPasswordForm />} />
       <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
       <Route path="/login-success" element={<LoginSuccessRedirect />} />
+
+      <Route path="/saved-menus" element={<SavedMenusPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 };
