@@ -38,7 +38,7 @@ const UserMenu = () => {
   return (
     <div className="relative" ref={profileRef}>
       <button
-        className={`p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition`}
+        className={`p-2 rounded-full bg-gray-100 dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-200 text-gray-600 transition`}
         onClick={() => setShowProfileCard((prev) => !prev)}
       >
         <User

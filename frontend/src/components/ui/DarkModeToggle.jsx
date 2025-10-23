@@ -34,7 +34,7 @@ const DarkModeToggle = () => {
       onClick={handleToggleTheme}
       title="Chế độ sáng"
       className="flex items-center justify-center w-11 h-11 rounded-full 
-               bg-gray-100  text-yellow-400 hover:text-yellow-300 
+               bg-gray-100 dark:bg-gray-800  text-yellow-400 hover:text-yellow-300 
                hover:bg-gray-200  shadow-sm hover:shadow transition-all duration-200"
     >
       <FaSun size={22} />
@@ -44,7 +44,7 @@ const DarkModeToggle = () => {
       onClick={handleToggleTheme}
       title="Chế độ tối"
       className="flex items-center justify-center w-10 h-10 rounded-full 
-               bg-gray-100  text-gray-600 dark:text-gray-300 
+               bg-gray-100 dark:bg-slate-950  text-gray-600 dark:text-gray-300 
                hover:text-blue-400 hover:bg-gray-200 
                shadow-sm hover:shadow transition-all duration-200"
     >

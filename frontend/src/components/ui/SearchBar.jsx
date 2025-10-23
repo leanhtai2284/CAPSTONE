@@ -86,7 +86,7 @@ function SearchBar() {
             <li
               key={item.id}
               className="p-2.5 text-sm text-gray-800 dark:text-gray-100 
-              hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition"
+              hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-800 cursor-pointer transition"
             >
               {item.name}
             </li>

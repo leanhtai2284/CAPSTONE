@@ -9,7 +9,7 @@ import logo from "../../assets/logo/LOGO1.png";
 const SocialIcon = ({ icon }) => (
   <a
     href="#"
-    className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-100 hover:text-green-600 transition"
+    className="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-950 flex items-center justify-center text-gray-600 hover:bg-green-100 hover:text-green-600 transition"
     aria-label="Social Media Link" // Thêm accessibility
   >
     {icon}

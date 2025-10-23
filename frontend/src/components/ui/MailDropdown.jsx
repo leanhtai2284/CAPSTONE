@@ -34,7 +34,7 @@ function MailDropdown() {
   return (
     <div className="relative" ref={mailRef}>
       <button
-        className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition hover:text-secondary"
+        className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-200 text-gray-600 transition hover:text-secondary"
         onClick={() => setOpen(!open)}
       >
         <Mail size={30} />
@@ -54,7 +54,7 @@ function MailDropdown() {
               FAKE_MAILS.map((msg) => (
                 <li
                   key={msg.id}
-                  className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  className="p-3 hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-700 cursor-pointer"
                 >
                   <div className="text-sm font-semibold text-gray-800 dark:text-gray-100">
                     {msg.senderName}
