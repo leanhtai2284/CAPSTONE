@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 import Button from "./Button";
 import { useAuth } from "../../hooks/useAuth";
-// Giả lập trạng thái đăng nhập, bạn thay bằng logic thực tế
 
 const UserMenu = () => {
   const { user } = useAuth(); //  Gọi hook bên trong component
