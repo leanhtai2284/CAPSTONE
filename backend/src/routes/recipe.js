@@ -1,19 +1,15 @@
 import express from "express";
+import {
+  searchRecipes,
+  getRecipeById,
+  suggestMenu,
+  similarRecipes,
+} from "../controllers/recipeController.js";
 const router = express.Router();
 
-// GET /api/recipes
-router.get("/", (req, res) => {
-  res.json({ message: "Get all recipes API working!" });
-});
-
-// POST /api/recipes
-router.post("/", (req, res) => {
-  res.json({ message: "Create recipe API working!" });
-});
-
-// GET /api/recipes/:id
-router.get("/:id", (req, res) => {
-  res.json({ message: `Get recipe with ID ${req.params.id} API working!` });
-});
+router.get("/", searchRecipes);
+router.get("/:id", getRecipeById);
+router.get("/:id/similar", similarRecipes);
+router.post("/suggest", suggestMenu);
 
 export default router;
