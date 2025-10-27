@@ -11,26 +11,32 @@ import { toast } from "react-toastify";
 const SaveButton = ({ meal }) => {
   const [isSaved, setIsSaved] = useState(false);
 
-  const uniqueKey = `${meal?.id || ""}_${meal?.title || ""}_${
-    meal?.image || ""
-  }`;
+  // Dùng id làm định danh chính — đảm bảo trùng dữ liệu với SavedMenusPage
+  const uniqueKey = meal?.id ?? meal?.uniqueKey ?? null;
 
-  // Kiểm tra xem món này đã được lưu chưa khi load trang
+  // Khi load component, kiểm tra món này có trong localStorage không
   useEffect(() => {
     if (!uniqueKey) return;
     const savedMeals = JSON.parse(localStorage.getItem("savedMeals")) || [];
-    setIsSaved(savedMeals.some((m) => m.uniqueKey === uniqueKey));
-  }, [uniqueKey]);
+    const exists = savedMeals.some(
+      (m) => m.id === meal.id || m.uniqueKey === uniqueKey
+    );
+    setIsSaved(exists);
+  }, [meal, uniqueKey]);
 
-  // Xử lý khi bấm lưu / bỏ lưu
-  const toggleSave = () => {
+  // Toggle lưu / bỏ lưu
+  const toggleSave = (e) => {
+    e.stopPropagation(); // tránh click lan lên thẻ cha
     if (!uniqueKey) return;
 
     const savedMeals = JSON.parse(localStorage.getItem("savedMeals")) || [];
     let updatedMeals;
 
     if (isSaved) {
-      updatedMeals = savedMeals.filter((m) => m.uniqueKey !== uniqueKey);
+      // ❌ Bỏ lưu
+      updatedMeals = savedMeals.filter(
+        (m) => m.id !== meal.id && m.uniqueKey !== uniqueKey
+      );
       toast.info("Đã bỏ lưu món ăn!", {
         position: "top-right",
         autoClose: 2000,
@@ -41,7 +47,12 @@ const SaveButton = ({ meal }) => {
         theme: "colored",
       });
     } else {
-      updatedMeals = [...savedMeals, { ...meal, uniqueKey }];
+      // ✅ Lưu mới
+      const mealToSave = {
+        ...meal,
+        uniqueKey: uniqueKey || Date.now(), // tạo key nếu chưa có
+      };
+      updatedMeals = [...savedMeals, mealToSave];
       toast.success("Đã lưu món ăn!", {
         position: "top-right",
         autoClose: 2000,

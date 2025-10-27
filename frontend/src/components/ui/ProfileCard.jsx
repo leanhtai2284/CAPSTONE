@@ -57,7 +57,7 @@ const ProfileCard = () => {
   return (
     <div
       className="absolute right-0 mt-2 w-72 rounded-lg shadow-lg py-2 z-50 
-                  bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-100 
+                  bg-white dark:bg-slate-950 text-gray-800 dark:text-gray-100 
                   border border-gray-200 dark:border-gray-800 transition-colors"
     >
       {/* Header - User Info */}
