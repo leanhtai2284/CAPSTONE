@@ -90,7 +90,7 @@ const NutritionCorner = () => {
           {articles.map((article, index) => (
             <motion.article
               key={article.id}
-              className="group  backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-800 hover:border-green-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20 cursor-pointer"
+              className="group  backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-300 dark:border-slate-800 hover:border-green-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20 cursor-pointer"
               initial={{
                 opacity: 0,
                 y: 50,

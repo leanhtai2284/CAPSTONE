@@ -23,7 +23,7 @@ function Welcome() {
       </p>
       <button
         onClick={logout}
-        className="py-2 px-4 bg-white/20 hover:bg-white/30 text-white rounded-lg flex items-center justify-center mx-auto transition-colors"
+        className="py-2 px-4 bg-white/20 hover:bg-white/30 dark:bg-white/10 text-white rounded-lg flex items-center justify-center mx-auto transition-colors"
       >
         <LogOutIcon className="h-4 w-4 mr-2" />
         Đăng xuất

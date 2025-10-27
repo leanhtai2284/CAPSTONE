@@ -66,7 +66,7 @@ const ProfilePage = () => {
     <div className="min-h-screen pt-0 pb-12 px-4">
       <div className="max-w-6xl mx-auto">
         <motion.div
-          className="dark:bg-slate-900/90 bg-white backdrop-blur-sm rounded-2xl shadow-lg border border-slate-800 overflow-hidden"
+          className="dark:bg-slate-900/90 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -84,7 +84,7 @@ const ProfilePage = () => {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-2">
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
                     Họ và tên
                   </label>
                   <input
@@ -98,7 +98,7 @@ const ProfilePage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-2">
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
                     Email
                   </label>
                   <input
@@ -112,7 +112,7 @@ const ProfilePage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-2">
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
                     Vùng miền
                   </label>
                   <select
@@ -129,7 +129,7 @@ const ProfilePage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-2">
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
                     Quy mô gia đình
                   </label>
                   <input
@@ -152,7 +152,7 @@ const ProfilePage = () => {
 
               {/* Activity Level */}
               <div>
-                <label className="block text-sm font-medium text-slate-500 mb-3">
+                <label className="block text-sm font-medium text-slate-300 mb-3">
                   Mức độ vận động
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-3  gap-3">
@@ -180,7 +180,7 @@ const ProfilePage = () => {
 
               {/* Goal */}
               <div>
-                <label className="block text-sm font-medium text-slate-500 mb-2">
+                <label className="block text-sm font-medium text-slate-300 mb-2">
                   Mục tiêu
                 </label>
                 <select
@@ -198,7 +198,7 @@ const ProfilePage = () => {
 
               {/* Budget */}
               <div>
-                <label className="block text-sm font-medium text-slate-500 mb-3">
+                <label className="block text-sm font-medium text-slate-300 mb-3">
                   Ngân sách
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -226,7 +226,7 @@ const ProfilePage = () => {
 
               {/* Diet Type */}
               <div>
-                <label className="block text-sm font-medium text-slate-500 mb-2">
+                <label className="block text-sm font-medium text-slate-300 mb-2">
                   Chế độ ăn
                 </label>
                 <select
@@ -246,7 +246,7 @@ const ProfilePage = () => {
 
               {/* Liked Foods */}
               <div>
-                <label className="block text-sm font-medium text-slate-500 mb-2">
+                <label className="block text-sm font-medium text-slate-300 mb-2">
                   Thực phẩm yêu thích
                 </label>
                 <div className="flex flex-wrap gap-2 mb-2">
@@ -283,14 +283,14 @@ const ProfilePage = () => {
 
               {/* Avoided Foods */}
               <div>
-                <label className="block text-sm font-medium text-slate-500 mb-2">
+                <label className="block text-sm font-medium text-slate-300 mb-2">
                   Thực phẩm cần tránh
                 </label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {profile.avoidedFoods.map((food) => (
                     <span
                       key={food}
-                      className="inline-flex items-center space-x-2 bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-sm"
+                      className="inline-flex items-center space-x-2 bg-red-500/20 text-red-500 px-3 py-1 rounded-lg text-sm"
                     >
                       <span>{food}</span>
                       <button onClick={() => removeTag("avoided", food)}>

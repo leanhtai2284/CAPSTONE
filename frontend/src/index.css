@@ -18,8 +18,8 @@
    ============================= */
 @layer base {
   :root {
-    --color-primary: #66ff33; /* Màu xanh neon */
-    --color-secondary: #0cfa48; /* Màu xanh lá */
+    --color-primary: #34e36c; /* Màu xanh neon */
+    --color-secondary: #27d96e; /* Màu xanh lá */
 
     --font-sans: "Inter", system-ui, sans-serif;
     --font-serif: "Merriweather", serif;
@@ -130,5 +130,35 @@
 
   .animate-slideDown {
     animation: slideDown 0.25s ease-out forwards;
+  }
+
+  /* 🆕 Hiệu ứng trượt lên (cho Modal) */
+  @keyframes slideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.3s ease-out forwards;
+  }
+
+  /* 🆕 (Tuỳ chọn) Hiệu ứng mờ dần khi đóng modal */
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  .animate-fadeOut {
+    animation: fadeOut 0.25s ease-in forwards;
   }
 }

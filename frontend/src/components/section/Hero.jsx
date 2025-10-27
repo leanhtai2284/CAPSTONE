@@ -108,7 +108,7 @@ const Hero = () => {
                         },
                       ].map(({ label, value, icon }, i) => (
                         <div key={i} className="flex items-center space-x-2">
-                          <span className="bg-white/30 rounded-full w-8 h-8 flex items-center justify-center">
+                          <span className="bg-white/30 dark:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center">
                             {icon ?? (
                               <span className="text-sm font-bold">{value}</span>
                             )}
