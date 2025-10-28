@@ -73,6 +73,30 @@ function mapDifficulty(v) {
   return "easy";
 }
 
+function parseIngredients(raw) {
+  if (!raw) return [];
+
+  // ví dụ: "Bột gạo: 190g, Nước: 100ml"
+  return String(raw)
+    .split(/[,;]/)
+    .map((item) => {
+      const parts = item.split(":").map((s) => s.trim());
+      const name = parts[0] || "";
+      const right = parts[1] || "";
+
+      // tách số và đơn vị
+      const amountMatch = right.match(/([\d.]+)/);
+      const amount = amountMatch ? parseFloat(amountMatch[1]) : 0;
+      const unit = right.replace(/[\d.]/g, "").trim() || "g";
+
+      // gán scalable = false cho các gia vị nhỏ (muối, tiêu, nước mắm,...)
+      const scalable = !/(muối|tiêu|nước mắm|bột ngọt|mắm|đường)/i.test(name);
+
+      return { name, amount, unit, scalable };
+    })
+    .filter((ing) => ing.name);
+}
+
 // ----- DB -----
 async function connect() {
   await mongoose.connect(process.env.MONGO_URI, {});
@@ -146,7 +170,7 @@ async function run() {
       image_url: fixUrl(r.image_url || ""),
       description: cleanStr(r.description || ""),
 
-      ingredients: parseList(r.ingredients).map(cleanStr),
+      ingredients: parseIngredients(r.ingredients),
       utensils: parseList(r.utensils).map(cleanStr),
       steps: parseList(r.steps).map(cleanStr),
 
