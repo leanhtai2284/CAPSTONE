@@ -12,6 +12,7 @@ import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import recipeRoutes from "./routes/recipe.js";
 import adminRoutes from "./routes/admin.js";
+import nutritionRoutes from "./routes/nutrition.js";
 const app = express();
 
 app.use(cors());
@@ -29,6 +30,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/nutrition", nutritionRoutes);
 
 const PORT = process.env.PORT || 5000;
 
