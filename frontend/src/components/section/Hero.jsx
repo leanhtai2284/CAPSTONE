@@ -1,47 +1,59 @@
-import React from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaArrowRight } from "react-icons/fa";
+import { Flame, Drumstick, Clock } from "lucide-react";
 
-const Hero = () => {
-  const dishes = [
-    {
-      title: "Cá Kho Tộ",
-      description:
-        "Món ăn truyền thống đậm đà hương vị, cung cấp đầy đủ dinh dưỡng cho bữa cơm gia đình Việt.",
-      image:
-        "https://cdnv2.tgdd.vn/mwg-static/common/Common/05052025%20-%202025-05-09T154044.858.jpg",
-      label: "Món ăn được yêu thích nhất tuần qua!",
-      kcal: 550,
-      protein: "30g",
-      time: "45 phút",
-    },
-    {
-      title: "Phở Bò",
-      description:
-        "Phở Bò – tinh hoa ẩm thực Việt Nam, nước dùng trong, ngọt tự nhiên từ xương và thịt bò tươi.",
-      image:
-        "https://media.istockphoto.com/id/910864612/vi/anh/vietnamese-soup-pho-bo.jpg?s=2048x2048&w=is&k=20&c=IuPrsaIGoEAV4kHWo6obGANhBzQTxFLPCZFcGpHiTRY=",
-      label: "Món ăn đặc trưng Hà Nội!",
-      kcal: 480,
-      protein: "28g",
-      time: "35 phút",
-    },
-    {
-      title: "Bánh Mì Thịt",
-      description:
-        "Món ăn đường phố nổi tiếng của Việt Nam, sự kết hợp hoàn hảo giữa giòn, mềm và đậm vị.",
-      image:
-        "https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg",
-      label: "Bữa sáng nhanh gọn, đủ chất!",
-      kcal: 420,
-      protein: "20g",
-      time: "10 phút",
-    },
-  ];
+const Hero = ({ onMealClick }) => {
+  const [meals, setMeals] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // 📡 Fetch API từ backend
+  useEffect(() => {
+    const fetchMeals = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/recipes"); // 🔧 đổi URL nếu cần
+        const data = await res.json();
+        console.log("📦 API trả về:", data);
+
+        // ✅ Lấy danh sách món ăn từ data.items
+        const mealsArray = Array.isArray(data.items) ? data.items : [];
+        const validMeals = mealsArray.filter((meal) => meal.image_url);
+        setMeals(validMeals);
+      } catch (err) {
+        console.error("Lỗi khi fetch món ăn:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMeals();
+  }, []);
+
+  // 🎲 Random 5 món bất kỳ
+  const randomMeals = useMemo(() => {
+    const shuffled = [...meals].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 5);
+  }, [meals]);
+
+  if (loading) {
+    return (
+      <section className="flex items-center justify-center h-[600px]">
+        <p className="text-gray-500">Đang tải dữ liệu món ăn...</p>
+      </section>
+    );
+  }
+
+  if (!meals.length) {
+    return (
+      <section className="flex items-center justify-center h-[600px]">
+        <p className="text-gray-500">Không có món ăn nào trong dữ liệu API.</p>
+      </section>
+    );
+  }
 
   return (
     <section className="relative w-full min-h-[600px] overflow-hidden">
@@ -51,88 +63,104 @@ const Hero = () => {
           navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 4000, disableOnInteraction: false }}
-          loop
-          className="h-full rounded-2xl overflow-hidden" // ✅ thêm bo góc và tránh tràn
+          loop={randomMeals.length > 1} // ⚙️ tránh cảnh báo loop
+          className="h-full rounded-2xl overflow-hidden"
         >
-          {dishes.map((dish, index) => (
-            <SwiperSlide key={index}>
-              <div className="relative w-full h-[600px] rounded-2xl overflow-hidden">
-                {/* Background image */}
-                <img
-                  src={dish.image}
-                  alt={dish.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  loading="lazy"
-                />
+          {randomMeals.map((meal) => {
+            const totalTime =
+              (meal.prep_time_min || 0) + (meal.cook_time_min || 0);
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-black/30 dark:bg-black/50 z-[1]" />
+            return (
+              <SwiperSlide key={meal._id || meal.id}>
+                <div className="relative w-full h-[600px] rounded-2xl overflow-hidden">
+                  <img
+                    src={meal.image_url}
+                    alt={meal.name_vi || meal.name_en || "Món ăn"}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
+                  />
 
-                {/* Content */}
-                <div className="absolute inset-0 flex items-center p-6 md:p-12 z-10">
-                  <div className="max-w-xl bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-2xl p-8 shadow-lg border border-white/20 dark:border-white/10">
-                    {dish.label && (
-                      <span className="inline-block bg-green-500 text-black dark:text-white text-sm font-medium py-1 px-4 rounded-full mb-4">
-                        {dish.label}
+                  <div className="absolute inset-0 bg-black/30 dark:bg-black/50 z-[1]" />
+
+                  <div className="absolute inset-0 flex items-center p-6 md:p-12 z-10">
+                    <div className="max-w-xl bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-2xl p-8 shadow-lg border border-white/20 dark:border-white/10">
+                      <span className="inline-block bg-green-500 text-white text-sm font-medium py-1 px-4 rounded-full mb-4">
+                        {meal.region === "Bắc"
+                          ? "Tinh hoa ẩm thực miền Bắc"
+                          : meal.region === "Trung"
+                          ? "Đậm đà vị miền Trung thương nhớ"
+                          : "Ngọt ngào, phóng khoáng hồn Nam Bộ"}
                       </span>
-                    )}
 
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-white">
-                      {dish.title}
-                    </h1>
+                      <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-white">
+                        {meal.name_vi || meal.name_en}
+                      </h1>
 
-                    <p className="text-base md:text-lg mb-8 text-gray-100">
-                      {dish.description}
-                    </p>
+                      <p className="text-base md:text-lg mb-8 text-gray-100 line-clamp-3">
+                        {meal.description || "Một món ăn ngon bạn nên thử!"}
+                      </p>
 
-                    {/* Info items */}
-                    <div className="flex items-center space-x-6 mb-8 text-white">
-                      {[
-                        { label: "Kcal", value: dish.kcal },
-                        { label: "Protein", value: dish.protein },
-                        {
-                          label: dish.time,
-                          icon: (
-                            <svg
-                              className="w-4 h-4"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          ),
-                        },
-                      ].map(({ label, value, icon }, i) => (
-                        <div key={i} className="flex items-center space-x-2">
-                          <span className="bg-white/30 dark:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center">
-                            {icon ?? (
-                              <span className="text-sm font-bold">{value}</span>
-                            )}
-                          </span>
-                          <span className="text-sm md:text-base font-medium">
-                            {label}
-                          </span>
-                        </div>
-                      ))}
+                      {/* Thông tin dinh dưỡng */}
+                      <div className="flex items-center flex-wrap gap-6 mb-8 text-gray-800 dark:text-gray-100">
+                        {[
+                          {
+                            label: "Kcal",
+                            value: meal.nutrition?.calories,
+                            icon: <Flame className="w-4 h-4 text-orange-400" />,
+                          },
+                          {
+                            label: "Protein",
+                            value: `${meal.nutrition?.protein_g || 0}g`,
+                            icon: (
+                              <Drumstick className="w-4 h-4 text-amber-400" />
+                            ),
+                          },
+                          {
+                            label: `${totalTime} phút`,
+                            value: null,
+                            icon: <Clock className="w-4 h-4 text-green-400" />,
+                          },
+                        ].map(({ label, value, icon }, i) => (
+                          <div
+                            key={i}
+                            className="flex items-center gap-2 bg-white/20 dark:bg-white/5 px-3 py-2 rounded-xl 
+                              backdrop-blur-sm border border-white/10 shadow-sm hover:bg-white/30 
+                              transition-all duration-300"
+                          >
+                            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/30 dark:bg-white/10">
+                              {icon}
+                            </div>
+                            <div className="flex flex-col leading-tight">
+                              {value && (
+                                <span className="text-sm font-semibold text-white">
+                                  {value}
+                                </span>
+                              )}
+                              <span className="text-xs text-white">
+                                {label}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* 👇 Nút xem chi tiết */}
+                      <button
+                        onClick={() => onMealClick(meal)}
+                        className="relative flex items-center gap-2 px-6 py-3 rounded-full 
+                        bg-gradient-to-r from-emerald-500 to-green-600 text-white 
+                        font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105
+                        transition-all duration-300 group"
+                      >
+                        <span>Xem chi tiết công thức</span>
+                        <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+                      </button>
                     </div>
-
-                    <button
-                      className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm text-black dark:text-gray-100 
-                                py-3 px-8 rounded-full font-semibold text-base flex items-center space-x-2
-                                shadow-md hover:shadow-lg hover:bg-secondary/80 transition-all duration-300"
-                    >
-                      <span>Xem chi tiết thực đơn</span>
-                      <FaArrowRight />
-                    </button>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </div>
     </section>

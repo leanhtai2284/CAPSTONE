@@ -8,7 +8,7 @@ export const useMealSelection = () => {
   const [selectedMeal, setSelectedMeal] = useState(null);
 
   const handleMealClick = (meal) => {
-    console.log("Xem chi tiết món:", meal.dish_name);
+    console.log("Xem chi tiết món:", meal.name_vi);
     setSelectedMeal(meal);
   };
 

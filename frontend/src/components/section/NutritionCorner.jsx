@@ -90,7 +90,11 @@ const NutritionCorner = () => {
           {articles.map((article, index) => (
             <motion.article
               key={article.id}
-              className="group  backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-300 dark:border-slate-800 hover:border-green-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20 cursor-pointer"
+              className="group  backdrop-blur-sm rounded-2xl overflow-hidden
+               border border-slate-300 dark:border-slate-800 dark:hover:border-green-500/50 
+               hover:border-gray-300 hover:shadow-gray-400
+               transition-all duration-300 hover:shadow-lg dark:hover:shadow-green-500/20 cursor-pointer
+              "
               initial={{
                 opacity: 0,
                 y: 50,
@@ -118,7 +122,7 @@ const NutritionCorner = () => {
                 </div>
               </div>
               <div className="p-6">
-                <h2 className="text-xl font-bold  mb-3 group-hover:text-green-400 transition-colors">
+                <h2 className="text-xl font-bold  mb-3 dark:group-hover:text-green-400 transition-colors">
                   {article.title}
                 </h2>
                 <p className="text-slate-400 text-sm mb-4 line-clamp-2">

@@ -20,9 +20,9 @@ export default function MealSection({ title, meals = [], onMealClick }) {
   };
 
   return (
-    <section className="container mx-auto px-4 py-12">
+    <section className="container mx-auto px-4 py-4">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-2">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
           {title}
         </h2>

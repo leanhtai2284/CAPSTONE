@@ -11,6 +11,9 @@
   #root {
     @apply bg-gray-100 dark:bg-slate-950 text-black dark:bg-black dark:text-white transition-colors duration-300;
   }
+  html {
+    @apply font-sans;
+  }
 }
 
 /* =============================
@@ -21,8 +24,8 @@
     --color-primary: #34e36c; /* Màu xanh neon */
     --color-secondary: #27d96e; /* Màu xanh lá */
 
-    --font-sans: "Inter", system-ui, sans-serif;
-    --font-serif: "Merriweather", serif;
+    --font-sans: "Be Vietnam Pro", system-ui, sans-serif;
+    --font-serif: "Playfair Display", serif;
 
     --container-max-width: 100%;
     --container-padding: 16px;
