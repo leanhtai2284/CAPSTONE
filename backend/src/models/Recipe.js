@@ -22,6 +22,16 @@ const priceSchema = new mongoose.Schema(
   { _id: false }
 );
 
+const ingredientSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    amount: { type: Number, required: true },
+    unit: { type: String, required: true },
+    scalable: { type: Boolean, default: true }, // ✅ thêm để scale
+  },
+  { _id: false }
+);
+
 const recipeSchema = new mongoose.Schema(
   {
     id: { type: String, unique: true, index: true },
@@ -55,7 +65,7 @@ const recipeSchema = new mongoose.Schema(
     image_url: String,
     description: String,
 
-    ingredients: [{ type: String }],
+    ingredients: [ingredientSchema], // ✅ dùng schema mới ở đây
     utensils: [{ type: String }],
     steps: [{ type: String }],
 
@@ -65,6 +75,6 @@ const recipeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-recipeSchema.index({ name_vi: "text", name_en: "text", description: "text" });
+recipeSchema.index({ name_vi: "text", description: "text" });
 
 export default mongoose.model("Recipe", recipeSchema);

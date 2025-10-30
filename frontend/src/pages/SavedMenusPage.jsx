@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import MealCard from "../components/ui/MealCard";
+import { useMealSelection } from "../context/MealSelectionContext";
 
 const SavedMenusPage = () => {
   const [savedMeals, setSavedMeals] = useState([]);
+  const { handleMealClick } = useMealSelection(); // ✅ dùng context để mở modal
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("savedMeals")) || [];
@@ -31,7 +33,11 @@ const SavedMenusPage = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
           {savedMeals.map((meal) => (
-            <MealCard key={meal.uniqueKey} meal={meal} />
+            <MealCard
+              key={meal.uniqueKey || meal.id}
+              meal={meal}
+              onClick={() => handleMealClick(meal)} // ✅ mở modal khi click
+            />
           ))}
         </div>
       )}
