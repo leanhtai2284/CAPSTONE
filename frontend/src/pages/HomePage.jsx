@@ -5,64 +5,96 @@ import MealSection from "../components/section/MealSection";
 import NutritionCorner from "../components/section/NutritionCorner";
 import { FinalCTA } from "../components/section/FinalCTA";
 import { useAuth } from "../hooks/useAuth";
-import { useMealSelection } from "../hooks/useMealSelection";
-import MealDetailModal from "../components/ui/MealDetailModal";
+import { useMealSelection } from "../context/MealSelectionContext"; // ⚡ lấy từ context, không từ hooks
 import { mockMeals } from "../data/mockMeals";
+import FoodList from "../components/section/FootList";
 
 const HomePage = () => {
   const { user } = useAuth();
-  const { selectedMeal, handleMealClick, closeModal } = useMealSelection();
-
-  // 🥗 Dữ liệu món ăn (ban đầu là mock)
+  const { handleMealClick } = useMealSelection(); // chỉ cần hàm này
   const [meals, setMeals] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // ✅ Giả lập fetch API (có thể thay bằng thật)
     const fetchMeals = async () => {
       try {
-        // 🔹 Cách 1: fetch từ API thật
-        // const res = await fetch("/api/meals");
-        // const data = await res.json();
-        // setMeals(data);
+        const res = await fetch("http://localhost:5000/api/recipes", {
+          cache: "no-store",
+        });
+        const data = await res.json();
+        console.log("📦 API trả về:", data);
 
-        // 🔹 Cách 2: demo dùng mock (giữ nguyên)
-        await new Promise((r) => setTimeout(r, 500)); // delay 0.5s giả lập API
-        setMeals(mockMeals);
+        let mealList = [];
+
+        if (Array.isArray(data)) {
+          mealList = data;
+        } else if (Array.isArray(data.items)) {
+          mealList = data.items;
+        } else if (Array.isArray(data.data)) {
+          mealList = data.data;
+        } else if (Array.isArray(data.recipes)) {
+          mealList = data.recipes;
+        } else {
+          console.warn(
+            "⚠️ API không trả về mảng hợp lệ, dùng mockMeals thay thế"
+          );
+          mealList = mockMeals;
+        }
+        setMeals(mealList);
       } catch (error) {
-        console.error("Lỗi khi tải dữ liệu món ăn:", error);
+        console.error("❌ Lỗi khi tải dữ liệu món ăn:", error);
+        setMeals(mockMeals);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchMeals();
   }, []);
 
-  // 🧩 Cấu hình các section hiển thị
-  const sections = [
-    { title: "Lựa chọn của biên tập viên", count: 6 },
-    { title: "Tối nay ăn gì?", count: 8 },
-  ];
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-600">
+        Đang tải dữ liệu món ăn...
+      </div>
+    );
+  }
 
   return (
     <div>
-      <Hero />
+      <Hero onMealClick={handleMealClick} />
 
-      <div className="min-h-screen">
-        {sections.map((section, idx) => (
-          <MealSection
-            key={idx}
-            title={section.title}
-            meals={meals.slice(0, section.count)}
-            onMealClick={handleMealClick}
-          />
-        ))}
+      <div className="min-h-screen space-y-4">
+        <MealSection
+          title="Hương vị miền Bắc"
+          meals={meals
+            .filter((m) => m.region === "Bắc")
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 15)} // luôn lấy 6 món ngẫu nhiên
+          onMealClick={handleMealClick}
+        />
+        <FoodList />
+        <MealSection
+          title="Tối nay ăn gì?"
+          meals={meals
+            .filter((m) => m.meal_types?.includes("dinner"))
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 10)}
+          onMealClick={handleMealClick}
+        />
 
-        {selectedMeal && (
-          <MealDetailModal
-            meal={selectedMeal}
-            onClose={closeModal}
-            userPreferences={{ servings: 1, goal: "Giảm cân" }}
-          />
-        )}
+        <MealSection
+          title="Phù hợp cho gia đình"
+          meals={meals
+            .filter(
+              (m) =>
+                Array.isArray(m.suitable_for) &&
+                m.suitable_for.includes("Gia đình")
+            )
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 10)}
+          onMealClick={handleMealClick}
+        />
       </div>
 
       <NutritionCorner />

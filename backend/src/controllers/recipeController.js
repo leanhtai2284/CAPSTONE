@@ -1,3 +1,4 @@
+//Recipescontroler
 import Recipe from "../models/Recipe.js";
 import { buildRecipeQuery } from "../utils/queryParser.js";
 import { getPagination } from "../utils/pagination.js";
@@ -5,24 +6,19 @@ import { suggestDailyMenu } from "../ai_module/engine.js";
 
 export async function searchRecipes(req, res) {
   try {
+    // 1️⃣ Xây filter dựa trên query (nếu có)
     const filter = buildRecipeQuery(req.query);
-    const { limit, skip } = getPagination(req);
 
-    const cursor = Recipe.find(filter).skip(skip).limit(limit);
-    if (filter.$text) {
-      cursor.sort({ score: { $meta: "textScore" } });
-      cursor.select({ score: { $meta: "textScore" } });
-    } else {
-      cursor.sort({ createdAt: -1 });
-    }
+    // 2️⃣ Lấy toàn bộ dữ liệu, sắp xếp theo món mới nhất
+    const items = await Recipe.find(filter).sort({ createdAt: -1 }).lean();
 
-    const [items, total] = await Promise.all([
-      cursor.lean(),
-      Recipe.countDocuments(filter),
-    ]);
-    res.json({ items, total, limit, page: Number(req.query.page || 1) });
+    // 3️⃣ Trả kết quả ra API
+    res.json({
+      items,
+      total: items.length,
+    });
   } catch (e) {
-    console.error(e);
+    console.error("❌ Lỗi khi lấy danh sách công thức:", e);
     res.status(500).json({ error: "Internal error" });
   }
 }
