@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import logo from "../../assets/logo/LOGO2.png";
 import DarkModeToggle from "../ui/DarkModeToggle";
@@ -11,6 +11,7 @@ import MailDropdown from "../ui/MailDropdown";
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const location = useLocation(); // 🔥 Lấy đường dẫn hiện tại
 
   // Đóng menu khi click ra ngoài
   useEffect(() => {
@@ -23,6 +24,9 @@ const NavBar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // ✅ Hàm kiểm tra đang ở trang nào
+  const isActive = (path) => location.pathname === path;
+
   return (
     <header className="sticky top-0 left-0 w-full bg-white/80 dark:bg-black/80 backdrop-blur-lg text-gray-950 dark:text-gray-100 shadow-md transition-colors duration-300 z-50">
       <div className="container mx-auto flex items-center justify-between px-4 py-2">
@@ -30,10 +34,9 @@ const NavBar = () => {
         <Link
           to="/"
           onClick={(e) => {
-            // Nếu đang ở trang chủ thì reload lại
             if (location.pathname === "/") {
-              e.preventDefault(); // Ngăn React Router điều hướng lại
-              window.location.reload(); // Reload thật sự
+              e.preventDefault();
+              window.location.reload();
             }
           }}
           className="flex items-center h-14 space-x-2"
@@ -51,16 +54,24 @@ const NavBar = () => {
         </Link>
 
         {/* Navigation - Desktop */}
-        <nav className="hidden md:flex flex-1 justify-center space-x-6 text-gray-600 dark:text-gray-300">
+        <nav className="hidden md:flex flex-1 justify-center space-x-6 text-gray-600 dark:text-gray-300 text-nowrap">
           <Link
             to="/"
-            className="p-3 font-semibold text-xl hover:text-secondary transition-colors font-serif"
+            className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
+              isActive("/")
+                ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
+                : "hover:text-green-500"
+            }`}
           >
             Trang Chủ
           </Link>
           <Link
             to="/foryou"
-            className="p-3 font-semibold text-xl hover:text-secondary transition-colors font-serif"
+            className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
+              isActive("/foryou")
+                ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
+                : "hover:text-green-500"
+            }`}
           >
             Dành Cho Bạn
           </Link>
@@ -97,18 +108,26 @@ const NavBar = () => {
             </div>
 
             {/* Nav Links */}
-            <div className="flex flex-col space-y-2 mb-3">
+            <div className="flex flex-col space-y-2 mb-3 text-nowrap">
               <Link
                 to="/"
                 onClick={() => setMenuOpen(false)}
-                className="block py-2 px-3 rounded-lg text-lg font-semibold hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-800 transition"
+                className={`block py-2 px-3 rounded-lg text-lg font-semibold transition  ${
+                  isActive("/")
+                    ? "bg-green-400 text-white dark:bg-green-500 shadow-md"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
               >
                 Trang Chủ
               </Link>
               <Link
                 to="/foryou"
                 onClick={() => setMenuOpen(false)}
-                className="block py-2 px-3 rounded-lg text-lg font-semibold hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-800 transition"
+                className={`block py-2 px-3 rounded-lg text-lg font-semibold transition ${
+                  isActive("/foryou")
+                    ? "bg-yellow-400 text-black dark:bg-yellow-500 shadow-md"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
               >
                 Dành Cho Bạn
               </Link>
