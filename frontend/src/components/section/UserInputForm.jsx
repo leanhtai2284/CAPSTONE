@@ -1,29 +1,30 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { SparklesIcon, LoaderIcon } from "lucide-react";
-import { mockPostUserPreferences } from "../../data/mockUsers";
 
 const UserInputForm = ({ onGenerate, isGenerating }) => {
   const [preferences, setPreferences] = useState({
     activityLevel: "moderate",
-    dietaryGoal: "maintain",
-    budget: "medium",
-    dietType: "eat-clean",
+    dietaryGoal: "maintain", // maintain | lose | gain
+    budget: "medium", // low | medium | high
+    dietType: "eat-clean", // eat-clean | keto | vegan | traditional
     foodPreferences: [],
     allergies: [],
     familySize: 2,
     region: "North",
   });
 
-  const handleSubmit = async (e) => {
+  const handleChange = (key, value) => {
+    setPreferences((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const res = await mockPostUserPreferences(preferences);
-      console.log("✅ Mock POST response:", res);
-      onGenerate(res.data); // truyền lại cho ForYouDashboard
-    } catch (err) {
-      console.error("❌ Mock POST error:", err);
-    }
+    // ✅ gửi thẳng preferences ra cho ForYouPage
+    onGenerate(preferences);
   };
 
   return (

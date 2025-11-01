@@ -11,22 +11,48 @@ const MealPlanView = ({
   onDayChange,
   onDishClick,
   onSwapDish,
+  meals = [],
 }) => {
   const [mealSets, setMealSets] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const normalizeMealsFromApi = (list) => {
+    const breakfast = list.filter((m) =>
+      (m.meal_types || []).includes("breakfast")
+    );
+    const lunch = list.filter((m) => (m.meal_types || []).includes("lunch"));
+    const dinner = list.filter((m) => (m.meal_types || []).includes("dinner"));
+
+    const arr = [];
+    if (breakfast.length)
+      arr.push({ mealType: "breakfast", dishes: breakfast });
+    if (lunch.length) arr.push({ mealType: "lunch", dishes: lunch });
+    if (dinner.length) arr.push({ mealType: "dinner", dishes: dinner });
+
+    // nếu backend chỉ trả 2 món vẫn hiển thị
+    return arr.length ? arr : [{ mealType: "gợi ý", dishes: list }];
+  };
+
   useEffect(() => {
     setLoading(true);
-    try {
-      const data = getMockMealData(selectedDay || new Date().getDay());
-      setMealSets(data);
-    } catch (error) {
-      console.error("Error loading mock meal data:", error);
-      setMealSets([]);
-    } finally {
+
+    // ✅ 1. Có data từ API → dùng luôn
+    if (meals && meals.length > 0) {
+      setMealSets(normalizeMealsFromApi(meals));
       setLoading(false);
+      return;
     }
-  }, [viewMode, selectedDay]);
+
+    // ✅ 2. KHÔNG có data từ API → bạn CHỌN: dùng mock hay không
+    // 👉 Nếu bạn MUỐN test API, hãy comment 3 dòng dưới:
+    const dayToUse =
+      typeof selectedDay === "number" ? selectedDay : new Date().getDay();
+    // const mock = getMockMealData(dayToUse);
+    // setMealSets(mock);
+    setMealSets([]);
+
+    setLoading(false);
+  }, [meals, selectedDay, viewMode]);
 
   return (
     <div className="space-y-6">

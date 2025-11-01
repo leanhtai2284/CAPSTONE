@@ -5,22 +5,76 @@ import MealPlanView from "../components/section/MealPlanView";
 import NutritionSummary from "../components/section/NutritionSummary";
 // ⚡ Import context provider
 import { MealSelectionProvider } from "../context/MealSelectionContext";
+import { suggestMenuApi } from "../services/recipeApi"; //goi api
 
 const ForYouPage = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasMealPlan, setHasMealPlan] = useState(false);
   const [viewMode, setViewMode] = useState("today");
   const [selectedDay, setSelectedDay] = useState(new Date().getDay());
+  const [mealFromAI, setMealFromAI] = useState([]); //  chỗ chứa kết quả từ API
 
-  const handleGeneratePlan = async (preferences) => {
-    setIsGenerating(true);
-    await new Promise((resolve) => setTimeout(resolve, 2500));
-    setIsGenerating(false);
-    setHasMealPlan(true);
+  // chuyển form → payload cho backend rule-based
+  const buildPayload = (form) => {
+    const budgetMap = { low: 30000, medium: 60000, high: 100000 };
+    const regionMap = { North: "Bắc", Central: "Trung", South: "Nam" };
+
+    const payload = {
+      avoid_allergens: form.allergies || [],
+      budget_vnd: budgetMap[form.budget] || 60000,
+      region: regionMap[form.region] || "Bắc",
+    };
+
+    switch (form.dietType) {
+      case "eat-clean":
+        payload.eatclean = true;
+        payload.max_calories_per_meal = form.dietaryGoal === "lose" ? 450 : 650;
+        break;
+      case "keto":
+        payload.diet_tags = ["keto"];
+        break;
+      case "vegan":
+        payload.vegetarian = true;
+        payload.diet_tags = ["vegan"];
+        break;
+      case "traditional":
+        // rule traditional đã ưu tiên region
+        break;
+      default:
+        break;
+    }
+
+    if (form.dietaryGoal === "gain") {
+      payload.goal = "muscle_gain";
+      payload.min_protein_g = 25;
+    }
+
+    return payload;
   };
 
   const handleSwapMeal = (mealId) => {
-    console.log("Swapping meal:", mealId);
+    // tạm thời chỉ log ra, sau này muốn gọi API đổi món thì viết tiếp
+    console.log("Swap meal:", mealId);
+  };
+
+  const handleGeneratePlan = async (preferences) => {
+    setIsGenerating(true);
+    try {
+      const payload = buildPayload(preferences);
+      const res = await suggestMenuApi(payload); // gọi tới /api/recipes/suggest
+      const items = res.items || [];
+      setMealFromAI(items);
+      setHasMealPlan(true);
+    } catch (err) {
+      console.error(err);
+      alert(
+        "Không lấy được thực đơn từ backend. Kiểm tra server 5000 chạy chưa."
+      );
+      setMealFromAI([]); // để xuống dưới thấy "chưa có dữ liệu"
+      setHasMealPlan(false);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleViewModeChange = (mode) => {
@@ -80,6 +134,7 @@ const ForYouPage = () => {
                     selectedDay={selectedDay}
                     onViewModeChange={handleViewModeChange}
                     onDayChange={setSelectedDay}
+                    meals={mealFromAI}
                     onSwapMeal={handleSwapMeal}
                   />
                   <NutritionSummary
