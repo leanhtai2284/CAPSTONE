@@ -40,7 +40,7 @@ const ProfilePage = () => {
     localStorage.setItem("profile", JSON.stringify(profile));
 
     // Hiển thị thông báo thành công
-    toast.success("Đã lưu thay đổi hồ sơ thành công! ✅", {
+    toast.success("Đã lưu thay đổi hồ sơ thành công!", {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -66,7 +66,7 @@ const ProfilePage = () => {
     <div className="min-h-screen pt-0 pb-12 px-4">
       <div className="max-w-6xl mx-auto">
         <motion.div
-          className="dark:bg-slate-900/90 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden"
+          className="dark:bg-slate-900/80 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}

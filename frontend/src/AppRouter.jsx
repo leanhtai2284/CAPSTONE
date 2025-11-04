@@ -10,6 +10,8 @@ import { LoginForm } from "./pages/auth/LoginForm";
 import { RegisterForm } from "./pages/auth/RegisterForm";
 import SavedMenusPage from "./pages/SavedMenusPage";
 import ProfilePage from "./pages/ProfilePage";
+import ReportsPage from "./pages/ReportsPage";
+import HelpFeedback from "./pages/HelpFeedback";
 
 const AppRouter = () => {
   return (
@@ -27,6 +29,8 @@ const AppRouter = () => {
 
       <Route path="/saved-menus" element={<SavedMenusPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/nutrition-report" element={<ReportsPage />} />
+      <Route path="/help" element={<HelpFeedback />} />
     </Routes>
   );
 };

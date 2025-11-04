@@ -3,6 +3,7 @@ import Recipe from "../models/Recipe.js";
 import { buildRecipeQuery } from "../utils/queryParser.js";
 import { getPagination } from "../utils/pagination.js";
 import { suggestDailyMenu } from "../ai_module/engine.js";
+import mongoose from "mongoose";
 
 export async function searchRecipes(req, res) {
   try {
