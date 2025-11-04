@@ -12,6 +12,7 @@ import SavedMenusPage from "./pages/SavedMenusPage";
 import ProfilePage from "./pages/ProfilePage";
 import ReportsPage from "./pages/ReportsPage";
 import HelpFeedback from "./pages/HelpFeedback";
+import SearchPage from "./pages/SearchPage";
 
 const AppRouter = () => {
   return (
@@ -31,6 +32,7 @@ const AppRouter = () => {
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/nutrition-report" element={<ReportsPage />} />
       <Route path="/help" element={<HelpFeedback />} />
+      <Route path="/search" element={<SearchPage />} />
     </Routes>
   );
 };

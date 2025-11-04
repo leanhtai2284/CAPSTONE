@@ -12,7 +12,7 @@ const SavedMenusPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen px-4 md:px-10 py-10 transition-all duration-300">
+    <div className="min-h-screen container px-4 md:px-10 py-10 transition-all duration-300">
       {/* Header */}
       <div className="flex flex-col items-center mb-10">
         {savedMeals.length > 0 && (

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 
-// Hook debounce tránh gọi API liên tục
+// Hook debounce để tránh gọi API liên tục khi nhập
 function useDebounce(value, delay = 500) {
   const [debounced, setDebounced] = useState(value);
   useEffect(() => {
@@ -11,44 +12,70 @@ function useDebounce(value, delay = 500) {
   return debounced;
 }
 
-// Fake dữ liệu mẫu
-const FAKE_FOODS = [
-  { id: 1, name: "Phở bò Hà Nội" },
-  { id: 2, name: "Bánh mì thịt" },
-  { id: 3, name: "Cơm tấm sườn bì chả" },
-  { id: 4, name: "Gỏi cuốn tôm thịt" },
-  { id: 5, name: "Bún chả" },
-];
-
 function SearchBar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
   const debouncedQuery = useDebounce(query);
+  const wrapperRef = useRef(null); // 🔸 để phát hiện click ngoài vùng
 
+  // 🔍 Gợi ý nhanh khi người dùng nhập
   useEffect(() => {
-    if (!debouncedQuery.trim()) {
-      setResults([]);
-      return;
-    }
+    const fetchSuggestions = async () => {
+      if (!debouncedQuery.trim()) {
+        setResults([]);
+        return;
+      }
 
-    // Giả lập API tìm kiếm
-    setTimeout(() => {
-      const filtered = FAKE_FOODS.filter((item) =>
-        item.name.toLowerCase().includes(debouncedQuery.toLowerCase())
-      );
-      setResults(filtered);
-    }, 300);
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `http://localhost:5000/api/recipes?text=${debouncedQuery}&limit=5`
+        );
+        const data = await res.json();
+        setResults(data.items || []);
+        setShowDropdown(true);
+      } catch (err) {
+        console.error("Lỗi khi tìm kiếm:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSuggestions();
   }, [debouncedQuery]);
 
-  // Xử lý khi nhấn Enter hoặc click nút
+  // 📦 Click ngoài → đóng dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // ⌨️ Enter hoặc click search → sang trang /search
   const handleSearch = () => {
     if (!query.trim()) return;
-    console.log("Tìm kiếm:", query);
-    // TODO: gọi API khi bạn có endpoint thực tế
+    navigate(`/search?text=${encodeURIComponent(query.trim())}`);
+    setShowDropdown(false);
+  };
+
+  // 🖱️ Click vào gợi ý → sang trang search
+  const handleSuggestionClick = (name) => {
+    navigate(`/search?text=${encodeURIComponent(name)}`);
+    setQuery(name);
+    setShowDropdown(false);
   };
 
   return (
-    <div className="hidden sm:block flex-1 ml-2 relative max-w-[300px]">
+    <div
+      ref={wrapperRef}
+      className="hidden sm:block flex-1 ml-2 relative max-w-[300px]"
+    >
       {/* Ô nhập */}
       <input
         type="text"
@@ -75,8 +102,8 @@ function SearchBar() {
         <Search size={18} strokeWidth={2.2} />
       </button>
 
-      {/* Kết quả tìm kiếm */}
-      {results.length > 0 && (
+      {/* Dropdown gợi ý */}
+      {showDropdown && results.length > 0 && (
         <ul
           className="absolute top-full mt-2 w-full bg-white dark:bg-gray-900 
           border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg 
@@ -84,14 +111,21 @@ function SearchBar() {
         >
           {results.map((item) => (
             <li
-              key={item.id}
+              key={item._id}
+              onClick={() => handleSuggestionClick(item.name_vi)}
               className="p-2.5 text-sm text-gray-800 dark:text-gray-100 
-              hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-800 cursor-pointer transition"
+              hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition"
             >
-              {item.name}
+              {item.name_vi || item.dish_name}
             </li>
           ))}
         </ul>
+      )}
+
+      {loading && query && (
+        <div className="absolute top-full mt-2 w-full text-center text-gray-500 text-sm">
+          Đang tìm kiếm...
+        </div>
       )}
     </div>
   );
