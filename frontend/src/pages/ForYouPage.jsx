@@ -16,7 +16,7 @@ const ForYouPage = () => {
 
   // chuyển form → payload cho backend rule-based
   const buildPayload = (form) => {
-    const budgetMap = { low: 30000, medium: 60000, high: 100000 };
+    const budgetMap = { low: 10000, medium: 45000, high: 100000 };
     const regionMap = { North: "Bắc", Central: "Trung", South: "Nam" };
 
     const payload = {
@@ -28,14 +28,15 @@ const ForYouPage = () => {
     switch (form.dietType) {
       case "eat-clean":
         payload.eatclean = true;
-        payload.max_calories_per_meal = form.dietaryGoal === "lose" ? 450 : 650;
+        payload.max_calories_per_meal = form.dietaryGoal === "lose" ? 200 : 800;
         break;
       case "keto":
+        payload.keto = true;
         payload.diet_tags = ["keto"];
         break;
       case "vegan":
         payload.vegetarian = true;
-        payload.diet_tags = ["vegan"];
+        payload.diet_tags = ["vegetarian"];
         break;
       case "traditional":
         // rule traditional đã ưu tiên region
@@ -46,7 +47,7 @@ const ForYouPage = () => {
 
     if (form.dietaryGoal === "gain") {
       payload.goal = "muscle_gain";
-      payload.min_protein_g = 25;
+      payload.min_protein_g = 18;
     }
 
     return payload;
