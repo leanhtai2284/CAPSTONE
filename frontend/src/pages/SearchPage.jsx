@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import MealCard from "../components/ui/MealCard";
 import { Loader2, RotateCcw } from "lucide-react";
+import { useMealSelection } from "../context/MealSelectionContext";
 
 function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,6 +17,7 @@ function SearchPage() {
   const category = searchParams.get("category") || "";
   const minCal = searchParams.get("min_calories") || "";
   const maxCal = searchParams.get("max_calories") || "";
+  const { handleMealClick } = useMealSelection();
 
   // 🧩 Fetch dữ liệu từ BE
   useEffect(() => {
@@ -284,7 +286,11 @@ function SearchPage() {
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {recipes.map((item) => (
-                <MealCard key={item._id} meal={item} />
+                <MealCard
+                  key={item._id}
+                  meal={item}
+                  onClick={() => handleMealClick(item)}
+                />
               ))}
             </div>
           )}

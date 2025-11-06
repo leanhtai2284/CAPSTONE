@@ -1,4 +1,5 @@
 import React, { useMemo, useEffect, useState } from "react";
+import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -11,16 +12,15 @@ const Hero = ({ onMealClick }) => {
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 📡 Fetch API từ backend
+  // 📡 Fetch API từ backend bằng axios
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/recipes"); // 🔧 đổi URL nếu cần
-        const data = await res.json();
-        console.log("📦 API trả về:", data);
+        const res = await axios.get("http://localhost:5000/api/recipes"); // 🔧 đổi URL nếu cần
+        console.log("📦 API trả về:", res.data);
 
-        // ✅ Lấy danh sách món ăn từ data.items
-        const mealsArray = Array.isArray(data.items) ? data.items : [];
+        // ✅ Lấy danh sách món ăn từ res.data.items
+        const mealsArray = Array.isArray(res.data.items) ? res.data.items : [];
         const validMeals = mealsArray.filter((meal) => meal.image_url);
         setMeals(validMeals);
       } catch (err) {
@@ -63,7 +63,7 @@ const Hero = ({ onMealClick }) => {
           navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 4000, disableOnInteraction: false }}
-          loop={randomMeals.length > 1} // ⚙️ tránh cảnh báo loop
+          loop={randomMeals.length > 1}
           className="h-full rounded-2xl overflow-hidden"
         >
           {randomMeals.map((meal) => {

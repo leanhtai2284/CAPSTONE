@@ -5,57 +5,92 @@ import MealSection from "../components/section/MealSection";
 import NutritionCorner from "../components/section/NutritionCorner";
 import { FinalCTA } from "../components/section/FinalCTA";
 import { useAuth } from "../hooks/useAuth";
-import { useMealSelection } from "../context/MealSelectionContext"; // ⚡ lấy từ context, không từ hooks
+import { useMealSelection } from "../context/MealSelectionContext";
 import { mockMeals } from "../data/mockMeals";
 import FoodList from "../components/section/FootList";
+import { mealService } from "../services/mealService";
 
 const HomePage = () => {
   const { user } = useAuth();
-  const { handleMealClick } = useMealSelection(); // chỉ cần hàm này
-  const [meals, setMeals] = useState([]);
+  const { handleMealClick } = useMealSelection();
+
+  const [sections, setSections] = useState({
+    north: [],
+    dinner: [],
+    family: [],
+  });
+
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Helper: randomize array (Fisher-Yates shuffle)
+  const shuffle = (array) => {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  };
+
+  // Helper: fetch meals theo query
+  const fetchMeals = async (query = "") => {
+    return await mealService.getMeals(query);
+  };
+
+  // Fetch nhiều section song song
   useEffect(() => {
-    const fetchMeals = async () => {
+    const loadAllSections = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/recipes", {
-          cache: "no-store",
+        const [north, dinner, family] = await Promise.all([
+          fetchMeals("?region=Bắc"),
+          fetchMeals("?meal_type=dinner"),
+          fetchMeals("?suitable_for=Gia đình"),
+        ]);
+
+        const randomSlice = (arr, min, max) => {
+          const count = Math.floor(Math.random() * (max - min + 1)) + min;
+          return shuffle(arr).slice(0, count);
+        };
+
+        setSections({
+          north: randomSlice(north, 8, 20),
+          dinner: randomSlice(dinner, 6, 20),
+          family: randomSlice(family, 6, 20),
         });
-        const data = await res.json();
-        console.log("📦 API trả về:", data);
-
-        let mealList = [];
-
-        if (Array.isArray(data)) {
-          mealList = data;
-        } else if (Array.isArray(data.items)) {
-          mealList = data.items;
-        } else if (Array.isArray(data.data)) {
-          mealList = data.data;
-        } else if (Array.isArray(data.recipes)) {
-          mealList = data.recipes;
-        } else {
-          console.warn(
-            "⚠️ API không trả về mảng hợp lệ, dùng mockMeals thay thế"
-          );
-          mealList = mockMeals;
-        }
-        setMeals(mealList);
-      } catch (error) {
-        console.error("❌ Lỗi khi tải dữ liệu món ăn:", error);
-        setMeals(mockMeals);
+      } catch (err) {
+        console.error("❌ Lỗi khi tải dữ liệu:", err);
+        setError(err.message || "Không thể tải dữ liệu từ máy chủ");
+        // ✅ Nếu muốn fallback mock data:
+        setSections({
+          north: shuffle(mockMeals).slice(0, 10),
+          dinner: shuffle(mockMeals).slice(0, 10),
+          family: shuffle(mockMeals).slice(0, 10),
+        });
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMeals();
+    loadAllSections();
   }, []);
 
+  // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-600">
-        Đang tải dữ liệu món ăn...
+      <div className="min-h-screen flex flex-col items-center justify-center text-gray-600">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-400 mb-4"></div>
+        <p>Đang tải dữ liệu món ăn ngẫu nhiên...</p>
+      </div>
+    );
+  }
+
+  // Error fallback
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center text-gray-600">
+        <p className="mb-4">❌ Có lỗi khi tải dữ liệu: {error}</p>
+        <p>Dữ liệu tạm thời hiển thị bằng mock.</p>
       </div>
     );
   }
@@ -64,38 +99,27 @@ const HomePage = () => {
     <div>
       <Hero onMealClick={handleMealClick} />
 
-      <div className="min-h-screen space-y-4">
+      <main className="min-h-screen space-y-6">
         <MealSection
           title="Hương vị miền Bắc"
-          meals={meals
-            .filter((m) => m.region === "Bắc")
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 15)} // luôn lấy 6 món ngẫu nhiên
+          meals={sections.north}
           onMealClick={handleMealClick}
         />
+
         <FoodList />
+
         <MealSection
           title="Tối nay ăn gì?"
-          meals={meals
-            .filter((m) => m.meal_types?.includes("dinner"))
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 10)}
+          meals={sections.dinner}
           onMealClick={handleMealClick}
         />
 
         <MealSection
           title="Phù hợp cho gia đình"
-          meals={meals
-            .filter(
-              (m) =>
-                Array.isArray(m.suitable_for) &&
-                m.suitable_for.includes("Gia đình")
-            )
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 10)}
+          meals={sections.family}
           onMealClick={handleMealClick}
         />
-      </div>
+      </main>
 
       <NutritionCorner />
       {!user && <FinalCTA />}
