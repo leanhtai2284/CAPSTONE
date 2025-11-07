@@ -9,10 +9,12 @@ import { useMealSelection } from "../context/MealSelectionContext";
 import { mockMeals } from "../data/mockMeals";
 import FoodList from "../components/section/FootList";
 import { mealService } from "../services/mealService";
+import { useLoading } from "../context/LoadingContext";
 
 const HomePage = () => {
   const { user } = useAuth();
   const { handleMealClick } = useMealSelection();
+  const { setLoading } = useLoading();
 
   const [sections, setSections] = useState({
     north: [],
@@ -20,10 +22,8 @@ const HomePage = () => {
     family: [],
   });
 
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Helper: randomize array (Fisher-Yates shuffle)
   const shuffle = (array) => {
     const arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
@@ -33,14 +33,15 @@ const HomePage = () => {
     return arr;
   };
 
-  // Helper: fetch meals theo query
   const fetchMeals = async (query = "") => {
     return await mealService.getMeals(query);
   };
 
-  // Fetch nhiều section song song
   useEffect(() => {
     const loadAllSections = async () => {
+      // 🌀 Hiện loading 2 giây
+      setLoading(true);
+
       try {
         const [north, dinner, family] = await Promise.all([
           fetchMeals("?region=Bắc"),
@@ -61,31 +62,20 @@ const HomePage = () => {
       } catch (err) {
         console.error("❌ Lỗi khi tải dữ liệu:", err);
         setError(err.message || "Không thể tải dữ liệu từ máy chủ");
-        // ✅ Nếu muốn fallback mock data:
         setSections({
           north: shuffle(mockMeals).slice(0, 10),
           dinner: shuffle(mockMeals).slice(0, 10),
           family: shuffle(mockMeals).slice(0, 10),
         });
       } finally {
-        setLoading(false);
+        // ⏳ Giữ loading ít nhất 2 giây rồi mới tắt
+        setTimeout(() => setLoading(false), 1000);
       }
     };
 
     loadAllSections();
-  }, []);
+  }, [setLoading]);
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-gray-600">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-400 mb-4"></div>
-        <p>Đang tải dữ liệu món ăn ngẫu nhiên...</p>
-      </div>
-    );
-  }
-
-  // Error fallback
   if (error) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center text-gray-600">

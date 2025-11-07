@@ -9,6 +9,7 @@ import NavBar from "./components/layout/NavBar";
 import Sidebar from "./components/layout/Sidebar";
 import AppRouter from "./AppRouter";
 import { motion, AnimatePresence } from "framer-motion";
+import { LoadingProvider } from "./context/LoadingContext";
 
 function AppContent() {
   const location = useLocation();
@@ -75,7 +76,10 @@ function App() {
             <Suspense
               fallback={<div className="text-center mt-10">Đang tải...</div>}
             >
-              <AppContent />
+              <LoadingProvider>
+                <AppContent />
+              </LoadingProvider>
+
               <ToastContainer
                 position="top-right"
                 autoClose={5000}

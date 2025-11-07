@@ -74,7 +74,7 @@ const Footer = () => {
               <FooterLink href="/">Trang chủ</FooterLink>
               <FooterLink href="/search">Tìm kiếm công thức</FooterLink>
               <FooterLink href="/my-recipes">Công thức của tôi</FooterLink>
-              <FooterLink href="/shopping-list">Danh sách mua sắm</FooterLink>
+              <FooterLink href="/saved-menus">Thực đơn đã lưu</FooterLink>
             </ul>
           </div>
 

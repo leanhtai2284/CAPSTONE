@@ -84,7 +84,7 @@ const Hero = ({ onMealClick }) => {
 
                   <div className="absolute inset-0 flex items-center p-6 md:p-12 z-10">
                     <div className="max-w-xl bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-2xl p-8 shadow-lg border border-white/20 dark:border-white/10">
-                      <span className="inline-block bg-green-500 text-white text-sm font-medium py-1 px-4 rounded-full mb-4">
+                      <span className="inline-block bg-red-500 text-white text-sm font-bold py-1 px-4 rounded-full mb-4">
                         {meal.region === "Bắc"
                           ? "Tinh hoa ẩm thực miền Bắc"
                           : meal.region === "Trung"
