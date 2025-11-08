@@ -68,8 +68,9 @@ export const Register = asyncHandler(async (req, res) => {
 });
 
 // Tạo JWT token
-export const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+export const generateToken = (id, role) => {
+  // include role in token payload for convenience
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 };
@@ -110,7 +111,8 @@ export const login = asyncHandler(async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        token: generateToken(user._id),
+        role: user.role,
+        token: generateToken(user._id, user.role),
       },
     });
   } else {

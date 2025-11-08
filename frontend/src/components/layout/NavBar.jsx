@@ -7,11 +7,13 @@ import UserMenu from "../ui/UserMenu";
 import SearchBar from "../ui/SearchBar";
 import NotificationBell from "../ui/NotificationBell";
 import MailDropdown from "../ui/MailDropdown";
+import { useAuth } from "../../hooks/useAuth";
 
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const location = useLocation(); // 🔥 Lấy đường dẫn hiện tại
+  const { user } = useAuth(); // Get user info
 
   // Đóng menu khi click ra ngoài
   useEffect(() => {
@@ -75,6 +77,19 @@ const NavBar = () => {
           >
             Dành Cho Bạn
           </Link>
+          {/* Admin link - only show if user is admin */}
+          {user?.role === 'admin' && (
+            <Link
+              to="/admin"
+              className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
+                location.pathname.startsWith("/admin")
+                  ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
+                  : "hover:text-green-500"
+              }`}
+            >
+              Quản Trị Viên
+            </Link>
+          )}
         </nav>
 
         {/* Right side (Desktop) */}
@@ -131,6 +146,20 @@ const NavBar = () => {
               >
                 Dành Cho Bạn
               </Link>
+              {/* Admin link in mobile menu */}
+              {user?.role === 'admin' && (
+                <Link
+                  to="/admin"
+                  onClick={() => setMenuOpen(false)}
+                  className={`block py-2 px-3 rounded-lg text-lg font-semibold transition ${
+                    location.pathname.startsWith("/admin")
+                      ? "bg-green-400 text-white dark:bg-green-500 shadow-md"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+                >
+                  Quản Trị Viên
+                </Link>
+              )}
             </div>
 
             {/* Icons */}
