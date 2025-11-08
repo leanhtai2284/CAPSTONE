@@ -3,7 +3,18 @@ import { AuthContext } from "./auth";
 import { authService } from "../services/authService";
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  // Initialize user synchronously from localStorage to avoid a flash of unauthenticated state
+  const [user, setUser] = useState(() => {
+    try {
+      const stored = localStorage.getItem("user");
+      return stored ? JSON.parse(stored) : null;
+    } catch (err) {
+      console.error("Error parsing stored user on init:", err);
+      return null;
+    }
+  });
+
+  // loading indicates ongoing auth network operations (login/logout/etc.)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -48,22 +59,17 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    // Kiểm tra user khi mount
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (err) {
-        console.error("Error parsing stored user:", err);
-      }
-    }
-
     // Lắng nghe thay đổi localStorage từ tab khác
     const handleStorageChange = () => {
-      const updatedUser = localStorage.getItem("user");
-      if (updatedUser) {
-        setUser(JSON.parse(updatedUser));
-      } else {
+      try {
+        const updatedUser = localStorage.getItem("user");
+        if (updatedUser) {
+          setUser(JSON.parse(updatedUser));
+        } else {
+          setUser(null);
+        }
+      } catch (err) {
+        console.error("Error parsing updated user from storage event:", err);
         setUser(null);
       }
     };

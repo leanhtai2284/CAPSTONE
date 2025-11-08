@@ -4,17 +4,30 @@ import UserInputForm from "../components/section/UserInputForm";
 import MealPlanView from "../components/section/MealPlanView";
 import NutritionSummary from "../components/section/NutritionSummary";
 import SafetyNotice from "../components/section/SafetyNotice";
-import MealDetailModal from "../components/ui/MealDetailModal";
-import { useMealSelection } from "../context/MealSelectionContext";
+// Modal is provided globally by MealSelectionProvider; do not render here to avoid duplicates
 import { suggestMenuApi } from "../services/recipeApi"; // API backend
 
 const ForYouPage = () => {
   const [isGenerating, setIsGenerating] = useState(false);
-  const [hasMealPlan, setHasMealPlan] = useState(false);
+  // Initialize meal plan from localStorage so it persists across reloads/close
+  const initialMeals = (() => {
+    try {
+      const raw = localStorage.getItem("mealPlan");
+      return raw ? JSON.parse(raw) : [];
+    } catch (err) {
+      console.error("Error reading stored meal plan:", err);
+      return [];
+    }
+  })();
+
+  const [mealFromAI, setMealFromAI] = useState(initialMeals);
+  const [hasMealPlan, setHasMealPlan] = useState(
+    Array.isArray(initialMeals) && initialMeals.length > 0
+  );
+
   const [viewMode, setViewMode] = useState("today");
   const [selectedDay, setSelectedDay] = useState(new Date().getDay());
-  const [mealFromAI, setMealFromAI] = useState([]);
-  const { selectedMeal, closeModal } = useMealSelection();
+  // Note: meal detail modal is rendered by MealSelectionProvider to avoid prop drilling
 
   // Xử lý tạo payload gửi lên backend
   const buildPayload = (form) => {
@@ -58,8 +71,14 @@ const ForYouPage = () => {
       const payload = buildPayload(preferences);
       const res = await suggestMenuApi(payload);
       const items = res.items || [];
+      // Save new plan to state and persist to localStorage
       setMealFromAI(items);
-      setHasMealPlan(true);
+      setHasMealPlan(Array.isArray(items) && items.length > 0);
+      try {
+        localStorage.setItem("mealPlan", JSON.stringify(items));
+      } catch (err) {
+        console.error("Failed to persist meal plan:", err);
+      }
     } catch (err) {
       console.error(err);
       alert(
@@ -72,6 +91,16 @@ const ForYouPage = () => {
     }
   };
 
+  const resetPlan = () => {
+    setMealFromAI([]);
+    setHasMealPlan(false);
+    try {
+      localStorage.removeItem("mealPlan");
+    } catch (err) {
+      console.error("Failed to remove mealPlan from localStorage:", err);
+    }
+  };
+
   const handleViewModeChange = (mode) => {
     setViewMode(mode);
     if (mode === "weekly") setSelectedDay(new Date().getDay());
@@ -79,18 +108,6 @@ const ForYouPage = () => {
 
   return (
     <div className="min-h-screen w-full">
-      {/* Header */}
-      <header className="border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-300 to-[#3CAEA3] bg-clip-text text-transparent">
-            For You
-          </h1>
-          <p className="text-gray-400 mt-1">
-            Your personalized meal planner powered by AI
-          </p>
-        </div>
-      </header>
-
       {/* Main Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -121,6 +138,16 @@ const ForYouPage = () => {
               </motion.div>
             ) : (
               <>
+                <div className="flex justify-end">
+                  <button
+                    onClick={resetPlan}
+                    className="text-sm px-3 py-1 rounded-md bg-red-50 text-red-600 hover:bg-red-100"
+                    aria-label="Reset meal plan"
+                  >
+                    Reset plan
+                  </button>
+                </div>
+
                 <MealPlanView
                   viewMode={viewMode}
                   selectedDay={selectedDay}
@@ -139,9 +166,7 @@ const ForYouPage = () => {
         </div>
       </div>
 
-      {selectedMeal && (
-        <MealDetailModal meal={selectedMeal} onClose={closeModal} />
-      )}
+      {/* MealDetailModal is rendered once by MealSelectionProvider (global modal) */}
     </div>
   );
 };

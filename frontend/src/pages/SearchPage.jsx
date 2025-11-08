@@ -3,12 +3,16 @@ import { useSearchParams } from "react-router-dom";
 import MealCard from "../components/ui/MealCard";
 import { Loader2, RotateCcw } from "lucide-react";
 import { useMealSelection } from "../context/MealSelectionContext";
+import MealSection from "../components/section/MealSection";
+import { mealService } from "../services/mealService";
 
 function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [recommendMeals, setRecommendMeals] = useState([]);
 
   // 🧠 Lấy dữ liệu từ URL
   const text = searchParams.get("text") || "";
@@ -49,6 +53,22 @@ function SearchPage() {
     };
     fetchRecipes();
   }, [text, region, diet_tags, category, minCal, maxCal]);
+
+  // 🧩 Fetch dữ liệu cho “Gợi ý cho riêng bạn”
+  useEffect(() => {
+    const fetchRecommendMeals = async () => {
+      try {
+        const meals = await mealService.getMeals("?recommended=true");
+        // Lấy ngẫu nhiên 6–12 món
+        const shuffled = [...meals].sort(() => 0.5 - Math.random());
+        setRecommendMeals(shuffled.slice(0, Math.floor(Math.random() * 6) + 6));
+      } catch (err) {
+        console.error("❌ Lỗi tải gợi ý:", err);
+      }
+    };
+
+    fetchRecommendMeals();
+  }, []);
 
   // 🧭 Thay đổi filter
   const handleFilterChange = (e) => {
@@ -293,6 +313,20 @@ function SearchPage() {
                 />
               ))}
             </div>
+          )}
+          {/* 🧩 Gợi ý cho riêng bạn */}
+          {recommendMeals.length > 0 && (
+            <section className="mt-16">
+              <div className="-mx-12">
+                {" "}
+                {/* ✅ bù trừ padding để thẳng hàng */}
+                <MealSection
+                  title="Gợi ý cho riêng bạn"
+                  meals={recommendMeals}
+                  onMealClick={handleMealClick}
+                />
+              </div>
+            </section>
           )}
         </main>
       </div>
