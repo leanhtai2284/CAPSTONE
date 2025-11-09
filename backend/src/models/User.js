@@ -34,7 +34,7 @@ var userSchema = new mongoose.Schema({
     unique: true,
     sparse: true,
   },
-});
+}, { timestamps: true });
 
 // Mã hóa mật khẩu trước khi lưu
 userSchema.pre("save", async function (next) {
