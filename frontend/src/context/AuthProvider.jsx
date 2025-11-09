@@ -88,6 +88,22 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const logout = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      await authService.logout();
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      setUser(null);
+    } catch (err) {
+      setError(err.message || "Đăng xuất thất bại");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const forgotPassword = async (email) => {
     try {
       setLoading(true);
@@ -113,18 +129,6 @@ export function AuthProvider({ children }) {
     } catch (err) {
       setError(err.message || "Đặt lại mật khẩu thất bại");
       throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const logout = async () => {
-    try {
-      setLoading(true);
-      await authService.logout();
-      setUser(null);
-    } catch (err) {
-      console.error("Logout error:", err);
     } finally {
       setLoading(false);
     }

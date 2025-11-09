@@ -23,12 +23,18 @@ var userSchema = new mongoose.Schema({
     required: [true, "Vui lòng nhập mật khẩu"],
     minLength: [6, "Mật khẩu phải có ít nhất 6 ký tự"],
   },
+  // Role-based access control
+  role: {
+    type: String,
+    enum: ["user", "admin", "moderator"],
+    default: "user",
+  },
   googleId: {
     type: String,
     unique: true,
     sparse: true,
   },
-});
+}, { timestamps: true });
 
 // Mã hóa mật khẩu trước khi lưu
 userSchema.pre("save", async function (next) {

@@ -24,6 +24,106 @@ export async function searchRecipes(req, res) {
   }
 }
 
+// @desc    Create new recipe
+// @route   POST /api/recipes
+// @access  Private/Admin
+export async function createRecipe(req, res) {
+  try {
+    const recipe = await Recipe.create(req.body);
+    res.status(201).json({
+      success: true,
+      message: "Tạo công thức thành công",
+      data: recipe
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Không thể tạo công thức",
+      error: error.message
+    });
+  }
+}
+
+// @desc    Update recipe
+// @route   PUT /api/recipes/:id
+// @access  Private/Admin
+export async function updateRecipe(req, res) {
+  try {
+    const idOrSlug = String(req.params.id || "").trim();
+    let recipe;
+
+    // Try to find by custom id field first
+    recipe = await Recipe.findOne({ id: idOrSlug });
+
+    // If not found and looks like ObjectId, try _id
+    if (!recipe && mongoose.isValidObjectId(idOrSlug)) {
+      recipe = await Recipe.findById(idOrSlug);
+    }
+
+    if (!recipe) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy công thức"
+      });
+    }
+
+    // Update the recipe
+    Object.assign(recipe, req.body);
+    await recipe.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Cập nhật công thức thành công",
+      data: recipe
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Không thể cập nhật công thức",
+      error: error.message
+    });
+  }
+}
+
+// @desc    Delete recipe
+// @route   DELETE /api/recipes/:id
+// @access  Private/Admin
+export async function deleteRecipe(req, res) {
+  try {
+    const idOrSlug = String(req.params.id || "").trim();
+    let recipe;
+
+    // Try to find by custom id field first
+    recipe = await Recipe.findOne({ id: idOrSlug });
+
+    // If not found and looks like ObjectId, try _id
+    if (!recipe && mongoose.isValidObjectId(idOrSlug)) {
+      recipe = await Recipe.findById(idOrSlug);
+    }
+
+    if (!recipe) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy công thức"
+      });
+    }
+
+    // Delete the recipe
+    await Recipe.findByIdAndDelete(recipe._id);
+
+    res.status(200).json({
+      success: true,
+      message: "Xóa công thức thành công"
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Không thể xóa công thức",
+      error: error.message
+    });
+  }
+}
+
 export async function getRecipeById(req, res) {
   const idOrSlug = String(req.params.id || "").trim();
 

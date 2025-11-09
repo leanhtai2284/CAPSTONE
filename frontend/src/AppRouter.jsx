@@ -3,6 +3,12 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ForYouPage from "./pages/ForYouPage";
 import AuthPage from "./pages/AuthPage";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminRecipeManagement from "./pages/AdminRecipeManagement";
+import AdminUserManagement from "./pages/AdminUserManagement";
+import AdminReportsPage from "./pages/AdminReportsPage";
+import RecipeForm from "./components/admin/RecipeForm";
 import { ForgotPasswordForm } from "./pages/auth/ForgotPasswordForm";
 import { ResetPasswordForm } from "./pages/auth/ResetPasswordForm";
 import { LoginSuccessRedirect } from "./components/auth/LoginSuccessRedirect";
@@ -33,6 +39,16 @@ const AppRouter = () => {
       <Route path="/nutrition-report" element={<ReportsPage />} />
       <Route path="/help" element={<HelpFeedback />} />
       <Route path="/search" element={<SearchPage />} />
+      {/* Admin area */}
+      <Route path="/admin">
+        <Route index element={<AdminDashboard />} />
+        <Route path="login" element={<AdminLogin />} />
+        <Route path="recipes" element={<AdminRecipeManagement />} />
+        <Route path="recipes/new" element={<RecipeForm />} />
+        <Route path="recipes/:id/edit" element={<RecipeForm />} />
+        <Route path="users" element={<AdminUserManagement />} />
+        <Route path="reports" element={<AdminReportsPage />} />
+      </Route>
     </Routes>
   );
 };
