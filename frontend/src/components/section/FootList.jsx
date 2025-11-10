@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Clock, Tag, Wallet } from "lucide-react";
+import { useMealSelection } from "../../context/MealSelectionContext";
 
 function FoodList() {
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { handleMealClick } = useMealSelection();
 
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -71,6 +73,7 @@ function FoodList() {
                   src={item.image_url}
                   alt={item.name_vi}
                   className="flex-1 w-full h-80 object-cover rounded-2xl shadow-xl"
+                  onClick={() => handleMealClick(item)}
                 />
 
                 <motion.div

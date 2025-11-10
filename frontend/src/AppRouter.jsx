@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
@@ -19,21 +20,31 @@ import ProfilePage from "./pages/ProfilePage";
 import ReportsPage from "./pages/ReportsPage";
 import HelpFeedback from "./pages/HelpFeedback";
 import SearchPage from "./pages/SearchPage";
+import React, { lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
+import { publicRoutes } from "./routes/publicRoutes";
+import { privateRoutes } from "./routes/privateRoutes";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import LoadingModal from "./components/ui/LoadingModal";
 
-const AppRouter = () => {
+
+// 🌀 Component loading hiển thị trong lúc tải chậm
+const LoadingFallback = () => (
+  <div className="text-center mt-10 text-gray-600 animate-pulse">
+    Đang tải trang...
+  </div>
+);
+
+export default function AppRouter() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/foryou" element={<ForYouPage />} />
-      <Route path="/auth">
-        <Route index element={<Navigate to="/auth/login" replace />} />
-        <Route path="login" element={<AuthPage />} />
-        <Route path="register" element={<AuthPage />} />
-      </Route>
-      <Route path="/forgot-password" element={<ForgotPasswordForm />} />
-      <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
-      <Route path="/login-success" element={<LoginSuccessRedirect />} />
+    <Suspense fallback={<LoadingModal isOpen={true} />}>
+      <Routes>
+        {/* Public routes */}
+        {publicRoutes.map(({ path, element }) => (
+          <Route key={path} path={path} element={element} />
+        ))}
 
+<<<<<<< HEAD
       <Route path="/saved-menus" element={<SavedMenusPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/nutrition-report" element={<ReportsPage />} />
@@ -50,7 +61,17 @@ const AppRouter = () => {
         <Route path="reports" element={<AdminReportsPage />} />
       </Route>
     </Routes>
+=======
+        {/* Private routes (cần đăng nhập) */}
+        {privateRoutes.map(({ path, element }) => (
+          <Route
+            key={path}
+            path={path}
+            element={<ProtectedRoute element={element} />}
+          />
+        ))}
+      </Routes>
+    </Suspense>
+>>>>>>> origin/fix/FE-ModalDetail
   );
-};
-
-export default AppRouter;
+}

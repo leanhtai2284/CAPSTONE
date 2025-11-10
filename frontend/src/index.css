@@ -83,15 +83,9 @@
 
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
-  color: #40ff00 !important; /* Màu đỏ khi hover */
+  /* Màu đỏ khi hover */
   opacity: 1;
   transform: scale(1.2);
-}
-
-/* Dark mode */
-.dark .swiper-button-prev,
-.dark .swiper-button-next {
-  color: #ebebeb !important; /* Vàng trong dark mode */
 }
 
 /* Phân trang (dots) */
@@ -115,7 +109,7 @@
 /* Tăng kích thước mũi tên */
 .swiper-button-prev::after,
 .swiper-button-next::after {
-  font-size: 28px !important;
+  font-size: 30px !important;
 }
 
 /* === Custom Animations === */

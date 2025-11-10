@@ -1,6 +1,5 @@
 import React from "react";
 import MealCard from "../ui/MealCard";
-import MealDetailModal from "../ui/MealDetailModal";
 import { useMealSelection } from "../../context/MealSelectionContext";
 
 const mealTypeLabels = {
@@ -11,10 +10,10 @@ const mealTypeLabels = {
 };
 
 const MealSetSection = ({ mealSet, onSwapMeal }) => {
-  const { selectedMeal, handleMealClick, closeModal } = useMealSelection();
+  const { handleMealClick } = useMealSelection();
 
   return (
-    <div className=" rounded-2xl p-6 border border-gray-800">
+    <div className="rounded-2xl p-6 border border-gray-800">
       <h3 className="text-xl font-semibold mb-4">
         {mealTypeLabels[mealSet.mealType] || "Bữa ăn"}
       </h3>
@@ -35,10 +34,6 @@ const MealSetSection = ({ mealSet, onSwapMeal }) => {
           />
         ))}
       </div>
-
-      {selectedMeal && (
-        <MealDetailModal meal={selectedMeal} onClose={closeModal} />
-      )}
     </div>
   );
 };
