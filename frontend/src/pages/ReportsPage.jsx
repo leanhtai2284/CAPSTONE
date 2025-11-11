@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   BarChart,
@@ -12,16 +12,19 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { TrendingUpIcon, AwardIcon, CalendarIcon } from "lucide-react";
+import { reportService } from "../services/reportService";
 
 const ReportsPage = () => {
   // period_type tương ứng cột trong database
   const [periodType, setPeriodType] = useState("weekly");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // ✅ Dữ liệu mô phỏng giống bảng user_reports
-  const report = {
+  const [report, setReport] = useState({
     _id: 1,
     user_id: 12,
-    period_type: periodType, // weekly / monthly
+    period_type: periodType, // weekly / daily
     start_date: "2025-10-14",
     end_date: "2025-10-21",
     total_meals: 21,
@@ -33,10 +36,10 @@ const ReportsPage = () => {
     notes:
       "Bạn đang duy trì chế độ ăn rất tốt! Hãy tăng thêm lượng protein vào bữa sáng để đạt hiệu quả tốt hơn.",
     created_at: "2025-10-21T12:00:00Z",
-  };
+  });
 
   // ✅ Dữ liệu biểu đồ tuần (có thể lấy từ API sau)
-  const nutritionData = [
+  const [nutritionData, setNutritionData] = useState([
     { day: "T2", protein: 85, carbs: 220, fat: 65, calories: 1850 },
     { day: "T3", protein: 92, carbs: 240, fat: 70, calories: 1980 },
     { day: "T4", protein: 88, carbs: 210, fat: 68, calories: 1820 },
@@ -44,7 +47,32 @@ const ReportsPage = () => {
     { day: "T6", protein: 90, carbs: 230, fat: 66, calories: 1920 },
     { day: "T7", protein: 87, carbs: 215, fat: 64, calories: 1840 },
     { day: "CN", protein: 93, carbs: 245, fat: 71, calories: 2010 },
-  ];
+  ]);
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    setError("");
+    reportService
+      .getUserNutritionReport({ period: periodType })
+      .then((res) => {
+        if (!mounted) return;
+        const { report: rep, nutritionData: data } = res.data || {};
+        if (rep) setReport(rep);
+        if (Array.isArray(data)) setNutritionData(data);
+      })
+      .catch((e) => {
+        if (!mounted) return;
+        setError(e?.message || "Không thể tải báo cáo");
+      })
+      .finally(() => {
+        if (!mounted) return;
+        setLoading(false);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, [periodType]);
 
   return (
     <div className="min-h-screen container py-2 mx-auto">
@@ -71,17 +99,25 @@ const ReportsPage = () => {
               Theo tuần
             </button>
             <button
-              onClick={() => setPeriodType("monthly")}
+              onClick={() => setPeriodType("daily")}
               className={`px-6 py-2 rounded-xl font-medium transition-all duration-200 ${
-                periodType === "monthly"
+                periodType === "daily"
                   ? "bg-green-500 text-white"
                   : "text-slate-400 hover:text-white"
               }`}
             >
-              Theo tháng
+              Theo ngày
             </button>
           </div>
         </motion.div>
+
+        {/* Loading / Error */}
+        {loading && (
+          <div className="mb-6 text-sm text-slate-500">Đang tải báo cáo...</div>
+        )}
+        {error && (
+          <div className="mb-6 text-sm text-red-500">{error}</div>
+        )}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -155,7 +191,7 @@ const ReportsPage = () => {
           >
             <h3 className="text-xl font-bold  mb-6">
               Dinh dưỡng trung bình (
-              {periodType === "weekly" ? "Tuần" : "Tháng"})
+              {periodType === "weekly" ? "Tuần" : "Ngày"})
             </h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={nutritionData}>
