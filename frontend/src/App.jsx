@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./context/AuthProvider";
-import { MealSelectionProvider } from "./context/MealSelectionContext"; // 🧩 dùng context modal toàn cục
+import { MealSelectionProvider } from "./context/MealSelectionContext";
 import NavBar from "./components/layout/NavBar";
 import Sidebar from "./components/layout/Sidebar";
 import AppRouter from "./AppRouter";

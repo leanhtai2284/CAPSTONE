@@ -6,6 +6,7 @@ import { ForgotPasswordForm } from "../pages/auth/ForgotPasswordForm";
 import { ResetPasswordForm } from "../pages/auth/ResetPasswordForm";
 import { LoginSuccessRedirect } from "../components/auth/LoginSuccessRedirect";
 import AboutPage from "../pages/AboutPage";
+import ContactPage from "../pages/ContactPage";
 
 export const publicRoutes = [
   { path: "/", element: <HomePage /> },
@@ -17,4 +18,5 @@ export const publicRoutes = [
   { path: "/login-success", element: <LoginSuccessRedirect /> },
   { path: "/auth", element: <Navigate to="/auth/login" replace /> },
   { path: "/about", element: <AboutPage /> },
+  { path: "/contact", element: <ContactPage /> },
 ];

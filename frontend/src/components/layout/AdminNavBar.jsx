@@ -19,7 +19,7 @@ const AdminNavBar = () => {
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-gray-900 text-white shadow-lg flex flex-col z-40">
+    <aside className="fixed left-0 top-[72px] h-[calc(100vh-72px)] w-64 bg-gray-900 text-white shadow-lg flex flex-col z-40">
       {/* Navigation Links */}
       <nav className="flex-1 px-4 py-6 space-y-2">
         <Link
