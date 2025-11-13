@@ -10,6 +10,7 @@ import {
   SendIcon,
 } from "lucide-react";
 import Footer from "../components/layout/Footer";
+import foodBg from "../assets/bg-sml.jpeg";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -25,15 +26,22 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-slate-50">
+    <div className="w-full min-h-screen ">
       {/* Hero Section */}
-      <section className="pt-32 pb-12 bg-gradient-to-r from-primary to-secondary">
+      <section className="pt-32 pb-12 relative">
+        <div className="absolute inset-0 z-0 opacity-25">
+          <img
+            src={foodBg}
+            alt="Vietnamese Food Background"
+            className="w-full h-full object-cover"
+          />
+        </div>
         <div className="max-w-4xl mx-auto px-6 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6"
+            className="text-5xl md:text-6xl font-bold  mb-6"
           >
             Liên hệ với
             <span className="hidden md:inline whitespace-nowrap">
@@ -47,7 +55,7 @@ const ContactPage = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-xl text-white/90"
+            className="text-xl"
           >
             Chúng tôi luôn sẵn sàng lắng nghe phản hồi và góp ý từ bạn
           </motion.p>
@@ -66,10 +74,8 @@ const ContactPage = () => {
               className="space-y-8"
             >
               <div>
-                <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                  Thông tin liên hệ
-                </h2>
-                <p className="text-gray-600 mb-8">
+                <h2 className="text-3xl font-bold  mb-6">Thông tin liên hệ</h2>
+                <p className="text-gray-600 dark:text-gray-200 mb-8">
                   Hãy liên hệ với chúng tôi qua các kênh sau để được hỗ trợ
                   nhanh nhất
                 </p>
@@ -81,7 +87,7 @@ const ContactPage = () => {
                     <MailIcon className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
+                    <h3 className="font-semibold  mb-1">Email</h3>
                     <p className="text-gray-600">support@smartmeal.vn</p>
                   </div>
                 </div>
@@ -91,9 +97,7 @@ const ContactPage = () => {
                     <PhoneIcon className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">
-                      Hotline
-                    </h3>
+                    <h3 className="font-semibold  mb-1">Hotline</h3>
                     <p className="text-gray-600">0123 456 789</p>
                   </div>
                 </div>
@@ -103,18 +107,14 @@ const ContactPage = () => {
                     <MapPinIcon className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">
-                      Địa chỉ
-                    </h3>
+                    <h3 className="font-semibold  mb-1">Địa chỉ</h3>
                     <p className="text-gray-600">TP. Đà Nẵng, Việt Nam</p>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className="font-semibold text-gray-800 mb-4">
-                  Kết nối với chúng tôi
-                </h3>
+                <h3 className="font-semibold  mb-4">Kết nối với chúng tôi</h3>
                 <div className="flex gap-3">
                   <a
                     href="#"
@@ -143,16 +143,14 @@ const ContactPage = () => {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white rounded-2xl shadow-lg p-8"
+              className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8"
             >
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              <h2 className="text-2xl font-bold  mb-6">
                 Gửi tin nhắn cho chúng tôi
               </h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    Họ và tên
-                  </label>
+                  <label className="block font-semibold mb-2">Họ và tên</label>
                   <input
                     type="text"
                     value={formData.name}
@@ -166,9 +164,7 @@ const ContactPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    Email
-                  </label>
+                  <label className="block  font-semibold mb-2">Email</label>
                   <input
                     type="email"
                     value={formData.email}
@@ -182,9 +178,7 @@ const ContactPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    Nội dung
-                  </label>
+                  <label className="block  font-semibold mb-2">Nội dung</label>
                   <textarea
                     value={formData.message}
                     onChange={(e) =>
@@ -199,7 +193,7 @@ const ContactPage = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-primary hover:bg-[#2ab858] text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all hover:scale-105"
+                  className="w-full bg-primary hover:bg-primary text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all hover:scale-105"
                 >
                   <SendIcon className="w-5 h-5" />
                   Gửi liên hệ
@@ -211,7 +205,7 @@ const ContactPage = () => {
       </section>
 
       {/* Map Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 ">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
