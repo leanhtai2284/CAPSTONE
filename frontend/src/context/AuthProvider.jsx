@@ -153,6 +153,7 @@ export function AuthProvider({ children }) {
         resetPassword,
         logout,
         clearError,
+        setUser,
       }}
     >
       {children}

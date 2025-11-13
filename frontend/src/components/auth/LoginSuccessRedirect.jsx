@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { authService } from "../../services/authService";
 import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth.js";
 
 export function LoginSuccessRedirect() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { setUser } = useAuth(); // Sử dụng hook để lấy hàm setUser từ context
 
   useEffect(() => {
     const token = searchParams.get("token");
@@ -19,6 +21,7 @@ export function LoginSuccessRedirect() {
         try {
           const userData = JSON.parse(decodeURIComponent(user));
           authService.setUser(userData);
+          setUser(userData); // Cập nhật user trong context
         } catch (err) {
           console.error("Lỗi khi parse dữ liệu user:", err);
         }
