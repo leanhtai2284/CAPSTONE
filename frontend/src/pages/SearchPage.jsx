@@ -5,6 +5,7 @@ import { Loader2, RotateCcw } from "lucide-react";
 import { useMealSelection } from "../context/MealSelectionContext";
 import MealSection from "../components/section/MealSection";
 import { mealService } from "../services/mealService";
+import Footer from "../components/layout/Footer";
 
 function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -87,7 +88,7 @@ function SearchPage() {
   };
 
   return (
-    <div className="min-h-screen container mx-auto px-4 py-8">
+    <div className="min-h-screen container mx-auto px-4 py-4">
       {/* 🧩 Mobile: Bộ lọc ở trên */}
       <div className="block md:hidden mb-6">
         <div className="bg-white dark:bg-gray-950 rounded-2xl shadow-md p-5 border dark:border-gray-800">
@@ -330,6 +331,7 @@ function SearchPage() {
           )}
         </main>
       </div>
+      <Footer />
     </div>
   );
 }

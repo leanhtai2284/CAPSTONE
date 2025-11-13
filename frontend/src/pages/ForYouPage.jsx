@@ -6,6 +6,7 @@ import NutritionSummary from "../components/section/NutritionSummary";
 import SafetyNotice from "../components/section/SafetyNotice";
 // Modal is provided globally by MealSelectionProvider; do not render here to avoid duplicates
 import { suggestMenuApi } from "../services/recipeApi"; // API backend
+import Footer from "../components/layout/Footer";
 
 const ForYouPage = () => {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -165,7 +166,7 @@ const ForYouPage = () => {
           </div>
         </div>
       </div>
-
+      <Footer />
       {/* MealDetailModal is rendered once by MealSelectionProvider (global modal) */}
     </div>
   );

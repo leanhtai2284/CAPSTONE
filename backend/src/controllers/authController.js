@@ -3,6 +3,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import sendEmail from "../utils/sendEmail.js";
+import mongoose from "mongoose";
 
 //Tao dang ky moi
 export const Register = asyncHandler(async (req, res) => {
@@ -49,6 +50,9 @@ export const Register = asyncHandler(async (req, res) => {
       password,
     });
 
+    // Tạo token giống như khi login để client có thể được auto-auth sau khi đăng ký
+    const token = generateToken(user._id, user.role);
+
     return res.status(201).json({
       success: true,
       message: "Đăng ký thành công",
@@ -56,6 +60,8 @@ export const Register = asyncHandler(async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
+        token,
       },
     });
   } catch (error) {

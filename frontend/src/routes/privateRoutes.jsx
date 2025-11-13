@@ -13,4 +13,5 @@ export const privateRoutes = [
   { path: "/nutrition-report", element: <ReportsPage /> },
   { path: "/help", element: <HelpFeedback /> },
   { path: "/search", element: <SearchPage /> },
+  
 ];

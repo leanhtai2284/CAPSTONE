@@ -51,10 +51,10 @@ const HelpFeedback = () => {
         animate={{ y: 0, opacity: 1 }}
         className="mb-8 text-center"
       >
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <h1 className="text-3xl font-bold  mb-2">
           Góp ý để SmartMealVN hiểu bạn hơn 💚
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-300  ">
           Ý kiến của bạn giúp chúng tôi cải thiện dịch vụ
         </p>
       </motion.div>
@@ -64,10 +64,10 @@ const HelpFeedback = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1 }}
         onSubmit={handleSubmit}
-        className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8"
+        className="bg-white dark:bg-slate-950 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-slate-800 mb-8"
       >
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-3">
+          <label className="block text-sm font-medium  mb-3">
             Loại phản hồi
           </label>
           <div className="grid grid-cols-3 gap-3">
@@ -93,7 +93,7 @@ const HelpFeedback = () => {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium  mb-2">
             Nội dung phản hồi
           </label>
           <textarea
@@ -128,21 +128,19 @@ const HelpFeedback = () => {
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="bg-gradient-to-br from-[#1C7C4A]/5 to-[#2DA968]/5 rounded-2xl p-8 border border-[#1C7C4A]/10"
+        className="dark:bg-slate-950 bg-white rounded-2xl p-8 border  shadow-sm "
       >
-        <h3 className="text-xl font-bold text-gray-800 mb-6">
-          Thông tin liên hệ
-        </h3>
+        <h3 className="text-xl font-bold  mb-6">Thông tin liên hệ</h3>
         <div className="space-y-4">
-          <div className="flex items-center gap-3 text-gray-700">
-            <MailIcon className="w-5 h-5 text-[#1C7C4A]" />
+          <div className="flex items-center gap-3 ">
+            <MailIcon className="w-5 h-5 text-primary" />
             <span>support@smartmealvn.com</span>
           </div>
-          <div className="flex items-center gap-3 text-gray-700">
-            <PhoneIcon className="w-5 h-5 text-[#1C7C4A]" />
+          <div className="flex items-center gap-3 ">
+            <PhoneIcon className="w-5 h-5 text-primary" />
             <span>1900 xxxx</span>
           </div>
-          <button className="flex items-center gap-3 text-[#1C7C4A] hover:text-[#155D37] transition-colors">
+          <button className="flex items-center gap-3 text-primary hover:text-primary transition-colors">
             <BookOpenIcon className="w-5 h-5" />
             <span className="font-medium">Xem hướng dẫn sử dụng</span>
           </button>
