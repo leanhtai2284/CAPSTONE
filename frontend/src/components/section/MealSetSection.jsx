@@ -1,5 +1,6 @@
 import React from "react";
 import MealCard from "../ui/MealCard";
+import SwapButton from "../ui/SwapButton";
 import { useMealSelection } from "../../context/MealSelectionContext";
 
 const mealTypeLabels = {
@@ -9,14 +10,23 @@ const mealTypeLabels = {
   snack: "Bữa phụ / Món ăn nhẹ",
 };
 
-const MealSetSection = ({ mealSet, onSwapMeal }) => {
+const MealSetSection = ({ mealSet, onSwapMeal, isSwapping = false }) => {
   const { handleMealClick } = useMealSelection();
 
   return (
     <div className="rounded-2xl p-6 border border-gray-800">
-      <h3 className="text-xl font-semibold mb-4">
-        {mealTypeLabels[mealSet.mealType] || "Bữa ăn"}
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-semibold">
+          {mealTypeLabels[mealSet.mealType] || "Bữa ăn"}
+        </h3>
+        {["breakfast", "lunch", "dinner"].includes(mealSet.mealType) && (
+          <SwapButton
+            mealType={mealSet.mealType}
+            onSwap={onSwapMeal}
+            isLoading={isSwapping}
+          />
+        )}
+      </div>
 
       <div
         className={`grid gap-4 ${

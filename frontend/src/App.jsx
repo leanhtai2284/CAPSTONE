@@ -10,6 +10,7 @@ import Sidebar from "./components/layout/Sidebar";
 import AppRouter from "./AppRouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoadingProvider } from "./context/LoadingContext";
+import { LogoutModalProvider } from "./context/LogoutModalContext";
 
 function AppContent() {
   const location = useLocation();
@@ -77,7 +78,9 @@ function App() {
               fallback={<div className="text-center mt-10">Đang tải...</div>}
             >
               <LoadingProvider>
-                <AppContent />
+                <LogoutModalProvider>
+                  <AppContent />
+                </LogoutModalProvider>
               </LoadingProvider>
 
               <ToastContainer

@@ -9,6 +9,8 @@ const MealPlanView = ({
   onViewModeChange,
   onDayChange,
   meals = [],
+  onSwapMeal,
+  isSwapping = false,
 }) => {
   const [mealSets, setMealSets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -88,7 +90,11 @@ const MealPlanView = ({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <MealSetSection mealSet={mealSet} />
+                <MealSetSection
+                  mealSet={mealSet}
+                  onSwapMeal={onSwapMeal}
+                  isSwapping={isSwapping}
+                />
               </motion.div>
             ))}
           </motion.div>

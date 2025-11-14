@@ -12,8 +12,10 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useLogoutModal } from "../../context/LogoutModalContext";
 
 const Sidebar = ({ onToggle }) => {
+  const { openLogoutModal } = useLogoutModal();
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuth();
@@ -47,11 +49,6 @@ const Sidebar = ({ onToggle }) => {
     { icon: PieChart, label: "Báo cáo Dinh dưỡng", path: "/nutrition-report" },
     { icon: Settings, label: "Cài đặt Tài khoản", path: "/settings" },
   ];
-
-  const handleLogout = () => {
-    logout();
-    navigate("/auth");
-  };
 
   return (
     <aside
@@ -126,7 +123,12 @@ const Sidebar = ({ onToggle }) => {
         </button>
 
         <button
-          onClick={handleLogout}
+          onClick={() =>
+            openLogoutModal(() => {
+              logout();
+              navigate("/auth");
+            })
+          }
           className={`flex items-center w-full px-4 py-2 rounded-xl text-red-500 hover:bg-red-500 hover:text-white transition-colors ${
             collapsed ? "justify-center" : ""
           }`}

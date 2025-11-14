@@ -5,11 +5,12 @@ import MealPlanView from "../components/section/MealPlanView";
 import NutritionSummary from "../components/section/NutritionSummary";
 import SafetyNotice from "../components/section/SafetyNotice";
 // Modal is provided globally by MealSelectionProvider; do not render here to avoid duplicates
-import { suggestMenuApi } from "../services/recipeApi"; // API backend
+import { suggestMenuApi, swapMealTypeApi } from "../services/recipeApi"; // API backend
 import Footer from "../components/layout/Footer";
 
 const ForYouPage = () => {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSwapping, setIsSwapping] = useState(false);
   // Initialize meal plan from localStorage so it persists across reloads/close
   const initialMeals = (() => {
     try {
@@ -25,6 +26,7 @@ const ForYouPage = () => {
   const [hasMealPlan, setHasMealPlan] = useState(
     Array.isArray(initialMeals) && initialMeals.length > 0
   );
+  const [userPreferences, setUserPreferences] = useState({});
 
   const [viewMode, setViewMode] = useState("today");
   const [selectedDay, setSelectedDay] = useState(new Date().getDay());
@@ -75,6 +77,7 @@ const ForYouPage = () => {
       // Save new plan to state and persist to localStorage
       setMealFromAI(items);
       setHasMealPlan(Array.isArray(items) && items.length > 0);
+      setUserPreferences(payload); // Lưu preferences để dùng khi swap
       try {
         localStorage.setItem("mealPlan", JSON.stringify(items));
       } catch (err) {
@@ -105,6 +108,43 @@ const ForYouPage = () => {
   const handleViewModeChange = (mode) => {
     setViewMode(mode);
     if (mode === "weekly") setSelectedDay(new Date().getDay());
+  };
+
+  // Handle swap meal type
+  const handleSwapMeal = async (mealType) => {
+    setIsSwapping(true);
+    try {
+      // Call API to get new meals for this type
+      const payload = { ...userPreferences, mealType };
+      const res = await swapMealTypeApi(mealType, userPreferences);
+      const newItems = res.items || [];
+
+      // Update mealFromAI by replacing old meals of this type with new ones
+      const updatedMeals = mealFromAI.filter((meal) => {
+        const mealTypes = meal.meal_types || [];
+        return !mealTypes.includes(mealType);
+      });
+
+      // Add new meals of this type
+      const newMealsForType = newItems.filter((meal) => {
+        const mealTypes = meal.meal_types || [];
+        return mealTypes.includes(mealType);
+      });
+
+      const finalMeals = [...updatedMeals, ...newMealsForType];
+      setMealFromAI(finalMeals);
+
+      try {
+        localStorage.setItem("mealPlan", JSON.stringify(finalMeals));
+      } catch (err) {
+        console.error("Failed to persist swapped meal plan:", err);
+      }
+    } catch (err) {
+      console.error("Error swapping meal:", err);
+      alert(`Không thể thay đổi ${mealType}. Vui lòng thử lại.`);
+    } finally {
+      setIsSwapping(false);
+    }
   };
 
   return (
@@ -139,27 +179,29 @@ const ForYouPage = () => {
               </motion.div>
             ) : (
               <>
-                <div className="flex justify-end">
-                  <button
-                    onClick={resetPlan}
-                    className="text-sm px-3 py-1 rounded-md bg-red-50 text-red-600 hover:bg-red-100"
-                    aria-label="Reset meal plan"
-                  >
-                    Reset plan
-                  </button>
-                </div>
-
                 <MealPlanView
                   viewMode={viewMode}
                   selectedDay={selectedDay}
                   onViewModeChange={handleViewModeChange}
                   onDayChange={setSelectedDay}
                   meals={mealFromAI}
+                  onSwapMeal={handleSwapMeal}
+                  isSwapping={isSwapping}
                 />
+                <div className="flex justify-center ">
+                  <button
+                    onClick={resetPlan}
+                    className="text-sm px-6 py-3 rounded-md bg-red-500 text-red-100 hover:bg-red-100 hover:text-red-600 transition-colors"
+                    aria-label="Reset meal plan"
+                  >
+                    Reset plan
+                  </button>
+                </div>
                 <NutritionSummary
                   selectedDay={selectedDay}
                   viewMode={viewMode}
                 />
+
                 <SafetyNotice />
               </>
             )}
