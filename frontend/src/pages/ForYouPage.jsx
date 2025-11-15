@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import UserInputForm from "../components/section/UserInputForm";
 import MealPlanView from "../components/section/MealPlanView";
 import NutritionSummary from "../components/section/NutritionSummary";
@@ -147,6 +148,66 @@ const ForYouPage = () => {
     }
   };
 
+  // Handle save daily menu
+  const handleSaveDailyMenu = (meals, selectedDay) => {
+    if (!meals || meals.length === 0) {
+      toast.error("Không có thực đơn để lưu!", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+      return;
+    }
+
+    try {
+      const savedMenus =
+        JSON.parse(localStorage.getItem("savedDailyMenus")) || [];
+
+      // Tạo thực đơn mới với thông tin ngày
+      const dayNames = [
+        "Chủ nhật",
+        "Thứ 2",
+        "Thứ 3",
+        "Thứ 4",
+        "Thứ 5",
+        "Thứ 6",
+        "Thứ 7",
+      ];
+      const dayName = dayNames[selectedDay] || "Hôm nay";
+      const savedDate = new Date().toISOString();
+
+      const newMenu = {
+        id: `menu-${Date.now()}`,
+        date: savedDate,
+        dayName: dayName,
+        dayIndex: selectedDay,
+        meals: meals,
+        createdAt: savedDate,
+      };
+
+      // Kiểm tra xem đã có thực đơn cho ngày này chưa (nếu muốn chỉ lưu 1 thực đơn/ngày)
+      // Hoặc luôn thêm mới (để có thể lưu nhiều thực đơn)
+      const updatedMenus = [...savedMenus, newMenu];
+
+      localStorage.setItem("savedDailyMenus", JSON.stringify(updatedMenus));
+
+      toast.success("Đã lưu thực đơn thành công!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "colored",
+      });
+    } catch (err) {
+      console.error("Failed to save daily menu:", err);
+      toast.error("Không thể lưu thực đơn. Vui lòng thử lại!", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen w-full">
       {/* Main Section */}
@@ -187,6 +248,7 @@ const ForYouPage = () => {
                   meals={mealFromAI}
                   onSwapMeal={handleSwapMeal}
                   isSwapping={isSwapping}
+                  onSaveDailyMenu={handleSaveDailyMenu}
                 />
                 <div className="flex justify-center ">
                   <button

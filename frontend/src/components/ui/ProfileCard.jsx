@@ -2,6 +2,7 @@ import React from "react";
 import {
   User,
   BookmarkIcon,
+  Calendar,
   PieChart,
   Settings,
   HelpCircle,
@@ -33,7 +34,8 @@ const ProfileCard = () => {
       label: "Trang Quản lý Cá nhân",
       path: "/dashboard",
     },
-    { icon: BookmarkIcon, label: "Thực đơn đã Lưu", path: "/saved-menus" },
+    { icon: BookmarkIcon, label: "Món ăn đã lưu", path: "/saved-menus" },
+    { icon: Calendar, label: "Thực đơn đã lưu", path: "/saved-daily-menus" },
     { icon: PieChart, label: "Báo cáo Dinh dưỡng", path: "/nutrition-report" },
     { icon: Settings, label: "Cài đặt Tài khoản", path: "/settings" },
   ];

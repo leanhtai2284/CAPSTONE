@@ -10,7 +10,12 @@ const mealTypeLabels = {
   snack: "Bữa phụ / Món ăn nhẹ",
 };
 
-const MealSetSection = ({ mealSet, onSwapMeal, isSwapping = false }) => {
+const MealSetSection = ({
+  mealSet,
+  onSwapMeal,
+  isSwapping = false,
+  showSwapButton = true,
+}) => {
   const { handleMealClick } = useMealSelection();
 
   return (
@@ -19,13 +24,14 @@ const MealSetSection = ({ mealSet, onSwapMeal, isSwapping = false }) => {
         <h3 className="text-xl font-semibold">
           {mealTypeLabels[mealSet.mealType] || "Bữa ăn"}
         </h3>
-        {["breakfast", "lunch", "dinner"].includes(mealSet.mealType) && (
-          <SwapButton
-            mealType={mealSet.mealType}
-            onSwap={onSwapMeal}
-            isLoading={isSwapping}
-          />
-        )}
+        {showSwapButton &&
+          ["breakfast", "lunch", "dinner"].includes(mealSet.mealType) && (
+            <SwapButton
+              mealType={mealSet.mealType}
+              onSwap={onSwapMeal}
+              isLoading={isSwapping}
+            />
+          )}
       </div>
 
       <div

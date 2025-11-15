@@ -7,8 +7,9 @@ import { toast } from "react-toastify";
  * - Hiển thị icon Bookmark (rỗng hoặc vàng)
  * - Lưu / xoá món ăn trong localStorage["savedMeals"]
  * - Có hiệu ứng nhỏ khi click + toast thông báo
+ * - onToggleSave: callback được gọi sau khi toggle (optional)
  */
-const SaveButton = ({ meal }) => {
+const SaveButton = ({ meal, onToggleSave }) => {
   const [isSaved, setIsSaved] = useState(false);
 
   // Dùng id làm định danh chính — đảm bảo trùng dữ liệu với SavedMenusPage
@@ -65,7 +66,14 @@ const SaveButton = ({ meal }) => {
     }
 
     localStorage.setItem("savedMeals", JSON.stringify(updatedMeals));
-    setIsSaved(!isSaved);
+    const newSavedState = !isSaved;
+    setIsSaved(newSavedState);
+
+    // Gọi callback nếu có (để cập nhật UI ở component cha)
+    // newSavedState = true nếu đã lưu, false nếu đã hủy lưu
+    if (onToggleSave) {
+      onToggleSave(meal, newSavedState);
+    }
   };
 
   return (

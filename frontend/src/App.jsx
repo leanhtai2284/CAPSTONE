@@ -25,6 +25,7 @@ function AppContent() {
     "/profile",
     "/dashboard",
     "/saved-menus",
+    "/saved-daily-menus",
     "/nutrition",
     "/settings",
     "/help",

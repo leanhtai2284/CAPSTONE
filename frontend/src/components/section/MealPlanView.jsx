@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Bookmark } from "lucide-react";
 import WeekdaySelector from "./WeekdaySelector";
 import MealSetSection from "./MealSetSection";
 
@@ -11,6 +12,7 @@ const MealPlanView = ({
   meals = [],
   onSwapMeal,
   isSwapping = false,
+  onSaveDailyMenu,
 }) => {
   const [mealSets, setMealSets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,31 +41,48 @@ const MealPlanView = ({
     setLoading(false);
   }, [meals, selectedDay, viewMode]);
 
+  const handleSaveDailyMenu = () => {
+    if (onSaveDailyMenu) {
+      onSaveDailyMenu(meals, selectedDay);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Thực đơn của bạn</h2>
-        <div className="bg-white dark:bg-slate-950 rounded-lg p-1 flex gap-1 border border-gray-400">
-          <button
-            onClick={() => onViewModeChange("today")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              viewMode === "today"
-                ? "bg-primary text-white"
-                : "hover:text-primary"
-            }`}
-          >
-            Today
-          </button>
-          <button
-            onClick={() => onViewModeChange("weekly")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              viewMode === "weekly"
-                ? "bg-primary text-white"
-                : "hover:text-primary"
-            }`}
-          >
-            Weekly
-          </button>
+        <div className="flex items-center gap-3">
+          {viewMode === "today" && meals.length > 0 && (
+            <button
+              onClick={handleSaveDailyMenu}
+              className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-white hover:bg-secondary transition-colors text-sm font-medium"
+            >
+              <Bookmark className="w-4 h-4" />
+              Lưu thực đơn
+            </button>
+          )}
+          <div className="bg-white dark:bg-slate-950 rounded-lg p-1 flex gap-1 border border-gray-400">
+            <button
+              onClick={() => onViewModeChange("today")}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                viewMode === "today"
+                  ? "bg-primary text-white"
+                  : "hover:text-primary"
+              }`}
+            >
+              Today
+            </button>
+            <button
+              onClick={() => onViewModeChange("weekly")}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                viewMode === "weekly"
+                  ? "bg-primary text-white"
+                  : "hover:text-primary"
+              }`}
+            >
+              Weekly
+            </button>
+          </div>
         </div>
       </div>
 
