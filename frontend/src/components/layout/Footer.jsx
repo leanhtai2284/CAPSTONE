@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 // Import các biểu tượng từ thư viện 'lucide-react'
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
-import logo from "../../assets/logo/LOGO1.png";
+import logo from "../../assets/logo/LOGO2.png";
 
 // --- 1. Component con: SocialIcon ---
 // Dùng để hiển thị các icon mạng xã hộiS
@@ -74,7 +74,7 @@ const Footer = () => {
               <FooterLink href="/">Trang chủ</FooterLink>
               <FooterLink href="/search">Tìm kiếm công thức</FooterLink>
               <FooterLink href="/my-recipes">Công thức của tôi</FooterLink>
-              <FooterLink href="/saved-menus">Thực đơn đã lưu</FooterLink>
+              <FooterLink href="/saved-daily-menus">Thực đơn đã lưu</FooterLink>
             </ul>
           </div>
 

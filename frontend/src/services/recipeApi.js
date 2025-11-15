@@ -29,3 +29,25 @@ export async function getRecipeDetailApi(id, servings) {
   }
   return res.json();
 }
+
+export async function swapMealTypeApi(mealType, preferences) {
+  const payload = {
+    mealType,
+    ...preferences,
+  };
+
+  const res = await fetch(`${API_BASE}/api/recipes/suggest`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Swap meal failed");
+  }
+
+  return res.json(); // { items: [...] }
+}

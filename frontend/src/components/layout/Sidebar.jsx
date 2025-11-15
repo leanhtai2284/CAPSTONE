@@ -3,6 +3,7 @@ import {
   User,
   LayoutDashboard,
   BookmarkIcon,
+  Calendar,
   PieChart,
   Settings,
   HelpCircle,
@@ -12,8 +13,10 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useLogoutModal } from "../../context/LogoutModalContext";
 
 const Sidebar = ({ onToggle }) => {
+  const { openLogoutModal } = useLogoutModal();
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuth();
@@ -29,6 +32,7 @@ const Sidebar = ({ onToggle }) => {
     "/profile",
     "/dashboard",
     "/saved-menus",
+    "/saved-daily-menus",
     "/nutrition-report",
     "/settings",
     "/help",
@@ -43,15 +47,11 @@ const Sidebar = ({ onToggle }) => {
       label: "Trang Quản lý Cá nhân",
       path: "/dashboard",
     },
-    { icon: BookmarkIcon, label: "Thực đơn đã Lưu", path: "/saved-menus" },
+    { icon: BookmarkIcon, label: "Món ăn đã Lưu", path: "/saved-menus" },
+    { icon: Calendar, label: "Thực đơn đã Lưu", path: "/saved-daily-menus" },
     { icon: PieChart, label: "Báo cáo Dinh dưỡng", path: "/nutrition-report" },
     { icon: Settings, label: "Cài đặt Tài khoản", path: "/settings" },
   ];
-
-  const handleLogout = () => {
-    logout();
-    navigate("/auth");
-  };
 
   return (
     <aside
@@ -126,7 +126,12 @@ const Sidebar = ({ onToggle }) => {
         </button>
 
         <button
-          onClick={handleLogout}
+          onClick={() =>
+            openLogoutModal(() => {
+              logout();
+              navigate("/auth");
+            })
+          }
           className={`flex items-center w-full px-4 py-2 rounded-xl text-red-500 hover:bg-red-500 hover:text-white transition-colors ${
             collapsed ? "justify-center" : ""
           }`}

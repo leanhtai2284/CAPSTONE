@@ -3,7 +3,7 @@ import { StarIcon, ClockIcon, Heart } from "lucide-react";
 import { FaMoneyBillWave } from "react-icons/fa";
 import SaveButton from "./SaveButton";
 
-export default function MealCard({ meal, onClick }) {
+export default function MealCard({ meal, onClick, onToggleSave }) {
   if (!meal) return null;
 
   const imageUrl = meal.image_url || meal.image || "/fallback.jpg";
@@ -39,7 +39,7 @@ export default function MealCard({ meal, onClick }) {
           </div>
         )}
 
-        <SaveButton meal={meal} />
+        <SaveButton meal={meal} onToggleSave={onToggleSave} />
       </div>
 
       <div className="p-4 space-y-3">
