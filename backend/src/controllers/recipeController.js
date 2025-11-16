@@ -2,7 +2,7 @@
 import Recipe from "../models/Recipe.js";
 import { buildRecipeQuery } from "../utils/queryParser.js";
 import { getPagination } from "../utils/pagination.js";
-import { suggestDailyMenu } from "../ai_module/engine.js";
+import { suggestDailyMenu, suggestWeeklyMenu } from "../ai_module/engine.js";
 import mongoose from "mongoose";
 
 export async function searchRecipes(req, res) {
@@ -33,13 +33,13 @@ export async function createRecipe(req, res) {
     res.status(201).json({
       success: true,
       message: "Tạo công thức thành công",
-      data: recipe
+      data: recipe,
     });
   } catch (error) {
     res.status(400).json({
       success: false,
       message: "Không thể tạo công thức",
-      error: error.message
+      error: error.message,
     });
   }
 }
@@ -63,7 +63,7 @@ export async function updateRecipe(req, res) {
     if (!recipe) {
       return res.status(404).json({
         success: false,
-        message: "Không tìm thấy công thức"
+        message: "Không tìm thấy công thức",
       });
     }
 
@@ -74,13 +74,13 @@ export async function updateRecipe(req, res) {
     res.status(200).json({
       success: true,
       message: "Cập nhật công thức thành công",
-      data: recipe
+      data: recipe,
     });
   } catch (error) {
     res.status(400).json({
       success: false,
       message: "Không thể cập nhật công thức",
-      error: error.message
+      error: error.message,
     });
   }
 }
@@ -104,7 +104,7 @@ export async function deleteRecipe(req, res) {
     if (!recipe) {
       return res.status(404).json({
         success: false,
-        message: "Không tìm thấy công thức"
+        message: "Không tìm thấy công thức",
       });
     }
 
@@ -113,13 +113,13 @@ export async function deleteRecipe(req, res) {
 
     res.status(200).json({
       success: true,
-      message: "Xóa công thức thành công"
+      message: "Xóa công thức thành công",
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: "Không thể xóa công thức",
-      error: error.message
+      error: error.message,
     });
   }
 }
@@ -204,6 +204,17 @@ export async function suggestMenu(req, res) {
     const prefs = req.body || {};
     const items = await suggestDailyMenu(prefs);
     res.json({ items });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Internal error" });
+  }
+}
+//  Hàm gợi ý tuần mới
+export async function suggestWeeklyMenuEndpoint(req, res) {
+  try {
+    const prefs = req.body || {};
+    const weeklyMenu = await suggestWeeklyMenu(prefs);
+    res.json({ weeklyMenu });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "Internal error" });
