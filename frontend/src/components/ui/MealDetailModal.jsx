@@ -17,11 +17,13 @@ import { FaMoneyBillWave } from "react-icons/fa";
 import SaveButton from "./SaveButton";
 import { NutritionChart } from "./NutritionChart";
 import { motion } from "framer-motion";
+import CookingStepsView from "./CookingStepsView";
 
 const MealDetailModal = ({ meal, onClose, userPreferences }) => {
   const [servings, setServings] = useState(userPreferences?.servings || 1);
   const [mealData, setMealData] = useState(meal);
   const [loading, setLoading] = useState(false);
+  const [viewMode, setViewMode] = useState("details"); // 'details' or 'cooking'
   const cacheRef = useRef({});
   const debounceTimer = useRef(null);
   const hasAllergenWarning = meal?.allergens?.length > 0;
@@ -81,6 +83,32 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) onClose();
   };
+
+  const handleStartCooking = () => {
+    setViewMode("cooking");
+  };
+
+  const handleBackToDetails = () => {
+    setViewMode("details");
+  };
+
+  // If cooking mode, show CookingStepsView instead
+  if (viewMode === "cooking") {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center md:items-center justify-center bg-black/70 backdrop-blur-sm"
+        onClick={handleBackdropClick}
+      >
+        <div className="bg-gray-100/80 dark:bg-gray-900/80 w-full md:max-w-4xl md:h-[90vh] rounded-t-3xl md:rounded-3xl overflow-hidden flex flex-col">
+          <CookingStepsView
+            meal={mealData}
+            onClose={onClose}
+            onBackToDetails={handleBackToDetails}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -203,7 +231,10 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
           </div>
 
           {/* Nội dung có thể cuộn */}
-          <div className="overflow-y-auto max-h-[90vh] px-5 py-6 space-y-8">
+          <div
+            className="overflow-y-auto px-5 py-6 space-y-8"
+            style={{ maxHeight: "calc(90vh - 250px)" }}
+          >
             <section>
               <h3 className="text-xl font-bold ">Dụng cụ cần chuẩn bị</h3>
 
@@ -375,13 +406,16 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
             {/* Footer */}
             <div className=" bg-white/30 dark:bg-white/10 border-t border-gray-300 p-5 rounded-xl">
               <div className="flex flex-col sm:flex-row gap-3">
-                <button className="flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-primary  font-semibold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-[#22C55E]/30">
+                <button
+                  onClick={handleStartCooking}
+                  className="flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-primary  font-semibold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-[#22C55E]/30"
+                >
                   <ChefHatIcon className="w-5 h-5" />
                   Bắt đầu nấu
                 </button>
-                <button className="flex-1 flex items-center justify-center gap-2 bg-white/40 hover:bg-primary  font-medium py-4 rounded-xl border border-gray-300 hover:border-[#22C55E] transition-all duration-300">
+                {/* <button className="flex-1 flex items-center justify-center gap-2 bg-white/40 hover:bg-primary  font-medium py-4 rounded-xl border border-gray-300 hover:border-[#22C55E] transition-all duration-300">
                   Thêm vào kế hoạch
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
