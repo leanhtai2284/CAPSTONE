@@ -1,36 +1,61 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+const NutritionSummary = ({ meals = [] }) => {
+  // Only show nutrition summary when actual meals are provided
+  if (!meals || meals.length === 0) return null;
 
-const allMealsByDay = {
-  1: { calories: 1740, protein: 132, carbs: 148, fat: 61 },
-  2: { calories: 1680, protein: 125, carbs: 142, fat: 58 },
-  3: { calories: 1720, protein: 128, carbs: 156, fat: 54 },
-  4: { calories: 1650, protein: 118, carbs: 138, fat: 62 },
-  5: { calories: 1700, protein: 130, carbs: 145, fat: 56 },
-  6: { calories: 1780, protein: 135, carbs: 162, fat: 64 },
-  0: { calories: 1620, protein: 120, carbs: 134, fat: 52 },
-};
+  // Helpers for formatting
+  const fmtNumber = (v, decimals = 1) => {
+    if (v == null || Number.isNaN(Number(v))) return "0";
+    const n = Number(v);
+    return n % 1 === 0 ? n.toString() : n.toFixed(decimals);
+  };
 
-const NutritionSummary = ({ selectedDay, viewMode }) => {
-  const dayToUse = viewMode === "weekly" ? selectedDay : new Date().getDay();
-  const totalNutrition = allMealsByDay[dayToUse];
+  const fmtCalories = (v) => {
+    const n = Number(v) || 0;
+    if (n >= 1000) {
+      return `${(n / 1000).toFixed(1)}k kcal`;
+    }
+    return `${Math.round(n).toLocaleString()} kcal`;
+  };
+
+  // Sum totals from meals array
+  const totals = meals.reduce(
+    (acc, meal) => {
+      const n = meal.nutrition || {};
+      const servings = meal.servings || 1;
+
+      const calories =
+        (n.calories ?? n.calories_kcal ?? n.kcal ?? 0) * servings;
+      const protein = (n.protein_g ?? n.protein ?? 0) * servings;
+      const carbs = (n.carbs_g ?? n.carbs ?? 0) * servings;
+      const fat = (n.fat_g ?? n.fat ?? 0) * servings;
+
+      acc.calories += Number(calories) || 0;
+      acc.protein += Number(protein) || 0;
+      acc.carbs += Number(carbs) || 0;
+      acc.fat += Number(fat) || 0;
+      return acc;
+    },
+    { calories: 0, protein: 0, carbs: 0, fat: 0 }
+  );
 
   const macroData = [
-    { name: "Protein", value: totalNutrition.protein, color: "#3CAEA3" },
-    { name: "Carbs", value: totalNutrition.carbs, color: "#E9C46A" },
-    { name: "Fat", value: totalNutrition.fat, color: "#F4A261" },
+    { name: "Protein", value: totals.protein, color: "#3CAEA3" },
+    { name: "Carbs", value: totals.carbs, color: "#E9C46A" },
+    { name: "Fat", value: totals.fat, color: "#F4A261" },
   ];
 
   return (
     <motion.div
-      key={`nutrition-${dayToUse}`}
+      key={`nutrition-summary`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className=" rounded-2xl p-6 border border-gray-800"
     >
-      <h3 className="text-xl font-semibold mb-6">Daily Nutrition Summary</h3>
+      <h3 className="text-xl font-bold mb-6">Thống kê dinh dưỡng hôm nay</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Pie Chart */}
         <div className="flex items-center justify-center">
@@ -66,7 +91,7 @@ const NutritionSummary = ({ selectedDay, viewMode }) => {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-400">Total Calories</span>
               <span className="text-2xl font-bold text-[#F4A261]">
-                {totalNutrition.calories}
+                {fmtCalories(totals.calories)}
               </span>
             </div>
             <div className="text-xs text-gray-500">kcal</div>
@@ -76,22 +101,59 @@ const NutritionSummary = ({ selectedDay, viewMode }) => {
             <div className="bg-gray-200 rounded-lg p-3 text-center">
               <div className="text-xs text-gray-400 mb-1">Protein</div>
               <div className="text-lg font-bold text-[#3CAEA3]">
-                {totalNutrition.protein}g
+                {fmtNumber(totals.protein, 1)}g
               </div>
             </div>
             <div className="bg-gray-200 rounded-lg p-3 text-center">
               <div className="text-xs text-gray-400 mb-1">Carbs</div>
               <div className="text-lg font-bold text-[#E9C46A]">
-                {totalNutrition.carbs}g
+                {fmtNumber(totals.carbs, 1)}g
               </div>
             </div>
             <div className="bg-gray-200 rounded-lg p-3 text-center">
               <div className="text-xs text-gray-400 mb-1">Fat</div>
               <div className="text-lg font-bold text-[#F4A261]">
-                {totalNutrition.fat}g
+                {fmtNumber(totals.fat, 1)}g
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Per-meal breakdown */}
+      <div className="mt-6">
+        <h4 className="text-md font-medium mb-3">Per-meal breakdown</h4>
+        <div className="space-y-2">
+          {meals.map((meal, idx) => {
+            const n = meal.nutrition || {};
+            const servings = meal.servings || 1;
+            const c = (n.calories ?? n.calories_kcal ?? n.kcal ?? 0) * servings;
+            const p = (n.protein_g ?? n.protein ?? 0) * servings;
+            const ca = (n.carbs_g ?? n.carbs ?? 0) * servings;
+            const f = (n.fat_g ?? n.fat ?? 0) * servings;
+            const title =
+              meal.name_vi || meal.name || meal.title || `Meal ${idx + 1}`;
+            return (
+              <div
+                key={`meal-${meal.id || meal._id || idx}`}
+                className="flex items-center justify-between bg-gray-100 dark:bg-slate-900 rounded-lg p-3"
+              >
+                <div>
+                  <div className="font-medium">{title}</div>
+                  <div className="text-xs text-gray-500">
+                    Servings: {servings}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm">{fmtCalories(c)}</div>
+                  <div className="text-xs text-gray-500">
+                    {fmtNumber(p, 1)}g • {fmtNumber(ca, 1)}g • {fmtNumber(f, 1)}
+                    g
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </motion.div>
