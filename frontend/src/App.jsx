@@ -4,12 +4,13 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./context/AuthProvider";
-import { MealSelectionProvider } from "./context/MealSelectionContext"; // 🧩 dùng context modal toàn cục
+import { MealSelectionProvider } from "./context/MealSelectionContext";
 import NavBar from "./components/layout/NavBar";
 import Sidebar from "./components/layout/Sidebar";
 import AppRouter from "./AppRouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoadingProvider } from "./context/LoadingContext";
+import { LogoutModalProvider } from "./context/LogoutModalContext";
 
 function AppContent() {
   const location = useLocation();
@@ -24,6 +25,7 @@ function AppContent() {
     "/profile",
     "/dashboard",
     "/saved-menus",
+    "/saved-daily-menus",
     "/nutrition",
     "/settings",
     "/help",
@@ -77,7 +79,9 @@ function App() {
               fallback={<div className="text-center mt-10">Đang tải...</div>}
             >
               <LoadingProvider>
-                <AppContent />
+                <LogoutModalProvider>
+                  <AppContent />
+                </LogoutModalProvider>
               </LoadingProvider>
 
               <ToastContainer

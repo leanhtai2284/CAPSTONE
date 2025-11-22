@@ -6,17 +6,43 @@ const SavedMenusPage = () => {
   const [savedMeals, setSavedMeals] = useState([]);
   const { handleMealClick } = useMealSelection(); // ✅ dùng context để mở modal
 
+  const loadSavedMeals = () => {
+    try {
+      const meals = JSON.parse(localStorage.getItem("savedMeals")) || [];
+      setSavedMeals(meals);
+    } catch (err) {
+      console.error("Error loading saved meals:", err);
+    }
+  };
+
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("savedMeals")) || [];
-    setSavedMeals(data);
+    loadSavedMeals();
   }, []);
+
+  // Callback khi toggle save - cập nhật danh sách ngay lập tức
+  const handleToggleSave = (meal, isNowSaved) => {
+    if (!isNowSaved) {
+      // Nếu đã hủy lưu, xóa món ăn khỏi danh sách
+      setSavedMeals((prev) =>
+        prev.filter(
+          (m) => m.id !== meal.id && m.uniqueKey !== (meal.uniqueKey || meal.id)
+        )
+      );
+    } else {
+      // Nếu đã lưu, reload lại danh sách
+      loadSavedMeals();
+    }
+  };
 
   return (
     <div className="min-h-screen container px-4 md:px-10 py-10 transition-all duration-300">
       {/* Header */}
       <div className="flex flex-col items-center mb-10">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Món ăn đã lưu
+        </h1>
         {savedMeals.length > 0 && (
-          <div className="w-24 h-1 bg-green-500 rounded-full mt-3" />
+          <div className="w-24 h-1 bg-primary rounded-full mt-3" />
         )}
       </div>
 
@@ -37,6 +63,7 @@ const SavedMenusPage = () => {
               key={meal.uniqueKey || meal.id}
               meal={meal}
               onClick={() => handleMealClick(meal)} // ✅ mở modal khi click
+              onToggleSave={handleToggleSave} // ✅ callback khi toggle save
             />
           ))}
         </div>

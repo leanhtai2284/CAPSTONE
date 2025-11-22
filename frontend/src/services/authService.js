@@ -53,9 +53,12 @@ export const authService = {
     if (!response.ok) {
       throw new Error(data.message || "Có lỗi xảy ra khi đăng ký");
     }
-    this.setToken(data.token);
-    this.setUser(data.user);
-    return data;
+    // Backend now returns { success, message, data: { ...userFields, token } }
+    const userPayload = data.data || data;
+    const token = userPayload.token;
+    this.setToken(token);
+    this.setUser(userPayload);
+    return { token, user: userPayload };
   },
 
   // Đăng nhập
