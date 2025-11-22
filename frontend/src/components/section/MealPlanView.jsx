@@ -13,9 +13,20 @@ const MealPlanView = ({
   onSwapMeal,
   isSwapping = false,
   onSaveDailyMenu,
+  onResetPlan,
 }) => {
   const [mealSets, setMealSets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showConfirmReset, setShowConfirmReset] = useState(false);
+
+  useEffect(() => {
+    if (!showConfirmReset) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setShowConfirmReset(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showConfirmReset]);
 
   const normalizeMealsFromApi = (list) => {
     const breakfast = list.filter((m) =>
@@ -52,15 +63,6 @@ const MealPlanView = ({
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Thực đơn của bạn</h2>
         <div className="flex items-center gap-3">
-          {viewMode === "today" && meals.length > 0 && (
-            <button
-              onClick={handleSaveDailyMenu}
-              className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-white hover:bg-secondary transition-colors text-sm font-medium"
-            >
-              <Bookmark className="w-4 h-4" />
-              Lưu thực đơn
-            </button>
-          )}
           <div className="bg-white dark:bg-slate-950 rounded-lg p-1 flex gap-1 border border-gray-400">
             <button
               onClick={() => onViewModeChange("today")}
@@ -118,6 +120,69 @@ const MealPlanView = ({
             ))}
           </motion.div>
         </AnimatePresence>
+      )}
+      {meals.length > 0 && (
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowConfirmReset(true)}
+            className="flex-1 text-sm px-6 py-3 rounded-md dark:bg-slate-700 bg-slate-400 text-white
+                 hover:bg-red-500 transition-colors font-medium"
+          >
+            Xóa thực đơn
+          </button>
+
+          <button
+            onClick={handleSaveDailyMenu}
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 
+                 rounded-md bg-primary text-white hover:bg-secondary 
+                 transition-colors text-sm font-medium"
+          >
+            <Bookmark className="w-4 h-4" />
+            Lưu thực đơn
+          </button>
+        </div>
+      )}
+      {showConfirmReset && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-4"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="fixed inset-0 bg-black/40"
+            onClick={() => setShowConfirmReset(false)}
+          />
+
+          <div className="relative max-w-lg w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mx-auto">
+            <h3 className="text-lg font-semibold mb-3">Xác nhận xóa</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">
+              Bạn có chắc muốn xóa toàn bộ thực đơn hiện tại? Hành động này
+              không thể hoàn tác.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                className="px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+                onClick={() => setShowConfirmReset(false)}
+              >
+                Huỷ
+              </button>
+              <button
+                type="button"
+                className="px-4 py-2 rounded-md bg-red-600 text-white"
+                onClick={() => {
+                  try {
+                    onResetPlan && onResetPlan();
+                  } finally {
+                    setShowConfirmReset(false);
+                  }
+                }}
+              >
+                Xóa
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
