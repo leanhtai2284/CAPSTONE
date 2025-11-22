@@ -413,9 +413,6 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
                   <ChefHatIcon className="w-5 h-5" />
                   Bắt đầu nấu
                 </button>
-                {/* <button className="flex-1 flex items-center justify-center gap-2 bg-white/40 hover:bg-primary  font-medium py-4 rounded-xl border border-gray-300 hover:border-[#22C55E] transition-all duration-300">
-                  Thêm vào kế hoạch
-                </button> */}
               </div>
             </div>
           </div>
