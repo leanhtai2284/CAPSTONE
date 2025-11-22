@@ -92,11 +92,11 @@ const Hero = ({ onMealClick }) => {
                           : "Ngọt ngào, phóng khoáng hồn Nam Bộ"}
                       </span>
 
-                      <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-white">
+                      <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 font-serif text-white">
                         {meal.name_vi || meal.name_en}
                       </h1>
 
-                      <p className="text-base md:text-lg mb-8 text-gray-100 line-clamp-3">
+                      <p className="text-base md:text-lg mb-8 italic font-serif text-gray-100 line-clamp-3">
                         {meal.description || "Một món ăn ngon bạn nên thử!"}
                       </p>
 
@@ -106,19 +106,19 @@ const Hero = ({ onMealClick }) => {
                           {
                             label: "Kcal",
                             value: meal.nutrition?.calories,
-                            icon: <Flame className="w-4 h-4 text-orange-400" />,
+                            icon: <Flame className="w-4 h-4 text-orange-500" />,
                           },
                           {
                             label: "Protein",
                             value: `${meal.nutrition?.protein_g || 0}g`,
                             icon: (
-                              <Drumstick className="w-4 h-4 text-amber-400" />
+                              <Drumstick className="w-4 h-4 text-amber-500" />
                             ),
                           },
                           {
                             label: `${totalTime} phút`,
                             value: null,
-                            icon: <Clock className="w-4 h-4 text-green-400" />,
+                            icon: <Clock className="w-4 h-4 text-green-500" />,
                           },
                         ].map(({ label, value, icon }, i) => (
                           <div

@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 const NutritionSummary = ({ meals = [] }) => {
-  // Only show nutrition summary when actual meals are provided
-  if (!meals || meals.length === 0) return null;
+  // Note: we normalize meals below using a hook, so only return after that
 
   // Helpers for formatting
   const fmtNumber = (v, decimals = 1) => {
@@ -20,8 +19,27 @@ const NutritionSummary = ({ meals = [] }) => {
     return `${Math.round(n).toLocaleString()} kcal`;
   };
 
-  // Sum totals from meals array
-  const totals = meals.reduce(
+  // Normalize meals into a flat list of dishes so duplicates count
+  const normalizedMeals = useMemo(() => {
+    if (!Array.isArray(meals)) return [];
+    const dishes = meals.flatMap((item) => {
+      if (Array.isArray(item?.dishes)) return item.dishes.filter(Boolean);
+
+      if (Array.isArray(item?.meal_types) && item.meal_types.length > 0) {
+        return item.meal_types.map(() => item);
+      }
+
+      return item ? [item] : [];
+    });
+
+    return dishes;
+  }, [meals]);
+
+  // If no dishes after normalization, don't render
+  if (!normalizedMeals || normalizedMeals.length === 0) return null;
+
+  // Sum totals from the flattened dishes array (counts duplicates)
+  const totals = normalizedMeals.reduce(
     (acc, meal) => {
       const n = meal.nutrition || {};
       const servings = meal.servings || 1;
@@ -90,7 +108,7 @@ const NutritionSummary = ({ meals = [] }) => {
           <div className="bg-gray-200 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-400">Total Calories</span>
-              <span className="text-2xl font-bold text-[#F4A261]">
+              <span className="text-2xl font-bold text-orange-500">
                 {fmtCalories(totals.calories)}
               </span>
             </div>
@@ -117,43 +135,6 @@ const NutritionSummary = ({ meals = [] }) => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Per-meal breakdown */}
-      <div className="mt-6">
-        <h4 className="text-md font-medium mb-3">Per-meal breakdown</h4>
-        <div className="space-y-2">
-          {meals.map((meal, idx) => {
-            const n = meal.nutrition || {};
-            const servings = meal.servings || 1;
-            const c = (n.calories ?? n.calories_kcal ?? n.kcal ?? 0) * servings;
-            const p = (n.protein_g ?? n.protein ?? 0) * servings;
-            const ca = (n.carbs_g ?? n.carbs ?? 0) * servings;
-            const f = (n.fat_g ?? n.fat ?? 0) * servings;
-            const title =
-              meal.name_vi || meal.name || meal.title || `Meal ${idx + 1}`;
-            return (
-              <div
-                key={`meal-${meal.id || meal._id || idx}`}
-                className="flex items-center justify-between bg-gray-100 dark:bg-slate-900 rounded-lg p-3"
-              >
-                <div>
-                  <div className="font-medium">{title}</div>
-                  <div className="text-xs text-gray-500">
-                    Servings: {servings}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm">{fmtCalories(c)}</div>
-                  <div className="text-xs text-gray-500">
-                    {fmtNumber(p, 1)}g • {fmtNumber(ca, 1)}g • {fmtNumber(f, 1)}
-                    g
-                  </div>
-                </div>
-              </div>
-            );
-          })}
         </div>
       </div>
     </motion.div>

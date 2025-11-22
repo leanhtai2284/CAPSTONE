@@ -1,5 +1,5 @@
 import React from "react";
-import { StarIcon, ClockIcon, Heart } from "lucide-react";
+import { StarIcon, ClockIcon, Heart, ChefHat, MapPinIcon } from "lucide-react";
 import { FaMoneyBillWave } from "react-icons/fa";
 import SaveButton from "./SaveButton";
 
@@ -11,7 +11,7 @@ export default function MealCard({ meal, onClick, onToggleSave }) {
 
   return (
     <div
-      className="flex-shrink-0 rounded-2xl dark:bg-slate-950 dark:border-slate-800 
+      className="flex-shrink-0 rounded-2xl dark:bg-black dark:border-slate-900 
       bg-white/70 overflow-hidden border border-gray-200 
       hover:border-gray-200 hover:shadow-lg hover:shadow-gray-300
       dark:hover:shadow-green-800 dark:hover:border-green-500/50
@@ -34,6 +34,7 @@ export default function MealCard({ meal, onClick, onToggleSave }) {
                 border border-green-400/40 text-green-900 font-bold
                 rounded-full text-xs tracking-wide shadow-sm"
             >
+              <ChefHat className="w-3 h-3 " />
               {meal.diet_tags[0]}
             </span>
           </div>
@@ -44,7 +45,7 @@ export default function MealCard({ meal, onClick, onToggleSave }) {
 
       <div className="p-4 space-y-3">
         {/* Tên món */}
-        <h3 className="font-bold text-xl text-gray-900 dark:text-gray-100 line-clamp-1 ">
+        <h3 className="font-bold text-xl drop-shadow-sm line-clamp-1">
           {meal.name_vi}
         </h3>
 
@@ -64,31 +65,29 @@ export default function MealCard({ meal, onClick, onToggleSave }) {
           )}
         </div> */}
 
-        <div className="flex items-center gap-2 flex-wrap">
-          {/* ⏱ Thời gian nấu */}
+        <div className="grid grid-cols-2 w-full gap-2">
           {meal.cook_time_min && (
             <span
-              className="inline-flex items-center gap-1 px-3 py-1 
-                bg-gradient-to-r from-emerald-500/20 to-emerald-400/10 
-                dark:from-emerald-400/20 dark:to-emerald-300/10
-                border border-emerald-400/40 text-emerald-700 dark:text-emerald-300
-                rounded-full text-xs font-medium shadow-sm"
+              className="inline-flex items-center justify-center gap-1 px-3 py-2 
+              bg-gradient-to-r from-blue-200/80 to-cyan-100/70 
+              dark:from-blue-300 dark:to-cyan-200
+              border border-blue-400 text-blue-800 font-bold
+              rounded-md text-xs tracking-wide shadow-sm"
             >
-              <ClockIcon className="w-3 h-3 text-emerald-500 dark:text-emerald-300" />
+              <ClockIcon className="w-3 h-3" />
               {meal.cook_time_min} phút
             </span>
           )}
 
-          {/* 💰 Giá ước lượng */}
           {meal.price_estimate?.min && (
             <span
-              className="inline-flex items-center gap-1 px-3 py-1 
-                bg-gradient-to-r from-amber-400/20 to-yellow-300/10 
-                dark:from-amber-300/20 dark:to-yellow-200/10
-                border border-amber-400/40 text-amber-600 dark:text-amber-300
-                rounded-full text-xs font-medium shadow-sm"
+              className="inline-flex items-center justify-center gap-1 px-3 py-2 
+                bg-gradient-to-r from-green-400/40 to-lime-300/30
+                dark:from-green-400/50 dark:to-lime-300/40
+                border border-green-500 text-green-600 dark:text-lime-300
+                rounded-md text-xs font-bold tracking-wide shadow-sm"
             >
-              <FaMoneyBillWave className="w-3 h-3 text-amber-500 dark:text-amber-300" />
+              <FaMoneyBillWave className="w-3 h-3 " />
               {(meal.price_estimate.min / 1000).toFixed(0)}.000 VNĐ{" "}
             </span>
           )}
