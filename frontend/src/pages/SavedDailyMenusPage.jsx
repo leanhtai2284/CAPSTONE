@@ -2,22 +2,31 @@ import React, { useEffect, useState } from "react";
 import { Trash2, Calendar } from "lucide-react";
 import { toast } from "react-toastify";
 import MealSetSection from "../components/section/MealSetSection";
+import { dailyMenuService } from "../services/dailyMenuService";
 
 const SavedDailyMenusPage = () => {
   const [savedDailyMenus, setSavedDailyMenus] = useState([]);
 
-  const loadSavedMenus = () => {
+  const loadSavedMenus = async () => {
     try {
-      const menus = JSON.parse(localStorage.getItem("savedDailyMenus")) || [];
-      // Sắp xếp theo thời gian tạo: mới nhất lên trên
-      const sortedMenus = menus.sort((a, b) => {
+      const menus = await dailyMenuService.getAll();
+
+      // Chuẩn hoá id để dùng menu.id cho key, delete...
+      const normalized = menus.map((m) => ({
+        ...m,
+        id: m._id || m.id,
+      }));
+
+      const sortedMenus = normalized.sort((a, b) => {
         const dateA = new Date(a.createdAt || a.date || 0);
         const dateB = new Date(b.createdAt || b.date || 0);
-        return dateB - dateA; // Giảm dần (mới nhất trước)
+        return dateB - dateA;
       });
+
       setSavedDailyMenus(sortedMenus);
     } catch (err) {
       console.error("Error loading saved menus:", err);
+      toast.error(err.message || "Không thể tải thực đơn đã lưu!");
     }
   };
 
@@ -25,18 +34,20 @@ const SavedDailyMenusPage = () => {
     loadSavedMenus();
   }, []);
 
-  const handleDeleteMenu = (menuId) => {
+  const handleDeleteMenu = async (menuId) => {
     try {
+      await dailyMenuService.delete(menuId);
+
       const updatedMenus = savedDailyMenus.filter((menu) => menu.id !== menuId);
-      localStorage.setItem("savedDailyMenus", JSON.stringify(updatedMenus));
       setSavedDailyMenus(updatedMenus);
+
       toast.success("Đã xóa thực đơn!", {
         position: "top-right",
         autoClose: 2000,
       });
     } catch (err) {
       console.error("Error deleting menu:", err);
-      toast.error("Không thể xóa thực đơn. Vui lòng thử lại!", {
+      toast.error(err.message || "Không thể xóa thực đơn. Vui lòng thử lại!", {
         position: "top-right",
         autoClose: 2000,
       });

@@ -14,6 +14,7 @@ import recipeRoutes from "./routes/recipe.js";
 import adminRoutes from "./routes/admin.js";
 import nutritionRoutes from "./routes/nutrition.js";
 import reportsRoutes from "./routes/reports.js";
+import menuRoutes from "./routes/menu.js";
 const app = express();
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
@@ -33,6 +34,7 @@ app.use("/api/recipes", recipeRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/nutrition", nutritionRoutes);
 app.use("/api/reports", reportsRoutes);
+app.use("/api/menus", menuRoutes);
 
 const PORT = process.env.PORT || 5000;
 

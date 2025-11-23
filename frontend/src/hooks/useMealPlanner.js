@@ -6,6 +6,7 @@ import {
   suggestWeeklyApi,
   swapMealTypeApi,
 } from "../services/recipeApi";
+import { dailyMenuService } from "../services/dailyMenuService";
 
 export default function useMealPlanner() {
   const [mealFromAI, setMealFromAI, removeMealFromAI] = useLocalStorage(
@@ -206,15 +207,13 @@ export default function useMealPlanner() {
     }
   };
 
-  const handleSaveDailyMenu = (meals, dayIndex) => {
+  const handleSaveDailyMenu = async (meals, dayIndex) => {
     if (!meals || meals.length === 0) {
       toast.error("Không có thực đơn để lưu!");
       return;
     }
 
     try {
-      const savedMenus =
-        JSON.parse(localStorage.getItem("savedDailyMenus")) || [];
       const dayNames = [
         "Chủ nhật",
         "Thứ 2",
@@ -227,22 +226,19 @@ export default function useMealPlanner() {
       const dayName = dayNames[dayIndex] || "Hôm nay";
       const savedDate = new Date().toISOString();
 
-      const newMenu = {
-        id: `menu-${Date.now()}`,
+      const payload = {
+        dayIndex,
+        dayName,
         date: savedDate,
-        dayName: dayName,
-        dayIndex: dayIndex,
-        meals: meals,
-        createdAt: savedDate,
+        meals,
       };
 
-      const updated = [...savedMenus, newMenu];
-      localStorage.setItem("savedDailyMenus", JSON.stringify(updated));
+      await dailyMenuService.create(payload);
 
-      toast.success("Đã lưu thực đơn thành công!");
+      toast.success("Đã lưu thực đơn lên server!");
     } catch (err) {
       console.error("Failed to save daily menu:", err);
-      toast.error("Không thể lưu thực đơn. Vui lòng thử lại!");
+      toast.error(err.message || "Không thể lưu thực đơn. Vui lòng thử lại!");
     }
   };
 
