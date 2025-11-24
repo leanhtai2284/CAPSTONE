@@ -5,6 +5,7 @@ import ReportsPage from "../pages/ReportsPage";
 import HelpFeedback from "../pages/HelpFeedback";
 import SearchPage from "../pages/SearchPage";
 import ForYouPage from "../pages/ForYouPage";
+import AccountSettings from "../pages/AccountSettings";
 import React from "react";
 
 export const privateRoutes = [
@@ -15,4 +16,5 @@ export const privateRoutes = [
   { path: "/nutrition-report", element: <ReportsPage /> },
   { path: "/help", element: <HelpFeedback /> },
   { path: "/search", element: <SearchPage /> },
+  { path: "/settings", element: <AccountSettings /> },
 ];
