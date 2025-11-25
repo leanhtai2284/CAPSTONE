@@ -16,7 +16,8 @@ import nutritionRoutes from "./routes/nutrition.js";
 import reportsRoutes from "./routes/reports.js";
 import menuRoutes from "./routes/menu.js";
 import favoriteRoutes from "./routes/favorite.js";
-
+import notificationRoutes from "./routes/notification.js";
+import feedbackRoutes from "./routes/feedback.js";
 const app = express();
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
@@ -38,6 +39,8 @@ app.use("/api/nutrition", nutritionRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/menus", menuRoutes);
 app.use("/api/favorites", favoriteRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 const PORT = process.env.PORT || 5000;
 

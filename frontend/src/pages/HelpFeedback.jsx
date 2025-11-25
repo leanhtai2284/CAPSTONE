@@ -3,13 +3,14 @@ import { motion } from "framer-motion";
 import { SendIcon, MailIcon, PhoneIcon, BookOpenIcon } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { feedbackService } from "../services/feedbackService";
 
 const HelpFeedback = () => {
   const [feedbackType, setFeedbackType] = useState("suggestion");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!message.trim()) {
@@ -24,24 +25,34 @@ const HelpFeedback = () => {
 
     setSubmitted(true);
 
-    // 🔧 Tại đây bạn có thể gọi API gửi phản hồi
-    // await sendFeedback({ feedbackType, message });
+    try {
+      await feedbackService.sendFeedback({
+        type: feedbackType,
+        message,
+      });
 
-    toast.success("Cảm ơn bạn đã gửi phản hồi 🌿", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+      toast.success("Cảm ơn bạn đã gửi phản hồi 🌿", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
 
-    setTimeout(() => {
-      setSubmitted(false);
       setMessage("");
-    }, 3000);
+    } catch (error) {
+      toast.error(error.message || "Không thể gửi phản hồi, vui lòng thử lại", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "colored",
+      });
+    } finally {
+      setSubmitted(false);
+    }
   };
 
   return (
