@@ -15,6 +15,8 @@ import adminRoutes from "./routes/admin.js";
 import nutritionRoutes from "./routes/nutrition.js";
 import reportsRoutes from "./routes/reports.js";
 import menuRoutes from "./routes/menu.js";
+import favoriteRoutes from "./routes/favorite.js";
+
 const app = express();
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
@@ -35,6 +37,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/nutrition", nutritionRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/menus", menuRoutes);
+app.use("/api/favorites", favoriteRoutes);
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import MealCard from "../components/ui/MealCard";
 import { useMealSelection } from "../context/MealSelectionContext";
+import { favoriteService } from "../services/favoriteService";
 
 const SavedMenusPage = () => {
   const [savedMeals, setSavedMeals] = useState([]);
   const { handleMealClick } = useMealSelection(); // ✅ dùng context để mở modal
 
-  const loadSavedMeals = () => {
+  const loadSavedMeals = async () => {
     try {
-      const meals = JSON.parse(localStorage.getItem("savedMeals")) || [];
+      const meals = await favoriteService.getAll(); // đã trả về mảng meal
       setSavedMeals(meals);
     } catch (err) {
       console.error("Error loading saved meals:", err);

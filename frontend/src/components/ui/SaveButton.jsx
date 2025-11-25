@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Bookmark } from "lucide-react";
 import { toast } from "react-toastify";
+import { favoriteService } from "../../services/favoriteService";
 
 /**
  * SaveButton
@@ -13,66 +14,86 @@ const SaveButton = ({ meal, onToggleSave }) => {
   const [isSaved, setIsSaved] = useState(false);
 
   // Dùng id làm định danh chính — đảm bảo trùng dữ liệu với SavedMenusPage
-  const uniqueKey = meal?.id ?? meal?.uniqueKey ?? null;
+  const recipeId = meal?.id ?? meal?._id ?? meal?.uniqueKey ?? null;
 
   // Khi load component, kiểm tra món này có trong localStorage không
   useEffect(() => {
-    if (!uniqueKey) return;
-    const savedMeals = JSON.parse(localStorage.getItem("savedMeals")) || [];
-    const exists = savedMeals.some(
-      (m) => m.id === meal.id || m.uniqueKey === uniqueKey
-    );
-    setIsSaved(exists);
-  }, [meal, uniqueKey]);
+    if (!recipeId) return;
 
-  // Toggle lưu / bỏ lưu
-  const toggleSave = (e) => {
-    e.stopPropagation(); // tránh click lan lên thẻ cha
-    if (!uniqueKey) return;
-
-    const savedMeals = JSON.parse(localStorage.getItem("savedMeals")) || [];
-    let updatedMeals;
-
-    if (isSaved) {
-      // ❌ Bỏ lưu
-      updatedMeals = savedMeals.filter(
-        (m) => m.id !== meal.id && m.uniqueKey !== uniqueKey
-      );
-      toast.info("Đã bỏ lưu món ăn!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        theme: "colored",
-      });
-    } else {
-      // ✅ Lưu mới
-      const mealToSave = {
-        ...meal,
-        uniqueKey: uniqueKey || Date.now(), // tạo key nếu chưa có
-      };
-      updatedMeals = [...savedMeals, mealToSave];
-      toast.success("Đã lưu món ăn!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        theme: "colored",
-      });
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsSaved(false);
+      return;
     }
 
-    localStorage.setItem("savedMeals", JSON.stringify(updatedMeals));
-    const newSavedState = !isSaved;
-    setIsSaved(newSavedState);
+    (async () => {
+      try {
+        const favorites = await favoriteService.getAll();
+        const exists = favorites.some(
+          (m) =>
+            m.id === recipeId ||
+            m._id === recipeId ||
+            m.recipeId === recipeId ||
+            m.uniqueKey === recipeId
+        );
+        setIsSaved(exists);
+      } catch (err) {
+        console.error("Error checking favorite:", err);
+      }
+    })();
+  }, [meal, recipeId]);
 
-    // Gọi callback nếu có (để cập nhật UI ở component cha)
-    // newSavedState = true nếu đã lưu, false nếu đã hủy lưu
-    if (onToggleSave) {
-      onToggleSave(meal, newSavedState);
+  // Toggle lưu / bỏ lưu
+  const toggleSave = async (e) => {
+    e.stopPropagation();
+    if (!recipeId) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Bạn cần đăng nhập để lưu món ăn!");
+      return;
+    }
+
+    try {
+      if (isSaved) {
+        // Bỏ lưu
+        await favoriteService.removeByRecipeId(recipeId);
+        toast.info("Đã bỏ lưu món ăn!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "colored",
+        });
+      } else {
+        // Lưu món
+        await favoriteService.add({
+          ...meal,
+          // bảo đảm luôn có id để nhận diện
+          id: meal.id || meal._id || recipeId,
+        });
+        toast.success("Đã lưu món ăn!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "colored",
+        });
+      }
+
+      const newSavedState = !isSaved;
+      setIsSaved(newSavedState);
+
+      if (onToggleSave) {
+        onToggleSave(meal, newSavedState);
+      }
+    } catch (err) {
+      console.error("Error toggle favorite:", err);
+      toast.error(err.message || "Không thể cập nhật lưu món ăn!");
     }
   };
 
