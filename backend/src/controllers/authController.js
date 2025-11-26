@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import sendEmail from "../utils/sendEmail.js";
 import mongoose from "mongoose";
+import { createNotification } from "./notificationController.js";
 
 //Tao dang ky moi
 export const Register = asyncHandler(async (req, res) => {
@@ -52,6 +53,31 @@ export const Register = asyncHandler(async (req, res) => {
 
     // Tạo token giống như khi login để client có thể được auto-auth sau khi đăng ký
     const token = generateToken(user._id, user.role);
+
+    // Thông báo cho chính user
+    await createNotification({
+      user: user._id,
+      audience: "user",
+      title: "Đăng ký tài khoản thành công",
+      message: "Chào mừng bạn đến với SmartMealVN!",
+      type: "user_activity",
+      metadata: {
+        email: user.email,
+      },
+    });
+
+    // Thông báo cho admin về user mới (không gán user cụ thể)
+    await createNotification({
+      user: null,
+      audience: "admin",
+      title: "Người dùng mới đăng ký",
+      message: `Tài khoản mới với email ${user.email} đã được tạo`,
+      type: "user_activity",
+      metadata: {
+        userId: user._id,
+        email: user.email,
+      },
+    });
 
     return res.status(201).json({
       success: true,
@@ -234,6 +260,17 @@ export const resetPassword = asyncHandler(async (req, res) => {
   user.resetPasswordExpire = undefined;
 
   await user.save();
+
+  await createNotification({
+    user: user._id,
+    audience: "user",
+    title: "Mật khẩu đã được cập nhật",
+    message: "Bạn đã đổi mật khẩu thành công.",
+    type: "security",
+    metadata: {
+      email: user.email,
+    },
+  });
 
   res.status(200).json({
     success: true,

@@ -1,23 +1,40 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Bell } from "lucide-react";
+import { notificationService } from "../../services/notificationService";
+import { useAuth } from "../../hooks/useAuth";
 
 function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
   const bellRef = useRef(null);
+  const { user } = useAuth();
 
-  // Fake socket: mỗi 10 giây thêm 1 thông báo mới
+  // Load notifications khi user đã đăng nhập
   useEffect(() => {
-    const interval = setInterval(() => {
-      const newNotification = {
-        id: Date.now(),
-        message: `Món ăn mới được thêm vào lúc ${new Date().toLocaleTimeString()}`,
-      };
-      setNotifications((prev) => [newNotification, ...prev]);
-    }, 3000000);
+    if (!user) {
+      setNotifications([]);
+      return;
+    }
 
-    return () => clearInterval(interval);
-  }, []);
+    let isMounted = true;
+
+    const loadNotifications = async () => {
+      try {
+        const res = await notificationService.getMyNotifications();
+        if (isMounted && Array.isArray(res.data)) {
+          setNotifications(res.data);
+        }
+      } catch (err) {
+        console.error("Không thể tải thông báo", err);
+      }
+    };
+
+    loadNotifications();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
@@ -30,16 +47,51 @@ function NotificationBell() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
+  const handleToggle = async () => {
+    const nextOpen = !open;
+    setOpen(nextOpen);
+
+    if (!nextOpen) return;
+    if (!notifications.length) return;
+
+    const unreadIds = notifications.filter((n) => !n.read).map((n) => n._id);
+    if (!unreadIds.length) return;
+
+    try {
+      await notificationService.markAsRead(unreadIds);
+      setNotifications((prev) =>
+        prev.map((n) =>
+          unreadIds.includes(n._id)
+            ? { ...n, read: true }
+            : n
+        )
+      );
+    } catch (err) {
+      console.error("Không thể đánh dấu đã đọc", err);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await notificationService.deleteNotifications([id]);
+      setNotifications((prev) => prev.filter((n) => n._id !== id));
+    } catch (err) {
+      console.error("Không thể xóa thông báo", err);
+    }
+  };
+
   return (
     <div className="relative" ref={bellRef}>
       <button
         className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-200 text-gray-600 transition hover:text-secondary relative"
-        onClick={() => setOpen(!open)}
+        onClick={handleToggle}
       >
         <Bell size={28} />
-        {notifications.length > 0 && (
+        {unreadCount > 0 && (
           <span className="absolute top-0 right-0 transform translate-x-1/4 -translate-y-1/4 h-5 w-5 flex items-center justify-center rounded-full bg-red-600 text-white text-xs font-bold ring-2 ring-white dark:ring-gray-900">
-            {notifications.length > 99 ? "99+" : notifications.length}
+            {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
       </button>
@@ -57,10 +109,33 @@ function NotificationBell() {
             ) : (
               notifications.map((n) => (
                 <li
-                  key={n.id}
-                  className="p-3 text-sm hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-700 cursor-pointer"
+                  key={n._id}
+                  className="flex justify-between items-start gap-2 p-3 text-sm hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-700"
                 >
-                  {n.message}
+                  <div className="flex-1 cursor-pointer">
+                    <div className="font-semibold text-gray-900 dark:text-gray-100">
+                      {n.title || "Thông báo"}
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      {n.message}
+                    </div>
+                    <div className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">
+                      {n.createdAt &&
+                        new Date(n.createdAt).toLocaleString("vi-VN", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          day: "2-digit",
+                          month: "2-digit",
+                        })}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleDelete(n._id)}
+                    className="text-xs text-red-500 hover:text-red-600 px-1"
+                    title="Xóa thông báo"
+                  >
+                    ✕
+                  </button>
                 </li>
               ))
             )}

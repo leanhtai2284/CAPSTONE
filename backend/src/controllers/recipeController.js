@@ -4,6 +4,10 @@ import { buildRecipeQuery } from "../utils/queryParser.js";
 import { getPagination } from "../utils/pagination.js";
 import { suggestDailyMenu, suggestWeeklyMenu } from "../ai_module/engine.js";
 import mongoose from "mongoose";
+import { createNotification } from "./notificationController.js";
+
+const getRecipeName = (recipe) =>
+  (recipe && (recipe.name_vi || recipe.name || recipe.title)) || "";
 
 export async function searchRecipes(req, res) {
   try {
@@ -30,6 +34,30 @@ export async function searchRecipes(req, res) {
 export async function createRecipe(req, res) {
   try {
     const recipe = await Recipe.create(req.body);
+    // Thông báo cho admin về công thức mới
+    await createNotification({
+      user: null,
+      audience: "admin",
+      title: "Đã tạo công thức mới",
+      message: `Công thức '${getRecipeName(recipe)}' đã được tạo`,
+      type: "recipe",
+      metadata: {
+        recipeId: recipe._id,
+      },
+    });
+
+    // Thông báo chung cho tất cả user về công thức mới
+    await createNotification({
+      user: null,
+      audience: "user",
+      title: "Có công thức mới",
+      message: `Công thức mới '${getRecipeName(recipe)}' đã được thêm vào SmartMealVN`,
+      type: "recipe",
+      metadata: {
+        recipeId: recipe._id,
+      },
+    });
+
     res.status(201).json({
       success: true,
       message: "Tạo công thức thành công",
@@ -71,6 +99,30 @@ export async function updateRecipe(req, res) {
     Object.assign(recipe, req.body);
     await recipe.save();
 
+    // Thông báo cho admin về việc cập nhật công thức
+    await createNotification({
+      user: null,
+      audience: "admin",
+      title: "Cập nhật công thức",
+      message: `Công thức '${getRecipeName(recipe)}' đã được cập nhật`,
+      type: "recipe",
+      metadata: {
+        recipeId: recipe._id,
+      },
+    });
+
+    // Thông báo chung cho user về việc cập nhật công thức
+    await createNotification({
+      user: null,
+      audience: "user",
+      title: "Công thức đã được cập nhật",
+      message: `Công thức '${getRecipeName(recipe)}' đã được cập nhật. Hãy xem lại chi tiết trước khi nấu.`,
+      type: "recipe",
+      metadata: {
+        recipeId: recipe._id,
+      },
+    });
+
     res.status(200).json({
       success: true,
       message: "Cập nhật công thức thành công",
@@ -110,6 +162,30 @@ export async function deleteRecipe(req, res) {
 
     // Delete the recipe
     await Recipe.findByIdAndDelete(recipe._id);
+
+    // Thông báo cho admin về việc xóa công thức
+    await createNotification({
+      user: null,
+      audience: "admin",
+      title: "Xóa công thức",
+      message: `Công thức '${getRecipeName(recipe)}' đã bị xóa`,
+      type: "recipe",
+      metadata: {
+        recipeId: recipe._id,
+      },
+    });
+
+    // Thông báo chung cho user về việc xóa công thức
+    await createNotification({
+      user: null,
+      audience: "user",
+      title: "Công thức đã bị xóa",
+      message: `Công thức '${getRecipeName(recipe)}' không còn khả dụng trong hệ thống.`,
+      type: "recipe",
+      metadata: {
+        recipeId: recipe._id,
+      },
+    });
 
     res.status(200).json({
       success: true,
