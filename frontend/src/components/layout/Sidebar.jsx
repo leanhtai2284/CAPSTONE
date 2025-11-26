@@ -12,6 +12,7 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useLogoutModal } from "../../context/LogoutModalContext";
 

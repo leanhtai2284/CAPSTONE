@@ -4,6 +4,7 @@ import { publicRoutes } from "./routes/publicRoutes";
 import { privateRoutes } from "./routes/privateRoutes";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import LoadingModal from "./components/ui/LoadingModal";
+import AccountSettings from "./pages/AccountSettings";
 
 // Admin pages (kept as explicit routes)
 import AdminLogin from "./pages/AdminLogin";
