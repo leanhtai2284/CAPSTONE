@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import mongoose from "mongoose";
+import { createNotification } from "./notificationController.js";
 
 // @desc    Get all users
 // @route   GET /api/admin/users
@@ -194,6 +195,18 @@ export const deleteUser = async (req, res) => {
 
     await User.findByIdAndDelete(id);
 
+    await createNotification({
+      user: null,
+      audience: "admin",
+      title: "Xóa người dùng",
+      message: `Admin ${req.user?.email || ""} đã xóa tài khoản ${user.email}`,
+      type: "user_activity",
+      metadata: {
+        deletedUserId: user._id,
+        email: user.email,
+      },
+    });
+
     res.status(200).json({
       success: true,
       message: "Xóa người dùng thành công",
@@ -250,6 +263,32 @@ export const updateUserRole = async (req, res) => {
       { role },
       { new: true, runValidators: true }
     ).select("-password");
+
+    // Thông báo cho chính user được đổi role
+    await createNotification({
+      user: updatedUser._id,
+      audience: "user",
+      title: "Cập nhật quyền truy cập",
+      message: `Quyền truy cập của bạn đã được cập nhật thành: ${role}`,
+      type: "user_activity",
+      metadata: {
+        role,
+      },
+    });
+
+    // Thông báo chung cho admin khác (nếu cần theo dõi thay đổi quyền)
+    await createNotification({
+      user: null,
+      audience: "admin",
+      title: "Đã thay đổi vai trò người dùng",
+      message: `Admin ${req.user?.email || ""} đã cập nhật role của người dùng ${updatedUser.email} thành ${role}`,
+      type: "user_activity",
+      metadata: {
+        targetUserId: updatedUser._id,
+        email: updatedUser.email,
+        role,
+      },
+    });
 
     res.status(200).json({
       success: true,

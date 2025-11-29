@@ -51,6 +51,18 @@ const navItems = [
       />
     ),
   },
+  {
+    path: "/admin/feedback",
+    label: "Góp ý người dùng",
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.284-3.855C3.474 15.03 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+      />
+    ),
+  },
 ];
 
 const AdminNavBar = () => {

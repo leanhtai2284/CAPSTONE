@@ -1,4 +1,5 @@
 import DailyMenu from "../models/DailyMenu.js";
+import { createNotification } from "./notificationController.js";
 
 // POST /api/menus/daily
 export const createDailyMenu = async (req, res) => {
@@ -17,6 +18,20 @@ export const createDailyMenu = async (req, res) => {
       dayName,
       date: date ? new Date(date) : new Date(),
       meals,
+    });
+
+    // Tạo thông báo cho user về thực đơn mới lưu
+    await createNotification({
+      user: req.user._id,
+      audience: "user",
+      title: "Đã lưu thực đơn mới",
+      message: `Thực đơn cho ngày ${dayName || "hôm nay"} đã được lưu thành công`,
+      type: "menu",
+      metadata: {
+        menuId: menu._id,
+        dayIndex,
+        dayName,
+      },
     });
 
     res.status(201).json({ success: true, data: menu });
@@ -53,6 +68,19 @@ export const deleteDailyMenu = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Không tìm thấy thực đơn" });
     }
+
+    await createNotification({
+      user: req.user._id,
+      audience: "user",
+      title: "Đã xóa thực đơn",
+      message: `Thực đơn cho ngày ${menu.dayName || ""} đã được xóa`,
+      type: "menu",
+      metadata: {
+        menuId: menu._id,
+        dayIndex: menu.dayIndex,
+        dayName: menu.dayName,
+      },
+    });
 
     res.json({ success: true, message: "Đã xóa thực đơn" });
   } catch (err) {

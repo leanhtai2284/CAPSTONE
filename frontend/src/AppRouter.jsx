@@ -13,6 +13,7 @@ import AdminRecipeManagement from "./pages/AdminRecipeManagement";
 import AdminUserManagement from "./pages/AdminUserManagement";
 import AdminReportsPage from "./pages/AdminReportsPage";
 import RecipeForm from "./components/admin/RecipeForm";
+import AdminFeedbackPage from "./pages/AdminFeedbackPage";
 
 // 🌀 Component loading hiển thị trong lúc tải chậm
 const LoadingFallback = () => (
@@ -48,6 +49,7 @@ export default function AppRouter() {
           <Route path="recipes/:id/edit" element={<RecipeForm />} />
           <Route path="users" element={<AdminUserManagement />} />
           <Route path="reports" element={<AdminReportsPage />} />
+          <Route path="feedback" element={<AdminFeedbackPage />} />
         </Route>
 
         {/* Fallback - redirect unknown routes to home */}
