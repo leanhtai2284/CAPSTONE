@@ -83,9 +83,7 @@ const ReportsPage = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 md:mb-0 bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">
-            Báo cáo dinh dưỡng
-          </h1>
+          <h1 className="text-3xl  font-bold mb-4 ">Báo cáo dinh dưỡng</h1>
 
           <div className="flex space-x-2 dark:bg-slate-900/80 backdrop-blur-sm rounded-2xl p-2 border dark:border-slate-800 bg-white border-gray-300">
             <button
@@ -115,9 +113,7 @@ const ReportsPage = () => {
         {loading && (
           <div className="mb-6 text-sm text-slate-500">Đang tải báo cáo...</div>
         )}
-        {error && (
-          <div className="mb-6 text-sm text-red-500">{error}</div>
-        )}
+        {error && <div className="mb-6 text-sm text-red-500">{error}</div>}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -190,8 +186,8 @@ const ReportsPage = () => {
             transition={{ delay: 0.4 }}
           >
             <h3 className="text-xl font-bold  mb-6">
-              Dinh dưỡng trung bình (
-              {periodType === "weekly" ? "Tuần" : "Ngày"})
+              Dinh dưỡng trung bình ({periodType === "weekly" ? "Tuần" : "Ngày"}
+              )
             </h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={nutritionData}>

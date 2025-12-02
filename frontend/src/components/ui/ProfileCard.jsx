@@ -29,11 +29,6 @@ const ProfileCard = () => {
   // Navigation links
   const navItems = [
     { icon: User, label: "Quản lý Hồ sơ", path: "/profile" },
-    {
-      icon: LayoutDashboard,
-      label: "Trang Quản lý Cá nhân",
-      path: "/dashboard",
-    },
     { icon: BookmarkIcon, label: "Món ăn đã lưu", path: "/saved-menus" },
     { icon: Calendar, label: "Thực đơn đã lưu", path: "/saved-daily-menus" },
     { icon: PieChart, label: "Báo cáo Dinh dưỡng", path: "/nutrition-report" },

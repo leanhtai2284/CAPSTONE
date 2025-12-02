@@ -87,9 +87,7 @@ const SavedDailyMenusPage = () => {
     <div className="min-h-screen container px-4 md:px-10 py-10 transition-all duration-300">
       {/* Header */}
       <div className="flex flex-col items-center mb-10">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Thực đơn đã lưu
-        </h1>
+        <h1 className="text-3xl font-bold mb-2">Thực đơn đã lưu</h1>
         {savedDailyMenus.length > 0 && (
           <div className="w-24 h-1 bg-primary rounded-full mt-3" />
         )}

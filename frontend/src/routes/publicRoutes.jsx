@@ -9,6 +9,7 @@ import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactPage";
 import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 import TermsPage from "../pages/TermsPage";
+import ComingSoonPage from "../pages/ComingSoonPage";
 
 export const publicRoutes = [
   { path: "/", element: <HomePage /> },
@@ -22,5 +23,6 @@ export const publicRoutes = [
   { path: "/about", element: <AboutPage /> },
   { path: "/contact", element: <ContactPage /> },
   { path: "/privacy", element: <PrivacyPolicyPage /> },
-  { path: "//terms", element: <TermsPage /> },
+  { path: "/terms", element: <TermsPage /> },
+  { path: "/comingsoon", element: <ComingSoonPage /> },
 ];

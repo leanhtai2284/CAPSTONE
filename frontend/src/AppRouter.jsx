@@ -4,7 +4,7 @@ import { publicRoutes } from "./routes/publicRoutes";
 import { privateRoutes } from "./routes/privateRoutes";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import LoadingModal from "./components/ui/LoadingModal";
-import AccountSettings from "./pages/AccountSettings";
+import NotFoundPage from "./pages/NotFoundPage";
 
 // Admin pages (kept as explicit routes)
 import AdminLogin from "./pages/AdminLogin";
@@ -53,7 +53,7 @@ export default function AppRouter() {
         </Route>
 
         {/* Fallback - redirect unknown routes to home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

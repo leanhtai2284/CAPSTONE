@@ -11,7 +11,6 @@ import AppRouter from "./AppRouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoadingProvider } from "./context/LoadingContext";
 import { LogoutModalProvider } from "./context/LogoutModalContext";
-import AccountSettings from "./pages/AccountSettings";
 
 function AppContent() {
   const location = useLocation();
