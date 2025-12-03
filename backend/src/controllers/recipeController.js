@@ -23,7 +23,7 @@ export async function searchRecipes(req, res) {
       total: items.length,
     });
   } catch (e) {
-    console.error("❌ Lỗi khi lấy danh sách công thức:", e);
+    console.error(" Lỗi khi lấy danh sách công thức:", e);
     res.status(500).json({ error: "Internal error" });
   }
 }
@@ -329,5 +329,48 @@ export async function similarRecipes(req, res) {
     res.json({ items: candidates.slice(0, 6) });
   } catch (e) {
     res.status(500).json({ error: "Internal error" });
+  }
+}
+
+
+//  THÊM HÀM MỚI - Swap meal theo meal_type và giữ nguyên diet_tag
+export async function swapMealByType(req, res) {
+  try {
+    const { meal_type, diet_tags, exclude_ids = [] } = req.body;
+
+    console.log(" swapMealByType nhận:", { meal_type, diet_tags, exclude_ids });
+
+    // Build query filter
+    const filter = {
+      _id: { $nin: exclude_ids }, // Loại trừ món hiện tại
+      meal_types: meal_type,      // Chỉ lấy món có meal_type này
+    };
+
+    // Nếu có diet_tags (keto, vegetarian, etc.), thêm vào filter
+    if (diet_tags && diet_tags.length > 0) {
+      filter.diet_tags = { $in: diet_tags };
+    }
+
+    console.log("🔍 Filter query:", filter);
+
+    // Lấy tất cả món phù hợp
+    const recipes = await Recipe.find(filter).lean();
+
+    if (recipes.length === 0) {
+      return res.status(404).json({ 
+        message: `Không tìm thấy món ${meal_type} phù hợp với diet: ${diet_tags}` 
+      });
+    }
+
+    // Random chọn 1 món
+    const randomIndex = Math.floor(Math.random() * recipes.length);
+    const randomRecipe = recipes[randomIndex];
+
+    console.log("✅ Trả về món:", randomRecipe.name_vi);
+
+    res.json({ items: [randomRecipe] });
+  } catch (error) {
+    console.error(" Lỗi swapMealByType:", error);
+    res.status(500).json({ message: "Lỗi khi đổi món" });
   }
 }

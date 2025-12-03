@@ -8,6 +8,7 @@ import {
   suggestMenu,
   suggestWeeklyMenuEndpoint,
   similarRecipes,
+  swapMealByType,
 } from "../controllers/recipeController.js";
 import { protect, admin } from "../middlewares/authMiddleware.js";
 
@@ -19,6 +20,7 @@ router.get("/:id/similar", similarRecipes);
 router.get("/:id", getRecipeById);
 router.post("/suggest", suggestMenu);
 router.post("/suggest-weekly", suggestWeeklyMenuEndpoint);
+router.post("/swap-meal", swapMealByType);
 
 // Admin routes - protected
 router.use(protect, admin);

@@ -49,16 +49,37 @@ export default function useMealPlanner() {
   const buildPayload = (form) => {
     const budgetMap = { low: 10000, medium: 45000, high: 100000 };
     const regionMap = { North: "Bắc", Central: "Trung", South: "Nam" };
+
+    // 1) Hệ số theo mức độ hoạt động
+    const activityFactorMap = {
+      sedentary: 0.9, // ít vận động
+      moderate: 1.0, // trung bình
+      active: 1.1, // năng động
+    };
+
+    // 2) Calo cơ bản theo mục tiêu
+    const baseCalsByGoal = {
+      maintain: 600, // duy trì
+      lose: 450, // giảm cân
+      gain: 750, // tăng cân
+    };
+
+    const basePerMeal =
+      baseCalsByGoal[form.dietaryGoal] || baseCalsByGoal.maintain;
+    const activityFactor = activityFactorMap[form.activityLevel] || 1;
+    const maxCaloriesPerMeal = Math.round(basePerMeal * activityFactor);
+
     const payload = {
       avoid_allergens: form.allergies || [],
       budget_vnd: budgetMap[form.budget] || 60000,
       region: regionMap[form.region] || "Bắc",
+      activity_level: form.activityLevel,
     };
 
     switch (form.dietType) {
       case "eat-clean":
         payload.eatclean = true;
-        payload.max_calories_per_meal = form.dietaryGoal === "lose" ? 200 : 800;
+        payload.max_calories_per_meal = maxCaloriesPerMeal;
         break;
       case "keto":
         payload.keto = true;
@@ -157,9 +178,43 @@ export default function useMealPlanner() {
   const handleSwapMeal = async (mealType) => {
     setIsSwapping(true);
     try {
-      const res = await swapMealTypeApi(mealType, userPreferences);
-      const newItems = res.items || [];
+      // Lấy diet_tags từ userPreferences
+      const dietTags = userPreferences.diet_tags || [];
 
+      //  Lấy ID các món hiện tại để loại trừ
+      const currentMeals =
+        viewMode === "weekly"
+          ? weeklyMenu.find((d) => d.day === selectedDay)?.meals || []
+          : mealFromAI;
+
+      const excludeIds = currentMeals
+        .filter((m) => (m.meal_types || []).includes(mealType))
+        .map((m) => m._id || m.id);
+
+      console.log("🔄 Đổi món:", { mealType, dietTags, excludeIds });
+
+      //  Gọi API mới với diet_tags
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/recipes/swap-meal`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            meal_type: mealType,
+            diet_tags: dietTags,
+            exclude_ids: excludeIds,
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Không thể đổi món");
+      }
+
+      const newItems = (await res.json()).items || [];
+
+      // Cập nhật meal plan
       if (
         viewMode === "weekly" &&
         Array.isArray(weeklyMenu) &&
@@ -168,6 +223,7 @@ export default function useMealPlanner() {
         const dayIndex = selectedDay;
         const dayObj =
           weeklyMenu.find((d) => d.day === dayIndex) || weeklyMenu[dayIndex];
+
         if (dayObj) {
           const updatedDayMeals = (dayObj.meals || []).map((m) => {
             const types = m.meal_types || [];
@@ -186,6 +242,7 @@ export default function useMealPlanner() {
           setWeeklyMenu(updatedWeekly);
         }
       } else {
+        // Today mode
         const updatedMeals = mealFromAI.filter((meal) => {
           const mealTypes = meal.meal_types || [];
           return !mealTypes.includes(mealType);
@@ -199,9 +256,13 @@ export default function useMealPlanner() {
         const finalMeals = [...updatedMeals, ...newMealsForType];
         setMealFromAI(finalMeals);
       }
+
+      toast.success(`Đã đổi ${mealType} thành công!`);
     } catch (err) {
-      console.error("Error swapping meal:", err);
-      toast.error(`Không thể thay đổi ${mealType}. Vui lòng thử lại.`);
+      console.error(" Error swapping meal:", err);
+      toast.error(
+        err.message || `Không thể thay đổi ${mealType}. Vui lòng thử lại.`
+      );
     } finally {
       setIsSwapping(false);
     }

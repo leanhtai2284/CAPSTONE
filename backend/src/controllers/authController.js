@@ -51,9 +51,6 @@ export const Register = asyncHandler(async (req, res) => {
       password,
     });
 
-    // Tạo token giống như khi login để client có thể được auto-auth sau khi đăng ký
-    const token = generateToken(user._id, user.role);
-
     // Thông báo cho chính user
     await createNotification({
       user: user._id,
@@ -87,7 +84,6 @@ export const Register = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        token,
       },
     });
   } catch (error) {

@@ -33,16 +33,16 @@ export function RegisterForm() {
     try {
       await register(name, email, password, confirmPassword);
 
-      toast.success("🎉 Đăng ký thành công!");
-      // 🟢 Reset form
+      toast.success(" Đăng ký thành công!");
+      //  Reset form
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
       setAcceptTerms(false);
 
-      // 🟢 Điều hướng về trang chủ
-      navigate("/");
+      //  Điều hướng về trang chủ
+      navigate("/auth/login");
     } catch (err) {
       console.error("Registration failed:", err);
       const errorMessage =

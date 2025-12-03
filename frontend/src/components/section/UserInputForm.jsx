@@ -23,7 +23,7 @@ const UserInputForm = ({ onGenerate, isGenerating }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // ✅ gửi thẳng preferences ra cho ForYouPage
+    //  gửi thẳng preferences ra cho ForYouPage
     onGenerate(preferences);
   };
 

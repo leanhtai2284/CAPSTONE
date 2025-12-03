@@ -40,11 +40,6 @@ export function AuthProvider({ children }) {
         confirmPassword,
       });
 
-      // Lưu thông tin user và token vào localStorage
-      localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("token", data.token);
-      setUser(data.user);
-
       return data; // Trả về data để component có thể xử lý thành công
     } catch (err) {
       setError(err.message);

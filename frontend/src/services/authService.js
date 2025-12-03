@@ -53,12 +53,7 @@ export const authService = {
     if (!response.ok) {
       throw new Error(data.message || "Có lỗi xảy ra khi đăng ký");
     }
-    // Backend now returns { success, message, data: { ...userFields, token } }
-    const userPayload = data.data || data;
-    const token = userPayload.token;
-    this.setToken(token);
-    this.setUser(userPayload);
-    return { token, user: userPayload };
+    return data;
   },
 
   // Đăng nhập
@@ -74,9 +69,11 @@ export const authService = {
     if (!response.ok) {
       throw new Error(data.message || "Có lỗi xảy ra khi đăng nhập");
     }
-    this.setToken(data.data.token);
-    this.setUser(data.data);
-    return { token: data.data.token, user: data.data };
+    const userPayload = data.data || data;
+    const token = userPayload.token;
+    this.setToken(token);
+    this.setUser(userPayload);
+    return { token, user: userPayload };
   },
 
   // Đăng xuất

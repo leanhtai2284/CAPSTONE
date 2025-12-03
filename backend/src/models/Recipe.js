@@ -44,7 +44,7 @@ const recipeSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["main", "soup", "salad", "snack", "dessert", "drink"],
+      enum: ["main", "soup", "snack", "dessert"],
       index: true,
     },
     meal_types: [{ type: String, enum: ["breakfast", "lunch", "dinner"] }],
@@ -65,7 +65,7 @@ const recipeSchema = new mongoose.Schema(
     image_url: String,
     description: String,
 
-    ingredients: [ingredientSchema], // ✅ dùng schema mới ở đây
+    ingredients: [ingredientSchema], //  dùng schema mới ở đây
     utensils: [{ type: String }],
     steps: [{ type: String }],
 
