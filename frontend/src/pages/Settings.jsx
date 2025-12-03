@@ -5,9 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 function Settings() {
   const navigate = useNavigate();
-  const [settings, setSettings] = useState({
-    plan: "free",
-  });
 
   const handleSave = () => {
     toast.success("Cài đặt đã được lưu thành công!");
@@ -15,26 +12,24 @@ function Settings() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">
-        Cài đặt & Tài khoản
-      </h2>
+      <h2 className="text-2xl font-bold  mb-6">Cài đặt & Tài khoản</h2>
 
-      <div className="bg-white rounded-2xl shadow-sm p-8">
+      <div className="bg-white dark:bg-slate-950 rounded-2xl shadow-sm p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* LEFT SIDE */}
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-medium text-gray-800 mb-4">
+              <h3 className="text-lg font-medium  mb-4">
                 Thông tin gói dịch vụ
               </h3>
 
-              <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
+              <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-800 rounded-xl p-4 mb-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-medium">Gói hiện tại:</span>
                   <span className="text-primary font-medium">Miễn phí</span>
                 </div>
 
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
                   Bạn đang sử dụng gói Miễn phí với các tính năng cơ bản.
                 </p>
 
@@ -46,12 +41,14 @@ function Settings() {
                 </button>
               </div>
 
-              <div className="border border-gray-200 rounded-xl p-4">
+              <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-800 rounded-xl p-4">
                 <h4 className="font-medium mb-2">So sánh các gói</h4>
 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Gợi ý món ăn cơ bản</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Gợi ý món ăn cơ bản
+                    </span>
                     <div>
                       <span className="text-primary mr-4">✓</span>
                       <span className="text-primary">✓</span>
@@ -59,7 +56,9 @@ function Settings() {
                   </div>
 
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Lưu thực đơn</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Lưu thực đơn
+                    </span>
                     <div>
                       <span className="text-primary mr-4">✓</span>
                       <span className="text-primary">✓</span>
@@ -67,7 +66,7 @@ function Settings() {
                   </div>
 
                   <div className="flex justify-between">
-                    <span className="text-gray-600">
+                    <span className="text-gray-600 dark:text-gray-300">
                       Thống kê dinh dưỡng nâng cao
                     </span>
                     <div>
@@ -77,7 +76,9 @@ function Settings() {
                   </div>
 
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Xuất PDF danh sách</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Xuất PDF danh sách
+                    </span>
                     <div>
                       <span className="text-red-500 mr-4">✗</span>
                       <span className="text-primary">✓</span>
@@ -85,7 +86,9 @@ function Settings() {
                   </div>
 
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Gợi ý cá nhân hóa</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Gợi ý cá nhân hóa
+                    </span>
                     <div>
                       <span className="text-red-500 mr-4">✗</span>
                       <span className="text-primary">✓</span>
@@ -99,24 +102,22 @@ function Settings() {
           {/* RIGHT SIDE */}
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-medium text-gray-800 mb-4">
-                Tài khoản & Bảo mật
-              </h3>
+              <h3 className="text-lg font-medium mb-4">Tài khoản & Bảo mật</h3>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Email đăng nhập
                   </label>
                   <input
                     type="email"
                     value="lananh@example.com"
                     disabled
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-700"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800  "
                   />
                 </div>
 
-                <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-primary transition-colors">
                   <Key className="w-4 h-4 mr-2" />
                   Đổi mật khẩu
                 </button>
@@ -127,7 +128,7 @@ function Settings() {
             <div className="pt-4">
               <button
                 onClick={handleSave}
-                className="w-full py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="w-full py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors"
               >
                 <Save className="w-4 h-4 inline mr-2" />
                 Lưu thay đổi

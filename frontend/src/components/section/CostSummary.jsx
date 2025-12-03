@@ -115,30 +115,28 @@ function CostSummary({ meals = [], currency = "VND" }) {
               <FaMoneyBillWave className="inline-block w-10 h-10 mr-3" />
               {hasPriceData ? formatCurrency(averageCost) : "Chưa có dữ liệu"}
             </div>
-            <div className="text-slate-500 text-sm">
-              Chi phí trung bình/ngày
-            </div>
+            <div className=" text-sm">Chi phí trung bình/ngày</div>
           </div>
 
           <div className="flex items-center justify-between pt-4 border-t border-amber-500/20">
             <div>
-              <div className="text-slate-500 text-xs mb-1">Tối thiểu</div>
+              <div className=" text-xs mb-1">Tối thiểu</div>
               <div className="text-orange-500 font-bold">
                 {formatCurrency(totalMin)}
               </div>
             </div>
 
-            <div className="text-slate-500">━━━</div>
+            <div className="">━━━</div>
 
             <div className="text-right">
-              <div className="text-slate-500 text-xs mb-1">Tối đa</div>
+              <div className=" text-xs mb-1">Tối đa</div>
               <div className="text-orange-500 font-bold">
                 {formatCurrency(totalMax)}
               </div>
             </div>
           </div>
 
-          <div className="mt-4 text-center text-xs text-slate-500">
+          <div className="mt-4 text-center text-xs ">
             {hasPriceData
               ? `${dishCount}/${totalDishes} món có báo giá`
               : totalDishes > 0
