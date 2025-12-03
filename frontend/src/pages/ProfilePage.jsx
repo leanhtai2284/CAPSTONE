@@ -98,20 +98,6 @@ const ProfilePage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={profile.email}
-                    onChange={(e) =>
-                      setProfile({ ...profile, email: e.target.value })
-                    }
-                    className="w-full bg-gray-100 dark:bg-slate-950 border border-slate-700 rounded-lg px-4 py-2  focus:outline-none focus:border-green-500 transition-colors"
-                  />
-                </div>
-
-                <div>
                   <label className="block text-sm font-medium  mb-2">
                     Vùng miền
                   </label>
