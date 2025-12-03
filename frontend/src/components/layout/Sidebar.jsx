@@ -12,7 +12,6 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useLogoutModal } from "../../context/LogoutModalContext";
 
@@ -43,11 +42,6 @@ const Sidebar = ({ onToggle }) => {
 
   const menuItems = [
     { icon: User, label: "Quản lý Hồ sơ", path: "/profile" },
-    {
-      icon: LayoutDashboard,
-      label: "Trang Quản lý Cá nhân",
-      path: "/dashboard",
-    },
     { icon: BookmarkIcon, label: "Món ăn đã Lưu", path: "/saved-menus" },
     { icon: Calendar, label: "Thực đơn đã Lưu", path: "/saved-daily-menus" },
     { icon: PieChart, label: "Báo cáo Dinh dưỡng", path: "/nutrition-report" },

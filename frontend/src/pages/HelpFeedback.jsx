@@ -63,7 +63,7 @@ const HelpFeedback = () => {
         className="mb-8 text-center"
       >
         <h1 className="text-3xl font-bold  mb-2">
-          Góp ý để SmartMealVN hiểu bạn hơn 💚
+          Góp ý để SmartMealVN hiểu bạn hơn.
         </h1>
         <p className="text-gray-600 dark:text-gray-300  ">
           Ý kiến của bạn giúp chúng tôi cải thiện dịch vụ
@@ -93,7 +93,7 @@ const HelpFeedback = () => {
                 onClick={() => setFeedbackType(type.value)}
                 className={`px-4 py-3 rounded-xl transition-all ${
                   feedbackType === type.value
-                    ? "bg-[#1C7C4A] text-white shadow-md"
+                    ? "bg-primary text-white shadow-md"
                     : "bg-gray-50 text-gray-600 hover:bg-gray-100"
                 }`}
               >
@@ -112,7 +112,7 @@ const HelpFeedback = () => {
             onChange={(e) => setMessage(e.target.value)}
             rows={6}
             placeholder="Chia sẻ suy nghĩ của bạn với chúng tôi..."
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1C7C4A] focus:ring-2 focus:ring-[#1C7C4A]/20 transition-all outline-none resize-none"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-2 focus:ring-[#1C7C4A]/20 transition-all outline-none resize-none"
           />
         </div>
 
@@ -124,7 +124,7 @@ const HelpFeedback = () => {
           className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl font-medium transition-all ${
             submitted
               ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-              : "bg-gradient-to-r from-[#1C7C4A] to-[#2DA968] text-white hover:shadow-lg"
+              : "bg-gradient-to-r from-primary to-secondary text-white hover:shadow-lg"
           }`}
         >
           <SendIcon className="w-5 h-5" />

@@ -31,8 +31,38 @@ function NotificationBell() {
 
     loadNotifications();
 
+    // SSE: listen for incoming notifications for realtime updates
+    const token = localStorage.getItem("token");
+    const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    let es;
+    if (token) {
+      try {
+        es = new EventSource(
+          `${API_BASE}/api/notifications/stream?token=${token}`
+        );
+
+        es.addEventListener("notification", (e) => {
+          try {
+            const data = JSON.parse(e.data);
+            // prepend new notification
+            setNotifications((prev) => [data, ...prev]);
+          } catch (err) {
+            console.error("Failed parsing SSE notification", err);
+          }
+        });
+
+        // optional connected event
+        es.addEventListener("connected", () => {
+          // console.log('SSE connected');
+        });
+      } catch (err) {
+        console.error("EventSource error", err);
+      }
+    }
+
     return () => {
       isMounted = false;
+      if (es) es.close();
     };
   }, [user]);
 
@@ -62,11 +92,7 @@ function NotificationBell() {
     try {
       await notificationService.markAsRead(unreadIds);
       setNotifications((prev) =>
-        prev.map((n) =>
-          unreadIds.includes(n._id)
-            ? { ...n, read: true }
-            : n
-        )
+        prev.map((n) => (unreadIds.includes(n._id) ? { ...n, read: true } : n))
       );
     } catch (err) {
       console.error("Không thể đánh dấu đã đọc", err);

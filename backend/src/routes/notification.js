@@ -4,11 +4,15 @@ import {
   getMyNotifications,
   markAsRead,
   deleteNotifications,
+  subscribe,
 } from "../controllers/notificationController.js";
 
 const router = express.Router();
 
-// All notification routes require authentication
+// SSE stream endpoint - allows token via query param for EventSource
+router.get("/stream", subscribe);
+
+// All other notification routes require authentication
 router.use(protect);
 
 router.get("/me", getMyNotifications);

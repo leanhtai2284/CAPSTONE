@@ -5,7 +5,7 @@ import ReportsPage from "../pages/ReportsPage";
 import HelpFeedback from "../pages/HelpFeedback";
 import SearchPage from "../pages/SearchPage";
 import ForYouPage from "../pages/ForYouPage";
-import AccountSettings from "../pages/AccountSettings";
+import AccountSettings from "../pages/Settings";
 import React from "react";
 
 export const privateRoutes = [
