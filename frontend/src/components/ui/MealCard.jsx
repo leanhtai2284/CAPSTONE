@@ -1,13 +1,33 @@
 import React from "react";
-import { StarIcon, ClockIcon, Heart, ChefHat, MapPinIcon } from "lucide-react";
+import {
+  StarIcon,
+  ClockIcon,
+  Heart,
+  ChefHat,
+  MapPinIcon,
+  RefreshCw,
+} from "lucide-react";
 import { FaMoneyBillWave } from "react-icons/fa";
 import SaveButton from "./SaveButton";
 
-export default function MealCard({ meal, onClick, onToggleSave }) {
+export default function MealCard({
+  meal,
+  onClick,
+  onToggleSave,
+  onSwap,
+  isSwapping = false,
+}) {
   if (!meal) return null;
 
   const imageUrl = meal.image_url || meal.image || "/fallback.jpg";
   const dishName = meal.name_vi || meal.title || "Món ăn không tên";
+
+  const handleSwapClick = (e) => {
+    e.stopPropagation();
+    if (!isSwapping && onSwap) {
+      onSwap(meal._id || meal.id);
+    }
+  };
 
   return (
     <div
@@ -25,6 +45,7 @@ export default function MealCard({ meal, onClick, onToggleSave }) {
           alt={dishName}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
+
         {meal.diet_tags?.[0] && (
           <div className="absolute top-0 left-0 p-3">
             <span
@@ -43,7 +64,7 @@ export default function MealCard({ meal, onClick, onToggleSave }) {
         <SaveButton meal={meal} onToggleSave={onToggleSave} />
       </div>
 
-      <div className="p-4 space-y-3">
+      <div className="p-4 space-y-3 relative">
         {/* Tên món */}
         <h3 className="font-bold text-xl drop-shadow-sm line-clamp-1">
           {meal.name_vi}
@@ -92,6 +113,30 @@ export default function MealCard({ meal, onClick, onToggleSave }) {
             </span>
           )}
         </div>
+
+        {/* Swap button - bottom right corner */}
+        {onSwap && (
+          <button
+            onClick={handleSwapClick}
+            disabled={isSwapping}
+            className={`absolute bottom-0 right-0 flex items-center justify-center gap-1 px-3 py-2 rounded-tl-xl font-semibold transition-all ${
+              isSwapping
+                ? "bg-gray-300 text-gray-600 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
+                : "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 " +
+                  "dark:from-blue-600 dark:to-cyan-600 dark:hover:from-blue-700 dark:hover:to-cyan-700 " +
+                  "hover:shadow-lg hover:shadow-blue-400/50 active:scale-95"
+            }`}
+            title={`Đổi: ${dishName}`}
+          >
+            <RefreshCw
+              size={16}
+              className={`${isSwapping ? "animate-spin" : ""}`}
+            />
+            <span className="text-xs whitespace-nowrap">
+              {isSwapping ? "..." : "Đổi"}
+            </span>
+          </button>
+        )}
       </div>
     </div>
   );

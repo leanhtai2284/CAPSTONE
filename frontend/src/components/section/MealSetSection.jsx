@@ -1,6 +1,5 @@
 import React from "react";
 import MealCard from "../ui/MealCard";
-import SwapButton from "../ui/SwapButton";
 import { useMealSelection } from "../../context/MealSelectionContext";
 
 const mealTypeLabels = {
@@ -10,12 +9,7 @@ const mealTypeLabels = {
   snack: "Bữa phụ / Món ăn nhẹ",
 };
 
-const MealSetSection = ({
-  mealSet,
-  onSwapMeal,
-  isSwapping = false,
-  showSwapButton = true,
-}) => {
+const MealSetSection = ({ mealSet, onSwapMeal, isSwapping = null }) => {
   const { handleMealClick } = useMealSelection();
 
   return (
@@ -24,14 +18,6 @@ const MealSetSection = ({
         <h3 className="text-xl font-semibold">
           {mealTypeLabels[mealSet.mealType] || "Bữa ăn"}
         </h3>
-        {showSwapButton &&
-          ["breakfast", "lunch", "dinner"].includes(mealSet.mealType) && (
-            <SwapButton
-              mealType={mealSet.mealType}
-              onSwap={onSwapMeal}
-              isLoading={isSwapping}
-            />
-          )}
       </div>
 
       <div
@@ -46,7 +32,8 @@ const MealSetSection = ({
             key={meal._id || meal.id}
             meal={meal}
             onClick={() => handleMealClick(meal)}
-            onSwap={() => onSwapMeal?.(meal._id || meal.id)}
+            onSwap={onSwapMeal}
+            isSwapping={isSwapping === (meal._id || meal.id)}
           />
         ))}
       </div>
