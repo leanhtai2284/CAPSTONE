@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import { RefreshCw } from "lucide-react";
 
 /**
- * SwapButton: Nút để swap tất cả món ăn trong một buổi ăn
- * @param {string} mealType - Loại bữa ăn (breakfast, lunch, dinner)
+ * SwapButton: Nút để swap một món ăn cụ thể
+ * @param {string} mealId - ID của món ăn
+ * @param {string} mealName - Tên món ăn (để hiển thị tooltip)
  * @param {function} onSwap - Callback khi click swap
  * @param {boolean} isLoading - Hiển thị loading state
  */
-export default function SwapButton({ mealType, onSwap, isLoading = false }) {
-  const mealTypeLabels = {
-    breakfast: "Bữa sáng",
-    lunch: "Bữa trưa",
-    dinner: "Bữa tối",
-  };
-
-  const handleSwap = () => {
-    if (!isLoading) {
-      onSwap?.(mealType);
+export default function SwapButton({
+  mealId,
+  mealName,
+  onSwap,
+  isLoading = false,
+}) {
+  const handleSwap = (e) => {
+    e.stopPropagation(); // Prevent triggering meal click
+    if (!isLoading && onSwap) {
+      onSwap(mealId);
     }
   };
 
@@ -24,22 +25,26 @@ export default function SwapButton({ mealType, onSwap, isLoading = false }) {
     <button
       onClick={handleSwap}
       disabled={isLoading}
-      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-        isLoading
-          ? "bg-gray-300 text-gray-600 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
-          : "bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 active:scale-95"
-      }`}
-      title={`Thay đổi các món ăn ${mealTypeLabels[mealType] || mealType}`}
-      aria-label={`Swap ${mealType}`}
+      className={`inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg 
+        font-semibold transition-all duration-200 ${
+          isLoading
+            ? "bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400 scale-95"
+            : "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 " +
+              "dark:from-blue-600 dark:to-cyan-600 dark:hover:from-blue-700 dark:hover:to-cyan-700 " +
+              "hover:shadow-lg hover:shadow-blue-400/50 dark:hover:shadow-blue-600/30 " +
+              "active:scale-95 hover:scale-105"
+        }`}
+      title={`Đổi: ${mealName}`}
+      aria-label={`Swap meal ${mealId}`}
     >
       <RefreshCw
-        className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`}
+        size={16}
+        className={`flex-shrink-0 ${isLoading ? "animate-spin" : ""}`}
         aria-hidden="true"
       />
-      <span className="hidden sm:inline text-sm">
-        Đổi {mealTypeLabels[mealType]}
+      <span className="text-xs sm:text-sm whitespace-nowrap">
+        {isLoading ? "Đang xử lý..." : "Đổi"}
       </span>
-      <span className="sm:hidden text-sm">Đổi</span>
     </button>
   );
 }

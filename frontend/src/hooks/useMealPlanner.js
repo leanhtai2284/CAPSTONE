@@ -4,7 +4,7 @@ import useLocalStorage from "./useLocalStorage";
 import {
   suggestMenuApi,
   suggestWeeklyApi,
-  swapMealTypeApi,
+  swapSingleMealApi,
 } from "../services/recipeApi";
 import { dailyMenuService } from "../services/dailyMenuService";
 
@@ -23,7 +23,7 @@ export default function useMealPlanner() {
   const [selectedDay, setSelectedDay] = useState(new Date().getDay());
 
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isSwapping, setIsSwapping] = useState(false);
+  const [isSwapping, setIsSwapping] = useState(null); // Track which meal ID is swapping
 
   const hasMealPlan = useMemo(() => {
     return (
@@ -175,96 +175,58 @@ export default function useMealPlanner() {
     }
   };
 
-  const handleSwapMeal = async (mealType) => {
-    setIsSwapping(true);
+  const handleSwapMeal = async (mealId) => {
+    if (!mealId || isSwapping) return;
+
+    setIsSwapping(mealId);
     try {
-      // Lấy diet_tags từ userPreferences
-      const dietTags = userPreferences.diet_tags || [];
+      const preferences = {
+        dietaryRestrictions: userPreferences.diet_tags || [],
+        cuisinePreferences: userPreferences.cuisinePreferences || [],
+        avoidIngredients: userPreferences.avoidIngredients || [],
+        allergies: userPreferences.avoid_allergens || [],
+      };
 
-      //  Lấy ID các món hiện tại để loại trừ
-      const currentMeals =
-        viewMode === "weekly"
-          ? weeklyMenu.find((d) => d.day === selectedDay)?.meals || []
-          : mealFromAI;
+      const result = await swapSingleMealApi(mealId, preferences);
 
-      const excludeIds = currentMeals
-        .filter((m) => (m.meal_types || []).includes(mealType))
-        .map((m) => m._id || m.id);
-
-      console.log("🔄 Đổi món:", { mealType, dietTags, excludeIds });
-
-      //  Gọi API mới với diet_tags
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/recipes/swap-meal`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            meal_type: mealType,
-            diet_tags: dietTags,
-            exclude_ids: excludeIds,
-          }),
-        }
-      );
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || "Không thể đổi món");
+      if (!result.meal) {
+        throw new Error("No meal returned from swap API");
       }
 
-      const newItems = (await res.json()).items || [];
+      const newMeal = result.meal;
 
-      // Cập nhật meal plan
+      // Update meal plan
       if (
         viewMode === "weekly" &&
         Array.isArray(weeklyMenu) &&
         weeklyMenu.length
       ) {
-        const dayIndex = selectedDay;
-        const dayObj =
-          weeklyMenu.find((d) => d.day === dayIndex) || weeklyMenu[dayIndex];
-
-        if (dayObj) {
-          const updatedDayMeals = (dayObj.meals || []).map((m) => {
-            const types = m.meal_types || [];
-            if (types.includes(mealType)) {
-              const replacement = newItems.find((nm) =>
-                (nm.meal_types || []).includes(mealType)
-              );
-              return replacement || m;
-            }
-            return m;
-          });
-
-          const updatedWeekly = weeklyMenu.map((d) =>
-            d.day === dayObj.day ? { ...d, meals: updatedDayMeals } : d
-          );
-          setWeeklyMenu(updatedWeekly);
-        }
+        const updatedWeekly = weeklyMenu.map((dayObj) => {
+          if (dayObj.day === selectedDay) {
+            return {
+              ...dayObj,
+              meals: (dayObj.meals || []).map((m) =>
+                m._id === mealId || m.id === mealId ? newMeal : m
+              ),
+            };
+          }
+          return dayObj;
+        });
+        setWeeklyMenu(updatedWeekly);
       } else {
         // Today mode
-        const updatedMeals = mealFromAI.filter((meal) => {
-          const mealTypes = meal.meal_types || [];
-          return !mealTypes.includes(mealType);
-        });
-
-        const newMealsForType = newItems.filter((meal) => {
-          const mealTypes = meal.meal_types || [];
-          return mealTypes.includes(mealType);
-        });
-
-        const finalMeals = [...updatedMeals, ...newMealsForType];
-        setMealFromAI(finalMeals);
+        const updatedMeals = mealFromAI.map((m) =>
+          m._id === mealId || m.id === mealId ? newMeal : m
+        );
+        setMealFromAI(updatedMeals);
       }
 
-      toast.success(`Đã đổi ${mealType} thành công!`);
+      toast.success("Đã đổi món thành công!");
     } catch (err) {
-      console.error(" Error swapping meal:", err);
-      toast.error(
-        err.message || `Không thể thay đổi ${mealType}. Vui lòng thử lại.`
-      );
+      console.error("Error swapping meal:", err);
+      toast.error(err.message || "Không thể đổi món. Vui lòng thử lại.");
     } finally {
-      setIsSwapping(false);
+      setIsSwapping(null);
     }
   };
 

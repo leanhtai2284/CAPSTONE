@@ -46,13 +46,16 @@ export async function getRecipeDetailApi(id, servings) {
   return res.json();
 }
 
-export async function swapMealTypeApi(mealType, preferences) {
+export async function swapSingleMealApi(mealId, preferences) {
   const payload = {
-    mealType,
-    ...preferences,
+    mealId,
+    dietaryRestrictions: preferences.dietaryRestrictions || [],
+    cuisinePreferences: preferences.cuisinePreferences || [],
+    avoidIngredients: preferences.avoidIngredients || [],
+    allergies: preferences.allergies || [],
   };
 
-  const res = await fetch(`${API_BASE}/api/recipes/suggest`, {
+  const res = await fetch(`${API_BASE}/api/recipes/swap-single-meal`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -65,5 +68,5 @@ export async function swapMealTypeApi(mealType, preferences) {
     throw new Error(err.error || "Swap meal failed");
   }
 
-  return res.json(); // { items: [...] }
+  return res.json(); // { success: true, meal: {...} }
 }
