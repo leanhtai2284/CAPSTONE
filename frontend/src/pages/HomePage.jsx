@@ -38,10 +38,6 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     const loadAllSections = async () => {
       // 🌀 Hiện loading 2 giây
       setLoading(true);
