@@ -51,7 +51,9 @@ export async function createRecipe(req, res) {
       user: null,
       audience: "user",
       title: "Có công thức mới",
-      message: `Công thức mới '${getRecipeName(recipe)}' đã được thêm vào SmartMealVN`,
+      message: `Công thức mới '${getRecipeName(
+        recipe
+      )}' đã được thêm vào SmartMealVN`,
       type: "recipe",
       metadata: {
         recipeId: recipe._id,
@@ -116,7 +118,9 @@ export async function updateRecipe(req, res) {
       user: null,
       audience: "user",
       title: "Công thức đã được cập nhật",
-      message: `Công thức '${getRecipeName(recipe)}' đã được cập nhật. Hãy xem lại chi tiết trước khi nấu.`,
+      message: `Công thức '${getRecipeName(
+        recipe
+      )}' đã được cập nhật. Hãy xem lại chi tiết trước khi nấu.`,
       type: "recipe",
       metadata: {
         recipeId: recipe._id,
@@ -180,7 +184,9 @@ export async function deleteRecipe(req, res) {
       user: null,
       audience: "user",
       title: "Công thức đã bị xóa",
-      message: `Công thức '${getRecipeName(recipe)}' không còn khả dụng trong hệ thống.`,
+      message: `Công thức '${getRecipeName(
+        recipe
+      )}' không còn khả dụng trong hệ thống.`,
       type: "recipe",
       metadata: {
         recipeId: recipe._id,
@@ -332,9 +338,8 @@ export async function similarRecipes(req, res) {
   }
 }
 
-
 //  THÊM HÀM MỚI - Swap meal theo meal_type và giữ nguyên diet_tag
-export async function swapMealByType(req, res) {
+export async function swapSingleMeal(req, res) {
   try {
     const { meal_type, diet_tags, exclude_ids = [] } = req.body;
 
@@ -343,7 +348,7 @@ export async function swapMealByType(req, res) {
     // Build query filter
     const filter = {
       _id: { $nin: exclude_ids }, // Loại trừ món hiện tại
-      meal_types: meal_type,      // Chỉ lấy món có meal_type này
+      meal_types: meal_type, // Chỉ lấy món có meal_type này
     };
 
     // Nếu có diet_tags (keto, vegetarian, etc.), thêm vào filter
@@ -351,14 +356,14 @@ export async function swapMealByType(req, res) {
       filter.diet_tags = { $in: diet_tags };
     }
 
-    console.log("🔍 Filter query:", filter);
+    console.log(" Filter query:", filter);
 
     // Lấy tất cả món phù hợp
     const recipes = await Recipe.find(filter).lean();
 
     if (recipes.length === 0) {
-      return res.status(404).json({ 
-        message: `Không tìm thấy món ${meal_type} phù hợp với diet: ${diet_tags}` 
+      return res.status(404).json({
+        message: `Không tìm thấy món ${meal_type} phù hợp với diet: ${diet_tags}`,
       });
     }
 
@@ -366,7 +371,7 @@ export async function swapMealByType(req, res) {
     const randomIndex = Math.floor(Math.random() * recipes.length);
     const randomRecipe = recipes[randomIndex];
 
-    console.log("✅ Trả về món:", randomRecipe.name_vi);
+    console.log(" Trả về món:", randomRecipe.name_vi);
 
     res.json({ items: [randomRecipe] });
   } catch (error) {

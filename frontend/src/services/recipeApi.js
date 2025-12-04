@@ -46,14 +46,17 @@ export async function getRecipeDetailApi(id, servings) {
   return res.json();
 }
 
-export async function swapSingleMealApi(mealId, preferences) {
+export async function swapSingleMealApi(meal, dietTags) {
+  // meal là object món cần đổi
+  // dietTags là mảng diet_tags từ userPreferences
+
   const payload = {
-    mealId,
-    dietaryRestrictions: preferences.dietaryRestrictions || [],
-    cuisinePreferences: preferences.cuisinePreferences || [],
-    avoidIngredients: preferences.avoidIngredients || [],
-    allergies: preferences.allergies || [],
+    meal_type: meal.meal_types?.[0], // breakfast, lunch, hoặc dinner
+    diet_tags: dietTags || [],
+    exclude_ids: [meal._id || meal.id], // Loại trừ món hiện tại
   };
+
+  console.log(" Gửi swap request:", payload);
 
   const res = await fetch(`${API_BASE}/api/recipes/swap-single-meal`, {
     method: "POST",
@@ -65,8 +68,9 @@ export async function swapSingleMealApi(mealId, preferences) {
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || "Swap meal failed");
+    throw new Error(err.message || "Không thể đổi món");
   }
 
-  return res.json(); // { success: true, meal: {...} }
+  const data = await res.json(); // { items: [newMeal] }
+  return { success: true, meal: data.items?.[0] };
 }

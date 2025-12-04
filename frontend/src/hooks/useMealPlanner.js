@@ -80,6 +80,7 @@ export default function useMealPlanner() {
       case "eat-clean":
         payload.eatclean = true;
         payload.max_calories_per_meal = maxCaloriesPerMeal;
+        payload.diet_tags = ["eatclean"];
         break;
       case "keto":
         payload.keto = true;
@@ -90,6 +91,7 @@ export default function useMealPlanner() {
         payload.diet_tags = ["vegetarian"];
         break;
       default:
+        payload.diet_tags = [];
         break;
     }
 
@@ -175,27 +177,61 @@ export default function useMealPlanner() {
     }
   };
 
+  // ...existing code...
+
   const handleSwapMeal = async (mealId) => {
     if (!mealId || isSwapping) return;
 
     setIsSwapping(mealId);
     try {
-      const preferences = {
-        dietaryRestrictions: userPreferences.diet_tags || [],
-        cuisinePreferences: userPreferences.cuisinePreferences || [],
-        avoidIngredients: userPreferences.avoidIngredients || [],
-        allergies: userPreferences.avoid_allergens || [],
-      };
+      // 1️ Tìm món cần đổi trong meal plan
+      let currentMeal = null;
 
-      const result = await swapSingleMealApi(mealId, preferences);
+      if (
+        viewMode === "weekly" &&
+        Array.isArray(weeklyMenu) &&
+        weeklyMenu.length
+      ) {
+        const dayObj =
+          weeklyMenu.find((d) => d.day === selectedDay) ||
+          weeklyMenu[selectedDay];
+        if (dayObj && dayObj.meals) {
+          currentMeal = dayObj.meals.find(
+            (m) => m._id === mealId || m.id === mealId
+          );
+        }
+      } else {
+        currentMeal = mealFromAI.find(
+          (m) => m._id === mealId || m.id === mealId
+        );
+      }
+
+      if (!currentMeal) {
+        throw new Error("Không tìm thấy món cần đổi");
+      }
+
+      // 2️ Lấy diet_tags từ userPreferences
+      const dietTags = userPreferences.diet_tags || [];
+
+      console.log("🔄 Đổi món:", {
+        mealId,
+        mealName: currentMeal.name_vi,
+        mealType: currentMeal.meal_types?.[0],
+        dietTags,
+      });
+
+      // 3️ Gọi API với meal object và dietTags
+      const result = await swapSingleMealApi(currentMeal, dietTags);
 
       if (!result.meal) {
-        throw new Error("No meal returned from swap API");
+        throw new Error("Không có món thay thế phù hợp");
       }
 
       const newMeal = result.meal;
 
-      // Update meal plan
+      console.log(" Đổi thành:", newMeal.name_vi);
+
+      // 4️ Cập nhật meal plan - CHỈ THAY THẾ MÓN ĐÓ
       if (
         viewMode === "weekly" &&
         Array.isArray(weeklyMenu) &&
@@ -205,8 +241,8 @@ export default function useMealPlanner() {
           if (dayObj.day === selectedDay) {
             return {
               ...dayObj,
-              meals: (dayObj.meals || []).map((m) =>
-                m._id === mealId || m.id === mealId ? newMeal : m
+              meals: (dayObj.meals || []).map(
+                (m) => (m._id === mealId || m.id === mealId ? newMeal : m) // CHỈ THAY MÓN NÀY
               ),
             };
           }
@@ -215,15 +251,15 @@ export default function useMealPlanner() {
         setWeeklyMenu(updatedWeekly);
       } else {
         // Today mode
-        const updatedMeals = mealFromAI.map((m) =>
-          m._id === mealId || m.id === mealId ? newMeal : m
+        const updatedMeals = mealFromAI.map(
+          (m) => (m._id === mealId || m.id === mealId ? newMeal : m) // CHỈ THAY MÓN NÀY
         );
         setMealFromAI(updatedMeals);
       }
 
-      toast.success("Đã đổi món thành công!");
+      toast.success(`Đã đổi thành: ${newMeal.name_vi || "món mới"}!`);
     } catch (err) {
-      console.error("Error swapping meal:", err);
+      console.error(" Error swapping meal:", err);
       toast.error(err.message || "Không thể đổi món. Vui lòng thử lại.");
     } finally {
       setIsSwapping(null);
