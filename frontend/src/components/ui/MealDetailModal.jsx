@@ -200,7 +200,8 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-sm shadow-sm">
                   <FaMoneyBillWave className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
                   <span className="text-sm sm:text-base">
-                    {((numericPrice * servings) / 1000).toFixed(0)}.000&nbsp;VNĐ{" "}
+                    {((meal.price_estimate.min * servings) / 1000).toFixed(0)}
+                    .000&nbsp;VNĐ{" "}
                     <span className="text-gray-200 text-lg sm:text-sm font-bold">
                       / {servings} người
                     </span>
