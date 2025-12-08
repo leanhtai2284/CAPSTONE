@@ -6,8 +6,10 @@ import {
   logout,
   forgotPassword,
   resetPassword,
+  changePassword,
 } from "../controllers/authController.js";
 import { Register } from "../controllers/authController.js";
+import { protect } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -57,5 +59,8 @@ router.post("/forgot-password", forgotPassword);
 
 // POST /api/auth/reset-password/:resetToken
 router.post("/reset-password/:resetToken", resetPassword);
+
+// POST /api/auth/change-password (Protected route)
+router.post("/change-password", protect, changePassword);
 
 export default router;

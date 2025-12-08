@@ -273,3 +273,92 @@ export const resetPassword = asyncHandler(async (req, res) => {
     message: "Mật khẩu đã được cập nhật",
   });
 });
+
+// @desc    Change password for logged-in user
+// @route   POST /api/auth/change-password
+// @access  Private (require authentication)
+export const changePassword = asyncHandler(async (req, res) => {
+  const { currentPassword, newPassword, confirmNewPassword } = req.body;
+  const userId = req.user._id;
+
+  // Kiểm tra các trường bắt buộc
+  if (!currentPassword || !newPassword || !confirmNewPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "Vui lòng điền tất cả các trường",
+    });
+  }
+
+  // Kiểm tra mật khẩu mới và xác nhận khớp
+  if (newPassword !== confirmNewPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "Mật khẩu mới và xác nhận không khớp",
+    });
+  }
+
+  // Kiểm tra độ mạnh mật khẩu mới (tối thiểu 8 ký tự)
+  if (newPassword.length < 8) {
+    return res.status(400).json({
+      success: false,
+      message: "Mật khẩu mới phải có ít nhất 8 ký tự",
+    });
+  }
+
+  // Kiểm tra mật khẩu mới không giống mật khẩu cũ
+  if (currentPassword === newPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "Mật khẩu mới không được giống mật khẩu cũ",
+    });
+  }
+
+  try {
+    // Lấy user từ database (bao gồm password hash)
+    const user = await User.findById(userId).select("+password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Người dùng không tồn tại",
+      });
+    }
+
+    // So sánh mật khẩu cũ với hash lưu trong database
+    const isPasswordCorrect = await user.matchPassword(currentPassword);
+
+    if (!isPasswordCorrect) {
+      return res.status(401).json({
+        success: false,
+        message: "Mật khẩu hiện tại không đúng",
+      });
+    }
+
+    // Cập nhật mật khẩu mới
+    user.password = newPassword;
+    await user.save();
+
+    // Tạo thông báo cho user
+    await createNotification({
+      user: user._id,
+      audience: "user",
+      title: "Mật khẩu đã được thay đổi",
+      message: "Bạn đã thay đổi mật khẩu tài khoản thành công",
+      type: "security",
+      metadata: {
+        email: user.email,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Mật khẩu đã được thay đổi thành công",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Có lỗi xảy ra khi thay đổi mật khẩu",
+      error: error.message,
+    });
+  }
+});
