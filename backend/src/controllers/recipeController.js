@@ -343,39 +343,47 @@ export async function swapSingleMeal(req, res) {
   try {
     const { meal_type, diet_tags, exclude_ids = [] } = req.body;
 
-    console.log(" swapMealByType nhận:", { meal_type, diet_tags, exclude_ids });
+    console.log(" swapSingleMeal nhận:", {
+      meal_type,
+      diet_tags,
+      exclude_ids,
+    });
 
-    // Build query filter
     const filter = {
-      _id: { $nin: exclude_ids }, // Loại trừ món hiện tại
-      meal_types: meal_type, // Chỉ lấy món có meal_type này
+      _id: { $nin: exclude_ids },
+      meal_types: meal_type,
     };
 
-    // Nếu có diet_tags (keto, vegetarian, etc.), thêm vào filter
     if (diet_tags && diet_tags.length > 0) {
       filter.diet_tags = { $in: diet_tags };
     }
 
-    console.log(" Filter query:", filter);
+    console.log("🔍 Filter query:", filter);
 
-    // Lấy tất cả món phù hợp
-    const recipes = await Recipe.find(filter).lean();
+    let recipes = await Recipe.find(filter).lean();
+
+    //  LỌC: Chỉ lấy món có ĐÚNG 1 meal_type
+    recipes = recipes.filter(
+      (r) =>
+        r.meal_types &&
+        r.meal_types.length === 1 &&
+        r.meal_types[0] === meal_type
+    );
 
     if (recipes.length === 0) {
       return res.status(404).json({
-        message: `Không tìm thấy món ${meal_type} phù hợp với diet: ${diet_tags}`,
+        message: `Không tìm thấy món ${meal_type} riêng lẻ`,
       });
     }
 
-    // Random chọn 1 món
     const randomIndex = Math.floor(Math.random() * recipes.length);
     const randomRecipe = recipes[randomIndex];
 
-    console.log(" Trả về món:", randomRecipe.name_vi);
+    console.log(" Trả về:", randomRecipe.name_vi, randomRecipe.meal_types);
 
     res.json({ items: [randomRecipe] });
   } catch (error) {
-    console.error(" Lỗi swapMealByType:", error);
+    console.error("❌ Lỗi:", error);
     res.status(500).json({ message: "Lỗi khi đổi món" });
   }
 }
