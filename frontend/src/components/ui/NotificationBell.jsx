@@ -2,12 +2,15 @@ import React, { useEffect, useState, useRef } from "react";
 import { Bell } from "lucide-react";
 import { notificationService } from "../../services/notificationService";
 import { useAuth } from "../../hooks/useAuth";
+import { useMealSelection } from "../../context/MealSelectionContext";
 
 function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
   const bellRef = useRef(null);
   const { user } = useAuth();
+  const { handleMealClick } = useMealSelection();
+  const [loadingMeal, setLoadingMeal] = useState(false);
 
   // Load notifications khi user đã đăng nhập
   useEffect(() => {
@@ -108,6 +111,28 @@ function NotificationBell() {
     }
   };
 
+  // Khi click vào thông báo loại recipe, mở modal chi tiết món ăn
+  const handleNotificationClick = async (notification) => {
+    if (notification.type === "recipe" && notification.metadata?.recipeId) {
+      setLoadingMeal(true);
+      setOpen(false); // Đóng dropdown khi mở modal
+      try {
+        const API_BASE =
+          import.meta.env.VITE_API_URL || "http://localhost:5000";
+        const res = await fetch(
+          `${API_BASE}/api/recipes/${notification.metadata.recipeId}`
+        );
+        if (!res.ok) throw new Error("Không tìm thấy công thức");
+        const data = await res.json();
+        handleMealClick(data);
+      } catch (err) {
+        // Có thể show toast hoặc alert nếu muốn
+      } finally {
+        setLoadingMeal(false);
+      }
+    }
+  };
+
   return (
     <div className="relative" ref={bellRef}>
       <button
@@ -138,7 +163,17 @@ function NotificationBell() {
                   key={n._id}
                   className="flex justify-between items-start gap-2 p-3 text-sm hover:bg-gray-100 dark:bg-slate-950 dark:hover:bg-gray-700"
                 >
-                  <div className="flex-1 cursor-pointer">
+                  <div
+                    className={`flex-1 cursor-pointer ${
+                      n.type === "recipe"
+                        ? "hover:underline text-blue-600 dark:text-blue-400"
+                        : ""
+                    }`}
+                    onClick={() => handleNotificationClick(n)}
+                    title={
+                      n.type === "recipe" ? "Xem chi tiết món ăn" : undefined
+                    }
+                  >
                     <div className="font-semibold text-gray-900 dark:text-gray-100">
                       {n.title || "Thông báo"}
                     </div>
@@ -166,6 +201,15 @@ function NotificationBell() {
               ))
             )}
           </ul>
+        </div>
+      )}
+
+      {/* Hiển thị loading khi đang lấy dữ liệu món ăn từ thông báo */}
+      {loadingMeal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-40">
+          <div className="p-8 bg-white dark:bg-gray-900 rounded-lg shadow-lg min-w-[320px] text-center">
+            Đang tải...
+          </div>
         </div>
       )}
     </div>
