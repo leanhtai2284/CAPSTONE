@@ -77,6 +77,16 @@ const NavBar = () => {
           >
             Dành Cho Bạn
           </Link>
+          <Link
+            to="/news"
+            className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
+              isActive("/news")
+                ? "bg-yellow-400 text-black dark:bg-yellow-500 shadow-md"
+                : "hover:text-green-500"
+            }`}
+          >
+            Tin tức
+          </Link>
           {/* Admin link - only show if user is admin */}
           {user?.role === 'admin' && (
             <Link
@@ -145,6 +155,17 @@ const NavBar = () => {
                 }`}
               >
                 Dành Cho Bạn
+              </Link>
+              <Link
+                to="/news"
+                onClick={() => setMenuOpen(false)}
+                className={`block py-2 px-3 rounded-lg text-lg font-semibold transition ${
+                  isActive("/news")
+                    ? "bg-yellow-400 text-black dark:bg-yellow-500 shadow-md"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+              >
+                Tin tức
               </Link>
               {/* Admin link in mobile menu */}
               {user?.role === 'admin' && (
