@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import Hero from "../components/section/Hero";
 import Footer from "../components/layout/Footer";
 import MealSection from "../components/section/MealSection";
@@ -39,7 +39,6 @@ const HomePage = () => {
 
   useEffect(() => {
     const loadAllSections = async () => {
-      // 🌀 Hiện loading 2 giây
       setLoading(true);
 
       try {
@@ -68,7 +67,6 @@ const HomePage = () => {
           family: shuffle(mockMeals).slice(0, 10),
         });
       } finally {
-        // ⏳ Giữ loading ít nhất 2 giây rồi mới tắt
         setTimeout(() => setLoading(false), 1000);
       }
     };

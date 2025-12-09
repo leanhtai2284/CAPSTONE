@@ -9,7 +9,7 @@
     "fetch:dishes": "node src/fetch_wiki_simple.js",
     "seed:dishes": "node src/scripts/seed_recipes.js ./data/wikipedia_vn_dishes_filtered.csv",
     "bootstrap:dishes": "npm run fetch:dishes && npm run seed:dishes",
-  "seed:admin": "node src/scripts/seed_admin.js",
+    "seed:admin": "node src/scripts/seed_admin.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -33,6 +33,6 @@
     "slugify": "^1.6.6"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.11"
   }
 }
