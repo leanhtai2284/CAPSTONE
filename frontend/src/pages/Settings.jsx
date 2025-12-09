@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import { Save, Key } from "lucide-react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import ChangePasswordModal from "../components/ui/ChangePasswordModal";
+import { useAuth } from "../hooks/useAuth";
 
 function Settings() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
+    useState(false);
 
   const handleSave = () => {
     toast.success("Cài đặt đã được lưu thành công!");
@@ -111,13 +116,16 @@ function Settings() {
                   </label>
                   <input
                     type="email"
-                    value="lananh@example.com"
+                    value={user?.email || ""}
                     disabled
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800  "
                   />
                 </div>
 
-                <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-primary transition-colors">
+                <button
+                  onClick={() => setIsChangePasswordModalOpen(true)}
+                  className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-primary hover:text-white transition-colors"
+                >
                   <Key className="w-4 h-4 mr-2" />
                   Đổi mật khẩu
                 </button>
@@ -137,6 +145,12 @@ function Settings() {
           </div>
         </div>
       </div>
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal
+        isOpen={isChangePasswordModalOpen}
+        onClose={() => setIsChangePasswordModalOpen(false)}
+      />
     </div>
   );
 }
