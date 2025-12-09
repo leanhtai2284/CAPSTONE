@@ -15,7 +15,42 @@ export function buildRecipeQuery(q = {}) {
 
   const filter = {};
 
-  if (text) filter.$text = { $search: text };
+  const toAccentRegex = (textVal) => {
+    const map = {
+      a: "[aàáạảãâầấậẩẫăằắặẳẵ]",
+      e: "[eèéẹẻẽêềếệểễ]",
+      i: "[iìíịỉĩ]",
+      o: "[oòóọỏõôồốộổỗơờớợởỡ]",
+      u: "[uùúụủũưừứựửữ]",
+      y: "[yỳýỵỷỹ]",
+      d: "[dđ]",
+    };
+    return String(textVal || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")
+      .replace(/[aeiouyd]/g, (ch) => map[ch] || ch);
+  };
+
+  const wordToOrClause = (word) => ({
+    $or: [
+      { name_vi: { $regex: toAccentRegex(word), $options: "i" } },
+      { name: { $regex: toAccentRegex(word), $options: "i" } },
+      { title: { $regex: toAccentRegex(word), $options: "i" } },
+    ],
+  });
+
+  // Match all words in name/title (accent-insensitive)
+  if (text && text.trim()) {
+    const words = String(text).trim().split(/\s+/).filter(Boolean);
+
+    const textClauses = [
+      wordToOrClause(words.join(" ")),
+      ...words.map(wordToOrClause),
+    ];
+
+    filter.$and = [...(filter.$and || []), ...textClauses];
+  }
   if (region) filter.region = region;
   if (category) filter.category = category;
 
