@@ -22,7 +22,9 @@ import newsRoutes from "./routes/news-routes.js";
 const app = express();
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-app.use(express.json());
+app.use(express.json({ limit: "50mb" })); // Tăng từ 100kb → 50mb
+app.use(express.urlencoded({ limit: "50mb", extended: true })); // Thêm dòng này cho form data
+
 app.use(passport.initialize());
 
 // Debug middleware
