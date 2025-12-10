@@ -21,33 +21,10 @@ const ReportsPage = () => {
   const [error, setError] = useState("");
 
   // ✅ Dữ liệu mô phỏng giống bảng user_reports
-  const [report, setReport] = useState({
-    _id: 1,
-    user_id: 12,
-    period_type: periodType, // weekly / daily
-    start_date: "2025-10-14",
-    end_date: "2025-10-21",
-    total_meals: 21,
-    total_calories: 13450,
-    avg_protein: 90.5,
-    avg_carbs: 230.4,
-    avg_fat: 68.2,
-    diet_score: 87.2,
-    notes:
-      "Bạn đang duy trì chế độ ăn rất tốt! Hãy tăng thêm lượng protein vào bữa sáng để đạt hiệu quả tốt hơn.",
-    created_at: "2025-10-21T12:00:00Z",
-  });
+  const [report, setReport] = useState(null);
 
   // ✅ Dữ liệu biểu đồ tuần (có thể lấy từ API sau)
-  const [nutritionData, setNutritionData] = useState([
-    { day: "T2", protein: 85, carbs: 220, fat: 65, calories: 1850 },
-    { day: "T3", protein: 92, carbs: 240, fat: 70, calories: 1980 },
-    { day: "T4", protein: 88, carbs: 210, fat: 68, calories: 1820 },
-    { day: "T5", protein: 95, carbs: 250, fat: 72, calories: 2050 },
-    { day: "T6", protein: 90, carbs: 230, fat: 66, calories: 1920 },
-    { day: "T7", protein: 87, carbs: 215, fat: 64, calories: 1840 },
-    { day: "CN", protein: 93, carbs: 245, fat: 71, calories: 2010 },
-  ]);
+  const [nutritionData, setNutritionData] = useState([]);
 
   useEffect(() => {
     let mounted = true;
@@ -129,7 +106,7 @@ const ReportsPage = () => {
                 <CalendarIcon className="w-6 h-6 text-green-500" />
               </div>
               <div>
-                <div className="text-3xl font-bold ">{report.total_meals}</div>
+                <div className="text-3xl font-bold ">{report?.total_meals ?? 0}</div>
                 <div className="text-slate-400">Tổng số bữa</div>
               </div>
             </div>
@@ -148,7 +125,7 @@ const ReportsPage = () => {
               </div>
               <div>
                 <div className="text-3xl font-bold ">
-                  {report.diet_score.toFixed(1)}%
+                  {(report?.diet_score ?? 0).toFixed(1)}%
                 </div>
                 <div className="text-slate-400">Điểm dinh dưỡng</div>
               </div>
@@ -168,7 +145,7 @@ const ReportsPage = () => {
               </div>
               <div>
                 <div className="text-3xl font-bold ">
-                  {report.total_calories}
+                  {report?.total_calories ?? 0}
                 </div>
                 <div className="text-slate-400">Tổng năng lượng (kcal)</div>
               </div>
@@ -242,19 +219,48 @@ const ReportsPage = () => {
           </motion.div>
         </div>
 
+        {/* Calorie alert banner */}
+        {report?.calorie_alert?.level && report.calorie_alert.level !== "ok" && (
+          <motion.div
+            className={`rounded-2xl p-4 mb-6 ${
+              report.calorie_alert.level === "danger"
+                ? "bg-red-500 text-white"
+                : "bg-yellow-300 text-black"
+            }`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55 }}
+          >
+            <div className="max-w-7xl mx-auto">
+              <strong>
+                {report.calorie_alert.level === "danger" ? "Cảnh báo lượng calo:" : "Lưu ý lượng calo:"}
+              </strong>
+              <span className="ml-2">{report.calorie_alert.message}</span>
+            </div>
+          </motion.div>
+        )}
+
         {/* Gợi ý AI */}
         <motion.div
-          className="bg-green-500 rounded-2xl p-8 border border-green-500/30"
+          className={`rounded-2xl p-8 border mb-8 ${
+            (report?.diet_score ?? 0) >= 75
+              ? "bg-green-500 border-green-500/30"
+              : (report?.diet_score ?? 0) >= 50
+              ? "bg-yellow-400 border-yellow-400/30"
+              : "bg-red-500 border-red-500/30"
+          }`}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <h3 className="text-2xl font-bold text-white mb-4">
-            Gợi ý cải thiện 🌿
-          </h3>
+          <h3 className="text-2xl font-bold text-white mb-4">Gợi ý cải thiện 🌿</h3>
           <p className="text-gray-100 text-lg leading-relaxed">
-            {report.notes}
+            {report?.notes || "Chưa có gợi ý"}
           </p>
+          <div className="mt-4 text-sm text-white/90">
+            <strong>Điểm dinh dưỡng: </strong>
+            {(report?.diet_score ?? 0).toFixed(1)}%
+          </div>
         </motion.div>
       </div>
     </div>
