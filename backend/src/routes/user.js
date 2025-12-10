@@ -1,15 +1,16 @@
 import express from "express";
+import { protect } from "../middlewares/authMiddleware.js";
+import {
+  getUserProfile,
+  updateUserProfile,
+  getRecommendations,
+} from "../controllers/userController.js";
 
 const router = express.Router();
 
-// GET /api/users/profile
-router.get("/profile", (req, res) => {
-  res.json({ message: "User profile API working!" });
-});
-
-// PUT /api/users/profile
-router.put("/profile", (req, res) => {
-  res.json({ message: "Update profile API working!" });
-});
+// Protected routes (require authentication)
+router.get("/profile", protect, getUserProfile);
+router.put("/profile", protect, updateUserProfile);
+router.get("/recommendations", protect, getRecommendations);
 
 export default router;

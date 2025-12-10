@@ -19,6 +19,7 @@ import favoriteRoutes from "./routes/favorite.js";
 import notificationRoutes from "./routes/notification.js";
 import feedbackRoutes from "./routes/feedback.js";
 import newsRoutes from "./routes/news-routes.js";
+
 const app = express();
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
