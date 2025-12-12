@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { UserIcon, SaveIcon, XIcon } from "lucide-react";
+import { UserIcon, SaveIcon, XIcon, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
+import { userService } from "../services/userService";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
@@ -13,39 +14,127 @@ const ProfilePage = () => {
     goal: "maintain",
     budget: "medium",
     diet: "normal",
-    likedFoods: ["Phở", "Bún chả", "Gỏi cuốn"],
-    avoidedFoods: ["Hải sản", "Nội tạng"],
+    likedFoods: [],
+    avoidedFoods: [],
   });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  // ✅ Lấy user mock từ localStorage khi load trang
+  // Helper function to map region from backend to frontend format
+  const mapRegionToFrontend = (region) => {
+    const mapping = {
+      Bắc: "mien-bac",
+      Trung: "mien-trung",
+      Nam: "mien-nam",
+    };
+    return mapping[region] || "mien-nam";
+  };
+
+  // Helper function to map region from frontend to backend format
+  const mapRegionToBackend = (region) => {
+    const mapping = {
+      "mien-bac": "Bắc",
+      "mien-trung": "Trung",
+      "mien-nam": "Nam",
+    };
+    return mapping[region] || "Nam";
+  };
+
+  // ✅ Lấy thông tin profile từ API khi load trang
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) {
-      setProfile((prev) => ({
-        ...prev,
-        name: storedUser.name || "Người dùng mới",
-        email: storedUser.email || "example@gmail.com",
-      }));
-    }
+    const loadProfile = async () => {
+      try {
+        setLoading(true);
+        const response = await userService.getProfile();
 
-    const storedProfile = JSON.parse(localStorage.getItem("profile"));
-    if (storedProfile) {
-      setProfile(storedProfile);
-    }
+        if (response.success && response.data) {
+          const userData = response.data;
+          setProfile({
+            name: userData.name || "",
+            email: userData.email || "",
+            region: userData.preferences?.region
+              ? mapRegionToFrontend(userData.preferences.region)
+              : "mien-nam",
+            familySize: userData.preferences?.familySize?.toString() || "4",
+            activityLevel: userData.preferences?.activityLevel || "moderate",
+            goal: userData.preferences?.goal || "maintain",
+            budget: userData.preferences?.budget || "medium",
+            diet: userData.preferences?.diet || "normal",
+            likedFoods: userData.preferences?.likedFoods || [],
+            avoidedFoods: userData.preferences?.avoidedFoods || [],
+          });
+        }
+      } catch (error) {
+        console.error("Lỗi khi tải thông tin hồ sơ:", error);
+        toast.error(error.message || "Không thể tải thông tin hồ sơ", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+
+        // Fallback: Lấy từ localStorage nếu API thất bại
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        if (storedUser) {
+          setProfile((prev) => ({
+            ...prev,
+            name: storedUser.name || "",
+            email: storedUser.email || "",
+          }));
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
   }, []);
 
   // ✅ Hàm lưu hồ sơ
-  const handleSave = () => {
-    // Giả lập quá trình lưu
-    localStorage.setItem("profile", JSON.stringify(profile));
+  const handleSave = async () => {
+    try {
+      setSaving(true);
 
-    // Hiển thị thông báo thành công
-    toast.success("Đã lưu thay đổi hồ sơ thành công!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      theme: "colored",
-    });
+      // Chuẩn bị dữ liệu để gửi lên API
+      const profileData = {
+        name: profile.name,
+        preferences: {
+          region: mapRegionToBackend(profile.region),
+          familySize: parseInt(profile.familySize) || 4,
+          activityLevel: profile.activityLevel,
+          goal: profile.goal,
+          budget: profile.budget,
+          diet: profile.diet,
+          likedFoods: profile.likedFoods,
+          avoidedFoods: profile.avoidedFoods,
+        },
+      };
+
+      const response = await userService.updateProfile(profileData);
+
+      if (response.success) {
+        toast.success(response.message || "Đã lưu thay đổi hồ sơ thành công!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          theme: "colored",
+        });
+
+        // Cập nhật localStorage user nếu có
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        if (storedUser) {
+          storedUser.name = profile.name;
+          localStorage.setItem("user", JSON.stringify(storedUser));
+        }
+      }
+    } catch (error) {
+      console.error("Lỗi khi lưu hồ sơ:", error);
+      toast.error(error.message || "Không thể lưu thay đổi hồ sơ", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const removeTag = (type, item) => {
@@ -61,6 +150,19 @@ const ProfilePage = () => {
       });
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen pt-0 pb-12 px-4 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4 text-green-500" />
+          <p className="text-slate-600 dark:text-slate-400">
+            Đang tải thông tin hồ sơ...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-0 pb-12 px-4">
@@ -309,13 +411,23 @@ const ProfilePage = () => {
 
         {/* ✅ Floating Save Button (không đổi giao diện) */}
         <motion.button
-          className="fixed bottom-8 right-8 bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-green-500/50 transition-all duration-300 flex items-center space-x-2"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          className="fixed bottom-8 right-8 bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-green-500/50 transition-all duration-300 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          whileHover={{ scale: saving ? 1 : 1.1 }}
+          whileTap={{ scale: saving ? 1 : 0.9 }}
           onClick={handleSave}
+          disabled={saving}
         >
-          <SaveIcon className="w-6 h-6" />
-          <span className="font-semibold">Lưu thay đổi</span>
+          {saving ? (
+            <>
+              <Loader2 className="w-6 h-6 animate-spin" />
+              <span className="font-semibold">Đang lưu...</span>
+            </>
+          ) : (
+            <>
+              <SaveIcon className="w-6 h-6" />
+              <span className="font-semibold">Lưu thay đổi</span>
+            </>
+          )}
         </motion.button>
       </div>
     </div>
