@@ -5,6 +5,7 @@ import MealSection from "../components/section/MealSection";
 import NutritionCorner from "../components/section/NutritionCorner";
 import { FinalCTA } from "../components/section/FinalCTA";
 import { useAuth } from "../hooks/useAuth";
+import { useUserRegion } from "../hooks/useUserRegion";
 import { useMealSelection } from "../context/MealSelectionContext";
 import { mockMeals } from "../data/mockMeals";
 import FoodList from "../components/section/FootList";
@@ -13,6 +14,7 @@ import { useLoading } from "../context/LoadingContext";
 
 const HomePage = () => {
   const { user } = useAuth();
+  const { region, regionTitle } = useUserRegion();
   const { handleMealClick } = useMealSelection();
   const { setLoading } = useLoading();
 
@@ -37,13 +39,14 @@ const HomePage = () => {
     return await mealService.getMeals(query);
   };
 
+  // Load meals dựa trên region của user
   useEffect(() => {
     const loadAllSections = async () => {
       setLoading(true);
 
       try {
-        const [north, dinner, family] = await Promise.all([
-          fetchMeals("?region=Bắc"),
+        const [regionMeals, dinner, family] = await Promise.all([
+          fetchMeals(`?region=${region}`),
           fetchMeals("?meal_type=dinner"),
           fetchMeals("?suitable_for=Gia đình"),
         ]);
@@ -54,7 +57,7 @@ const HomePage = () => {
         };
 
         setSections({
-          north: randomSlice(north, 8, 20),
+          north: randomSlice(regionMeals, 8, 20),
           dinner: randomSlice(dinner, 6, 20),
           family: randomSlice(family, 6, 20),
         });
@@ -72,7 +75,7 @@ const HomePage = () => {
     };
 
     loadAllSections();
-  }, [setLoading]);
+  }, [setLoading, region]);
 
   if (error) {
     return (
@@ -89,7 +92,7 @@ const HomePage = () => {
 
       <main className="min-h-screen space-y-6">
         <MealSection
-          title="Hương vị miền Bắc"
+          title={regionTitle}
           meals={sections.north}
           onMealClick={handleMealClick}
         />
