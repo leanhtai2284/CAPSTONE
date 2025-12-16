@@ -41,8 +41,8 @@ export function RegisterForm() {
       setConfirmPassword("");
       setAcceptTerms(false);
 
-      //  Điều hướng về trang chủ
-      navigate("/auth/login");
+      //  Điều hướng thẳng vào trang hồ sơ để nhập thông tin
+      navigate("/profile");
     } catch (err) {
       console.error("Registration failed:", err);
       const errorMessage =

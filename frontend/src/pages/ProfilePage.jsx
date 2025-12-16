@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { UserIcon, SaveIcon, XIcon, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { userService } from "../services/userService";
+import { useAuth } from "../hooks/useAuth";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
@@ -19,6 +20,7 @@ const ProfilePage = () => {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const { setUser } = useAuth();
 
   // Helper function to map region from backend to frontend format
   const mapRegionToFrontend = (region) => {
@@ -118,11 +120,19 @@ const ProfilePage = () => {
           theme: "colored",
         });
 
-        // Cập nhật localStorage user nếu có
-        const storedUser = JSON.parse(localStorage.getItem("user"));
-        if (storedUser) {
-          storedUser.name = profile.name;
-          localStorage.setItem("user", JSON.stringify(storedUser));
+        // Cập nhật localStorage và AuthContext để các trang (ví dụ Home) có thể thấy chế độ ăn mới ngay lập tức
+        if (response.data) {
+          // response.data là object user được backend trả về
+          try {
+            localStorage.setItem("user", JSON.stringify(response.data));
+            // update context
+            setUser(response.data);
+          } catch (err) {
+            console.warn(
+              "Không thể cập nhật local user sau khi lưu hồ sơ:",
+              err
+            );
+          }
         }
       }
     } catch (error) {
@@ -327,8 +337,7 @@ const ProfilePage = () => {
                   <option value="normal">Bình thường</option>
                   <option value="clean">Eat Clean</option>
                   <option value="keto">Keto</option>
-                  <option value="vegan">Chay</option>
-                  <option value="vegetarian">Ăn chay trứng sữa</option>
+                  <option value="vegetarian">Ăn chay</option>
                 </select>
               </div>
 

@@ -86,7 +86,6 @@ const Footer = () => {
               <FooterLink href="/contact">Liên hệ</FooterLink>
               <FooterLink href="/privacy">Chính sách bảo mật</FooterLink>
               <FooterLink href="/terms">Điều khoản sử dụng</FooterLink>
-              <FooterLink href="/coming-soon">404 test</FooterLink>
             </ul>
           </div>
         </div>

@@ -23,6 +23,7 @@ const HomePage = () => {
     dinner: [],
     family: [],
   });
+  const [dietMeals, setDietMeals] = useState([]);
 
   const [error, setError] = useState(null);
 
@@ -57,10 +58,31 @@ const HomePage = () => {
         };
 
         setSections({
-          north: randomSlice(regionMeals, 8, 20),
-          dinner: randomSlice(dinner, 6, 20),
-          family: randomSlice(family, 6, 20),
+          north: randomSlice(regionMeals, 30, 30),
+          dinner: randomSlice(dinner, 30, 30),
+          family: randomSlice(family, 30, 30),
         });
+        // Nếu user có chế độ ăn khác "normal" thì lấy thêm section cho chế độ đó
+        try {
+          const diet = user?.preferences?.diet;
+          const mapDietToTag = (d) => {
+            if (!d) return null;
+            if (d === "clean") return "eatclean";
+            if (d === "vegetarian" || d === "vegan") return "vegetarian";
+            return d; // e.g., keto
+          };
+
+          const dietTag = mapDietToTag(diet);
+          if (user && dietTag && diet !== "normal") {
+            const dietRes = await fetchMeals(`?diet_tags=${dietTag}`);
+            setDietMeals(randomSlice(dietRes, 30, 30));
+          } else {
+            setDietMeals([]);
+          }
+        } catch (err) {
+          console.warn("Không thể tải section chế độ ăn:", err);
+          setDietMeals([]);
+        }
       } catch (err) {
         console.error("❌ Lỗi khi tải dữ liệu:", err);
         setError(err.message || "Không thể tải dữ liệu từ máy chủ");
@@ -75,7 +97,7 @@ const HomePage = () => {
     };
 
     loadAllSections();
-  }, [setLoading, region]);
+  }, [setLoading, region, user]);
 
   if (error) {
     return (
@@ -97,6 +119,20 @@ const HomePage = () => {
           onMealClick={handleMealClick}
         />
 
+        {/* Section: Chế độ của riêng bạn - chỉ hiển thị khi user đã lưu chế độ ăn (không phải guest và không phải 'normal') */}
+        {user &&
+          user.preferences &&
+          user.preferences.diet &&
+          user.preferences.diet !== "normal" &&
+          dietMeals &&
+          dietMeals.length > 0 && (
+            <MealSection
+              title="Chế độ của riêng bạn"
+              meals={dietMeals}
+              onMealClick={handleMealClick}
+            />
+          )}
+
         <FoodList />
 
         <MealSection
@@ -111,8 +147,6 @@ const HomePage = () => {
           onMealClick={handleMealClick}
         />
       </main>
-
-      <NutritionCorner />
       {!user && <FinalCTA />}
       <Footer />
     </div>

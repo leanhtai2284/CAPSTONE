@@ -81,14 +81,14 @@ const NavBar = () => {
             to="/news"
             className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
               isActive("/news")
-                ? "bg-yellow-400 text-black dark:bg-yellow-500 shadow-md"
+                ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
                 : "hover:text-green-500"
             }`}
           >
             Tin tức
           </Link>
           {/* Admin link - only show if user is admin */}
-          {user?.role === 'admin' && (
+          {user?.role === "admin" && (
             <Link
               to="/admin"
               className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
@@ -168,7 +168,7 @@ const NavBar = () => {
                 Tin tức
               </Link>
               {/* Admin link in mobile menu */}
-              {user?.role === 'admin' && (
+              {user?.role === "admin" && (
                 <Link
                   to="/admin"
                   onClick={() => setMenuOpen(false)}

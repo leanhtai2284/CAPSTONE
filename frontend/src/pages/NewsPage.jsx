@@ -138,11 +138,14 @@ const NewsPage = () => {
     });
 
   const isLikedByUser = (news) => {
-    return user && news.likes?.some((like) => like === user._id || like._id === user._id);
+    return (
+      user &&
+      news.likes?.some((like) => like === user._id || like._id === user._id)
+    );
   };
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">
+    <div className="w-full min-h-screen ">
       {/* Hero Header */}
       <section className="pt-24 pb-12 bg-gradient-to-r from-red-600 via-red-700 to-orange-600 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -159,7 +162,8 @@ const NewsPage = () => {
               📰 Tin tức ẩm thực
             </h1>
             <p className="text-red-100 text-lg md:text-xl max-w-2xl">
-              Cập nhật công thức, mẹo nấu ăn, dinh dưỡng và văn hóa ẩm thực Việt Nam
+              Cập nhật công thức, mẹo nấu ăn, dinh dưỡng và văn hóa ẩm thực Việt
+              Nam
             </p>
           </motion.div>
         </div>
@@ -207,8 +211,12 @@ const NewsPage = () => {
                   <div className="p-5">
                     <div className="flex items-center gap-2 mb-3">
                       <span className="inline-flex items-center gap-1 bg-white text-red-600 px-3 py-1 rounded-full text-xs font-semibold border border-red-200">
-                        {categories.find((c) => c.value === news.category)?.icon || "📄"}
-                        {categories.find((c) => c.value === news.category)?.label}
+                        {categories.find((c) => c.value === news.category)
+                          ?.icon || "📄"}
+                        {
+                          categories.find((c) => c.value === news.category)
+                            ?.label
+                        }
                       </span>
                       <span className="flex items-center gap-1 text-xs text-gray-600">
                         <Eye size={14} /> {news.views}
@@ -226,12 +234,16 @@ const NewsPage = () => {
                       </span>
                       <button
                         onClick={(e) => handleLike(news._id, e)}
-                        className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-full transition-all ${isLikedByUser(news)
+                        className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-full transition-all ${
+                          isLikedByUser(news)
                             ? "bg-red-600 text-white"
                             : "bg-red-100 text-red-600 hover:bg-red-200"
-                          }`}
+                        }`}
                       >
-                        <Heart size={14} fill={isLikedByUser(news) ? "currentColor" : "none"} />
+                        <Heart
+                          size={14}
+                          fill={isLikedByUser(news) ? "currentColor" : "none"}
+                        />
                         {news.likes?.length || 0}
                       </button>
                     </div>
@@ -247,7 +259,10 @@ const NewsPage = () => {
       <section className="bg-white/80 backdrop-blur-sm sticky top-16 z-40 shadow-md py-4 border-b">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-3.5 text-gray-400" size={20} />
+            <Search
+              className="absolute left-4 top-3.5 text-gray-400"
+              size={20}
+            />
             <input
               className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
               placeholder="Tìm kiếm tin tức..."
@@ -257,7 +272,7 @@ const NewsPage = () => {
           </div>
 
           <select
-            className="px-6 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 font-medium bg-white cursor-pointer transition-all"
+            className="px-6 py-3 text-gray-800 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 font-medium bg-white cursor-pointer transition-all"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -275,7 +290,9 @@ const NewsPage = () => {
         {loading ? (
           <div className="text-center py-20">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-red-600"></div>
-            <p className="mt-4 text-gray-500 font-medium">Đang tải tin tức...</p>
+            <p className="mt-4 text-gray-500 font-medium">
+              Đang tải tin tức...
+            </p>
           </div>
         ) : newsList.length === 0 ? (
           <div className="text-center py-20">
@@ -311,11 +328,17 @@ const NewsPage = () => {
                   <div className="p-5">
                     <div className="flex items-center gap-2 mb-3">
                       <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-semibold">
-                        {categories.find((c) => c.value === news.category)?.icon}{" "}
-                        {categories.find((c) => c.value === news.category)?.label}
+                        {
+                          categories.find((c) => c.value === news.category)
+                            ?.icon
+                        }{" "}
+                        {
+                          categories.find((c) => c.value === news.category)
+                            ?.label
+                        }
                       </span>
                     </div>
-                    <h2 className="text-xl font-bold mb-2 line-clamp-2 hover:text-red-600 transition-colors">
+                    <h2 className="text-xl font-bold mb-2 line-clamp-2 text-gray-800 hover:text-red-600 transition-colors">
                       {news.title}
                     </h2>
                     <p className="text-gray-600 text-sm line-clamp-3 mb-4">
@@ -339,12 +362,16 @@ const NewsPage = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={(e) => handleLike(news._id, e)}
-                        className={`flex items-center justify-center gap-1.5 flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${isLikedByUser(news)
+                        className={`flex items-center justify-center gap-1.5 flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                          isLikedByUser(news)
                             ? "bg-red-600 text-white"
                             : "bg-gray-100 hover:bg-red-50 text-gray-700"
-                          }`}
+                        }`}
                       >
-                        <Heart size={16} fill={isLikedByUser(news) ? "currentColor" : "none"} />
+                        <Heart
+                          size={16}
+                          fill={isLikedByUser(news) ? "currentColor" : "none"}
+                        />
                         {news.likes?.length || 0}
                       </button>
                       <button className="flex items-center justify-center gap-1.5 flex-1 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium transition-all">
@@ -388,10 +415,11 @@ const NewsPage = () => {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setPage(pageNum)}
-                        className={`w-11 h-11 rounded-xl font-semibold transition-all shadow-sm ${page === pageNum
+                        className={`w-11 h-11 rounded-xl font-semibold transition-all shadow-sm ${
+                          page === pageNum
                             ? "bg-red-600 text-white scale-110"
                             : "bg-white border-2 border-red-200 text-red-600 hover:bg-red-50"
-                          }`}
+                        }`}
                       >
                         {pageNum}
                       </motion.button>
@@ -434,8 +462,14 @@ const NewsPage = () => {
               <div className="p-8">
                 <div className="flex items-start justify-between mb-6">
                   <span className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-                    {categories.find((c) => c.value === selectedNews.category)?.icon}
-                    {categories.find((c) => c.value === selectedNews.category)?.label}
+                    {
+                      categories.find((c) => c.value === selectedNews.category)
+                        ?.icon
+                    }
+                    {
+                      categories.find((c) => c.value === selectedNews.category)
+                        ?.label
+                    }
                   </span>
                   <button
                     onClick={() => setSelectedNews(null)}
@@ -480,12 +514,18 @@ const NewsPage = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleLike(selectedNews._id)}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all shadow-md ${isLikedByUser(selectedNews)
+                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all shadow-md ${
+                      isLikedByUser(selectedNews)
                         ? "bg-red-600 text-white"
                         : "bg-gray-100 hover:bg-red-50 text-gray-700"
-                      }`}
+                    }`}
                   >
-                    <Heart size={20} fill={isLikedByUser(selectedNews) ? "currentColor" : "none"} />
+                    <Heart
+                      size={20}
+                      fill={
+                        isLikedByUser(selectedNews) ? "currentColor" : "none"
+                      }
+                    />
                     {selectedNews.likes?.length || 0} Thích
                   </motion.button>
                   <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold transition-all shadow-md">
@@ -496,8 +536,8 @@ const NewsPage = () => {
 
                 {/* Comments Section */}
                 <div className="mt-8">
-                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                    💬 Bình luận ({selectedNews.comments?.length || 0})
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-2 text-gray-800">
+                    Bình luận ({selectedNews.comments?.length || 0})
                   </h3>
 
                   {user && (
@@ -520,7 +560,8 @@ const NewsPage = () => {
                   )}
 
                   <div className="space-y-4">
-                    {selectedNews.comments && selectedNews.comments.length > 0 ? (
+                    {selectedNews.comments &&
+                    selectedNews.comments.length > 0 ? (
                       selectedNews.comments.map((comment, idx) => (
                         <div
                           key={idx}
