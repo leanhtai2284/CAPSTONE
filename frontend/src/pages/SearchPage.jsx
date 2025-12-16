@@ -15,7 +15,7 @@ function SearchPage() {
 
   const [recommendMeals, setRecommendMeals] = useState([]);
 
-  // 🧠 Lấy dữ liệu từ URL
+  //  Lấy dữ liệu từ URL
   const text = searchParams.get("text") || "";
   const region = searchParams.get("region") || "";
   const diet_tags = searchParams.get("diet_tags") || "";
@@ -24,7 +24,7 @@ function SearchPage() {
   const maxCal = searchParams.get("max_calories") || "";
   const { handleMealClick } = useMealSelection();
 
-  // 🧩 Fetch dữ liệu từ BE
+  //  Fetch dữ liệu từ BE
   useEffect(() => {
     if (!text) return;
     const fetchRecipes = async () => {
@@ -55,7 +55,7 @@ function SearchPage() {
     fetchRecipes();
   }, [text, region, diet_tags, category, minCal, maxCal]);
 
-  // 🧩 Fetch dữ liệu cho “Gợi ý cho riêng bạn”
+  //  Fetch dữ liệu cho “Gợi ý cho riêng bạn”
   useEffect(() => {
     const fetchRecommendMeals = async () => {
       try {
@@ -64,14 +64,14 @@ function SearchPage() {
         const shuffled = [...meals].sort(() => 0.5 - Math.random());
         setRecommendMeals(shuffled.slice(0, Math.floor(Math.random() * 6) + 6));
       } catch (err) {
-        console.error("❌ Lỗi tải gợi ý:", err);
+        console.error(" Lỗi tải gợi ý:", err);
       }
     };
 
     fetchRecommendMeals();
   }, []);
 
-  // 🧭 Thay đổi filter
+  //  Thay đổi filter
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     const newParams = new URLSearchParams(searchParams);
@@ -80,7 +80,7 @@ function SearchPage() {
     setSearchParams(newParams);
   };
 
-  // 🔁 Reset bộ lọc
+  //  Reset bộ lọc
   const handleResetFilters = () => {
     const newParams = new URLSearchParams();
     if (text) newParams.set("text", text);
@@ -89,7 +89,7 @@ function SearchPage() {
 
   return (
     <div className="min-h-screen container mx-auto px-4 py-4">
-      {/* 🧩 Mobile: Bộ lọc ở trên */}
+      {/*  Mobile: Bộ lọc ở trên */}
       <div className="block md:hidden mb-6">
         <div className="bg-white dark:bg-gray-950 rounded-2xl shadow-md p-5 border dark:border-gray-800">
           <h2 className="text-lg font-semibold mb-4">Bộ lọc</h2>
@@ -185,7 +185,7 @@ function SearchPage() {
         </div>
       </div>
 
-      {/* 🧩 Desktop layout */}
+      {/*  Desktop layout */}
       <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 gap-8">
         {/* Bộ lọc bên trái (ẩn trên mobile) */}
         <aside

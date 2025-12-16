@@ -26,31 +26,15 @@ export function AuthProvider({ children }) {
       setError(null);
 
       // 1) Đăng ký
-      const registerRes = await authService.register({
+      const data = await authService.register({
         name,
         email,
         password,
         confirmPassword,
       });
 
-      // 2) Đăng nhập luôn để lấy token hợp lệ
-      const loginRes = await authService.login({ email, password });
-
-      const userPayload =
-        loginRes?.user || loginRes?.data?.user || loginRes?.data || null;
-      const token =
-        loginRes?.token ||
-        loginRes?.data?.token ||
-        loginRes?.accessToken ||
-        loginRes?.data?.accessToken;
-
-      if (token) authService.setToken(token);
-      if (userPayload) {
-        setUser(userPayload);
-        authService.setUser(userPayload);
-      }
-
-      return registerRes;
+      setUser(data.user);
+      return data;
     } catch (err) {
       setError(err.message || "Đăng ký thất bại");
       throw err;

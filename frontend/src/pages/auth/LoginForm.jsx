@@ -51,7 +51,7 @@ export function LoginForm() {
     if (!validateForm()) return;
 
     await login(email, password);
-    toast.success("🎉 Đăng nhập thành công!");
+    toast.success(" Đăng nhập thành công!");
     navigate("/"); // Chuyển về HomePage sau khi đăng nhập thành công
   };
 

@@ -294,7 +294,7 @@ export default function useMealPlanner() {
 
       await dailyMenuService.create(payload);
 
-      toast.success("Đã lưu thực đơn lên server!");
+      toast.success("Đã lưu thực đơn!");
     } catch (err) {
       console.error("Failed to save daily menu:", err);
       toast.error(err.message || "Không thể lưu thực đơn. Vui lòng thử lại!");

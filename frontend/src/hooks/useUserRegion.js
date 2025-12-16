@@ -49,7 +49,7 @@ export const useUserRegion = () => {
           setRegionTitle("Hương vị miền Bắc");
         }
       } catch (err) {
-        console.error("❌ Lỗi khi tải profile:", err);
+        console.error(" Lỗi khi tải profile:", err);
         setError(err.message || "Không thể tải thông tin vùng miền");
         // Nếu lỗi, dùng mặc định
         setRegion("Bắc");

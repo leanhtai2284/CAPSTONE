@@ -84,7 +84,7 @@ const HomePage = () => {
           setDietMeals([]);
         }
       } catch (err) {
-        console.error("❌ Lỗi khi tải dữ liệu:", err);
+        console.error(" Lỗi khi tải dữ liệu:", err);
         setError(err.message || "Không thể tải dữ liệu từ máy chủ");
         setSections({
           north: shuffle(mockMeals).slice(0, 10),
@@ -102,7 +102,7 @@ const HomePage = () => {
   if (error) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center text-gray-600">
-        <p className="mb-4">❌ Có lỗi khi tải dữ liệu: {error}</p>
+        <p className="mb-4"> Có lỗi khi tải dữ liệu: {error}</p>
         <p>Dữ liệu tạm thời hiển thị bằng mock.</p>
       </div>
     );

@@ -5,7 +5,7 @@ import { favoriteService } from "../services/favoriteService";
 
 const SavedMenusPage = () => {
   const [savedMeals, setSavedMeals] = useState([]);
-  const { handleMealClick } = useMealSelection(); // ✅ dùng context để mở modal
+  const { handleMealClick } = useMealSelection(); //  dùng context để mở modal
 
   const loadSavedMeals = async () => {
     try {
@@ -63,8 +63,8 @@ const SavedMenusPage = () => {
             <MealCard
               key={meal.uniqueKey || meal.id}
               meal={meal}
-              onClick={() => handleMealClick(meal)} // ✅ mở modal khi click
-              onToggleSave={handleToggleSave} // ✅ callback khi toggle save
+              onClick={() => handleMealClick(meal)} //  mở modal khi click
+              onToggleSave={handleToggleSave} //  callback khi toggle save
             />
           ))}
         </div>

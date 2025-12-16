@@ -24,7 +24,7 @@ export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [formErrors, setFormErrors] = useState({});
-  // ✅ Handle submit
+  //  Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     clearError();
@@ -42,7 +42,7 @@ export function RegisterForm() {
       setAcceptTerms(false);
 
       //  Điều hướng thẳng vào trang hồ sơ để nhập thông tin
-      navigate("/profile");
+      navigate("/auth/login");
     } catch (err) {
       console.error("Registration failed:", err);
       const errorMessage =
@@ -51,7 +51,7 @@ export function RegisterForm() {
     }
   };
 
-  // ✅ Validate form
+  //  Validate form
   const validateForm = () => {
     const errors = {};
 
