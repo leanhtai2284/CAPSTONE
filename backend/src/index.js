@@ -26,6 +26,9 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json({ limit: "50mb" })); // Tăng từ 100kb → 50mb
 app.use(express.urlencoded({ limit: "50mb", extended: true })); // Thêm dòng này cho form data
 
+// Serve static files (uploaded images)
+app.use("/uploads", express.static("uploads"));
+
 app.use(passport.initialize());
 
 // Debug middleware
