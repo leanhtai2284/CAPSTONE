@@ -244,7 +244,7 @@ export async function getRecipeById(req, res) {
         scaledIngredients = recipe.ingredients.map((ing) => {
           if (typeof ing.amount !== "number") return ing; // không có amount thì giữ nguyên
           const isScalable =
-            typeof ing.scalable === "boolean" ? ing.scalable : true; // default: true
+            typeof ing.scalable === "boolean" ? ing.scalable : true; // default: true - tất cả đều scale
           return {
             ...ing,
             amount: isScalable ? round1(ing.amount * factor) : ing.amount,

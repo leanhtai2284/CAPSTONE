@@ -76,10 +76,36 @@ export default function useMealPlanner() {
       activity_level: form.activityLevel,
     };
 
+    // 3) Xử lý goal theo dietaryGoal
+    if (form.dietaryGoal === "gain") {
+      // Tăng cân + ít vận động => ưu tiên carbs
+      if (form.activityLevel === "sedentary") {
+        payload.goal = "weight_gain";
+        payload.min_calories_per_meal = 650;
+        payload.min_carbs_g = 60; // nhiều tinh bột
+      } else {
+        // Tăng cân + vận động => tập cơ
+        payload.goal = "muscle_gain";
+        payload.min_protein_g = 20;
+        payload.min_calories_per_meal = 700;
+      }
+    } else if (form.dietaryGoal === "lose") {
+      payload.goal = "weight_loss";
+      payload.max_calories_per_meal = Math.round(450 * activityFactor);
+      payload.min_protein_g = 15;
+      payload.min_fiber_g = 3;
+    } else {
+      // maintain - không set goal
+      payload.max_calories_per_meal = maxCaloriesPerMeal;
+    }
+
+    // 4) Xử lý diet type
     switch (form.dietType) {
       case "eat-clean":
         payload.eatclean = true;
-        payload.max_calories_per_meal = maxCaloriesPerMeal;
+        if (!payload.max_calories_per_meal) {
+          payload.max_calories_per_meal = maxCaloriesPerMeal;
+        }
         payload.diet_tags = ["eatclean"];
         break;
       case "keto":
@@ -93,11 +119,6 @@ export default function useMealPlanner() {
       default:
         payload.diet_tags = [];
         break;
-    }
-
-    if (form.dietaryGoal === "gain") {
-      payload.goal = "muscle_gain";
-      payload.min_protein_g = 18;
     }
 
     return payload;

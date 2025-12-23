@@ -89,8 +89,8 @@ function parseIngredients(raw) {
       const amount = amountMatch ? parseFloat(amountMatch[1]) : 0;
       const unit = right.replace(/[\d.]/g, "").trim() || "g";
 
-      // gán scalable = false cho các gia vị nhỏ (muối, tiêu, nước mắm,...)
-      const scalable = !/(muối|tiêu|nước mắm|bột ngọt|mắm|đường)/i.test(name);
+      // ✅ Tất cả nguyên liệu đều scale theo số người
+      const scalable = true;
 
       return { name, amount, unit, scalable };
     })

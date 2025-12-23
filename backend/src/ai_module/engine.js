@@ -5,6 +5,10 @@ import applyHighProtein from "./rules/high_protein.js";
 import applyEatclean from "./rules/eatclean.js";
 import applyVegetarian from "./rules/vegetarian.js";
 import applyKeto from "./rules/keto.js";
+import applyWeightGain from "./rules/weight_gain.js";
+import applyWeightLoss from "./rules/weight_loss.js";
+import applyWeightGain from "./rules/weight_gain.js";
+import applyWeightLoss from "./rules/weight_loss.js";
 
 // ...existing code...
 
@@ -62,6 +66,8 @@ export async function suggestDailyMenu(prefs) {
     (c) => applyVegetarian(c, prefs),
     (c) => applyDiet(c, prefs),
     (c) => applyHighProtein(c, prefs),
+    (c) => applyWeightGain(c, prefs),
+    (c) => applyWeightLoss(c, prefs),
     (c) => applyEatclean(c, prefs),
     (c) => applyTraditional(c, prefs),
   ];
@@ -249,6 +255,8 @@ export async function suggestWeeklyMenu(prefs) {
     (c) => applyVegetarian(c, prefs),
     (c) => applyDiet(c, prefs),
     (c) => applyHighProtein(c, prefs),
+    (c) => applyWeightGain(c, prefs),
+    (c) => applyWeightLoss(c, prefs),
     (c) => applyEatclean(c, prefs),
     (c) => applyTraditional(c, prefs),
   ];
