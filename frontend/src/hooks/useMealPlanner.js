@@ -47,7 +47,7 @@ export default function useMealPlanner() {
   }, [viewMode, weeklyMenu, mealFromAI, selectedDay]);
 
   const buildPayload = (form) => {
-    const budgetMap = { low: 10000, medium: 45000, high: 100000 };
+    const budgetMap = { low: 180000, medium: 270000, high: 390000 };
     const regionMap = { North: "Bắc", Central: "Trung", South: "Nam" };
 
     // 1) Hệ số theo mức độ hoạt động
@@ -205,8 +205,9 @@ export default function useMealPlanner() {
 
     setIsSwapping(mealId);
     try {
-      // 1️ Tìm món cần đổi trong meal plan
+      // 1️⃣ Tìm món cần đổi trong meal plan
       let currentMeal = null;
+      let currentMeals = []; // Tất cả món trong bữa ăn hiện tại
 
       if (
         viewMode === "weekly" &&
@@ -217,11 +218,13 @@ export default function useMealPlanner() {
           weeklyMenu.find((d) => d.day === selectedDay) ||
           weeklyMenu[selectedDay];
         if (dayObj && dayObj.meals) {
+          currentMeals = dayObj.meals;
           currentMeal = dayObj.meals.find(
             (m) => m._id === mealId || m.id === mealId
           );
         }
       } else {
+        currentMeals = mealFromAI;
         currentMeal = mealFromAI.find(
           (m) => m._id === mealId || m.id === mealId
         );
@@ -234,21 +237,29 @@ export default function useMealPlanner() {
       // 2️ Lấy diet_tags từ userPreferences
       const dietTags = userPreferences.diet_tags || [];
 
+      // 3️ Loại trừ TẤT CẢ món đang có trong bữa ăn (không chỉ món đang swap)
+      const excludeIds = currentMeals.map((m) => m._id || m.id).filter(Boolean);
+
       console.log("🔄 Đổi món:", {
         mealId,
         mealName: currentMeal.name_vi,
         mealType: currentMeal.meal_types?.[0],
         dietTags,
+        excludeIds,
       });
 
-      // 3️ Gọi API với meal object và dietTags
-      const result = await swapSingleMealApi(currentMeal, dietTags);
+      // 4️ Gọi API với meal object, dietTags và excludeIds
+      const result = await swapSingleMealApi(currentMeal, dietTags, excludeIds);
 
       if (!result.meal) {
         throw new Error("Không có món thay thế phù hợp");
       }
 
-      const newMeal = result.meal;
+      const newMeal = {
+        ...result.meal,
+        // Thêm timestamp để đảm bảo unique key khi swap
+        _swapId: `${result.meal._id || result.meal.id}_${Date.now()}`,
+      };
 
       console.log(" Đổi thành:", newMeal.name_vi);
 
