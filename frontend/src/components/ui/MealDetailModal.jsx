@@ -354,24 +354,6 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
               </div>
             </section>
 
-            {/* Steps */}
-            <section className="space-y-4">
-              <h3 className="text-xl font-bold">Cách làm</h3>
-              <div className="space-y-3">
-                {meal.steps?.map((step, idx) => (
-                  <div
-                    key={idx}
-                    className="flex gap-4 p-4 bg-white/30 dark:bg-white/10 rounded-xl border border-gray-300"
-                  >
-                    <div className="flex-shrink-0 w-8 h-8 bg-[#22C55E] rounded-full flex items-center justify-center text-white font-bold">
-                      {idx + 1}
-                    </div>
-                    <p className=" flex-1">{step}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
             {/* Suitable / Avoid */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>

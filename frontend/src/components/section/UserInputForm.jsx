@@ -5,12 +5,8 @@ import { SparklesIcon, LoaderIcon } from "lucide-react";
 const UserInputForm = ({ onGenerate, isGenerating }) => {
   const [preferences, setPreferences] = useState({
     activityLevel: "moderate",
-    dietaryGoal: "maintain", // maintain | lose | gain
     budget: "medium", // low | medium | high
     dietType: "eat-clean", // eat-clean | keto | vegan | traditional
-    foodPreferences: [],
-    allergies: [],
-    familySize: 2,
     region: "North",
   });
 
@@ -39,24 +35,6 @@ const UserInputForm = ({ onGenerate, isGenerating }) => {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Mức độ hoạt động */}
-        <div>
-          <label className="block text-sm  font-bold  mb-2">
-            Mức độ hoạt động
-          </label>
-          <select
-            value={preferences.activityLevel}
-            onChange={(e) =>
-              setPreferences({ ...preferences, activityLevel: e.target.value })
-            }
-            className="w-full bg-gray-200 dark:bg-gray-800 border border-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:border-primary"
-          >
-            <option value="sedentary">Ít vận động</option>
-            <option value="moderate">Trung bình</option>
-            <option value="active">Năng động</option>
-          </select>
-        </div>
-
         {/* Mục tiêu dinh dưỡng */}
         <div>
           <label className="block text-sm font-bold mb-2">
@@ -106,24 +84,6 @@ const UserInputForm = ({ onGenerate, isGenerating }) => {
             <option value="vegan">Thuần chay</option>
             <option value="traditional">Ẩm thực Việt truyền thống</option>
           </select>
-        </div>
-
-        {/* Số người ăn */}
-        <div>
-          <label className="block text-sm  font-bold  mb-2">Số người ăn</label>
-          <input
-            type="number"
-            min="1"
-            max="10"
-            value={preferences.familySize}
-            onChange={(e) =>
-              setPreferences({
-                ...preferences,
-                familySize: parseInt(e.target.value),
-              })
-            }
-            className="w-full bg-gray-200 dark:bg-gray-800 border border-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:border-primary"
-          />
         </div>
 
         {/* Vùng miền */}
