@@ -147,16 +147,17 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
             {/* Nút đóng */}
             <button
               onClick={onClose}
-              className="absolute top-3 right-3 p-2 bg-black/50 hover:bg-black/70 rounded-full transition"
+              className="absolute top-3 right-3 p-2 bg-black/50 hover:bg-black/70 rounded-full transition z-10"
               aria-label="Đóng"
             >
               <XIcon className="w-5 h-5 text-white" />
             </button>
 
-            {/* SaveButton */}
-            {/* <div className="absolute bottom-20 right-1">
-            <SaveButton meal={meal} />
-          </div> */}
+            {/* SaveButton - đặt fixed dưới nút đóng */}
+            <SaveButton
+              meal={mealData || meal}
+              className="absolute bottom-4 right-3 bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm transition-transform duration-200 hover:scale-110 z-10"
+            />
 
             {/* Tag dinh dưỡng */}
             <div className="absolute top-0 left-0 p-5 space-y-2">
@@ -330,11 +331,6 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
                     </motion.div>
                   ))}
                 </div>
-
-                <button className="w-full flex items-center justify-center gap-2 bg-secondary hover:bg-primary text-white font-medium py-3 rounded-xl transition-all duration-300">
-                  <ShoppingCartIcon className="w-5 h-5" />
-                  Thêm vào danh sách mua sắm
-                </button>
               </div>
             </section>
 
@@ -342,16 +338,6 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
             <section className="space-y-4">
               <h3 className="text-xl font-bold ">Dinh dưỡng</h3>
               <NutritionChart nutrition={meal.nutrition} />
-              <div className="p-4 bg-white/30 dark:bg-white/10 rounded-xl border border-gray-200 ">
-                <p className=" text-sm">
-                  <span className="text-[#22C55E] font-medium">
-                    Đánh giá AI:
-                  </span>{" "}
-                  Món ăn này phù hợp với mục tiêu "
-                  {userPreferences?.goal || "Cân bằng"}" của bạn. Cung cấp đủ
-                  protein và cân bằng dinh dưỡng.
-                </p>
-              </div>
             </section>
 
             {/* Suitable / Avoid */}
