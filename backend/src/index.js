@@ -19,6 +19,7 @@ import favoriteRoutes from "./routes/favorite.js";
 import notificationRoutes from "./routes/notification.js";
 import feedbackRoutes from "./routes/feedback.js";
 import newsRoutes from "./routes/news-routes.js";
+import pantryRoutes from "./routes/pantry.js";
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/api/favorites", favoriteRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/news", newsRoutes);
+app.use("/api/pantry", pantryRoutes);
 
 const PORT = process.env.PORT || 5000;
 
