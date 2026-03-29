@@ -3,6 +3,8 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import Pantry from "../models/Pantry.js";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const VN_OFFSET_MS = 7 * 60 * 60 * 1000;
+const VIETNAM_TZ = "Asia/Ho_Chi_Minh";
 const STATUS_VALUES = ["expired", "expiring", "fresh"];
 const CATEGORY_VALUES = Pantry.schema.path("category").enumValues;
 const STORAGE_VALUES = Pantry.schema.path("storageLocation").enumValues;
@@ -46,11 +48,27 @@ function pickAllowedFields(payload, allowedFields) {
   );
 }
 
-// Chuan hóa mốc thời gian về 00:00 để tránh lệch ngày do giờ/phú
-function getTodayStart() {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  return d;
+// Day index tính theo VN (UTC+7), tránh lệch ngày khi server chạy timezone khác.
+function getVietnamDayIndex(dateInput = new Date()) {
+  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+  return Math.floor((date.getTime() + VN_OFFSET_MS) / MS_PER_DAY);
+}
+
+function getUtcStartFromVietnamDayIndex(dayIndex) {
+  return new Date(dayIndex * MS_PER_DAY - VN_OFFSET_MS);
+}
+
+function getVietnamBoundaries(todayVietnamDayIndex, expiringDays) {
+  const startOfTodayUtc = getUtcStartFromVietnamDayIndex(todayVietnamDayIndex);
+  const startAfterExpiringUtc = getUtcStartFromVietnamDayIndex(
+    todayVietnamDayIndex + expiringDays + 1
+  );
+
+  return { startOfTodayUtc, startAfterExpiringUtc };
+}
+
+function getTodayVietnamDayIndex() {
+  return getVietnamDayIndex(new Date());
 }
 
 // Giới hạn số ngày sắp hết hạn để query ổn định không nhập quá lớn
@@ -60,11 +78,10 @@ function clampExpiringDays(daysInput) {
   return Math.min(30, Math.max(1, Math.floor(parsed)));
 }
 
-// Tính trạng thái động từ expiryDate, không lưu cứng status vào DB
-function getStatusAndDays(expiryDate, todayStart, expiringDays) {
-  const expiryStart = new Date(expiryDate);
-  expiryStart.setHours(0, 0, 0, 0);
-  const daysToExpire = Math.round((expiryStart - todayStart) / MS_PER_DAY);
+// Tính trạng thái động từ expiryDate theo ngày VN, không lưu cứng status vào DB.
+function getStatusAndDays(expiryDate, todayVietnamDayIndex, expiringDays) {
+  const expiryVietnamDayIndex = getVietnamDayIndex(expiryDate);
+  const daysToExpire = expiryVietnamDayIndex - todayVietnamDayIndex;
 
   if (daysToExpire < 0) {
     return { status: "expired", daysToExpire };
@@ -76,19 +93,20 @@ function getStatusAndDays(expiryDate, todayStart, expiringDays) {
 }
 
 // Build filter MongoDB theo status để giảm dữ liệu phải xử lý phía app
-function buildStatusFilter(status, todayStart, expiringDays) {
-  const endExpiring = new Date(todayStart);
-  endExpiring.setDate(endExpiring.getDate() + expiringDays);
-  endExpiring.setHours(23, 59, 59, 999);
+function buildStatusFilter(status, todayVietnamDayIndex, expiringDays) {
+  const { startOfTodayUtc, startAfterExpiringUtc } = getVietnamBoundaries(
+    todayVietnamDayIndex,
+    expiringDays
+  );
 
   if (status === "expired") {
-    return { expiryDate: { $lt: todayStart } };
+    return { expiryDate: { $lt: startOfTodayUtc } };
   }
   if (status === "expiring") {
-    return { expiryDate: { $gte: todayStart, $lte: endExpiring } };
+    return { expiryDate: { $gte: startOfTodayUtc, $lt: startAfterExpiringUtc } };
   }
   if (status === "fresh") {
-    return { expiryDate: { $gt: endExpiring } };
+    return { expiryDate: { $gte: startAfterExpiringUtc } };
   }
   return {};
 }
@@ -172,11 +190,11 @@ export const getPantryItems = asyncHandler(async (req, res) => {
     });
   }
 
-  const todayStart = getTodayStart();
+  const todayVietnamDayIndex = getTodayVietnamDayIndex();
 
   const filter = {
     user: req.user._id,
-    ...buildStatusFilter(status, todayStart, expiringDays),
+    ...buildStatusFilter(status, todayVietnamDayIndex, expiringDays),
   };
 
   if (q) {
@@ -198,7 +216,7 @@ export const getPantryItems = asyncHandler(async (req, res) => {
   const data = items.map((item) => {
     const { status: computedStatus, daysToExpire } = getStatusAndDays(
       item.expiryDate,
-      todayStart,
+      todayVietnamDayIndex,
       expiringDays
     );
     return {
@@ -218,6 +236,7 @@ export const getPantryItems = asyncHandler(async (req, res) => {
       pages: Math.ceil(total / limit),
       expiringDays,
       status: status || "all",
+      timezone: VIETNAM_TZ,
     },
   });
 });
@@ -234,32 +253,37 @@ export const getPantryItemById = asyncHandler(async (req, res) => {
   }
 
   const expiringDays = clampExpiringDays(req.query.days);
-  const todayStart = getTodayStart();
-  const { status, daysToExpire } = getStatusAndDays(item.expiryDate, todayStart, expiringDays);
+  const todayVietnamDayIndex = getTodayVietnamDayIndex();
+  const { status, daysToExpire } = getStatusAndDays(
+    item.expiryDate,
+    todayVietnamDayIndex,
+    expiringDays
+  );
 
   return res.status(200).json({
     success: true,
-    data: { ...item.toObject(), status, daysToExpire },
+    data: { ...item.toObject(), status, daysToExpire, timezone: VIETNAM_TZ },
   });
 });
 
 export const getPantrySummary = asyncHandler(async (req, res) => {
   const expiringDays = clampExpiringDays(req.query.days);
-  const todayStart = getTodayStart();
-  const endExpiring = new Date(todayStart);
-  endExpiring.setDate(endExpiring.getDate() + expiringDays);
-  endExpiring.setHours(23, 59, 59, 999);
+  const todayVietnamDayIndex = getTodayVietnamDayIndex();
+  const { startOfTodayUtc, startAfterExpiringUtc } = getVietnamBoundaries(
+    todayVietnamDayIndex,
+    expiringDays
+  );
 
   const baseFilter = { user: req.user._id };
 
   const [total, expired, expiring, fresh] = await Promise.all([
     Pantry.countDocuments(baseFilter),
-    Pantry.countDocuments({ ...baseFilter, expiryDate: { $lt: todayStart } }),
+    Pantry.countDocuments({ ...baseFilter, expiryDate: { $lt: startOfTodayUtc } }),
     Pantry.countDocuments({
       ...baseFilter,
-      expiryDate: { $gte: todayStart, $lte: endExpiring },
+      expiryDate: { $gte: startOfTodayUtc, $lt: startAfterExpiringUtc },
     }),
-    Pantry.countDocuments({ ...baseFilter, expiryDate: { $gt: endExpiring } }),
+    Pantry.countDocuments({ ...baseFilter, expiryDate: { $gte: startAfterExpiringUtc } }),
   ]);
 
   return res.status(200).json({
@@ -272,6 +296,7 @@ export const getPantrySummary = asyncHandler(async (req, res) => {
     },
     meta: {
       expiringDays,
+      timezone: VIETNAM_TZ,
     },
   });
 });
