@@ -20,6 +20,7 @@ import notificationRoutes from "./routes/notification.js";
 import feedbackRoutes from "./routes/feedback.js";
 import newsRoutes from "./routes/news-routes.js";
 import pantryRoutes from "./routes/pantry.js";
+import { startPantryExpiryNotificationScheduler } from "./services/pantryExpiryNotificationService.js";
 
 const app = express();
 
@@ -55,7 +56,8 @@ app.use("/api/pantry", pantryRoutes);
 const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {
-  app.listen(PORT, () =>
-    console.log(` Backend running at http://localhost:${PORT}`)
-  );
+  app.listen(PORT, () => {
+    console.log(` Backend running at http://localhost:${PORT}`);
+    startPantryExpiryNotificationScheduler();
+  });
 });
