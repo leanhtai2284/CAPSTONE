@@ -6,10 +6,12 @@ import HelpFeedback from "../pages/HelpFeedback";
 import SearchPage from "../pages/SearchPage";
 import ForYouPage from "../pages/ForYouPage";
 import AccountSettings from "../pages/Settings";
+import PantryDashboard from "../pages/PantryDashboard";
 import React from "react";
 
 export const privateRoutes = [
   { path: "/foryou", element: <ForYouPage /> },
+  { path: "/pantry", element: <PantryDashboard /> },
   { path: "/saved-menus", element: <SavedMenusPage /> },
   { path: "/saved-daily-menus", element: <SavedDailyMenusPage /> },
   { path: "/profile", element: <ProfilePage /> },

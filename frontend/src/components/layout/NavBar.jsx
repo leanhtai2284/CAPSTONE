@@ -87,6 +87,16 @@ const NavBar = () => {
           >
             Tin tức
           </Link>
+          <Link
+            to="/pantry"
+            className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
+              isActive("/pantry")
+                ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
+                : "hover:text-green-500"
+            }`}
+          >
+            Nguyên liệu có sẵn
+          </Link>
           {/* Admin link - only show if user is admin */}
           {user?.role === "admin" && (
             <Link
