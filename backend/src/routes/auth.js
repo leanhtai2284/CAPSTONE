@@ -73,8 +73,8 @@ router.get(
   }
 );
 
-// POST /api/auth/logout
-router.post("/logout", logout);
+// POST /api/auth/logout (Protected route)
+router.post("/logout", protect, logout);
 
 // POST /api/auth/forgot-password
 router.post("/forgot-password", forgotPassword);

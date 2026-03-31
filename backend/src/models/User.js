@@ -77,6 +77,31 @@ var userSchema = new mongoose.Schema(
         default: [],
       },
     },
+    // Track online status and ban status
+    isOnline: {
+      type: Boolean,
+      default: false,
+    },
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
+    bannedUntil: {
+      type: Date,
+      default: null,
+    },
+    banReason: {
+      type: String,
+      default: "",
+    },
+    lastLogin: {
+      type: Date,
+      default: null,
+    },
+    lastLogout: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );

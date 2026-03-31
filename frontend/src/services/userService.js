@@ -137,4 +137,47 @@ export const userService = {
     }
     return res.json();
   },
+
+  // Ban user (admin only)
+  async banUser(id, reason, bannedUntil) {
+    const res = await fetch(`${API_BASE}/api/admin/users/${id}/ban`, {
+      method: "PATCH",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ reason, bannedUntil }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || err.error || "Không thể cấm người dùng");
+    }
+    return res.json();
+  },
+
+  // Unban user (admin only)
+  async unbanUser(id) {
+    const res = await fetch(`${API_BASE}/api/admin/users/${id}/unban`, {
+      method: "PATCH",
+      headers: getAuthHeaders(),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || err.error || "Không thể mở khóa người dùng");
+    }
+    return res.json();
+  },
+
+  // Update activity status for inactive users (admin only)
+  async updateActivityStatus() {
+    const res = await fetch(`${API_BASE}/api/admin/users/update-activity`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || err.error || "Không thể cập nhật trạng thái hoạt động");
+    }
+    return res.json();
+  },
 };
