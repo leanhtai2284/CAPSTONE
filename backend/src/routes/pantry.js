@@ -5,6 +5,8 @@ import {
   getPantryItems,
   getPantryItemById,
   getPantrySummary,
+  bulkDeletePantryItems,
+  bulkUpdatePantryQuantities,
   updatePantryItem,
   deletePantryItem,
 } from "../controllers/pantryController.js";
@@ -18,6 +20,9 @@ router.use(protect);
 router.route("/").get(getPantryItems).post(createPantryItem);
 // Tổng quan số lượng theo trạng thái
 router.get("/summary", getPantrySummary);
+// Chức năng bulk độc lập
+router.post("/bulk/delete", bulkDeletePantryItems);
+router.post("/bulk/quantity", bulkUpdatePantryQuantities);
 // Chi tiết + cập nhật + xoá theo id
 router.route("/:id").get(getPantryItemById).put(updatePantryItem).delete(deletePantryItem);
 

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Pantry from "../models/Pantry.js";
+import { runPantryExpiryNotificationJob } from "../services/pantryExpiryNotificationService.js";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const VN_OFFSET_MS = 7 * 60 * 60 * 1000;
@@ -46,6 +47,31 @@ function pickAllowedFields(payload, allowedFields) {
   return Object.fromEntries(
     Object.entries(payload || {}).filter(([key]) => allowedFields.includes(key))
   );
+}
+
+function normalizeObjectIdList(idsInput) {
+  if (!Array.isArray(idsInput)) {
+    return { validIds: [], invalidIds: [] };
+  }
+
+  const seen = new Set();
+  const validIds = [];
+  const invalidIds = [];
+
+  for (const rawId of idsInput) {
+    const id = String(rawId || "").trim();
+    if (!id || !mongoose.isValidObjectId(id)) {
+      invalidIds.push(rawId);
+      continue;
+    }
+    if (seen.has(id)) {
+      continue;
+    }
+    seen.add(id);
+    validIds.push(id);
+  }
+
+  return { validIds, invalidIds };
 }
 
 // Day index tính theo VN (UTC+7), tránh lệch ngày khi server chạy timezone khác.
@@ -111,6 +137,15 @@ function buildStatusFilter(status, todayVietnamDayIndex, expiringDays) {
   return {};
 }
 
+function triggerPantryNotificationForUser(userId, trigger) {
+  runPantryExpiryNotificationJob({
+    userId,
+    trigger,
+  }).catch((error) => {
+    console.error("[PantryNotification] Failed to trigger user run", error);
+  });
+}
+
 export const createPantryItem = asyncHandler(async (req, res) => {
   const { name, quantity, unit, storageLocation, expiryDate, category, openedDate, notes } =
     req.body;
@@ -150,6 +185,8 @@ export const createPantryItem = asyncHandler(async (req, res) => {
     ...(parsedOpenedDate.provided ? { openedDate: parsedOpenedDate.value } : {}),
     notes,
   });
+
+  triggerPantryNotificationForUser(req.user._id, "pantry_create");
 
   return res.status(201).json({
     success: true,
@@ -301,6 +338,133 @@ export const getPantrySummary = asyncHandler(async (req, res) => {
   });
 });
 
+export const bulkDeletePantryItems = asyncHandler(async (req, res) => {
+  const { ids } = req.body || {};
+
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Vui lòng truyền mảng ids cần xóa",
+    });
+  }
+
+  if (ids.length > 500) {
+    return res.status(400).json({
+      success: false,
+      message: "Tối đa 500 item cho mỗi lần xóa hàng loạt",
+    });
+  }
+
+  const { validIds, invalidIds } = normalizeObjectIdList(ids);
+
+  if (validIds.length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Không có id hợp lệ để xóa",
+      data: {
+        requested: ids.length,
+        invalid: invalidIds.length,
+      },
+    });
+  }
+
+  const result = await Pantry.deleteMany({
+    _id: { $in: validIds },
+    user: req.user._id,
+  });
+
+  const deletedCount = result?.deletedCount || 0;
+
+  return res.status(200).json({
+    success: true,
+    message: "Xóa hàng loạt pantry item thành công",
+    data: {
+      requested: ids.length,
+      valid: validIds.length,
+      invalid: invalidIds.length,
+      deleted: deletedCount,
+      notFound: Math.max(0, validIds.length - deletedCount),
+    },
+  });
+});
+
+export const bulkUpdatePantryQuantities = asyncHandler(async (req, res) => {
+  const { items } = req.body || {};
+
+  if (!Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Vui lòng truyền mảng items gồm id và quantity",
+    });
+  }
+
+  if (items.length > 500) {
+    return res.status(400).json({
+      success: false,
+      message: "Tối đa 500 item cho mỗi lần cập nhật hàng loạt",
+    });
+  }
+
+  const quantityById = new Map();
+  const invalidItems = [];
+
+  for (let i = 0; i < items.length; i += 1) {
+    const row = items[i] || {};
+    const id = String(row.id || "").trim();
+    const quantity = Number(row.quantity);
+
+    if (!id || !mongoose.isValidObjectId(id)) {
+      invalidItems.push({ index: i, reason: "id_khong_hop_le" });
+      continue;
+    }
+
+    if (!Number.isFinite(quantity) || quantity <= 0) {
+      invalidItems.push({ index: i, reason: "quantity_phai_lon_hon_0" });
+      continue;
+    }
+
+    quantityById.set(id, quantity);
+  }
+
+  if (quantityById.size === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Không có item hợp lệ để cập nhật",
+      data: {
+        requested: items.length,
+        invalid: invalidItems.length,
+      },
+    });
+  }
+
+  const operations = Array.from(quantityById.entries()).map(([id, quantity]) => ({
+    updateOne: {
+      filter: { _id: id, user: req.user._id },
+      update: { $set: { quantity } },
+    },
+  }));
+
+  const result = await Pantry.bulkWrite(operations, { ordered: false });
+
+  const matched = result?.matchedCount ?? result?.nMatched ?? 0;
+  const modified = result?.modifiedCount ?? result?.nModified ?? 0;
+  const valid = quantityById.size;
+
+  return res.status(200).json({
+    success: true,
+    message: "Cập nhật số lượng hàng loạt thành công",
+    data: {
+      requested: items.length,
+      valid,
+      invalid: invalidItems.length,
+      matched,
+      modified,
+      notFound: Math.max(0, valid - matched),
+      invalidItems,
+    },
+  });
+});
+
 export const updatePantryItem = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (!mongoose.isValidObjectId(id)) {
@@ -368,6 +532,8 @@ export const updatePantryItem = asyncHandler(async (req, res) => {
   if (!updated) {
     return res.status(404).json({ success: false, message: "Không tìm thấy pantry item" });
   }
+
+  triggerPantryNotificationForUser(req.user._id, "pantry_update");
 
   return res.status(200).json({
     success: true,

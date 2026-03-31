@@ -75,7 +75,7 @@ function buildPayload({ item, status, daysToExpire, expiryVietnamDayIndex, expir
 
 async function insertNotificationsIfNotExists(candidates, userId) {
   if (candidates.length === 0) {
-    return { created: 0, skippedExisting: 0 };
+    return { created: 0, skippedExisting: 0, failedToCreate: 0 };
   }
 
   const eventKeys = candidates.map((candidate) => candidate.metadata.eventKey);
@@ -96,13 +96,31 @@ async function insertNotificationsIfNotExists(candidates, userId) {
     (candidate) => !existingEventKeys.has(candidate.metadata.eventKey)
   );
 
+  let created = 0;
+  let failedToCreate = 0;
+
   if (docsToInsert.length > 0) {
-    await Notification.insertMany(docsToInsert, { ordered: false });
+    const { createNotification } = await import(
+      "../controllers/notificationController.js"
+    );
+
+    const createdResults = await Promise.allSettled(
+      docsToInsert.map((doc) => createNotification(doc))
+    );
+
+    for (const result of createdResults) {
+      if (result.status === "fulfilled" && result.value) {
+        created += 1;
+      } else {
+        failedToCreate += 1;
+      }
+    }
   }
 
   return {
-    created: docsToInsert.length,
+    created,
     skippedExisting: candidates.length - docsToInsert.length,
+    failedToCreate,
   };
 }
 
@@ -182,10 +200,8 @@ export async function runPantryExpiryNotificationJob({
       }
     }
 
-    const { created, skippedExisting } = await insertNotificationsIfNotExists(
-      notificationCandidates,
-      userId
-    );
+    const { created, skippedExisting, failedToCreate } =
+      await insertNotificationsIfNotExists(notificationCandidates, userId);
 
     return {
       success: true,
@@ -198,6 +214,7 @@ export async function runPantryExpiryNotificationJob({
       expiringCandidates,
       created,
       skippedExisting,
+      failedToCreate,
       userScope: userId ? "single_user" : "all_users",
       runAt: now.toISOString(),
     };
