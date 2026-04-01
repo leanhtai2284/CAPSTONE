@@ -205,7 +205,7 @@ export default function useMealPlanner() {
 
     setIsSwapping(mealId);
     try {
-      // 1️⃣ Tìm món cần đổi trong meal plan
+      // 1️ Tìm món cần đổi trong meal plan
       let currentMeal = null;
       let currentMeals = []; // Tất cả món trong bữa ăn hiện tại
 

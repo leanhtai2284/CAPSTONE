@@ -27,7 +27,7 @@ const ingredientSchema = new mongoose.Schema(
     name: { type: String, required: true },
     amount: { type: Number, required: true },
     unit: { type: String, required: true },
-    scalable: { type: Boolean, default: true }, // ✅ thêm để scale
+    scalable: { type: Boolean, default: true }, //  thêm để scale
   },
   { _id: false }
 );

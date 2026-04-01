@@ -8,8 +8,6 @@ import applyKeto from "./rules/keto.js";
 import applyWeightGain from "./rules/weight_gain.js";
 import applyWeightLoss from "./rules/weight_loss.js";
 
-// ...existing code...
-
 export async function suggestDailyMenu(prefs) {
   const baseFilter = {};
 
@@ -21,8 +19,31 @@ export async function suggestDailyMenu(prefs) {
   const budgetNum = Number(prefs?.budget_vnd);
   if (Number.isFinite(budgetNum) && budgetNum > 0) {
     const budgetPerMeal = Math.ceil(budgetNum / 5); // Chia đều cho 5 món
-    baseFilter["price_estimate.min"] = { $lte: budgetPerMeal };
-    console.log(`💰 Budget: ${budgetNum} VNĐ/ngày → ~${budgetPerMeal} VNĐ/món`);
+
+    // Lọc món theo khung giá phù hợp với ngân sách
+    // Dataset hiện tại: tất cả món đều ≤ 50k
+    // Ngân sách thấp (< 175k = ~35k/món): lấy món giá thấp 10k-30k
+    // Ngân sách trung bình (175k-350k = 35-70k/món): lấy món giá 30k-40k
+    // Ngân sách cao (> 350k = >70k/món): lấy món giá cao 40k-50k
+    if (budgetNum < 175000) {
+      // Ngân sách thấp: chỉ lấy món giá thấp
+      baseFilter["price_estimate.min"] = { $gte: 10000, $lte: 30000 };
+      console.log(
+        ` Ngân sách THẤP: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 10k-30k VNĐ`
+      );
+    } else if (budgetNum <= 350000) {
+      // Ngân sách trung bình: lấy món giá trung bình
+      baseFilter["price_estimate.min"] = { $gte: 30000, $lte: 40000 };
+      console.log(
+        ` Ngân sách TRUNG BÌNH: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 30k-40k VNĐ`
+      );
+    } else {
+      // Ngân sách cao: lấy món giá cao nhất trong dataset
+      baseFilter["price_estimate.min"] = { $gte: 40000, $lte: 50000 };
+      console.log(
+        ` Ngân sách CAO: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 40k-50k VNĐ`
+      );
+    }
   }
 
   if (prefs?.region) baseFilter.region = prefs.region;
@@ -102,14 +123,14 @@ export async function suggestDailyMenu(prefs) {
     (r.meal_types || []).includes("dinner")
   ).length;
 
-  console.log(`📊 After filters: ${candidates.length} total`);
-  console.log(`  🌅 Breakfast: ${breakfastCount} món`);
-  console.log(`  🌞 Lunch: ${lunchCount} món`);
-  console.log(`  🌙 Dinner: ${dinnerCount} món`);
+  console.log(`After filters: ${candidates.length} total`);
+  console.log(`  Breakfast: ${breakfastCount} món`);
+  console.log(`  Lunch: ${lunchCount} món`);
+  console.log(`  Dinner: ${dinnerCount} món`);
 
   // Kiểm tra xem có đủ món không (cần ít nhất: 1 breakfast, 2 lunch, 2 dinner)
   if (breakfastCount < 1 || lunchCount < 2 || dinnerCount < 2) {
-    console.warn(`⚠️ Không đủ món! Cần nới lỏng điều kiện...`);
+    console.warn(`Không đủ món! Cần nới lỏng điều kiện...`);
   }
 
   if (candidates.length === 0) {
@@ -208,14 +229,14 @@ export async function suggestDailyMenu(prefs) {
     let attempts = 0;
     const maxAttempts = 20; // Tránh vòng lặp vô hạn
 
-    console.log(`\n🍽️  Đang chọn món ${mealType} (cần ${count} món)...`);
+    console.log(`\nĐang chọn món ${mealType} (cần ${count} món)...`);
 
     while (added < count && attempts < maxAttempts) {
       const dish = findDishByMealType(mealType, Array.from(usedIds));
 
       if (!dish) {
         console.error(
-          `⚠️ Không tìm thấy thêm món ${mealType}! Hiện có ${added}/${count}`
+          `Không tìm thấy thêm món ${mealType}! Hiện có ${added}/${count}`
         );
         break;
       }
@@ -223,7 +244,7 @@ export async function suggestDailyMenu(prefs) {
       chosen.push(dish);
       usedIds.add(dish._id.toString());
       console.log(
-        `  ✅ Thêm: ${dish.name_vi} (${dish.price_estimate?.min || "N/A"} VNĐ)`
+        `  Thêm: ${dish.name_vi} (${dish.price_estimate?.min || "N/A"} VNĐ)`
       );
       added++;
       attempts++;
@@ -240,11 +261,11 @@ export async function suggestDailyMenu(prefs) {
     (m.meal_types || []).includes("dinner")
   ).length;
 
-  console.log(`\n✅ KẾT QUẢ CUỐI CÙNG:`);
-  console.log(`  🌅 Sáng: ${finalBreakfast}/1 món`);
-  console.log(`  🌞 Trưa: ${finalLunch}/2 món`);
-  console.log(`  🌙 Tối: ${finalDinner}/2 món`);
-  console.log(`  📦 Tổng: ${chosen.length}/5 món\n`);
+  console.log(`\nKẾT QUẢ CUỐI CÙNG:`);
+  console.log(`  Sáng: ${finalBreakfast}/1 món`);
+  console.log(`  Trưa: ${finalLunch}/2 món`);
+  console.log(`  Tối: ${finalDinner}/2 món`);
+  console.log(`  Tổng: ${chosen.length}/5 món\n`);
 
   return chosen;
 }
@@ -261,8 +282,31 @@ export async function suggestWeeklyMenu(prefs) {
   const budgetNum = Number(prefs?.budget_vnd);
   if (Number.isFinite(budgetNum) && budgetNum > 0) {
     const budgetPerMeal = Math.ceil(budgetNum / 5); // Chia đều cho 5 món
-    baseFilter["price_estimate.min"] = { $lte: budgetPerMeal };
-    console.log(`💰 Budget: ${budgetNum} VNĐ/ngày → ~${budgetPerMeal} VNĐ/món`);
+
+    // Lọc món theo khung giá phù hợp với ngân sách
+    // Dataset hiện tại: tất cả món đều ≤ 50k
+    // Ngân sách thấp (< 175k = ~35k/món): lấy món giá thấp 10k-30k
+    // Ngân sách trung bình (175k-350k = 35-70k/món): lấy món giá 30k-40k
+    // Ngân sách cao (> 350k = >70k/món): lấy món giá cao 40k-50k
+    if (budgetNum < 175000) {
+      // Ngân sách thấp: chỉ lấy món giá thấp
+      baseFilter["price_estimate.min"] = { $gte: 10000, $lte: 30000 };
+      console.log(
+        ` Ngân sách THẤP: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 10k-30k VNĐ`
+      );
+    } else if (budgetNum <= 350000) {
+      // Ngân sách trung bình: lấy món giá trung bình
+      baseFilter["price_estimate.min"] = { $gte: 30000, $lte: 40000 };
+      console.log(
+        ` Ngân sách TRUNG BÌNH: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 30k-40k VNĐ`
+      );
+    } else {
+      // Ngân sách cao: lấy món giá cao nhất trong dataset
+      baseFilter["price_estimate.min"] = { $gte: 40000, $lte: 50000 };
+      console.log(
+        ` Ngân sách CAO: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 40k-50k VNĐ`
+      );
+    }
   }
 
   if (prefs?.region) baseFilter.region = prefs.region;
@@ -400,7 +444,7 @@ export async function suggestWeeklyMenu(prefs) {
     dinner: 2,
   };
 
-  console.log(`\n📅 Bắt đầu tạo thực đơn 7 ngày...`);
+  console.log(`\nBắt đầu tạo thực đơn 7 ngày...`);
 
   for (let day = 0; day < 7; day++) {
     const dayMeals = [];
@@ -419,7 +463,7 @@ export async function suggestWeeklyMenu(prefs) {
 
         if (!dish) {
           console.warn(
-            `⚠️ Ngày ${
+            `Ngày ${
               day + 1
             }: Không tìm thấy thêm món ${mealType}! Hiện có ${added}/${count}`
           );
@@ -428,13 +472,13 @@ export async function suggestWeeklyMenu(prefs) {
 
         dayMeals.push(dish);
         usedInThisDay.add(dish._id.toString()); // Chỉ track trong ngày
-        console.log(`  ✅ ${mealType}: ${dish.name_vi}`);
+        console.log(`  ${mealType}: ${dish.name_vi}`);
         added++;
         attempts++;
       }
     }
 
-    console.log(`  📦 Tổng: ${dayMeals.length}/5 món`);
+    console.log(`  Tổng: ${dayMeals.length}/5 món`);
 
     weeklyMenu.push({
       day,
@@ -451,7 +495,7 @@ export async function suggestWeeklyMenu(prefs) {
     });
   }
 
-  console.log(`\n✅ Hoàn thành thực đơn tuần!\n`);
+  console.log(`\nHoàn thành thực đơn tuần!\n`);
 
   return weeklyMenu;
 }
