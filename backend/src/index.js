@@ -22,6 +22,7 @@ import newsRoutes from "./routes/news-routes.js";
 import pantryRoutes from "./routes/pantry.js";
 import restaurantRoutes from "./routes/restaurant_routes.js";
 import { errorHandler, notFound } from "./middlewares/errorHandler.js";
+import { startPantryExpiryNotificationScheduler } from "./services/pantryExpiryNotificationService.js";
 
 const app = express();
 
@@ -61,7 +62,8 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {
-  app.listen(PORT, () =>
-    console.log(` Backend running at http://localhost:${PORT}`),
-  );
+  app.listen(PORT, () => {
+    console.log(` Backend running at http://localhost:${PORT}`);
+    startPantryExpiryNotificationScheduler();
+  });
 });

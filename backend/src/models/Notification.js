@@ -32,6 +32,7 @@ const notificationSchema = new mongoose.Schema(
         "system",
         "user_activity",
         "recipe",
+        "pantry",
       ],
       default: "system",
     },
@@ -46,6 +47,9 @@ const notificationSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+notificationSchema.index({ user: 1, createdAt: -1 });
+notificationSchema.index({ "metadata.eventKey": 1 });
 
 const Notification = mongoose.model("Notification", notificationSchema);
 
