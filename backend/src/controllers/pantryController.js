@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Pantry from "../models/Pantry.js";
+import Recipe from "../models/Recipe.js";
 import { runPantryExpiryNotificationJob } from "../services/pantryExpiryNotificationService.js";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -19,6 +20,43 @@ const UPDATABLE_FIELDS = [
   "openedDate",
   "notes",
 ];
+const MASS_UNITS = new Set(["g", "kg"]);
+const VOLUME_UNITS = new Set(["ml", "l"]);
+const COUNT_UNITS = new Set(["pcs", "pack", "bottle", "can"]);
+const UNIT_ALIAS_MAP = {
+  g: "g",
+  gr: "g",
+  gram: "g",
+  grams: "g",
+  gam: "g",
+  kg: "kg",
+  kilogram: "kg",
+  kilograms: "kg",
+  ml: "ml",
+  milliliter: "ml",
+  milliliters: "ml",
+  mililiter: "ml",
+  mililiters: "ml",
+  l: "l",
+  lit: "l",
+  liter: "l",
+  litre: "l",
+  liters: "l",
+  litres: "l",
+  pc: "pcs",
+  pcs: "pcs",
+  piece: "pcs",
+  pieces: "pcs",
+  qua: "pcs",
+  trai: "pcs",
+  cai: "pcs",
+  pack: "pack",
+  goi: "pack",
+  bottle: "bottle",
+  chai: "bottle",
+  can: "can",
+  lon: "can",
+};
 
 function toPositiveInt(value, fallback, { min = 1, max = 100 } = {}) {
   const parsed = Number.parseInt(value, 10);
@@ -72,6 +110,89 @@ function normalizeObjectIdList(idsInput) {
   }
 
   return { validIds, invalidIds };
+}
+
+function normalizeText(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function normalizeFoodName(value) {
+  return normalizeText(value)
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeUnit(value) {
+  const key = normalizeText(value).replace(/\./g, "");
+  return UNIT_ALIAS_MAP[key] || key;
+}
+
+function getUnitFamily(unit) {
+  if (MASS_UNITS.has(unit)) return "mass";
+  if (VOLUME_UNITS.has(unit)) return "volume";
+  if (COUNT_UNITS.has(unit)) return "count";
+  return "other";
+}
+
+function areUnitsCompatible(requiredUnit, pantryUnit) {
+  if (!requiredUnit || !pantryUnit) return false;
+  const requiredFamily = getUnitFamily(requiredUnit);
+  const pantryFamily = getUnitFamily(pantryUnit);
+
+  if (requiredFamily !== pantryFamily) return false;
+  if (requiredFamily === "count" || requiredFamily === "other") {
+    return requiredUnit === pantryUnit;
+  }
+  return true;
+}
+
+function convertAmountToBase(amount, unit) {
+  if (!Number.isFinite(amount)) return null;
+  if (unit === "kg") return amount * 1000;
+  if (unit === "l") return amount * 1000;
+  return amount;
+}
+
+function convertBaseToUnit(baseAmount, unit) {
+  if (!Number.isFinite(baseAmount)) return null;
+  if (unit === "kg") return baseAmount / 1000;
+  if (unit === "l") return baseAmount / 1000;
+  return baseAmount;
+}
+
+function round2(value) {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
+}
+
+function namesLikelyMatch(ingredientName, pantryName) {
+  if (!ingredientName || !pantryName) return false;
+  if (ingredientName === pantryName) return true;
+  if (ingredientName.length >= 4 && pantryName.includes(ingredientName)) return true;
+  if (pantryName.length >= 4 && ingredientName.includes(pantryName)) return true;
+
+  const ingredientTokens = ingredientName
+    .split(" ")
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 3);
+  const pantryTokenSet = new Set(
+    pantryName
+      .split(" ")
+      .map((token) => token.trim())
+      .filter((token) => token.length >= 3)
+  );
+
+  let overlap = 0;
+  for (const token of ingredientTokens) {
+    if (pantryTokenSet.has(token)) {
+      overlap += 1;
+    }
+  }
+  return overlap >= 2;
 }
 
 // Day index tính theo VN (UTC+7), tránh lệch ngày khi server chạy timezone khác.
@@ -332,6 +453,207 @@ export const getPantrySummary = asyncHandler(async (req, res) => {
       fresh,
     },
     meta: {
+      expiringDays,
+      timezone: VIETNAM_TZ,
+    },
+  });
+});
+
+export const checkRecipeCookability = asyncHandler(async (req, res) => {
+  const { recipeId, servings } = req.body || {};
+  if (!recipeId) {
+    return res.status(400).json({
+      success: false,
+      message: "recipeId là bắt buộc",
+    });
+  }
+
+  const idOrSlug = String(recipeId).trim();
+  let recipe = await Recipe.findOne({ id: idOrSlug }).lean();
+  if (!recipe && mongoose.isValidObjectId(idOrSlug)) {
+    recipe = await Recipe.findById(idOrSlug).lean();
+  }
+
+  if (!recipe) {
+    return res.status(404).json({
+      success: false,
+      message: "Không tìm thấy công thức",
+    });
+  }
+
+  const baseServingsRaw = Number(recipe.servings);
+  const baseServings = Number.isFinite(baseServingsRaw) && baseServingsRaw > 0 ? baseServingsRaw : 1;
+  const targetServingsRaw = Number(servings);
+  const targetServings =
+    Number.isFinite(targetServingsRaw) && targetServingsRaw > 0
+      ? targetServingsRaw
+      : baseServings;
+  const scaleFactor = targetServings / baseServings;
+
+  const expiringDays = clampExpiringDays(req.query.days ?? req.body?.days);
+  const todayVietnamDayIndex = getTodayVietnamDayIndex();
+  const { startOfTodayUtc } = getVietnamBoundaries(todayVietnamDayIndex, expiringDays);
+
+  const pantryItems = await Pantry.find({
+    user: req.user._id,
+    expiryDate: { $gte: startOfTodayUtc },
+  })
+    .select("_id name quantity unit expiryDate storageLocation category")
+    .lean();
+
+  const ingredients = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
+  const checks = [];
+  let enoughCount = 0;
+  let partialCount = 0;
+  let missingCount = 0;
+  let unitMismatchCount = 0;
+  let unknownRequirementCount = 0;
+  let comparableRequiredTotal = 0;
+  let comparableCoveredTotal = 0;
+
+  for (const ingredient of ingredients) {
+    const ingredientNameRaw = String(ingredient?.name || "").trim();
+    const ingredientNameNormalized = normalizeFoodName(ingredientNameRaw);
+    const requiredUnit = normalizeUnit(ingredient?.unit || "");
+    const requiredAmountRaw = Number(ingredient?.amount);
+    const hasValidAmount = Number.isFinite(requiredAmountRaw) && requiredAmountRaw > 0;
+    const isScalable = ingredient?.scalable !== false;
+    const requiredAmount = hasValidAmount
+      ? requiredAmountRaw * (isScalable ? scaleFactor : 1)
+      : null;
+
+    const nameMatched = pantryItems.filter((item) =>
+      namesLikelyMatch(ingredientNameNormalized, normalizeFoodName(item.name))
+    );
+
+    const compatibleItems = [];
+    const unitMismatchedItems = [];
+    let availableBaseAmount = 0;
+
+    for (const item of nameMatched) {
+      const itemUnit = normalizeUnit(item.unit);
+      if (!areUnitsCompatible(requiredUnit, itemUnit)) {
+        unitMismatchedItems.push(item);
+        continue;
+      }
+
+      const itemQuantity = Number(item.quantity);
+      if (!Number.isFinite(itemQuantity) || itemQuantity <= 0) {
+        continue;
+      }
+
+      const itemBase = convertAmountToBase(itemQuantity, itemUnit);
+      if (itemBase == null) {
+        continue;
+      }
+
+      availableBaseAmount += itemBase;
+      compatibleItems.push(item);
+    }
+
+    let status = "missing";
+    let coveragePercent = null;
+    let availableAmount = null;
+
+    if (!ingredientNameRaw || !requiredUnit || !hasValidAmount) {
+      status = "unknown_requirement";
+      unknownRequirementCount += 1;
+    } else {
+      const requiredBaseAmount = convertAmountToBase(requiredAmount, requiredUnit);
+      const availableInRequiredUnit = convertBaseToUnit(availableBaseAmount, requiredUnit);
+
+      if (requiredBaseAmount != null) {
+        comparableRequiredTotal += requiredBaseAmount;
+        comparableCoveredTotal += Math.min(requiredBaseAmount, availableBaseAmount);
+        coveragePercent = round2(
+          Math.min(1, availableBaseAmount / requiredBaseAmount) * 100
+        );
+      }
+
+      if (availableInRequiredUnit != null) {
+        availableAmount = round2(availableInRequiredUnit);
+      }
+
+      if (compatibleItems.length === 0 && unitMismatchedItems.length > 0) {
+        status = "unit_mismatch";
+        unitMismatchCount += 1;
+      } else if (requiredBaseAmount != null && availableBaseAmount >= requiredBaseAmount) {
+        status = "enough";
+        enoughCount += 1;
+      } else if (availableBaseAmount > 0) {
+        status = "partial";
+        partialCount += 1;
+      } else {
+        status = "missing";
+        missingCount += 1;
+      }
+    }
+
+    const matchedPantryItems = compatibleItems.slice(0, 5).map((item) => {
+      const itemStatus = getStatusAndDays(item.expiryDate, todayVietnamDayIndex, expiringDays);
+      return {
+        _id: item._id,
+        name: item.name,
+        quantity: item.quantity,
+        unit: item.unit,
+        expiryDate: item.expiryDate,
+        storageLocation: item.storageLocation,
+        category: item.category,
+        status: itemStatus.status,
+        daysToExpire: itemStatus.daysToExpire,
+      };
+    });
+
+    checks.push({
+      name: ingredientNameRaw,
+      requiredAmount: requiredAmount == null ? null : round2(requiredAmount),
+      requiredUnit: ingredient?.unit || null,
+      normalizedRequiredUnit: requiredUnit || null,
+      availableAmount,
+      status,
+      coveragePercent,
+      matchedCount: compatibleItems.length,
+      unitMismatchCount: unitMismatchedItems.length,
+      matchedPantryItems,
+    });
+  }
+
+  const coveragePercent =
+    comparableRequiredTotal > 0
+      ? round2((comparableCoveredTotal / comparableRequiredTotal) * 100)
+      : null;
+
+  const canCook =
+    missingCount === 0 &&
+    partialCount === 0 &&
+    unitMismatchCount === 0 &&
+    unknownRequirementCount === 0;
+
+  return res.status(200).json({
+    success: true,
+    data: {
+      recipe: {
+        _id: recipe._id,
+        id: recipe.id || null,
+        name_vi: recipe.name_vi || "",
+        baseServings,
+        targetServings,
+        scaleFactor: round2(scaleFactor),
+      },
+      summary: {
+        totalIngredients: checks.length,
+        enoughCount,
+        partialCount,
+        missingCount,
+        unitMismatchCount,
+        unknownRequirementCount,
+        coveragePercent,
+        canCook,
+      },
+      checks,
+    },
+    meta: {
+      pantryItemsChecked: pantryItems.length,
       expiringDays,
       timezone: VIETNAM_TZ,
     },
