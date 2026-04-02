@@ -110,4 +110,68 @@ export const pantryService = {
 
     return await res.json();
   },
+
+  // Bulk update pantry quantities
+  async bulkUpdateQuantities(items) {
+    const res = await fetch(`${API_BASE}/api/pantry/bulk/quantity`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ items }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không thể cập nhật số lượng hàng loạt");
+    }
+
+    return await res.json();
+  },
+
+  // Bulk delete pantry items
+  async bulkDelete(ids) {
+    const res = await fetch(`${API_BASE}/api/pantry/bulk/delete`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ ids }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không thể xóa hàng loạt pantry item");
+    }
+
+    return await res.json();
+  },
+
+  // Recipe cookability check
+  /**
+   * @param {string} recipeId
+   * @param {number | null | undefined} servings
+   * @param {number} days
+   */
+  async recipeCheck(recipeId, servings = undefined, days = 3) {
+    const params = new URLSearchParams();
+    params.append("days", String(days));
+
+    const payload = { recipeId };
+    if (servings !== null && servings !== undefined) {
+      payload.servings = servings;
+    }
+
+    const res = await fetch(
+      `${API_BASE}/api/pantry/recipe-check?${params.toString()}`,
+      {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify(payload),
+      },
+    );
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không thể kiểm tra công thức với pantry");
+    }
+
+    return await res.json();
+  },
 };

@@ -7,9 +7,10 @@ import {
   CheckCircle2,
   Clock,
   ChefHat,
-  MapPin,
+  Refrigerator,
   FileText,
 } from "lucide-react";
+import { format } from "date-fns-tz";
 import { PantryItem, Unit } from "../../types/pantry";
 
 interface PantryCardProps {
@@ -17,12 +18,16 @@ interface PantryCardProps {
   onClick: (item: PantryItem) => void;
   onEdit: (item: PantryItem) => void;
   onDelete: (id: string) => void;
+  selected?: boolean;
+  onSelect?: (itemId: string, selected: boolean) => void;
 }
 export function PantryCard({
   item,
   onClick,
   onEdit,
   onDelete,
+  selected = false,
+  onSelect,
 }: PantryCardProps) {
   const status =
     item.status ??
@@ -70,6 +75,20 @@ export function PantryCard({
     statusConfig.fresh;
   const StatusIcon = config.icon;
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't open recipe panel if clicking on checkbox, label, or buttons
+    if (
+      e.target instanceof HTMLInputElement ||
+      e.target instanceof HTMLLabelElement ||
+      e.target instanceof HTMLButtonElement ||
+      (e.target as HTMLElement).closest("button") ||
+      (e.target as HTMLElement).closest("label")
+    ) {
+      return;
+    }
+    onClick(item);
+  };
+
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     onEdit(item);
@@ -81,19 +100,14 @@ export function PantryCard({
   };
   return (
     <div
-      onClick={() => onClick(item)}
-      className="group relative bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-200 cursor-pointer flex flex-col h-full"
+      onClick={handleCardClick}
+      className={`group relative bg-white rounded-2xl p-5 shadow-sm border hover:shadow-xl hover:scale-[1.02] transition-all duration-200 cursor-pointer flex flex-col h-full ${
+        selected ? "border-primary ring-2 ring-primary" : "border-gray-100"
+      }`}
       role="button"
       tabIndex={0}
       aria-label={`Xem công thức cho ${item.name}`}
     >
-      {/* Tooltip - visible on hover */}
-      <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20 flex items-center shadow-lg">
-        <ChefHat className="w-3.5 h-3.5 mr-1.5" />
-        Nhấp để xem gợi ý công thức
-        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45" />
-      </div>
-
       {/* Action Buttons (visible on hover) */}
       <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         <button
@@ -112,23 +126,41 @@ export function PantryCard({
         </button>
       </div>
 
-      <div className="mb-4 pr-20">
-        <h3
-          className="text-lg font-bold text-gray-900 truncate"
-          title={item.name}
-        >
-          {item.name}
-        </h3>
-        <p className="text-gray-500 font-medium mt-1">
-          {item.quantity} {unitLabels[item.unit] || item.unit}
-        </p>
-        <div className="flex items-center text-xs text-gray-500 mt-2 gap-1">
-          <MapPin className="w-3 h-3" />
-          <span>
-            {storageLocationLabels[item.storageLocation] ||
-              item.storageLocation}
-          </span>
+      <div className="mb-4">
+        {onSelect && (
+          <label className="inline-flex items-center mb-2">
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={(e) => {
+                e.stopPropagation();
+                onSelect(item._id ?? "", e.target.checked);
+              }}
+              className="form-checkbox h-5 w-5 text-green-600 border-gray-300 rounded"
+            />
+            <span className="ml-2 text-xs text-gray-500"></span>
+          </label>
+        )}
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="text-lg font-bold text-gray-900 " title={item.name}>
+              {item.name}
+            </h3>
+
+            <p className="text-gray-500 text- font-medium mt-1">
+              {item.quantity} {unitLabels[item.unit] || item.unit}
+            </p>
+          </div>
+
+          <div className="flex text-gray-500 text-sm mt-2 gap-1 items-center">
+            <Refrigerator className="w-4 h-4" />
+            <span>
+              {storageLocationLabels[item.storageLocation] ||
+                item.storageLocation}
+            </span>
+          </div>
         </div>
+
         {item.notes && (
           <div className="flex items-start text-xs text-gray-500 mt-2 gap-1">
             <FileText className="w-3 h-3 mt-0.5 flex-shrink-0" />
@@ -146,9 +178,8 @@ export function PantryCard({
         <div className="flex items-center text-sm text-gray-500">
           <Calendar className="w-4 h-4 mr-1.5" />
           <span>
-            {new Date(item.expiryDate).toLocaleDateString(undefined, {
-              month: "short",
-              day: "numeric",
+            {format(new Date(item.expiryDate), "MMM d", {
+              timeZone: "Asia/Ho_Chi_Minh",
             })}
           </span>
         </div>
@@ -159,7 +190,7 @@ export function PantryCard({
           <StatusIcon className="w-3.5 h-3.5 mr-1" />
           {config.label}
           {typeof daysToExpire === "number" && (
-            <span className="ml-1">({daysToExpire}d)</span>
+            <span className="ml-1">({daysToExpire} ngày)</span>
           )}
         </div>
       </div>
