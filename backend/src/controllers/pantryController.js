@@ -267,6 +267,181 @@ function triggerPantryNotificationForUser(userId, trigger) {
   });
 }
 
+function resolveServingsForRecipe(recipe, servingsInput) {
+  const baseServingsRaw = Number(recipe?.servings);
+  const baseServings =
+    Number.isFinite(baseServingsRaw) && baseServingsRaw > 0 ? baseServingsRaw : 1;
+  const targetServingsRaw = Number(servingsInput);
+  const targetServings =
+    Number.isFinite(targetServingsRaw) && targetServingsRaw > 0
+      ? targetServingsRaw
+      : baseServings;
+
+  return {
+    baseServings,
+    targetServings,
+    scaleFactor: targetServings / baseServings,
+  };
+}
+
+function evaluateRecipeAgainstPantry({
+  recipe,
+  pantryItems,
+  todayVietnamDayIndex,
+  expiringDays,
+  scaleFactor,
+  includeMatchedPantryItems = true,
+  maxMatchedPantryItems = 5,
+}) {
+  const ingredients = Array.isArray(recipe?.ingredients) ? recipe.ingredients : [];
+  const checks = [];
+  let enoughCount = 0;
+  let partialCount = 0;
+  let missingCount = 0;
+  let unitMismatchCount = 0;
+  let unknownRequirementCount = 0;
+  let comparableRequiredTotal = 0;
+  let comparableCoveredTotal = 0;
+
+  for (const ingredient of ingredients) {
+    const ingredientNameRaw = String(ingredient?.name || "").trim();
+    const ingredientNameNormalized = normalizeFoodName(ingredientNameRaw);
+    const requiredUnit = normalizeUnit(ingredient?.unit || "");
+    const requiredAmountRaw = Number(ingredient?.amount);
+    const hasValidAmount = Number.isFinite(requiredAmountRaw) && requiredAmountRaw > 0;
+    const isScalable = ingredient?.scalable !== false;
+    const requiredAmount = hasValidAmount
+      ? requiredAmountRaw * (isScalable ? scaleFactor : 1)
+      : null;
+
+    const nameMatched = pantryItems.filter((item) =>
+      namesLikelyMatch(ingredientNameNormalized, normalizeFoodName(item.name))
+    );
+
+    const compatibleItems = [];
+    const unitMismatchedItems = [];
+    let availableBaseAmount = 0;
+
+    for (const item of nameMatched) {
+      const itemUnit = normalizeUnit(item.unit);
+      if (!areUnitsCompatible(requiredUnit, itemUnit)) {
+        unitMismatchedItems.push(item);
+        continue;
+      }
+
+      const itemQuantity = Number(item.quantity);
+      if (!Number.isFinite(itemQuantity) || itemQuantity <= 0) {
+        continue;
+      }
+
+      const itemBase = convertAmountToBase(itemQuantity, itemUnit);
+      if (itemBase == null) {
+        continue;
+      }
+
+      availableBaseAmount += itemBase;
+      compatibleItems.push(item);
+    }
+
+    let status = "missing";
+    let coveragePercent = null;
+    let availableAmount = null;
+
+    if (!ingredientNameRaw || !requiredUnit || !hasValidAmount) {
+      status = "unknown_requirement";
+      unknownRequirementCount += 1;
+    } else {
+      const requiredBaseAmount = convertAmountToBase(requiredAmount, requiredUnit);
+      const availableInRequiredUnit = convertBaseToUnit(availableBaseAmount, requiredUnit);
+
+      if (requiredBaseAmount != null) {
+        comparableRequiredTotal += requiredBaseAmount;
+        comparableCoveredTotal += Math.min(requiredBaseAmount, availableBaseAmount);
+        coveragePercent = round2(
+          Math.min(1, availableBaseAmount / requiredBaseAmount) * 100
+        );
+      }
+
+      if (availableInRequiredUnit != null) {
+        availableAmount = round2(availableInRequiredUnit);
+      }
+
+      if (compatibleItems.length === 0 && unitMismatchedItems.length > 0) {
+        status = "unit_mismatch";
+        unitMismatchCount += 1;
+      } else if (requiredBaseAmount != null && availableBaseAmount >= requiredBaseAmount) {
+        status = "enough";
+        enoughCount += 1;
+      } else if (availableBaseAmount > 0) {
+        status = "partial";
+        partialCount += 1;
+      } else {
+        status = "missing";
+        missingCount += 1;
+      }
+    }
+
+    const check = {
+      name: ingredientNameRaw,
+      requiredAmount: requiredAmount == null ? null : round2(requiredAmount),
+      requiredUnit: ingredient?.unit || null,
+      normalizedRequiredUnit: requiredUnit || null,
+      availableAmount,
+      status,
+      coveragePercent,
+      matchedCount: compatibleItems.length,
+      unitMismatchCount: unitMismatchedItems.length,
+    };
+
+    if (includeMatchedPantryItems) {
+      check.matchedPantryItems = compatibleItems
+        .slice(0, maxMatchedPantryItems)
+        .map((item) => {
+          const itemStatus = getStatusAndDays(
+            item.expiryDate,
+            todayVietnamDayIndex,
+            expiringDays
+          );
+          return {
+            _id: item._id,
+            name: item.name,
+            quantity: item.quantity,
+            unit: item.unit,
+            expiryDate: item.expiryDate,
+            storageLocation: item.storageLocation,
+            category: item.category,
+            status: itemStatus.status,
+            daysToExpire: itemStatus.daysToExpire,
+          };
+        });
+    }
+
+    checks.push(check);
+  }
+
+  const coveragePercent =
+    comparableRequiredTotal > 0
+      ? round2((comparableCoveredTotal / comparableRequiredTotal) * 100)
+      : null;
+
+  const summary = {
+    totalIngredients: checks.length,
+    enoughCount,
+    partialCount,
+    missingCount,
+    unitMismatchCount,
+    unknownRequirementCount,
+    coveragePercent,
+    canCook:
+      missingCount === 0 &&
+      partialCount === 0 &&
+      unitMismatchCount === 0 &&
+      unknownRequirementCount === 0,
+  };
+
+  return { checks, summary };
+}
+
 export const createPantryItem = asyncHandler(async (req, res) => {
   const { name, quantity, unit, storageLocation, expiryDate, category, openedDate, notes } =
     req.body;
@@ -481,14 +656,8 @@ export const checkRecipeCookability = asyncHandler(async (req, res) => {
     });
   }
 
-  const baseServingsRaw = Number(recipe.servings);
-  const baseServings = Number.isFinite(baseServingsRaw) && baseServingsRaw > 0 ? baseServingsRaw : 1;
-  const targetServingsRaw = Number(servings);
-  const targetServings =
-    Number.isFinite(targetServingsRaw) && targetServingsRaw > 0
-      ? targetServingsRaw
-      : baseServings;
-  const scaleFactor = targetServings / baseServings;
+  const servingsContext = resolveServingsForRecipe(recipe, servings);
+  const { baseServings, targetServings, scaleFactor } = servingsContext;
 
   const expiringDays = clampExpiringDays(req.query.days ?? req.body?.days);
   const todayVietnamDayIndex = getTodayVietnamDayIndex();
@@ -501,133 +670,15 @@ export const checkRecipeCookability = asyncHandler(async (req, res) => {
     .select("_id name quantity unit expiryDate storageLocation category")
     .lean();
 
-  const ingredients = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
-  const checks = [];
-  let enoughCount = 0;
-  let partialCount = 0;
-  let missingCount = 0;
-  let unitMismatchCount = 0;
-  let unknownRequirementCount = 0;
-  let comparableRequiredTotal = 0;
-  let comparableCoveredTotal = 0;
-
-  for (const ingredient of ingredients) {
-    const ingredientNameRaw = String(ingredient?.name || "").trim();
-    const ingredientNameNormalized = normalizeFoodName(ingredientNameRaw);
-    const requiredUnit = normalizeUnit(ingredient?.unit || "");
-    const requiredAmountRaw = Number(ingredient?.amount);
-    const hasValidAmount = Number.isFinite(requiredAmountRaw) && requiredAmountRaw > 0;
-    const isScalable = ingredient?.scalable !== false;
-    const requiredAmount = hasValidAmount
-      ? requiredAmountRaw * (isScalable ? scaleFactor : 1)
-      : null;
-
-    const nameMatched = pantryItems.filter((item) =>
-      namesLikelyMatch(ingredientNameNormalized, normalizeFoodName(item.name))
-    );
-
-    const compatibleItems = [];
-    const unitMismatchedItems = [];
-    let availableBaseAmount = 0;
-
-    for (const item of nameMatched) {
-      const itemUnit = normalizeUnit(item.unit);
-      if (!areUnitsCompatible(requiredUnit, itemUnit)) {
-        unitMismatchedItems.push(item);
-        continue;
-      }
-
-      const itemQuantity = Number(item.quantity);
-      if (!Number.isFinite(itemQuantity) || itemQuantity <= 0) {
-        continue;
-      }
-
-      const itemBase = convertAmountToBase(itemQuantity, itemUnit);
-      if (itemBase == null) {
-        continue;
-      }
-
-      availableBaseAmount += itemBase;
-      compatibleItems.push(item);
-    }
-
-    let status = "missing";
-    let coveragePercent = null;
-    let availableAmount = null;
-
-    if (!ingredientNameRaw || !requiredUnit || !hasValidAmount) {
-      status = "unknown_requirement";
-      unknownRequirementCount += 1;
-    } else {
-      const requiredBaseAmount = convertAmountToBase(requiredAmount, requiredUnit);
-      const availableInRequiredUnit = convertBaseToUnit(availableBaseAmount, requiredUnit);
-
-      if (requiredBaseAmount != null) {
-        comparableRequiredTotal += requiredBaseAmount;
-        comparableCoveredTotal += Math.min(requiredBaseAmount, availableBaseAmount);
-        coveragePercent = round2(
-          Math.min(1, availableBaseAmount / requiredBaseAmount) * 100
-        );
-      }
-
-      if (availableInRequiredUnit != null) {
-        availableAmount = round2(availableInRequiredUnit);
-      }
-
-      if (compatibleItems.length === 0 && unitMismatchedItems.length > 0) {
-        status = "unit_mismatch";
-        unitMismatchCount += 1;
-      } else if (requiredBaseAmount != null && availableBaseAmount >= requiredBaseAmount) {
-        status = "enough";
-        enoughCount += 1;
-      } else if (availableBaseAmount > 0) {
-        status = "partial";
-        partialCount += 1;
-      } else {
-        status = "missing";
-        missingCount += 1;
-      }
-    }
-
-    const matchedPantryItems = compatibleItems.slice(0, 5).map((item) => {
-      const itemStatus = getStatusAndDays(item.expiryDate, todayVietnamDayIndex, expiringDays);
-      return {
-        _id: item._id,
-        name: item.name,
-        quantity: item.quantity,
-        unit: item.unit,
-        expiryDate: item.expiryDate,
-        storageLocation: item.storageLocation,
-        category: item.category,
-        status: itemStatus.status,
-        daysToExpire: itemStatus.daysToExpire,
-      };
-    });
-
-    checks.push({
-      name: ingredientNameRaw,
-      requiredAmount: requiredAmount == null ? null : round2(requiredAmount),
-      requiredUnit: ingredient?.unit || null,
-      normalizedRequiredUnit: requiredUnit || null,
-      availableAmount,
-      status,
-      coveragePercent,
-      matchedCount: compatibleItems.length,
-      unitMismatchCount: unitMismatchedItems.length,
-      matchedPantryItems,
-    });
-  }
-
-  const coveragePercent =
-    comparableRequiredTotal > 0
-      ? round2((comparableCoveredTotal / comparableRequiredTotal) * 100)
-      : null;
-
-  const canCook =
-    missingCount === 0 &&
-    partialCount === 0 &&
-    unitMismatchCount === 0 &&
-    unknownRequirementCount === 0;
+  const evaluation = evaluateRecipeAgainstPantry({
+    recipe,
+    pantryItems,
+    todayVietnamDayIndex,
+    expiringDays,
+    scaleFactor,
+    includeMatchedPantryItems: true,
+    maxMatchedPantryItems: 5,
+  });
 
   return res.status(200).json({
     success: true,
@@ -640,22 +691,183 @@ export const checkRecipeCookability = asyncHandler(async (req, res) => {
         targetServings,
         scaleFactor: round2(scaleFactor),
       },
-      summary: {
-        totalIngredients: checks.length,
-        enoughCount,
-        partialCount,
-        missingCount,
-        unitMismatchCount,
-        unknownRequirementCount,
-        coveragePercent,
-        canCook,
-      },
-      checks,
+      summary: evaluation.summary,
+      checks: evaluation.checks,
     },
     meta: {
       pantryItemsChecked: pantryItems.length,
       expiringDays,
       timezone: VIETNAM_TZ,
+    },
+  });
+});
+
+export const suggestRecipesFromPantry = asyncHandler(async (req, res) => {
+  const {
+    mealType,
+    region,
+    difficulty,
+    dietTags,
+    excludeAllergens,
+    servings,
+    limit,
+    candidateLimit,
+    minCoveragePercent,
+  } = req.body || {};
+
+  const finalLimit = toPositiveInt(limit, 10, { min: 1, max: 30 });
+  const finalCandidateLimit = toPositiveInt(candidateLimit, 120, {
+    min: 10,
+    max: 400,
+  });
+  const parsedMinCoverage = Number(minCoveragePercent);
+  const finalMinCoverage = Number.isFinite(parsedMinCoverage)
+    ? Math.min(100, Math.max(0, parsedMinCoverage))
+    : 30;
+  const expiringDays = clampExpiringDays(req.query.days ?? req.body?.days);
+
+  const recipeFilter = {};
+  if (["breakfast", "lunch", "dinner"].includes(String(mealType || ""))) {
+    recipeFilter.meal_types = String(mealType);
+  }
+  if (["Bắc", "Trung", "Nam"].includes(String(region || ""))) {
+    recipeFilter.region = String(region);
+  }
+  if (["easy", "medium", "hard"].includes(String(difficulty || ""))) {
+    recipeFilter.difficulty = String(difficulty);
+  }
+
+  const normalizedDietTags = Array.isArray(dietTags)
+    ? dietTags.map((tag) => String(tag || "").trim()).filter(Boolean)
+    : [];
+  if (normalizedDietTags.length > 0) {
+    recipeFilter.diet_tags = { $all: normalizedDietTags };
+  }
+
+  const normalizedExcludeAllergens = Array.isArray(excludeAllergens)
+    ? excludeAllergens
+        .map((item) => String(item || "").trim())
+        .filter(Boolean)
+    : [];
+  if (normalizedExcludeAllergens.length > 0) {
+    recipeFilter.allergens = { $nin: normalizedExcludeAllergens };
+  }
+
+  const todayVietnamDayIndex = getTodayVietnamDayIndex();
+  const { startOfTodayUtc } = getVietnamBoundaries(todayVietnamDayIndex, expiringDays);
+
+  const [pantryItems, recipes] = await Promise.all([
+    Pantry.find({
+      user: req.user._id,
+      expiryDate: { $gte: startOfTodayUtc },
+    })
+      .select("_id name quantity unit expiryDate storageLocation category")
+      .lean(),
+    Recipe.find(recipeFilter)
+      .select(
+        "_id id name_vi meal_types region difficulty diet_tags allergens prep_time_min cook_time_min servings image_url ingredients"
+      )
+      .limit(finalCandidateLimit)
+      .lean(),
+  ]);
+
+  const ranked = recipes
+    .map((recipe) => {
+      const servingsContext = resolveServingsForRecipe(recipe, servings);
+      const evaluation = evaluateRecipeAgainstPantry({
+        recipe,
+        pantryItems,
+        todayVietnamDayIndex,
+        expiringDays,
+        scaleFactor: servingsContext.scaleFactor,
+        includeMatchedPantryItems: false,
+      });
+
+      const blockerStatuses = new Set([
+        "missing",
+        "partial",
+        "unit_mismatch",
+        "unknown_requirement",
+      ]);
+      const blockers = evaluation.checks
+        .filter((check) => blockerStatuses.has(check.status))
+        .slice(0, 5)
+        .map((check) => ({
+          name: check.name,
+          status: check.status,
+          requiredAmount: check.requiredAmount,
+          requiredUnit: check.requiredUnit,
+          availableAmount: check.availableAmount,
+          coveragePercent: check.coveragePercent,
+        }));
+
+      const score =
+        (evaluation.summary.canCook ? 10000 : 0) +
+        (evaluation.summary.coveragePercent ?? 0) * 10 -
+        evaluation.summary.missingCount * 8 -
+        evaluation.summary.unitMismatchCount * 6 -
+        evaluation.summary.unknownRequirementCount * 12;
+
+      return {
+        score,
+        recipe: {
+          _id: recipe._id,
+          id: recipe.id || null,
+          name_vi: recipe.name_vi || "",
+          meal_types: recipe.meal_types || [],
+          region: recipe.region || null,
+          difficulty: recipe.difficulty || null,
+          diet_tags: recipe.diet_tags || [],
+          prep_time_min: recipe.prep_time_min ?? null,
+          cook_time_min: recipe.cook_time_min ?? null,
+          image_url: recipe.image_url || null,
+          servings: {
+            base: servingsContext.baseServings,
+            target: servingsContext.targetServings,
+            scaleFactor: round2(servingsContext.scaleFactor),
+          },
+        },
+        summary: evaluation.summary,
+        blockers,
+      };
+    })
+    .filter(
+      (item) =>
+        item.summary.canCook ||
+        (item.summary.coveragePercent ?? 0) >= finalMinCoverage
+    )
+    .sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      const bCoverage = b.summary.coveragePercent ?? -1;
+      const aCoverage = a.summary.coveragePercent ?? -1;
+      if (bCoverage !== aCoverage) return bCoverage - aCoverage;
+      return a.summary.missingCount - b.summary.missingCount;
+    });
+
+  const items = ranked.slice(0, finalLimit).map(({ score, ...item }) => item);
+
+  return res.status(200).json({
+    success: true,
+    data: {
+      items,
+    },
+    meta: {
+      scannedRecipes: recipes.length,
+      qualifiedRecipes: ranked.length,
+      returned: items.length,
+      limit: finalLimit,
+      candidateLimit: finalCandidateLimit,
+      minCoveragePercent: finalMinCoverage,
+      pantryItemsChecked: pantryItems.length,
+      expiringDays,
+      timezone: VIETNAM_TZ,
+      filters: {
+        mealType: recipeFilter.meal_types || null,
+        region: recipeFilter.region || null,
+        difficulty: recipeFilter.difficulty || null,
+        dietTags: normalizedDietTags,
+        excludeAllergens: normalizedExcludeAllergens,
+      },
     },
   });
 });

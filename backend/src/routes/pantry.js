@@ -6,6 +6,7 @@ import {
   getPantryItemById,
   getPantrySummary,
   checkRecipeCookability,
+  suggestRecipesFromPantry,
   bulkDeletePantryItems,
   bulkUpdatePantryQuantities,
   updatePantryItem,
@@ -23,6 +24,8 @@ router.route("/").get(getPantryItems).post(createPantryItem);
 router.get("/summary", getPantrySummary);
 // So khớp Pantry với công thức để biết nấu được hay thiếu nguyên liệu
 router.post("/recipe-check", checkRecipeCookability);
+// Gợi ý công thức theo mức độ đáp ứng nguyên liệu Pantry
+router.post("/recipe-suggestions", suggestRecipesFromPantry);
 // Chức năng bulk độc lập
 router.post("/bulk/delete", bulkDeletePantryItems);
 router.post("/bulk/quantity", bulkUpdatePantryQuantities);
