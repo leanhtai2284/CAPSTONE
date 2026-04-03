@@ -17,6 +17,12 @@ export function PantryDashboard() {
 
   // Filter state
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterDays, setFilterDays] = useState(3);
+  const [filterCategory, setFilterCategory] = useState("");
+  const [filterStorageLocation, setFilterStorageLocation] = useState("");
+  const [filterStatus, setFilterStatus] = useState<
+    "" | "fresh" | "expiring" | "expired"
+  >("");
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,11 +43,18 @@ export function PantryDashboard() {
   const [recipeCheckResult, setRecipeCheckResult] = useState<any>(null);
   const [recipeCheckLoading, setRecipeCheckLoading] = useState(false);
 
-  // Load data on mount and whenever page/search changes
+  // Load data on mount and whenever filters/page change
   useEffect(() => {
     loadPantryItems();
     loadSummary();
-  }, [currentPage, searchQuery]);
+  }, [
+    currentPage,
+    searchQuery,
+    filterDays,
+    filterCategory,
+    filterStorageLocation,
+    filterStatus,
+  ]);
 
   const loadPantryItems = async () => {
     try {
@@ -51,10 +64,13 @@ export function PantryDashboard() {
       const params: any = {
         page: currentPage,
         limit: 20,
-        days: 3, // Default expiring days
+        days: filterDays,
       };
 
       if (searchQuery.trim()) params.q = searchQuery.trim();
+      if (filterCategory) params.category = filterCategory;
+      if (filterStorageLocation) params.storageLocation = filterStorageLocation;
+      if (filterStatus) params.status = filterStatus;
 
       const response: PantryListResponse = await pantryService.getItems(params);
 
@@ -72,7 +88,7 @@ export function PantryDashboard() {
 
   const loadSummary = async () => {
     try {
-      const response = await pantryService.getSummary(3);
+      const response = await pantryService.getSummary(filterDays);
       setSummary(response.data);
     } catch (err) {
       console.error("Error loading pantry summary:", err);
@@ -200,7 +216,7 @@ export function PantryDashboard() {
       const result = await pantryService.recipeCheck(
         recipeCheckRecipeId.trim(),
         recipeCheckServings > 0 ? recipeCheckServings : undefined,
-        3,
+        filterDays,
       );
       setRecipeCheckResult(result.data);
       toast.success("Kiểm tra công thức thành công");
@@ -325,25 +341,65 @@ export function PantryDashboard() {
         {/* Summary Stats */}
         {summary && (
           <div className="mb-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl p-4 border border-gray-200">
+            <div
+              className={`bg-white rounded-xl p-4 border cursor-pointer ${
+                filterStatus === ""
+                  ? "border-green-500 shadow-md"
+                  : "border-gray-200"
+              }`}
+              onClick={() => {
+                setFilterStatus("");
+                setCurrentPage(1);
+              }}
+            >
               <div className="text-2xl font-bold text-gray-900">
                 {summary.total}
               </div>
               <div className="text-sm text-gray-600">Tổng số</div>
             </div>
-            <div className="bg-red-50 rounded-xl p-4 border border-red-200">
+            <div
+              className={`bg-red-50 rounded-xl p-4 border cursor-pointer ${
+                filterStatus === "expired"
+                  ? "border-red-500 shadow-md"
+                  : "border-red-200"
+              }`}
+              onClick={() => {
+                setFilterStatus("expired");
+                setCurrentPage(1);
+              }}
+            >
               <div className="text-2xl font-bold text-red-600">
                 {summary.expired}
               </div>
               <div className="text-sm text-red-600">Đã hết hạn</div>
             </div>
-            <div className="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
+            <div
+              className={`bg-yellow-50 rounded-xl p-4 border cursor-pointer ${
+                filterStatus === "expiring"
+                  ? "border-yellow-500 shadow-md"
+                  : "border-yellow-200"
+              }`}
+              onClick={() => {
+                setFilterStatus("expiring");
+                setCurrentPage(1);
+              }}
+            >
               <div className="text-2xl font-bold text-yellow-600">
                 {summary.expiring}
               </div>
               <div className="text-sm text-yellow-600">Sắp hết hạn</div>
             </div>
-            <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+            <div
+              className={`bg-green-50 rounded-xl p-4 border cursor-pointer ${
+                filterStatus === "fresh"
+                  ? "border-green-500 shadow-md"
+                  : "border-green-200"
+              }`}
+              onClick={() => {
+                setFilterStatus("fresh");
+                setCurrentPage(1);
+              }}
+            >
               <div className="text-2xl font-bold text-green-600">
                 {summary.fresh}
               </div>
