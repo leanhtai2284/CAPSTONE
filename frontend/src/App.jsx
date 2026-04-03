@@ -12,10 +12,12 @@ import AppRouter from "./AppRouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoadingProvider } from "./context/LoadingContext";
 import { LogoutModalProvider } from "./context/LogoutModalContext";
+import { ChatbotBubble, ChatbotInterface } from "./components/chatbot/Chatbot";
 
 function AppContent() {
   const location = useLocation();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   // Scroll to top on route change
   useEffect(() => {
@@ -70,6 +72,9 @@ function AppContent() {
           </motion.div>
         </AnimatePresence>
       </motion.div>
+
+      <ChatbotBubble onClick={() => setIsChatbotOpen(true)} />
+      <ChatbotInterface isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
     </>
   );
 }
