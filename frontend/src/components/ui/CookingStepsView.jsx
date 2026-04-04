@@ -3,235 +3,202 @@ import {
   XIcon,
   ChefHatIcon,
   ArrowLeftIcon,
-  ArrowRightIcon,
-  CheckCircleIcon,
   ClockIcon,
+  VideoOffIcon,
+  UserIcon,
 } from "lucide-react";
-import { motion } from "framer-motion";
 
 function CookingStepsView({ meal, onClose, onBackToDetails }) {
-  const [currentStep, setCurrentStep] = useState(0);
+  // Validate meal data
+  if (!meal || !meal.steps || meal.steps.length === 0) {
+    return (
+      <div className="flex flex-col max-h-[90vh] bg-white">
+        <div className="flex-shrink-0 flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white">
+          <button
+            onClick={onBackToDetails}
+            className="flex items-center gap-2 text-gray-500 hover:text-gray-800 transition-colors duration-200"
+          >
+            <ArrowLeftIcon className="w-5 h-5" />
+            <span className="text-sm font-medium">Quay lại</span>
+          </button>
+          <h2 className="text-lg font-bold text-gray-900">Lỗi dữ liệu</h2>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+          >
+            <XIcon className="w-5 h-5 text-gray-500" />
+          </button>
+        </div>
+        <div className="flex-1 flex items-center justify-center p-6">
+          <div className="text-center">
+            <p className="text-gray-600 font-medium">
+              Không thể tải thông tin công thức
+            </p>
+            <p className="text-gray-400 text-sm mt-2">
+              Vui lòng kết nối lại và thử lại
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  const handleNextStep = () => {
-    if (currentStep < meal.steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
+  // Check if video is valid
+  const hasVideo = meal.video_url && meal.video_url.trim().length > 0;
 
-  const handlePrevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const handleComplete = () => {
-    onBackToDetails();
-  };
-
-  const isLastStep = currentStep === meal.steps.length - 1;
+  // Calculate total cooking time (fallback: 30 minutes if not provided)
+  const totalTime = meal.total_time || meal.time || 30;
 
   return (
-    <div className="h-full flex flex-col overflow-hidden animate-fade-in">
+    <div className="flex flex-col max-h-[90vh] bg-white animate-cooking-fade-in">
       <style>{`
-        @keyframes fadeIn {
+        @keyframes cookingFadeIn {
           from { opacity: 0; }
           to { opacity: 1; }
         }
-        .animate-fade-in {
-          animation: fadeIn 0.4s ease-out;
-        }
-        .step-transition {
-          animation: stepSlide 0.3s ease-out;
-        }
-        @keyframes stepSlide {
-          from {
-            opacity: 0;
-            transform: translateX(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+        .animate-cooking-fade-in {
+          animation: cookingFadeIn 0.35s ease-out;
         }
       `}</style>
 
-      {/* Header with image - cooking info overlaid on top */}
-      <div className="relative flex-shrink-0 h-48 sm:h-56 md:h-64">
-        <img
-          src={meal.image_url}
-          alt={meal.name_vi}
-          className="w-full h-full object-cover"
-        />
-
-        {/* Gradient overlay for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-
-        {/* Close button */}
+      {/* Header Bar — fixed height */}
+      <div className="flex-shrink-0 flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-black">
+        <button
+          onClick={onBackToDetails}
+          className="flex items-center gap-2 text-gray-500 dark:text-gray-300 hover:text-gray-800 transition-colors duration-200"
+        >
+          <ArrowLeftIcon className="w-5 h-5" />
+          <span className="text-sm font-medium">Quay lại</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg font-bold text-secondary dark:text-primary truncate max-w-[200px] md:max-w-none">
+            {meal.name_vi || "Không tên"}
+          </h2>
+        </div>
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 bg-black/50 hover:bg-black/70 rounded-full backdrop-blur-md transition-all duration-300 z-10"
+          className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
         >
-          <XIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+          <XIcon className="w-5 h-5 text-gray-500" />
         </button>
+      </div>
 
-        {/* Cooking Mode Header - Overlaid on image */}
-        <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6">
-          {/* Top section - Back button */}
-          <div className="flex items-center gap-2">
-            <motion.button
-              whileHover={{ x: -4 }}
-              onClick={onBackToDetails}
-              className="flex items-center gap-2 text-white hover:text-white transition-all duration-300 text-sm sm:text-base backdrop-blur-sm bg-black/30 px-3 py-2 rounded-full hover:bg-black/50"
-            >
-              <ArrowLeftIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span>Quay lại</span>
-            </motion.button>
-          </div>
-
-          {/* Bottom section - Dish info */}
-          <div className="space-y-3">
-            {/* Progress Bar */}
-            <div className="h-1.5 bg-black/40 rounded-full overflow-hidden backdrop-blur-sm">
+      {/* Scrollable: Video + Steps together */}
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        {/* Video Section */}
+        <div className="px-5 py-4 bg-white dark:bg-black">
+          {hasVideo ? (
+            <div className="space-y-2">
               <div
-                className="h-full bg-primary transition-all duration-500 ease-out shadow-lg shadow-secondary"
+                className="relative w-full rounded-2xl overflow-hidden shadow-lg shadow-black/10"
                 style={{
-                  width: `${((currentStep + 1) / meal.steps.length) * 100}%`,
+                  aspectRatio: "16/9",
                 }}
-              />
-            </div>
-
-            {/* Dish name and step info */}
-            <div className="flex items-center gap-3">
-              <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-secondary rounded-full flex items-center justify-center shadow-lg shadow-[#22C55E]/40 ring-2 ring-white/30">
-                <ChefHatIcon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+              >
+                <iframe
+                  src={meal.video_url}
+                  title={`Video hướng dẫn ${meal.name_vi}`}
+                  className="absolute inset-0 w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  onError={(e) => {
+                    console.warn("Video iframe loading error:", e);
+                  }}
+                />
               </div>
+              {meal.uploaded_by && (
+                <div className="flex items-center gap-1.5 px-1">
+                  <UserIcon className="w-3.5 h-3.5 text-gray-400" />
+                  <span className="text-xs text-gray-400">
+                    Đăng bởi{" "}
+                    <span className="text-gray-600 font-medium">
+                      {meal.uploaded_by}
+                    </span>
+                  </span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div
+              className="w-full rounded-2xl bg-gray-100 dark:bg-gray-950 border-2 border-dashed border-gray-200 dark:border-gray-800 flex flex-col items-center justify-center gap-3"
+              style={{
+                aspectRatio: "16/9",
+              }}
+            >
+              <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center">
+                <VideoOffIcon className="w-7 h-7 text-gray-400" />
+              </div>
+              <p className="text-sm text-gray-400 font-medium">
+                Chưa có video hướng dẫn
+              </p>
+              <p className="text-xs text-gray-300">
+                Video sẽ được cập nhật sớm
+              </p>
+            </div>
+          )}
+        </div>
 
-              <div className="flex-1 min-w-0">
-                <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-white drop-shadow-lg truncate">
-                  {meal.name_vi}
-                </h2>
-                <p className="text-white/70 text-xs sm:text-sm mt-1">
-                  {currentStep === 0 && "Chuẩn bị nguyên liệu"}
-                  {currentStep > 0 &&
-                    currentStep < meal.steps.length - 1 &&
-                    "👨‍🍳 Đang thực hiện"}
-                  {currentStep === meal.steps.length - 1 && "✨ Hoàn thành"}
+        {/* Info Bar */}
+        <div className="flex items-center gap-4 px-5 py-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-black ">
+          <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
+            <ClockIcon className="w-4 h-4 text-primary" />
+            <span>{totalTime} phút</span>
+          </div>
+          <div className="w-px h-4 bg-gray-300" />
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            {meal.steps.length} bước
+          </span>
+          <div className="w-px h-4 bg-gray-300" />
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            {meal.difficulty || "Trung bình"}
+          </span>
+        </div>
+
+        {/* Steps List */}
+        <div className="px-5 pb-8 space-y-4 bg-white dark:bg-black">
+          {meal.steps.map((step, index) => (
+            <div key={index} className="flex gap-4 group">
+              <div className="flex flex-col items-center">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-md shadow-emerald-500/20">
+                  {index + 1}
+                </div>
+                {index < meal.steps.length - 1 && (
+                  <div className="w-0.5 flex-1 bg-emerald-200 mt-2" />
+                )}
+              </div>
+              <div
+                className={`flex-1 ${
+                  index < meal.steps.length - 1 ? "pb-4" : ""
+                }`}
+              >
+                <div className="bg-white dark:bg-gray-950 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-gray-800 group-hover:border-emerald-200 group-hover:shadow-md transition-all duration-200">
+                  <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
+                    Bước {index + 1}
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-[15px]">
+                    {step}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* Completion Card */}
+          <div className="flex gap-4">
+            <div className="flex flex-col items-center">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
+                <ChefHatIcon className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="flex-1">
+              <div className="bg-emerald-50 rounded-xl p-5 border border-emerald-100">
+                <p className="text-emerald-700 font-semibold">Hoàn thành! 🎉</p>
+                <p className="text-emerald-600 text-sm mt-1">
+                  Chúc bạn có một bữa ăn ngon miệng với món {meal.name_vi}
                 </p>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Step Content - scrollable */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-100/10 dark:bg-gray-900/80">
-        <div
-          className="max-w-2xl mx-auto space-y-4 sm:space-y-6 step-transition pb-4"
-          key={currentStep}
-        >
-          {/* Step Number */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-secondary rounded-2xl flex items-center justify-center shadow-lg shadow-[#22C55E]/30">
-              <span className="text-2xl sm:text-3xl font-bold text-white">
-                {currentStep + 1}
-              </span>
-            </div>
-
-            <div className="flex-1">
-              <p className="text-xs sm:text-sm  uppercase tracking-wide">
-                Bước {currentStep + 1}
-              </p>
-              <p className="text-base sm:text-lg font-semibold ">
-                {isLastStep ? "Hoàn thành món ăn" : "Đang thực hiện"}
-              </p>
-            </div>
-          </div>
-
-          {/* Instructions */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-slate-800  rounded-2xl p-6 sm:p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all duration-300"
-          >
-            <p className="text-lg sm:text-xl leading-relaxed ">
-              {meal.steps[currentStep]}
-            </p>
-          </motion.div>
-
-          {/* Tips */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-start gap-3 p-3 sm:p-4 bg-secondary rounded-xl border border-green-300/70"
-          >
-            <ClockIcon className="w-5 h-5 text-green-200 flex-shrink-0 mt-0.5" />
-            <p className="text-xs sm:text-sm text-gray-200">
-              <span className="text-green-200 font-medium">Mẹo: </span>
-              {currentStep === 0 &&
-                "Chuẩn bị đầy đủ nguyên liệu trước khi bắt đầu"}
-              {currentStep > 0 &&
-                currentStep < meal.steps.length - 1 &&
-                "Thực hiện từ từ và cẩn thận"}
-              {isLastStep &&
-                "Kiểm tra độ chín và nêm nếm lại trước khi hoàn thành"}
-            </p>
-          </motion.div>
-
-          {/* Step Dots */}
-          <div className="flex items-center justify-center gap-1.5 sm:gap-2 pt-2 sm:pt-4">
-            {meal.steps.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentStep(index)}
-                className={`transition-all duration-300 rounded-full ${
-                  index === currentStep
-                    ? "w-7 h-2.5 sm:w-8 sm:h-3 bg-primary"
-                    : index < currentStep
-                    ? "w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-400"
-                    : "w-2.5 h-2.5 sm:w-3 sm:h-3 bg-gray-700"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Footer - Fixed at bottom */}
-      <div className="flex-shrink-0 bg-gray-100/10 dark:bg-gray-900/80 border-t p-4 sm:p-6">
-        <div className="flex gap-2 sm:gap-3">
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={handlePrevStep}
-            disabled={currentStep === 0}
-            className={`flex-1 flex items-center justify-center gap-1 sm:gap-2 py-3 sm:py-4 rounded-xl font-medium transition-all duration-300 text-sm sm:text-base ${
-              currentStep === 0
-                ? "bg-white dark:bg-slate-800 text-gray-600 cursor-not-allowed"
-                : "bg-white dark:bg-slate-800 text-gray-600 hover:bg-primary hover:text-white"
-            }`}
-          >
-            <ArrowLeftIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="hidden sm:inline">Quay lại</span>
-          </motion.button>
-
-          {isLastStep ? (
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={handleComplete}
-              className="flex-1 flex items-center justify-center gap-1 sm:gap-2 bg-primary hover:bg-green-500 text-white font-semibold py-3 sm:py-4 rounded-xl transition-all duration-300 shadow-lg shadow-[#22C55E]/30 text-sm sm:text-base"
-            >
-              <CheckCircleIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="hidden sm:inline">Hoàn tất</span>
-            </motion.button>
-          ) : (
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={handleNextStep}
-              className="flex-1 flex items-center justify-center gap-1 sm:gap-2 b bg-primary hover:bg-secondary text-white font-semibold py-3 sm:py-4 rounded-xl transition-all duration-300 shadow-lg shadow-[#22C55E]/30 text-sm sm:text-base"
-            >
-              <span className="hidden sm:inline">Tiếp theo</span>
-              <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-            </motion.button>
-          )}
         </div>
       </div>
     </div>
