@@ -137,7 +137,7 @@ export function AddIngredientModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors outline-none"
-              placeholder="vd: Trứng gà, Sữa tươi..."
+              placeholder="vd: Trứng, Thịt, Rau củ..."
               required
             />
           </div>
@@ -186,18 +186,17 @@ export function AddIngredientModal({
 
           <div>
             <label
-              htmlFor="expiryDate"
+              htmlFor="openedDate"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Ngày hết hạn
+              Ngày mở hộp (Tùy chọn)
             </label>
             <input
               type="date"
-              id="expiryDate"
-              value={expiryDate}
-              onChange={(e) => setExpiryDate(e.target.value)}
+              id="openedDate"
+              value={openedDate}
+              onChange={(e) => setOpenedDate(e.target.value)}
               className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors outline-none"
-              required
             />
           </div>
 
@@ -248,20 +247,20 @@ export function AddIngredientModal({
 
           <div>
             <label
-              htmlFor="openedDate"
+              htmlFor="expiryDate"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Ngày mở hộp (Tùy chọn)
+              Ngày hết hạn
             </label>
             <input
               type="date"
-              id="openedDate"
-              value={openedDate}
-              onChange={(e) => setOpenedDate(e.target.value)}
+              id="expiryDate"
+              value={expiryDate}
+              onChange={(e) => setExpiryDate(e.target.value)}
               className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors outline-none"
+              required
             />
           </div>
-
           <div>
             <label
               htmlFor="notes"
