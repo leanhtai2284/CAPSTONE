@@ -9,5 +9,7 @@ export async function findRecipeById(recipeId) {
     candidateIds.push({ _id: recipeId });
   }
 
-  return Recipe.findOne({ $or: candidateIds }).select("name_vi").lean();
+  return Recipe.findOne({ $or: candidateIds })
+    .select("name_vi diet_tags category")
+    .lean();
 }

@@ -5,6 +5,8 @@ const restaurantQuerySchema = Joi.object({
   recipe_id: Joi.string().trim().required(),
   lat: Joi.number().min(-90).max(90).required(),
   lng: Joi.number().min(-180).max(180).required(),
+  intent: Joi.string().valid("recipe", "eat-out").optional(),
+  diet_tag: Joi.string().trim().max(60).optional(),
 });
 
 export function validateRestaurantQuery(req, _res, next) {
