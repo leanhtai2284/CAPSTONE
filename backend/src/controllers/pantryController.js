@@ -10,6 +10,7 @@ const VIETNAM_TZ = "Asia/Ho_Chi_Minh";
 const STATUS_VALUES = ["expired", "expiring", "fresh"];
 const CATEGORY_VALUES = Pantry.schema.path("category").enumValues;
 const STORAGE_VALUES = Pantry.schema.path("storageLocation").enumValues;
+const UNIT_VALUES = Pantry.schema.path("unit").enumValues;
 const UPDATABLE_FIELDS = [
   "name",
   "quantity",
@@ -23,6 +24,10 @@ const UPDATABLE_FIELDS = [
 const MASS_UNITS = new Set(["g", "kg"]);
 const VOLUME_UNITS = new Set(["ml", "l"]);
 const COUNT_UNITS = new Set(["pcs", "pack", "bottle", "can"]);
+const SPOON_TO_ML = {
+  tbsp: 15,
+  tsp: 5,
+};
 const UNIT_ALIAS_MAP = {
   g: "g",
   gr: "g",
@@ -43,12 +48,26 @@ const UNIT_ALIAS_MAP = {
   litre: "l",
   liters: "l",
   litres: "l",
+  tbsp: "tbsp",
+  tablespoon: "tbsp",
+  tablespoons: "tbsp",
+  "muong canh": "tbsp",
+  "muong an": "tbsp",
+  tsp: "tsp",
+  teaspoon: "tsp",
+  teaspoons: "tsp",
+  "muong ca phe": "tsp",
+  "muong cafe": "tsp",
+  "muong tra": "tsp",
+  "muong nho": "tsp",
   pc: "pcs",
   pcs: "pcs",
   piece: "pcs",
   pieces: "pcs",
+  mieng: "pcs",
   qua: "pcs",
   trai: "pcs",
+  cu: "pcs",
   cai: "pcs",
   pack: "pack",
   goi: "pack",
@@ -57,6 +76,24 @@ const UNIT_ALIAS_MAP = {
   can: "can",
   lon: "can",
 };
+const NAME_STOP_WORDS = new Set([
+  "tuoi",
+  "xay",
+  "bam",
+  "thai",
+  "cat",
+  "ngam",
+  "mem",
+  "chin",
+  "song",
+  "it",
+  "vua",
+  "kieu",
+  "fresh",
+  "dried",
+  "chopped",
+  "minced",
+]);
 
 function toPositiveInt(value, fallback, { min = 1, max = 100 } = {}) {
   const parsed = Number.parseInt(value, 10);
@@ -127,6 +164,36 @@ function normalizeFoodName(value) {
     .trim();
 }
 
+function tokenizeFoodName(value) {
+  return normalizeFoodName(value)
+    .split(" ")
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 2 && !NAME_STOP_WORDS.has(token));
+}
+
+function buildBigramSet(value) {
+  const compact = normalizeFoodName(value).replace(/\s+/g, "");
+  if (compact.length < 2) {
+    return new Set(compact ? [compact] : []);
+  }
+
+  const grams = new Set();
+  for (let i = 0; i < compact.length - 1; i += 1) {
+    grams.add(compact.slice(i, i + 2));
+  }
+  return grams;
+}
+
+function jaccardSimilarity(setA, setB) {
+  if (setA.size === 0 || setB.size === 0) return 0;
+  let intersection = 0;
+  for (const item of setA) {
+    if (setB.has(item)) intersection += 1;
+  }
+  const union = setA.size + setB.size - intersection;
+  return union > 0 ? intersection / union : 0;
+}
+
 function normalizeUnit(value) {
   const key = normalizeText(value).replace(/\./g, "");
   return UNIT_ALIAS_MAP[key] || key;
@@ -135,6 +202,7 @@ function normalizeUnit(value) {
 function getUnitFamily(unit) {
   if (MASS_UNITS.has(unit)) return "mass";
   if (VOLUME_UNITS.has(unit)) return "volume";
+  if (unit === "tbsp" || unit === "tsp") return "volume";
   if (COUNT_UNITS.has(unit)) return "count";
   return "other";
 }
@@ -155,6 +223,8 @@ function convertAmountToBase(amount, unit) {
   if (!Number.isFinite(amount)) return null;
   if (unit === "kg") return amount * 1000;
   if (unit === "l") return amount * 1000;
+  if (unit === "tbsp") return amount * SPOON_TO_ML.tbsp;
+  if (unit === "tsp") return amount * SPOON_TO_ML.tsp;
   return amount;
 }
 
@@ -162,6 +232,8 @@ function convertBaseToUnit(baseAmount, unit) {
   if (!Number.isFinite(baseAmount)) return null;
   if (unit === "kg") return baseAmount / 1000;
   if (unit === "l") return baseAmount / 1000;
+  if (unit === "tbsp") return baseAmount / SPOON_TO_ML.tbsp;
+  if (unit === "tsp") return baseAmount / SPOON_TO_ML.tsp;
   return baseAmount;
 }
 
@@ -171,28 +243,59 @@ function round2(value) {
 
 function namesLikelyMatch(ingredientName, pantryName) {
   if (!ingredientName || !pantryName) return false;
-  if (ingredientName === pantryName) return true;
-  if (ingredientName.length >= 4 && pantryName.includes(ingredientName)) return true;
-  if (pantryName.length >= 4 && ingredientName.includes(pantryName)) return true;
+  const normalizedIngredient = normalizeFoodName(ingredientName);
+  const normalizedPantry = normalizeFoodName(pantryName);
+  if (!normalizedIngredient || !normalizedPantry) return false;
 
-  const ingredientTokens = ingredientName
-    .split(" ")
-    .map((token) => token.trim())
-    .filter((token) => token.length >= 3);
-  const pantryTokenSet = new Set(
-    pantryName
-      .split(" ")
-      .map((token) => token.trim())
-      .filter((token) => token.length >= 3)
-  );
+  if (normalizedIngredient === normalizedPantry) return true;
+  if (
+    (normalizedIngredient.length >= 4 &&
+      normalizedPantry.includes(normalizedIngredient)) ||
+    (normalizedPantry.length >= 4 && normalizedIngredient.includes(normalizedPantry))
+  ) {
+    return true;
+  }
 
-  let overlap = 0;
+  const ingredientTokens = tokenizeFoodName(normalizedIngredient);
+  const pantryTokens = tokenizeFoodName(normalizedPantry);
+  if (ingredientTokens.length === 0 || pantryTokens.length === 0) {
+    return false;
+  }
+
+  const pantryTokenSet = new Set(pantryTokens);
+  let strongOverlap = 0;
+  let weakOverlap = 0;
+
   for (const token of ingredientTokens) {
     if (pantryTokenSet.has(token)) {
-      overlap += 1;
+      strongOverlap += 1;
+      continue;
+    }
+
+    if (token.length >= 4) {
+      const hasPartialToken = pantryTokens.some(
+        (candidate) =>
+          candidate.length >= 4 &&
+          (candidate.includes(token) || token.includes(candidate))
+      );
+      if (hasPartialToken) {
+        weakOverlap += 1;
+      }
     }
   }
-  return overlap >= 2;
+
+  if (strongOverlap >= 2) return true;
+  if (strongOverlap >= 1 && ingredientTokens.length <= 2) return true;
+  // Cho phép match một token lõi (vd: "ốc" trong "thịt ốc bươu")
+  if (strongOverlap >= 1 && pantryTokens.length === 1 && pantryTokens[0].length >= 2) {
+    return true;
+  }
+
+  const ingredientBigram = buildBigramSet(normalizedIngredient);
+  const pantryBigram = buildBigramSet(normalizedPantry);
+  const ngramScore = jaccardSimilarity(ingredientBigram, pantryBigram);
+
+  return strongOverlap + weakOverlap >= 2 && ngramScore >= 0.28;
 }
 
 // Day index tính theo VN (UTC+7), tránh lệch ngày khi server chạy timezone khác.
@@ -281,6 +384,32 @@ function resolveServingsForRecipe(recipe, servingsInput) {
     baseServings,
     targetServings,
     scaleFactor: targetServings / baseServings,
+  };
+}
+
+function evaluateRecipeAllergenMatch({ recipe, pantryItems }) {
+  const allergens = Array.isArray(recipe?.allergens) ? recipe.allergens : [];
+  if (allergens.length === 0) {
+    return {
+      totalAllergens: 0,
+      allergenMatchCount: 0,
+      allergenMatchRatio: 0,
+      matchedAllergens: [],
+    };
+  }
+
+  const pantryNames = pantryItems.map((item) => String(item?.name || "").trim());
+  const matchedAllergens = allergens.filter((allergen) => {
+    const allergenName = String(allergen || "").trim();
+    if (!allergenName) return false;
+    return pantryNames.some((pantryName) => namesLikelyMatch(allergenName, pantryName));
+  });
+
+  return {
+    totalAllergens: allergens.length,
+    allergenMatchCount: matchedAllergens.length,
+    allergenMatchRatio: round2((matchedAllergens.length / allergens.length) * 100),
+    matchedAllergens: matchedAllergens.slice(0, 5),
   };
 }
 
@@ -470,14 +599,46 @@ export const createPantryItem = asyncHandler(async (req, res) => {
     });
   }
 
+  const parsedQuantity = Number(quantity);
+  if (!Number.isFinite(parsedQuantity) || parsedQuantity <= 0) {
+    return res.status(400).json({
+      success: false,
+      message: "quantity phải là số lớn hơn 0",
+    });
+  }
+
+  const normalizedUnit = normalizeUnit(unit);
+  if (!UNIT_VALUES.includes(normalizedUnit)) {
+    return res.status(400).json({
+      success: false,
+      message: `unit không hợp lệ. Chỉ nhận: ${UNIT_VALUES.join(", ")}`,
+    });
+  }
+
+  const normalizedStorageLocation = String(storageLocation).trim().toLowerCase();
+  if (!STORAGE_VALUES.includes(normalizedStorageLocation)) {
+    return res.status(400).json({
+      success: false,
+      message: `storageLocation không hợp lệ. Chỉ nhận: ${STORAGE_VALUES.join(", ")}`,
+    });
+  }
+
+  const normalizedCategory = category == null ? "other" : String(category).trim();
+  if (normalizedCategory && !CATEGORY_VALUES.includes(normalizedCategory)) {
+    return res.status(400).json({
+      success: false,
+      message: `category không hợp lệ. Chỉ nhận: ${CATEGORY_VALUES.join(", ")}`,
+    });
+  }
+
   const pantryItem = await Pantry.create({
     user: req.user._id,
     name,
-    quantity,
-    unit,
-    storageLocation,
+    quantity: parsedQuantity,
+    unit: normalizedUnit,
+    storageLocation: normalizedStorageLocation,
     expiryDate: parsedExpiryDate.value,
-    category,
+    category: normalizedCategory,
     ...(parsedOpenedDate.provided ? { openedDate: parsedOpenedDate.value } : {}),
     notes,
   });
@@ -703,55 +864,18 @@ export const checkRecipeCookability = asyncHandler(async (req, res) => {
 });
 
 export const suggestRecipesFromPantry = asyncHandler(async (req, res) => {
-  const {
-    mealType,
-    region,
-    difficulty,
-    dietTags,
-    excludeAllergens,
-    servings,
-    limit,
-    candidateLimit,
-    minCoveragePercent,
-  } = req.body || {};
+  const { canCookOnly, servings } = req.body || {};
 
-  const finalLimit = toPositiveInt(limit, 10, { min: 1, max: 30 });
-  const finalCandidateLimit = toPositiveInt(candidateLimit, 120, {
-    min: 10,
-    max: 400,
-  });
-  const parsedMinCoverage = Number(minCoveragePercent);
-  const finalMinCoverage = Number.isFinite(parsedMinCoverage)
-    ? Math.min(100, Math.max(0, parsedMinCoverage))
-    : 30;
+  // Giữ API suggest đơn giản cho user: chỉ chọn canCookOnly.
+  const finalLimit = 10;
+  const finalCandidateLimit = 500;
+  const finalMinCoverage = 15;
+  const finalMinMatchedIngredientRatio = 15;
+  const finalMinUsableMatchedIngredients = 2;
+  const finalMinAllergenMatchCount = 2;
+  const finalMinAllergenMatchRatio = 50;
+  const finalCanCookOnly = canCookOnly === true;
   const expiringDays = clampExpiringDays(req.query.days ?? req.body?.days);
-
-  const recipeFilter = {};
-  if (["breakfast", "lunch", "dinner"].includes(String(mealType || ""))) {
-    recipeFilter.meal_types = String(mealType);
-  }
-  if (["Bắc", "Trung", "Nam"].includes(String(region || ""))) {
-    recipeFilter.region = String(region);
-  }
-  if (["easy", "medium", "hard"].includes(String(difficulty || ""))) {
-    recipeFilter.difficulty = String(difficulty);
-  }
-
-  const normalizedDietTags = Array.isArray(dietTags)
-    ? dietTags.map((tag) => String(tag || "").trim()).filter(Boolean)
-    : [];
-  if (normalizedDietTags.length > 0) {
-    recipeFilter.diet_tags = { $all: normalizedDietTags };
-  }
-
-  const normalizedExcludeAllergens = Array.isArray(excludeAllergens)
-    ? excludeAllergens
-        .map((item) => String(item || "").trim())
-        .filter(Boolean)
-    : [];
-  if (normalizedExcludeAllergens.length > 0) {
-    recipeFilter.allergens = { $nin: normalizedExcludeAllergens };
-  }
 
   const todayVietnamDayIndex = getTodayVietnamDayIndex();
   const { startOfTodayUtc } = getVietnamBoundaries(todayVietnamDayIndex, expiringDays);
@@ -763,7 +887,7 @@ export const suggestRecipesFromPantry = asyncHandler(async (req, res) => {
     })
       .select("_id name quantity unit expiryDate storageLocation category")
       .lean(),
-    Recipe.find(recipeFilter)
+    Recipe.find({})
       .select(
         "_id id name_vi meal_types region difficulty diet_tags allergens prep_time_min cook_time_min servings image_url ingredients"
       )
@@ -781,6 +905,10 @@ export const suggestRecipesFromPantry = asyncHandler(async (req, res) => {
         expiringDays,
         scaleFactor: servingsContext.scaleFactor,
         includeMatchedPantryItems: false,
+      });
+      const allergenMatch = evaluateRecipeAllergenMatch({
+        recipe,
+        pantryItems,
       });
 
       const blockerStatuses = new Set([
@@ -806,10 +934,42 @@ export const suggestRecipesFromPantry = asyncHandler(async (req, res) => {
         (evaluation.summary.coveragePercent ?? 0) * 10 -
         evaluation.summary.missingCount * 8 -
         evaluation.summary.unitMismatchCount * 6 -
-        evaluation.summary.unknownRequirementCount * 12;
+        evaluation.summary.unknownRequirementCount * 12 +
+        allergenMatch.allergenMatchCount * 120 +
+        allergenMatch.allergenMatchRatio * 2;
+
+      const matchedIngredientCount =
+        evaluation.summary.enoughCount +
+        evaluation.summary.partialCount +
+        evaluation.summary.unitMismatchCount;
+      const matchedIngredientRatio =
+        evaluation.summary.totalIngredients > 0
+          ? round2(
+              (matchedIngredientCount / evaluation.summary.totalIngredients) * 100
+            )
+          : 0;
+      const usableMatchedIngredientCount =
+        evaluation.summary.enoughCount + evaluation.summary.partialCount;
+
+      const summary = {
+        ...evaluation.summary,
+        matchedIngredientCount,
+        matchedIngredientRatio,
+        usableMatchedIngredientCount,
+        totalAllergens: allergenMatch.totalAllergens,
+        allergenMatchCount: allergenMatch.allergenMatchCount,
+        allergenMatchRatio: allergenMatch.allergenMatchRatio,
+        matchedAllergens: allergenMatch.matchedAllergens,
+      };
+
+      const hasStrongAllergenMatch =
+        summary.allergenMatchCount >= finalMinAllergenMatchCount ||
+        summary.allergenMatchRatio >= finalMinAllergenMatchRatio;
 
       return {
         score,
+        matchPercent: summary.coveragePercent ?? 0,
+        hasStrongAllergenMatch,
         recipe: {
           _id: recipe._id,
           id: recipe.id || null,
@@ -827,24 +987,58 @@ export const suggestRecipesFromPantry = asyncHandler(async (req, res) => {
             scaleFactor: round2(servingsContext.scaleFactor),
           },
         },
-        summary: evaluation.summary,
+        summary,
         blockers,
       };
     })
     .filter(
       (item) =>
-        item.summary.canCook ||
-        (item.summary.coveragePercent ?? 0) >= finalMinCoverage
+        (finalCanCookOnly && item.summary.canCook) ||
+        (!finalCanCookOnly &&
+          (item.summary.canCook ||
+            item.hasStrongAllergenMatch ||
+            ((item.summary.coveragePercent ?? 0) >= finalMinCoverage &&
+              (item.summary.usableMatchedIngredientCount ?? 0) >=
+                finalMinUsableMatchedIngredients &&
+              (item.summary.matchedIngredientRatio ?? 0) >=
+                finalMinMatchedIngredientRatio &&
+              item.summary.missingCount <=
+                Math.max(4, (item.summary.totalIngredients ?? 0) - 2))))
     )
     .sort((a, b) => {
-      if (b.score !== a.score) return b.score - a.score;
+      if (b.summary.canCook !== a.summary.canCook) {
+        return Number(b.summary.canCook) - Number(a.summary.canCook);
+      }
+      if (b.summary.allergenMatchCount !== a.summary.allergenMatchCount) {
+        return b.summary.allergenMatchCount - a.summary.allergenMatchCount;
+      }
+      if (b.summary.allergenMatchRatio !== a.summary.allergenMatchRatio) {
+        return b.summary.allergenMatchRatio - a.summary.allergenMatchRatio;
+      }
+      if (b.summary.usableMatchedIngredientCount !== a.summary.usableMatchedIngredientCount) {
+        return (
+          b.summary.usableMatchedIngredientCount - a.summary.usableMatchedIngredientCount
+        );
+      }
+      if (b.summary.matchedIngredientRatio !== a.summary.matchedIngredientRatio) {
+        return b.summary.matchedIngredientRatio - a.summary.matchedIngredientRatio;
+      }
+      if (a.summary.missingCount !== b.summary.missingCount) {
+        return a.summary.missingCount - b.summary.missingCount;
+      }
       const bCoverage = b.summary.coveragePercent ?? -1;
       const aCoverage = a.summary.coveragePercent ?? -1;
       if (bCoverage !== aCoverage) return bCoverage - aCoverage;
-      return a.summary.missingCount - b.summary.missingCount;
+      return b.score - a.score;
     });
 
   const items = ranked.slice(0, finalLimit).map(({ score, ...item }) => item);
+  const noResultHint =
+    items.length === 0
+      ? finalCanCookOnly
+        ? "Không có công thức nào nấu được 100% với pantry hiện tại. Hãy tắt canCookOnly hoặc thêm nguyên liệu."
+        : "Không có công thức nào đủ liên quan với pantry hiện tại. Hãy thêm nguyên liệu hoặc tăng số lượng."
+      : null;
 
   return res.status(200).json({
     success: true,
@@ -852,21 +1046,21 @@ export const suggestRecipesFromPantry = asyncHandler(async (req, res) => {
       items,
     },
     meta: {
+      strategy: "rule_v1",
       scannedRecipes: recipes.length,
       qualifiedRecipes: ranked.length,
       returned: items.length,
       limit: finalLimit,
       candidateLimit: finalCandidateLimit,
+      canCookOnly: finalCanCookOnly,
       minCoveragePercent: finalMinCoverage,
+      minMatchedIngredientRatio: finalMinMatchedIngredientRatio,
       pantryItemsChecked: pantryItems.length,
       expiringDays,
       timezone: VIETNAM_TZ,
+      noResultHint,
       filters: {
-        mealType: recipeFilter.meal_types || null,
-        region: recipeFilter.region || null,
-        difficulty: recipeFilter.difficulty || null,
-        dietTags: normalizedDietTags,
-        excludeAllergens: normalizedExcludeAllergens,
+        canCookOnly: finalCanCookOnly,
       },
     },
   });

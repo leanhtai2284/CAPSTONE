@@ -26,6 +26,7 @@ router.get("/summary", getPantrySummary);
 router.post("/recipe-check", checkRecipeCookability);
 // Gợi ý công thức theo mức độ đáp ứng nguyên liệu Pantry
 router.post("/recipe-suggestions", suggestRecipesFromPantry);
+router.post("/suggest-from-leftovers", suggestRecipesFromPantry);
 // Chức năng bulk độc lập
 router.post("/bulk/delete", bulkDeletePantryItems);
 router.post("/bulk/quantity", bulkUpdatePantryQuantities);
