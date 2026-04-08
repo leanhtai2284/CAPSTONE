@@ -7,7 +7,12 @@ import {
   deleteUser,
   updateUserRole,
   getUserStats,
+  banUser,
+  unbanUser,
 } from "../controllers/adminController.js";
+import {
+  updateActivityStatus,
+} from "../controllers/userActivityController.js";
 import {
   getStatistics,
   getRecipeStatistics,
@@ -30,7 +35,10 @@ router.get("/users", getAllUsers);
 router.get("/users/:id", getUserById);
 router.put("/users/:id", updateUser);
 router.patch("/users/:id/role", updateUserRole);
+router.patch("/users/:id/ban", banUser);
+router.patch("/users/:id/unban", unbanUser);
 router.delete("/users/:id", deleteUser);
+router.post("/users/update-activity", updateActivityStatus);
 
 // Statistics routes
 router.get("/statistics", getStatistics);

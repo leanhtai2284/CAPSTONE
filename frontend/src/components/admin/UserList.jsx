@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AdminUserDetailModal from "./AdminUserDetailModal";
 
-const UserList = ({ users, onDelete, onUpdateRole, currentUserId, searchTerm = "" }) => {
+const UserList = ({ users, onDelete, onUpdateRole, onBanUser, onUnbanUser, currentUserId, searchTerm = "" }) => {
   const [selectedUser, setSelectedUser] = useState(null);
 
   const filteredUsers = searchTerm
@@ -38,6 +38,30 @@ const UserList = ({ users, onDelete, onUpdateRole, currentUserId, searchTerm = "
     }
   };
 
+  const getStatusBadge = (user) => {
+    if (user.isBanned) {
+      return (
+        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+          Đã cấm
+        </span>
+      );
+    }
+    
+    if (user.isOnline) {
+      return (
+        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+          Đang hoạt động
+        </span>
+      );
+    }
+    
+    return (
+      <span className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+          Không hoạt động
+        </span>
+    );
+  };
+
   return (
     <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
       {/* Table */}
@@ -55,6 +79,9 @@ const UserList = ({ users, onDelete, onUpdateRole, currentUserId, searchTerm = "
                 Vai trò
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                Trạng thái
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Ngày tạo
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -65,7 +92,7 @@ const UserList = ({ users, onDelete, onUpdateRole, currentUserId, searchTerm = "
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             {filteredUsers.length === 0 ? (
               <tr>
-                <td colSpan="5" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                <td colSpan="6" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                   Không tìm thấy người dùng nào
                 </td>
               </tr>
@@ -118,6 +145,9 @@ const UserList = ({ users, onDelete, onUpdateRole, currentUserId, searchTerm = "
                         <option value="admin">Quản trị viên</option>
                       </select>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {getStatusBadge(user)}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {user.createdAt
                         ? new Date(user.createdAt).toLocaleDateString("vi-VN", {
@@ -136,12 +166,29 @@ const UserList = ({ users, onDelete, onUpdateRole, currentUserId, searchTerm = "
                           Xem
                         </button>
                         {!isCurrentUser && (
-                          <button
-                            onClick={() => onDelete(user._id)}
-                            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                          >
-                            Xóa
-                          </button>
+                          <>
+                            {user.isBanned ? (
+                              <button
+                                onClick={() => onUnbanUser(user._id)}
+                                className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300"
+                              >
+                                Mở khóa
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => onBanUser(user._id)}
+                                className="text-orange-600 hover:text-orange-900 dark:text-orange-400 dark:hover:text-orange-300"
+                              >
+                                Cấm
+                              </button>
+                            )}
+                            <button
+                              onClick={() => onDelete(user._id)}
+                              className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                            >
+                              Xóa
+                            </button>
+                          </>
                         )}
                       </div>
                     </td>
