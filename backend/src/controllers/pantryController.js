@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Pantry from "../models/Pantry.js";
 import Recipe from "../models/Recipe.js";
+import PANTRY_MATCHING_CONFIG from "../config/pantryMatching.config.js";
 import { runPantryExpiryNotificationJob } from "../services/pantryExpiryNotificationService.js";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -21,117 +22,29 @@ const UPDATABLE_FIELDS = [
   "openedDate",
   "notes",
 ];
-const MASS_UNITS = new Set(["g", "kg"]);
-const VOLUME_UNITS = new Set(["ml", "l"]);
-const COUNT_UNITS = new Set(["pcs", "pack", "bottle", "can"]);
+const MASS_UNITS = new Set(PANTRY_MATCHING_CONFIG?.unitFamilies?.mass || ["g", "kg"]);
+const VOLUME_UNITS = new Set(
+  PANTRY_MATCHING_CONFIG?.unitFamilies?.volume || ["ml", "l"]
+);
+const COUNT_UNITS = new Set(
+  PANTRY_MATCHING_CONFIG?.unitFamilies?.count || ["pcs", "pack", "bottle", "can"]
+);
 const SPOON_TO_ML = {
-  tbsp: 15,
-  tsp: 5,
+  tbsp: Number(PANTRY_MATCHING_CONFIG?.spoonToMl?.tbsp) || 15,
+  tsp: Number(PANTRY_MATCHING_CONFIG?.spoonToMl?.tsp) || 5,
 };
-const CATEGORY_CONTAINER_ESTIMATES = {
-  condiment: {
-    bottleMl: 500,
-    canMl: 330,
-    packG: 100,
-    canG: 200,
-  },
-  beverage: {
-    bottleMl: 1000,
-    canMl: 330,
-    packG: null,
-    canG: null,
-  },
-  grain: {
-    bottleMl: null,
-    canMl: null,
-    packG: 500,
-    canG: 340,
-  },
-  protein: {
-    bottleMl: null,
-    canMl: null,
-    packG: 300,
-    canG: 180,
-  },
-  dairy: {
-    bottleMl: 1000,
-    canMl: 330,
-    packG: 180,
-    canG: null,
-  },
-  other: {
-    bottleMl: 500,
-    canMl: 330,
-    packG: 100,
-    canG: 200,
-  },
+const EMPTY_CONTAINER_ESTIMATES = {
+  bottleMl: null,
+  canMl: null,
+  packG: null,
+  canG: null,
 };
-const UNIT_ALIAS_MAP = {
-  g: "g",
-  gr: "g",
-  gram: "g",
-  grams: "g",
-  gam: "g",
-  kg: "kg",
-  kilogram: "kg",
-  kilograms: "kg",
-  ml: "ml",
-  milliliter: "ml",
-  milliliters: "ml",
-  mililiter: "ml",
-  mililiters: "ml",
-  l: "l",
-  lit: "l",
-  liter: "l",
-  litre: "l",
-  liters: "l",
-  litres: "l",
-  tbsp: "tbsp",
-  tablespoon: "tbsp",
-  tablespoons: "tbsp",
-  "muong canh": "tbsp",
-  "muong an": "tbsp",
-  tsp: "tsp",
-  teaspoon: "tsp",
-  teaspoons: "tsp",
-  "muong ca phe": "tsp",
-  "muong cafe": "tsp",
-  "muong tra": "tsp",
-  "muong nho": "tsp",
-  pc: "pcs",
-  pcs: "pcs",
-  piece: "pcs",
-  pieces: "pcs",
-  mieng: "pcs",
-  qua: "pcs",
-  trai: "pcs",
-  cu: "pcs",
-  cai: "pcs",
-  pack: "pack",
-  goi: "pack",
-  bottle: "bottle",
-  chai: "bottle",
-  can: "can",
-  lon: "can",
-};
-const NAME_STOP_WORDS = new Set([
-  "tuoi",
-  "xay",
-  "bam",
-  "thai",
-  "cat",
-  "ngam",
-  "mem",
-  "chin",
-  "song",
-  "it",
-  "vua",
-  "kieu",
-  "fresh",
-  "dried",
-  "chopped",
-  "minced",
-]);
+const CATEGORY_CONTAINER_ESTIMATES =
+  PANTRY_MATCHING_CONFIG?.categoryContainerEstimates || {
+    other: EMPTY_CONTAINER_ESTIMATES,
+  };
+const UNIT_ALIAS_MAP = PANTRY_MATCHING_CONFIG?.unitAliasMap || {};
+const NAME_STOP_WORDS = new Set(PANTRY_MATCHING_CONFIG?.nameStopWords || []);
 
 function toPositiveInt(value, fallback, { min = 1, max = 100 } = {}) {
   const parsed = Number.parseInt(value, 10);
@@ -278,7 +191,9 @@ function convertBaseToUnit(baseAmount, unit) {
 function getContainerEstimatesByCategory(category) {
   const normalizedCategory = normalizeText(category || "other");
   return (
-    CATEGORY_CONTAINER_ESTIMATES[normalizedCategory] || CATEGORY_CONTAINER_ESTIMATES.other
+    CATEGORY_CONTAINER_ESTIMATES[normalizedCategory] ||
+    CATEGORY_CONTAINER_ESTIMATES.other ||
+    EMPTY_CONTAINER_ESTIMATES
   );
 }
 
