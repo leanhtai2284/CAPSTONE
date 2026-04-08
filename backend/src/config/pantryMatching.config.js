@@ -8,44 +8,6 @@ const PANTRY_MATCHING_CONFIG = {
     tbsp: 15,
     tsp: 5,
   },
-  categoryContainerEstimates: {
-    condiment: {
-      bottleMl: 500,
-      canMl: 330,
-      packG: 100,
-      canG: 200,
-    },
-    beverage: {
-      bottleMl: 1000,
-      canMl: 330,
-      packG: null,
-      canG: null,
-    },
-    grain: {
-      bottleMl: null,
-      canMl: null,
-      packG: 500,
-      canG: 340,
-    },
-    protein: {
-      bottleMl: null,
-      canMl: null,
-      packG: 300,
-      canG: 180,
-    },
-    dairy: {
-      bottleMl: 1000,
-      canMl: 330,
-      packG: 180,
-      canG: null,
-    },
-    other: {
-      bottleMl: 500,
-      canMl: 330,
-      packG: 100,
-      canG: 200,
-    },
-  },
   unitAliasMap: {
     g: "g",
     gr: "g",

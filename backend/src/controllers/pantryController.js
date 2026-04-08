@@ -33,16 +33,12 @@ const SPOON_TO_ML = {
   tbsp: Number(PANTRY_MATCHING_CONFIG?.spoonToMl?.tbsp) || 15,
   tsp: Number(PANTRY_MATCHING_CONFIG?.spoonToMl?.tsp) || 5,
 };
-const EMPTY_CONTAINER_ESTIMATES = {
-  bottleMl: null,
-  canMl: null,
-  packG: null,
-  canG: null,
+const RECIPE_UNIT_PROFILE_TTL_MS = 10 * 60 * 1000;
+let RECIPE_UNIT_PROFILE_CACHE = {
+  updatedAt: 0,
+  ingredientProfiles: new Map(),
+  globalRatios: new Map(),
 };
-const CATEGORY_CONTAINER_ESTIMATES =
-  PANTRY_MATCHING_CONFIG?.categoryContainerEstimates || {
-    other: EMPTY_CONTAINER_ESTIMATES,
-  };
 const UNIT_ALIAS_MAP = PANTRY_MATCHING_CONFIG?.unitAliasMap || {};
 const NAME_STOP_WORDS = new Set(PANTRY_MATCHING_CONFIG?.nameStopWords || []);
 
@@ -188,50 +184,183 @@ function convertBaseToUnit(baseAmount, unit) {
   return baseAmount;
 }
 
-function getContainerEstimatesByCategory(category) {
-  const normalizedCategory = normalizeText(category || "other");
-  return (
-    CATEGORY_CONTAINER_ESTIMATES[normalizedCategory] ||
-    CATEGORY_CONTAINER_ESTIMATES.other ||
-    EMPTY_CONTAINER_ESTIMATES
-  );
+function medianNumber(values) {
+  if (!Array.isArray(values) || values.length === 0) return null;
+  const sorted = values
+    .filter((value) => Number.isFinite(value))
+    .sort((a, b) => a - b);
+  if (sorted.length === 0) return null;
+  const mid = Math.floor(sorted.length / 2);
+  if (sorted.length % 2 === 0) {
+    return (sorted[mid - 1] + sorted[mid]) / 2;
+  }
+  return sorted[mid];
 }
 
-function estimateSpecialCompatibleBaseAmount({ requiredUnit, pantryItem }) {
-  const itemUnit = normalizeUnit(pantryItem?.unit || "");
-  const itemQuantity = Number(pantryItem?.quantity);
-  if (!Number.isFinite(itemQuantity) || itemQuantity <= 0) return null;
+function buildRecipeUnitProfileData(recipes) {
+  const ingredientUnitBuckets = new Map();
 
-  const requiredFamily = getUnitFamily(requiredUnit);
-  const estimates = getContainerEstimatesByCategory(pantryItem?.category);
+  for (const recipe of recipes) {
+    const servingsRaw = Number(recipe?.servings);
+    const servings = Number.isFinite(servingsRaw) && servingsRaw > 0 ? servingsRaw : 1;
+    const ingredients = Array.isArray(recipe?.ingredients) ? recipe.ingredients : [];
 
-  if (requiredFamily === "volume") {
-    if (itemUnit === "bottle" && Number.isFinite(estimates.bottleMl)) {
-      return convertAmountToBase(itemQuantity * estimates.bottleMl, "ml");
-    }
-    if (itemUnit === "can" && Number.isFinite(estimates.canMl)) {
-      return convertAmountToBase(itemQuantity * estimates.canMl, "ml");
+    for (const ingredient of ingredients) {
+      const ingredientName = normalizeFoodName(ingredient?.name || "");
+      const unit = normalizeUnit(ingredient?.unit || "");
+      const amountRaw = Number(ingredient?.amount);
+      const scalable = ingredient?.scalable !== false;
+      const amountPerServing =
+        Number.isFinite(amountRaw) && amountRaw > 0
+          ? amountRaw / (scalable ? servings : 1)
+          : null;
+
+      if (!ingredientName || !unit || amountPerServing == null || amountPerServing <= 0) {
+        continue;
+      }
+
+      if (!ingredientUnitBuckets.has(ingredientName)) {
+        ingredientUnitBuckets.set(ingredientName, new Map());
+      }
+
+      const unitBuckets = ingredientUnitBuckets.get(ingredientName);
+      if (!unitBuckets.has(unit)) {
+        unitBuckets.set(unit, []);
+      }
+      unitBuckets.get(unit).push(amountPerServing);
     }
   }
 
-  if (requiredFamily === "mass") {
-    if (itemUnit === "pack" && Number.isFinite(estimates.packG)) {
-      return convertAmountToBase(itemQuantity * estimates.packG, "g");
+  const ingredientProfiles = new Map();
+  const pairRatioBuckets = new Map();
+
+  for (const [ingredientName, unitBuckets] of ingredientUnitBuckets.entries()) {
+    const medianByUnit = new Map();
+
+    for (const [unit, values] of unitBuckets.entries()) {
+      const medianValue = medianNumber(values);
+      if (Number.isFinite(medianValue) && medianValue > 0) {
+        medianByUnit.set(unit, medianValue);
+      }
     }
-    if (itemUnit === "can" && Number.isFinite(estimates.canG)) {
-      return convertAmountToBase(itemQuantity * estimates.canG, "g");
+
+    if (medianByUnit.size === 0) continue;
+    ingredientProfiles.set(ingredientName, medianByUnit);
+
+    const units = Array.from(medianByUnit.keys());
+    for (const fromUnit of units) {
+      for (const toUnit of units) {
+        if (fromUnit === toUnit) continue;
+        const fromValue = medianByUnit.get(fromUnit);
+        const toValue = medianByUnit.get(toUnit);
+        if (!Number.isFinite(fromValue) || !Number.isFinite(toValue) || fromValue <= 0) {
+          continue;
+        }
+
+        const ratio = toValue / fromValue;
+        if (!Number.isFinite(ratio) || ratio <= 0) continue;
+
+        const ratioKey = `${fromUnit}->${toUnit}`;
+        if (!pairRatioBuckets.has(ratioKey)) {
+          pairRatioBuckets.set(ratioKey, []);
+        }
+        pairRatioBuckets.get(ratioKey).push(ratio);
+      }
     }
   }
 
+  const globalRatios = new Map();
+  for (const [ratioKey, values] of pairRatioBuckets.entries()) {
+    const medianRatio = medianNumber(values);
+    if (Number.isFinite(medianRatio) && medianRatio > 0) {
+      globalRatios.set(ratioKey, medianRatio);
+    }
+  }
+
+  return { ingredientProfiles, globalRatios };
+}
+
+async function getRecipeUnitProfileData() {
+  const now = Date.now();
   if (
-    requiredFamily === "count" &&
-    requiredUnit === "pcs" &&
-    (itemUnit === "pack" || itemUnit === "bottle" || itemUnit === "can")
+    RECIPE_UNIT_PROFILE_CACHE.updatedAt > 0 &&
+    now - RECIPE_UNIT_PROFILE_CACHE.updatedAt <= RECIPE_UNIT_PROFILE_TTL_MS
   ) {
-    return convertAmountToBase(itemQuantity, "pcs");
+    return RECIPE_UNIT_PROFILE_CACHE;
+  }
+
+  const recipes = await Recipe.find({}).select("servings ingredients").lean();
+  const profileData = buildRecipeUnitProfileData(recipes);
+
+  RECIPE_UNIT_PROFILE_CACHE = {
+    updatedAt: now,
+    ingredientProfiles: profileData.ingredientProfiles,
+    globalRatios: profileData.globalRatios,
+  };
+
+  return RECIPE_UNIT_PROFILE_CACHE;
+}
+
+function getUnitRatioFromRecipeProfiles({
+  ingredientNameNormalized,
+  sourceUnit,
+  targetUnit,
+  recipeUnitProfileData,
+}) {
+  if (!sourceUnit || !targetUnit) return null;
+  if (sourceUnit === targetUnit) return 1;
+  if (!recipeUnitProfileData) return null;
+
+  const ingredientProfile = recipeUnitProfileData.ingredientProfiles.get(
+    ingredientNameNormalized
+  );
+  if (ingredientProfile?.has(sourceUnit) && ingredientProfile?.has(targetUnit)) {
+    const sourceMedian = ingredientProfile.get(sourceUnit);
+    const targetMedian = ingredientProfile.get(targetUnit);
+    if (
+      Number.isFinite(sourceMedian) &&
+      Number.isFinite(targetMedian) &&
+      sourceMedian > 0
+    ) {
+      return targetMedian / sourceMedian;
+    }
+  }
+
+  const globalRatio = recipeUnitProfileData.globalRatios.get(
+    `${sourceUnit}->${targetUnit}`
+  );
+  if (Number.isFinite(globalRatio) && globalRatio > 0) {
+    return globalRatio;
   }
 
   return null;
+}
+
+function estimateSpecialCompatibleBaseAmount({
+  ingredientNameNormalized,
+  requiredUnit,
+  pantryItem,
+  recipeUnitProfileData,
+}) {
+  const itemUnit = normalizeUnit(pantryItem?.unit || "");
+  const itemQuantity = Number(pantryItem?.quantity);
+  if (!requiredUnit || !itemUnit) return null;
+  if (!Number.isFinite(itemQuantity) || itemQuantity <= 0) return null;
+
+  const ratio = getUnitRatioFromRecipeProfiles({
+    ingredientNameNormalized,
+    sourceUnit: itemUnit,
+    targetUnit: requiredUnit,
+    recipeUnitProfileData,
+  });
+  if (!Number.isFinite(ratio) || ratio <= 0 || ratio > 100000) return null;
+
+  const estimatedRequiredUnitAmount = itemQuantity * ratio;
+  if (!Number.isFinite(estimatedRequiredUnitAmount) || estimatedRequiredUnitAmount <= 0) {
+    return null;
+  }
+
+  return convertAmountToBase(estimatedRequiredUnitAmount, requiredUnit);
 }
 
 function round2(value) {
@@ -416,6 +545,7 @@ function evaluateRecipeAgainstPantry({
   todayVietnamDayIndex,
   expiringDays,
   scaleFactor,
+  recipeUnitProfileData = null,
   includeMatchedPantryItems = true,
   maxMatchedPantryItems = 5,
 }) {
@@ -451,8 +581,10 @@ function evaluateRecipeAgainstPantry({
     for (const item of nameMatched) {
       const itemUnit = normalizeUnit(item.unit);
       const specialBaseAmount = estimateSpecialCompatibleBaseAmount({
+        ingredientNameNormalized,
         requiredUnit,
         pantryItem: item,
+        recipeUnitProfileData,
       });
       if (specialBaseAmount != null) {
         availableBaseAmount += specialBaseAmount;
@@ -837,6 +969,7 @@ export const checkRecipeCookability = asyncHandler(async (req, res) => {
   })
     .select("_id name quantity unit expiryDate storageLocation category")
     .lean();
+  const recipeUnitProfileData = await getRecipeUnitProfileData();
 
   const evaluation = evaluateRecipeAgainstPantry({
     recipe,
@@ -844,6 +977,7 @@ export const checkRecipeCookability = asyncHandler(async (req, res) => {
     todayVietnamDayIndex,
     expiringDays,
     scaleFactor,
+    recipeUnitProfileData,
     includeMatchedPantryItems: true,
     maxMatchedPantryItems: 5,
   });
@@ -901,6 +1035,7 @@ export const suggestRecipesFromPantry = asyncHandler(async (req, res) => {
       .limit(finalCandidateLimit)
       .lean(),
   ]);
+  const recipeUnitProfileData = await getRecipeUnitProfileData();
 
   const ranked = recipes
     .map((recipe) => {
@@ -911,6 +1046,7 @@ export const suggestRecipesFromPantry = asyncHandler(async (req, res) => {
         todayVietnamDayIndex,
         expiringDays,
         scaleFactor: servingsContext.scaleFactor,
+        recipeUnitProfileData,
         includeMatchedPantryItems: false,
       });
       const allergenMatch = evaluateRecipeAllergenMatch({
