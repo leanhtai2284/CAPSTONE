@@ -28,6 +28,44 @@ const SPOON_TO_ML = {
   tbsp: 15,
   tsp: 5,
 };
+const CATEGORY_CONTAINER_ESTIMATES = {
+  condiment: {
+    bottleMl: 500,
+    canMl: 330,
+    packG: 100,
+    canG: 200,
+  },
+  beverage: {
+    bottleMl: 1000,
+    canMl: 330,
+    packG: null,
+    canG: null,
+  },
+  grain: {
+    bottleMl: null,
+    canMl: null,
+    packG: 500,
+    canG: 340,
+  },
+  protein: {
+    bottleMl: null,
+    canMl: null,
+    packG: 300,
+    canG: 180,
+  },
+  dairy: {
+    bottleMl: 1000,
+    canMl: 330,
+    packG: 180,
+    canG: null,
+  },
+  other: {
+    bottleMl: 500,
+    canMl: 330,
+    packG: 100,
+    canG: 200,
+  },
+};
 const UNIT_ALIAS_MAP = {
   g: "g",
   gr: "g",
@@ -235,6 +273,50 @@ function convertBaseToUnit(baseAmount, unit) {
   if (unit === "tbsp") return baseAmount / SPOON_TO_ML.tbsp;
   if (unit === "tsp") return baseAmount / SPOON_TO_ML.tsp;
   return baseAmount;
+}
+
+function getContainerEstimatesByCategory(category) {
+  const normalizedCategory = normalizeText(category || "other");
+  return (
+    CATEGORY_CONTAINER_ESTIMATES[normalizedCategory] || CATEGORY_CONTAINER_ESTIMATES.other
+  );
+}
+
+function estimateSpecialCompatibleBaseAmount({ requiredUnit, pantryItem }) {
+  const itemUnit = normalizeUnit(pantryItem?.unit || "");
+  const itemQuantity = Number(pantryItem?.quantity);
+  if (!Number.isFinite(itemQuantity) || itemQuantity <= 0) return null;
+
+  const requiredFamily = getUnitFamily(requiredUnit);
+  const estimates = getContainerEstimatesByCategory(pantryItem?.category);
+
+  if (requiredFamily === "volume") {
+    if (itemUnit === "bottle" && Number.isFinite(estimates.bottleMl)) {
+      return convertAmountToBase(itemQuantity * estimates.bottleMl, "ml");
+    }
+    if (itemUnit === "can" && Number.isFinite(estimates.canMl)) {
+      return convertAmountToBase(itemQuantity * estimates.canMl, "ml");
+    }
+  }
+
+  if (requiredFamily === "mass") {
+    if (itemUnit === "pack" && Number.isFinite(estimates.packG)) {
+      return convertAmountToBase(itemQuantity * estimates.packG, "g");
+    }
+    if (itemUnit === "can" && Number.isFinite(estimates.canG)) {
+      return convertAmountToBase(itemQuantity * estimates.canG, "g");
+    }
+  }
+
+  if (
+    requiredFamily === "count" &&
+    requiredUnit === "pcs" &&
+    (itemUnit === "pack" || itemUnit === "bottle" || itemUnit === "can")
+  ) {
+    return convertAmountToBase(itemQuantity, "pcs");
+  }
+
+  return null;
 }
 
 function round2(value) {
@@ -453,6 +535,16 @@ function evaluateRecipeAgainstPantry({
 
     for (const item of nameMatched) {
       const itemUnit = normalizeUnit(item.unit);
+      const specialBaseAmount = estimateSpecialCompatibleBaseAmount({
+        requiredUnit,
+        pantryItem: item,
+      });
+      if (specialBaseAmount != null) {
+        availableBaseAmount += specialBaseAmount;
+        compatibleItems.push(item);
+        continue;
+      }
+
       if (!areUnitsCompatible(requiredUnit, itemUnit)) {
         unitMismatchedItems.push(item);
         continue;
