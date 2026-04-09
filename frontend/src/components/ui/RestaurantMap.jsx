@@ -167,13 +167,13 @@ export default function RestaurantMap({ meal, onClose }) {
           exit={{ y: "100%" }}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-white dark:bg-gray-900 w-full max-w-3xl mx-auto rounded-3xl h-[95vh] flex flex-col overflow-hidden border border-gray-800 shadow-2xl"
+          className="bg-white dark:bg-gray-900 w-full max-w-6xl mx-auto rounded-3xl h-[97vh] flex flex-col overflow-hidden border border-gray-800 shadow-2xl"
         >
           <div className="w-full flex justify-center pt-3 pb-1">
             <div className="w-12 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full" />
           </div>
 
-          <div className="px-6 py-4 flex items-center justify-between border-b border-gray-800">
+          <div className="px-6 py-4 flex items-center justify-between border-b border-gray-300 dark:border-gray-800">
             <div>
               <h2 className="text-xl font-bold ">
                 Quán ăn quanh đây cho{" "}
@@ -203,137 +203,141 @@ export default function RestaurantMap({ meal, onClose }) {
             </div>
           ) : null}
 
-          <div className="flex-1 overflow-y-auto">
-            <div className="h-[40%] min-h-[250px] w-full relative bg-gray-100 dark:bg-gray-800">
-              {loading ? (
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-                  <Loader2 className="w-8 h-8 text-gray-500 animate-spin" />
-                </div>
-              ) : (
-                <MapContainer
-                  center={mapCenter}
-                  zoom={13}
-                  style={{ height: "100%", width: "100%", zIndex: 10 }}
-                  zoomControl={false}
-                >
-                  <TileLayer
-                    url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  />
-                  <MapUpdater center={mapCenter} />
-                  {restaurants.map((restaurant) => (
-                    <Marker
-                      key={`${restaurant.name}-${restaurant.lat}-${restaurant.lng}`}
-                      position={[restaurant.lat, restaurant.lng]}
-                      icon={
-                        selectedRestaurantId === restaurant.name
-                          ? selectedIcon
-                          : defaultIcon
-                      }
-                      eventHandlers={{
-                        click: () => handleRestaurantClick(restaurant),
-                      }}
-                    >
-                      <Popup>
-                        <div className="font-semibold text-gray-900">
-                          {restaurant.name}
-                        </div>
-                        <div className="text-sm text-gray-700">
-                          {restaurant.address}
-                        </div>
-                      </Popup>
-                    </Marker>
-                  ))}
-                </MapContainer>
-              )}
-            </div>
-
-            <div className="p-6 space-y-4">
-              {loading ? (
-                Array.from({ length: 3 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="flex gap-4 p-4 rounded-2xl bg-black animate-pulse"
-                  >
-                    <div className="w-14 h-14 bg-gray-700 rounded-xl flex-shrink-0" />
-                    <div className="flex-1 space-y-3 py-1">
-                      <div className="h-4 bg-gray-700 rounded w-3/4" />
-                      <div className="h-3 bg-gray-700 rounded w-1/2" />
-                    </div>
+          <div className="flex-1 overflow-hidden">
+            <div className="h-full flex flex-col lg:flex-row">
+              <div className="h-[320px] lg:h-full lg:w-1/2 xl:w-3/5 relative bg-gray-100 dark:bg-gray-800 flex-shrink-0">
+                {loading ? (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+                    <Loader2 className="w-8 h-8 text-gray-500 animate-spin" />
                   </div>
-                ))
-              ) : error ? (
-                <div className="text-center py-10">
-                  <h3 className="text-lg font-medium text-white mb-2">
-                    Không tải được quán ăn
-                  </h3>
-                  <p className="text-gray-400 text-sm">{error}</p>
-                </div>
-              ) : restaurants.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-[#2a2a2a] rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MapPinIcon className="w-8 h-8 text-gray-500" />
-                  </div>
-                  <h3 className="text-lg font-medium mb-1">
-                    Không tìm thấy quán phù hợp
-                  </h3>
-                  <p className="text-gray-400">
-                    Chưa có quán nào cho {dishName} quanh vị trí của bạn.
-                  </p>
-                </div>
-              ) : (
-                restaurants.map((restaurant) => (
-                  <motion.div
-                    key={`${restaurant.name}-${restaurant.lat}-${restaurant.lng}-item`}
-                    layout
-                    onClick={() => handleRestaurantClick(restaurant)}
-                    className={`flex gap-4 p-4 rounded-2xl cursor-pointer transition-all ${
-                      selectedRestaurantId === restaurant.name
-                        ? "bg-gray-100 dark:bg-gray-700 border-2 border-primary"
-                        : "bg-gray-100 dark:bg-gray-700 border-2 border-transparent hover:border-secondary"
-                    }`}
+                ) : (
+                  <MapContainer
+                    center={mapCenter}
+                    zoom={13}
+                    style={{ height: "100%", width: "100%", zIndex: 10 }}
+                    zoomControl={false}
                   >
-                    <div className="w-12 h-12 rounded-xl bg-gray-200 dark:bg-gray-800 text-primary flex items-center justify-center flex-shrink-0">
-                      <MapPinIcon className="w-5 h-5" />
-                    </div>
-                    <div className="flex-1 min-w-0 flex flex-col justify-between">
-                      <div>
-                        <h3 className="font-semibold  truncate pr-2 mb-1">
-                          {restaurant.name}
-                        </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                          {restaurant.address}
-                        </p>
-                        <div className="flex items-center gap-3 text-xs text-gray-400">
-                          <div className="flex items-center gap-1">
-                            <StarIcon className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-                            <span>
-                              {Number(restaurant.rating || 0).toFixed(1)}
-                            </span>
+                    <TileLayer
+                      url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    <MapUpdater center={mapCenter} />
+                    {restaurants.map((restaurant) => (
+                      <Marker
+                        key={`${restaurant.name}-${restaurant.lat}-${restaurant.lng}`}
+                        position={[restaurant.lat, restaurant.lng]}
+                        icon={
+                          selectedRestaurantId === restaurant.name
+                            ? selectedIcon
+                            : defaultIcon
+                        }
+                        eventHandlers={{
+                          click: () => handleRestaurantClick(restaurant),
+                        }}
+                      >
+                        <Popup>
+                          <div className="font-semibold text-gray-900">
+                            {restaurant.name}
                           </div>
-                          <span>•</span>
-                          <span>{restaurant.distance}</span>
+                          <div className="text-sm text-gray-700">
+                            {restaurant.address}
+                          </div>
+                        </Popup>
+                      </Marker>
+                    ))}
+                  </MapContainer>
+                )}
+              </div>
+
+              <div className="flex-1 overflow-y-auto border-t lg:border-t-0 lg:border-l border-gray-300 dark:border-gray-800">
+                <div className="p-6 space-y-4">
+                  {loading ? (
+                    Array.from({ length: 3 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className="flex gap-4 p-4 rounded-2xl bg-black animate-pulse"
+                      >
+                        <div className="w-14 h-14 bg-gray-700 rounded-xl flex-shrink-0" />
+                        <div className="flex-1 space-y-3 py-1">
+                          <div className="h-4 bg-gray-700 rounded w-3/4" />
+                          <div className="h-3 bg-gray-700 rounded w-1/2" />
                         </div>
                       </div>
-                      <div className="flex justify-end mt-3">
-                        <button
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            openGoogleMapsNavigation(
-                              restaurant.lat,
-                              restaurant.lng,
-                            );
-                          }}
-                          className="flex items-center gap-1.5 text-xs font-medium text-white hover:bg-secondary transition-colors bg-primary px-3 py-1.5 rounded-lg"
-                        >
-                          <NavigationIcon className="w-3.5 h-3.5" />
-                          Chỉ đường
-                        </button>
-                      </div>
+                    ))
+                  ) : error ? (
+                    <div className="text-center py-10">
+                      <h3 className="text-lg font-medium text-white mb-2">
+                        Không tải được quán ăn
+                      </h3>
+                      <p className="text-gray-400 text-sm">{error}</p>
                     </div>
-                  </motion.div>
-                ))
-              )}
+                  ) : restaurants.length === 0 ? (
+                    <div className="text-center py-12">
+                      <div className="w-16 h-16 bg-[#2a2a2a] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <MapPinIcon className="w-8 h-8 text-gray-500" />
+                      </div>
+                      <h3 className="text-lg font-medium mb-1">
+                        Không tìm thấy quán phù hợp
+                      </h3>
+                      <p className="text-gray-400">
+                        Chưa có quán nào cho {dishName} quanh vị trí của bạn.
+                      </p>
+                    </div>
+                  ) : (
+                    restaurants.map((restaurant) => (
+                      <motion.div
+                        key={`${restaurant.name}-${restaurant.lat}-${restaurant.lng}-item`}
+                        layout
+                        onClick={() => handleRestaurantClick(restaurant)}
+                        className={`flex gap-4 p-4 rounded-2xl cursor-pointer transition-all ${
+                          selectedRestaurantId === restaurant.name
+                            ? "bg-gray-100 dark:bg-gray-700 border-2 border-primary"
+                            : "bg-gray-100 dark:bg-gray-700 border-2 border-transparent hover:border-secondary"
+                        }`}
+                      >
+                        <div className="w-12 h-12 rounded-xl bg-gray-200 dark:bg-gray-800 text-primary flex items-center justify-center flex-shrink-0">
+                          <MapPinIcon className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1 min-w-0 flex flex-col justify-between">
+                          <div>
+                            <h3 className="font-semibold  truncate pr-2 mb-1">
+                              {restaurant.name}
+                            </h3>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                              {restaurant.address}
+                            </p>
+                            <div className="flex items-center gap-3 text-xs text-gray-400">
+                              <div className="flex items-center gap-1">
+                                <StarIcon className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
+                                <span>
+                                  {Number(restaurant.rating || 0).toFixed(1)}
+                                </span>
+                              </div>
+                              <span>•</span>
+                              <span>{restaurant.distance}</span>
+                            </div>
+                          </div>
+                          <div className="flex justify-end mt-3">
+                            <button
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                openGoogleMapsNavigation(
+                                  restaurant.lat,
+                                  restaurant.lng,
+                                );
+                              }}
+                              className="flex items-center gap-1.5 text-xs font-medium text-white hover:bg-secondary transition-colors bg-primary px-3 py-1.5 rounded-lg"
+                            >
+                              <NavigationIcon className="w-3.5 h-3.5" />
+                              Chỉ đường
+                            </button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
