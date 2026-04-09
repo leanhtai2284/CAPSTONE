@@ -1,7 +1,12 @@
 import express from 'express';
 import asyncHandler from '../middlewares/asyncHandler.js';
+import { protect } from '../middlewares/authMiddleware.js';
+import { ragQueryV1 } from '../controllers/aiRagController.js';
 
 const router = express.Router();
+
+// POST /api/ai/rag/query
+router.post('/rag/query', protect, ragQueryV1);
 
 // POST /api/ai/chat
 router.post('/chat', asyncHandler(async (req, res) => {
