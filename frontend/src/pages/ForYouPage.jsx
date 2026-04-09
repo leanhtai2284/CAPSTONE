@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import UserInputForm from "../components/section/UserInputForm";
 import MealPlanView from "../components/section/MealPlanView";
@@ -7,8 +7,10 @@ import CostSummary from "../components/section/CostSummary";
 import SafetyNotice from "../components/section/SafetyNotice";
 import useMealPlanner from "../hooks/useMealPlanner";
 import Footer from "../components/layout/Footer";
+import RestaurantMap from "../components/ui/RestaurantMap";
 
 const ForYouPage = () => {
+  const [restaurantMeal, setRestaurantMeal] = useState(null);
   const {
     hasMealPlan,
     isGenerating,
@@ -63,6 +65,7 @@ const ForYouPage = () => {
                   onDayChange={setSelectedDay}
                   meals={displayedMeals}
                   onSwapMeal={handleSwapMeal}
+                  onFindNearby={setRestaurantMeal}
                   isSwapping={isSwapping}
                   onSaveDailyMenu={handleSaveDailyMenu}
                   onResetPlan={resetPlan}
@@ -94,6 +97,13 @@ const ForYouPage = () => {
       </div>
 
       <Footer />
+
+      {restaurantMeal ? (
+        <RestaurantMap
+          meal={restaurantMeal}
+          onClose={() => setRestaurantMeal(null)}
+        />
+      ) : null}
     </div>
   );
 };
