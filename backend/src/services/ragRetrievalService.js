@@ -1,26 +1,80 @@
+import { createReadStream } from "fs";
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import { createRequire } from "module";
-import OpenAI from "openai";
+import csvParser from "csv-parser";
+import { Document } from "@langchain/core/documents";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { StringOutputParser } from "@langchain/core/output_parsers";
+import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
+import { RecursiveCharacterTextSplitter } from "@langchain/classic/text_splitter";
+import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
 
 const require = createRequire(import.meta.url);
 
 let pdfParse = null;
 try {
   pdfParse = require("pdf-parse");
-} catch (error) {
+} catch {
   pdfParse = null;
 }
 
-const SUPPORTED_EXTENSIONS = new Set([".pdf", ".txt", ".md", ".markdown"]);
+const SUPPORTED_EXTENSIONS = new Set([".pdf", ".txt", ".md", ".markdown", ".csv"]);
 
 const DEFAULT_CHUNK_SIZE = 1200;
 const DEFAULT_CHUNK_OVERLAP = 200;
 const DEFAULT_TOP_K = 5;
 const DEFAULT_SCORE_THRESHOLD = 0.2;
-const DEFAULT_BATCH_SIZE = 64;
 const DEFAULT_INDEX_TTL_MS = 10 * 60 * 1000;
+const DEFAULT_CSV_MAX_ROWS = 2000;
+const DEFAULT_CSV_MAX_COLUMNS = 12;
+const DEFAULT_CSV_VALUE_MAX_LENGTH = 180;
+
+const DEFAULT_EMBEDDING_MODEL = "text-embedding-3-large";
+const DEFAULT_CHAT_MODEL = "gpt-5-mini";
+
+const SCORE_MODE_SIMILARITY = "similarity";
+const SCORE_MODE_DISTANCE = "distance";
+
+const CSV_PRIORITY_FIELDS = [
+  "id",
+  "name_vi",
+  "name",
+  "description",
+  "region",
+  "category",
+  "meal_types",
+  "diet_tags",
+  "allergens",
+  "ingredients",
+  "steps",
+  "calories",
+  "protein_g",
+  "carbs_g",
+  "fat_g",
+  "sugar_g",
+  "fiber_g",
+  "price_est_vnd_min",
+  "price_est_vnd_max",
+  "suitable_for",
+  "avoid_for",
+];
+
+const ANSWER_TEMPLATE = [
+  "You are a strict, citation-focused assistant for SmartMeal.",
+  "RULES:",
+  "1) Use ONLY the provided context to answer.",
+  '2) If the answer is not clearly contained in context, answer exactly: "Tôi không tìm thấy thông tin này trong dữ liệu hiện có."',
+  "3) Do NOT use outside knowledge or guess.",
+  "4) If possible, cite sources as (source#chunk).",
+  "5) Answer in Vietnamese.",
+  "",
+  "Context:",
+  "{context}",
+  "",
+  "Question: {question}",
+].join("\n");
 
 let indexCache = null;
 let indexBuildPromise = null;
@@ -33,12 +87,12 @@ export class RagRetrievalError extends Error {
   }
 }
 
-function toPosixPath(value) {
-  return value.replace(/\\/g, "/");
-}
-
 function normalizeText(value) {
   return String(value || "").replace(/\r/g, "").trim();
+}
+
+function toPosixPath(value) {
+  return String(value || "").replace(/\\/g, "/");
 }
 
 function parseInteger(value, fallback, min, max) {
@@ -53,11 +107,13 @@ function parseFloatNumber(value, fallback, min, max) {
   return Math.min(max, Math.max(min, parsed));
 }
 
-function getEmbeddingModel() {
-  return String(process.env.OPENAI_EMBEDDING_MODEL || "text-embedding-3-large").trim();
+function truncateText(value, maxLength) {
+  const text = normalizeText(value);
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength)}...`;
 }
 
-function getOpenAiClient() {
+function getOpenAiApiKey() {
   const apiKey = String(process.env.OPENAI_API_KEY || "").trim();
   if (!apiKey) {
     throw new RagRetrievalError(
@@ -65,7 +121,46 @@ function getOpenAiClient() {
       503
     );
   }
-  return new OpenAI({ apiKey });
+  return apiKey;
+}
+
+function getEmbeddingModelName() {
+  return String(process.env.OPENAI_EMBEDDING_MODEL || DEFAULT_EMBEDDING_MODEL).trim();
+}
+
+function getChatModelName() {
+  return String(process.env.OPENAI_CHAT_MODEL || DEFAULT_CHAT_MODEL).trim();
+}
+
+function getScoreMode() {
+  const mode = String(process.env.RAG_SCORE_MODE || SCORE_MODE_SIMILARITY)
+    .trim()
+    .toLowerCase();
+  if (mode === SCORE_MODE_DISTANCE) return SCORE_MODE_DISTANCE;
+  return SCORE_MODE_SIMILARITY;
+}
+
+function getChunkSettings() {
+  let chunkSize = parseInteger(process.env.RAG_CHUNK_SIZE, DEFAULT_CHUNK_SIZE, 200, 5000);
+  let chunkOverlap = parseInteger(
+    process.env.RAG_CHUNK_OVERLAP,
+    DEFAULT_CHUNK_OVERLAP,
+    0,
+    1000
+  );
+
+  if (chunkOverlap >= chunkSize) {
+    chunkOverlap = Math.floor(chunkSize / 5);
+  }
+
+  return { chunkSize, chunkOverlap };
+}
+
+function createEmbeddingModel() {
+  return new OpenAIEmbeddings({
+    apiKey: getOpenAiApiKey(),
+    model: getEmbeddingModelName(),
+  });
 }
 
 async function pathExists(targetPath) {
@@ -111,11 +206,13 @@ async function collectFilesRecursive(rootDir) {
   const allFiles = [];
   for (const entry of entries) {
     const absolutePath = path.join(rootDir, entry.name);
+
     if (entry.isDirectory()) {
       const nestedFiles = await collectFilesRecursive(absolutePath);
       allFiles.push(...nestedFiles);
       continue;
     }
+
     allFiles.push(absolutePath);
   }
 
@@ -133,14 +230,14 @@ async function getDocumentFiles(docsDir) {
   const allFiles = await collectFilesRecursive(docsDir);
   const documentFiles = [];
 
-  for (const filePath of allFiles) {
-    const ext = path.extname(filePath).toLowerCase();
+  for (const absolutePath of allFiles) {
+    const ext = path.extname(absolutePath).toLowerCase();
     if (!SUPPORTED_EXTENSIONS.has(ext)) continue;
 
-    const stats = await fs.stat(filePath);
+    const stats = await fs.stat(absolutePath);
     documentFiles.push({
-      absolutePath: filePath,
-      relativePath: toPosixPath(path.relative(docsDir, filePath)),
+      absolutePath,
+      relativePath: toPosixPath(path.relative(docsDir, absolutePath)),
       size: stats.size,
       mtimeMs: Math.floor(stats.mtimeMs),
     });
@@ -150,7 +247,7 @@ async function getDocumentFiles(docsDir) {
 
   if (!documentFiles.length) {
     throw new RagRetrievalError(
-      `No supported documents found in ${docsDir}. Add .pdf, .txt, or .md files.`,
+      `No supported documents found in ${docsDir}. Add .pdf, .txt, .md, or .csv files.`,
       400
     );
   }
@@ -164,130 +261,173 @@ function buildFingerprint(documentFiles) {
     .join("|");
 }
 
-async function readSingleDocument(fileInfo) {
-  const ext = path.extname(fileInfo.absolutePath).toLowerCase();
-
-  if (ext === ".pdf") {
-    if (!pdfParse) {
-      throw new RagRetrievalError(
-        "pdf-parse is not installed. Run npm install in backend to continue.",
-        500
-      );
-    }
-
-    const fileBuffer = await fs.readFile(fileInfo.absolutePath);
-    const parsed = await pdfParse(fileBuffer);
-    return normalizeText(parsed?.text);
+function getNonEmptyCsvPairs(row) {
+  const pairs = [];
+  for (const [key, value] of Object.entries(row || {})) {
+    const normalizedValue = normalizeText(value);
+    if (!normalizedValue) continue;
+    pairs.push({ key: normalizeText(key), value: normalizedValue });
   }
-
-  const rawText = await fs.readFile(fileInfo.absolutePath, "utf8");
-  return normalizeText(rawText);
+  return pairs;
 }
 
-function chunkText(text, chunkSize, overlap) {
-  const normalized = normalizeText(text);
-  if (!normalized) return [];
+function prioritizeCsvPairs(pairs) {
+  const byKey = new Map();
 
-  if (normalized.length <= chunkSize) {
-    return [normalized];
-  }
-
-  const chunks = [];
-  let start = 0;
-
-  while (start < normalized.length) {
-    let end = Math.min(start + chunkSize, normalized.length);
-
-    if (end < normalized.length) {
-      const breakAtNewline = normalized.lastIndexOf("\n", end);
-      if (breakAtNewline > start + Math.floor(chunkSize * 0.6)) {
-        end = breakAtNewline;
-      } else {
-        const breakAtSpace = normalized.lastIndexOf(" ", end);
-        if (breakAtSpace > start + Math.floor(chunkSize * 0.6)) {
-          end = breakAtSpace;
-        }
-      }
+  for (const pair of pairs) {
+    const key = pair.key.toLowerCase();
+    if (!byKey.has(key)) {
+      byKey.set(key, pair);
     }
-
-    const chunk = normalized.slice(start, end).trim();
-    if (chunk) chunks.push(chunk);
-
-    if (end >= normalized.length) break;
-    start = Math.max(0, end - overlap);
   }
 
-  return chunks;
+  const prioritized = [];
+  for (const field of CSV_PRIORITY_FIELDS) {
+    const matched = byKey.get(field.toLowerCase());
+    if (matched) prioritized.push(matched);
+  }
+
+  return prioritized.length ? prioritized : pairs;
 }
 
-async function buildChunks(documentFiles, chunkSize, overlap) {
-  const chunks = [];
+function formatCsvRow(row, rowNumber) {
+  const pairs = getNonEmptyCsvPairs(row);
+  if (!pairs.length) return "";
 
-  for (const documentFile of documentFiles) {
-    const content = await readSingleDocument(documentFile);
-    if (!content) continue;
+  const maxColumns = parseInteger(
+    process.env.RAG_CSV_MAX_COLUMNS,
+    DEFAULT_CSV_MAX_COLUMNS,
+    2,
+    30
+  );
 
-    const docChunks = chunkText(content, chunkSize, overlap);
+  const maxValueLength = parseInteger(
+    process.env.RAG_CSV_VALUE_MAX_LENGTH,
+    DEFAULT_CSV_VALUE_MAX_LENGTH,
+    50,
+    600
+  );
 
-    for (let i = 0; i < docChunks.length; i += 1) {
-      chunks.push({
-        id: `${documentFile.relativePath}#${i + 1}`,
-        text: docChunks[i],
-        metadata: {
-          source: documentFile.relativePath,
-          chunkIndex: i + 1,
-          totalChunks: docChunks.length,
-        },
+  const serialized = prioritizeCsvPairs(pairs)
+    .slice(0, maxColumns)
+    .map(({ key, value }) => `${key}: ${truncateText(value, maxValueLength)}`)
+    .join(" | ");
+
+  if (!serialized) return "";
+  return `row ${rowNumber}: ${serialized}`;
+}
+
+async function readCsvAsText(fileInfo) {
+  const maxRows = parseInteger(process.env.RAG_CSV_MAX_ROWS, DEFAULT_CSV_MAX_ROWS, 10, 100000);
+  const lines = [];
+  let rowIndex = 0;
+
+  await new Promise((resolve, reject) => {
+    createReadStream(fileInfo.absolutePath)
+      .pipe(csvParser())
+      .on("data", (row) => {
+        if (rowIndex >= maxRows) return;
+
+        const line = formatCsvRow(row, rowIndex + 1);
+        rowIndex += 1;
+        if (line) lines.push(line);
+      })
+      .on("end", resolve)
+      .on("error", (error) => {
+        reject(
+          new RagRetrievalError(
+            `Failed to parse CSV file ${fileInfo.relativePath}: ${error.message}`,
+            400
+          )
+        );
       });
-    }
-  }
+  });
 
-  return chunks;
+  return normalizeText(lines.join("\n"));
 }
 
-async function createEmbeddings(client, texts, model, batchSize) {
-  const allVectors = [];
-
-  for (let i = 0; i < texts.length; i += batchSize) {
-    const batch = texts.slice(i, i + batchSize);
-    const response = await client.embeddings.create({
-      model,
-      input: batch,
-    });
-
-    for (const item of response.data) {
-      allVectors.push(item.embedding);
-    }
-  }
-
-  if (allVectors.length !== texts.length) {
+async function readPdfAsText(fileInfo) {
+  if (!pdfParse) {
     throw new RagRetrievalError(
-      "Embedding generation returned mismatched vector count.",
+      "pdf-parse is not installed. Run npm install in backend to continue.",
       500
     );
   }
 
-  return allVectors;
+  const fileBuffer = await fs.readFile(fileInfo.absolutePath);
+  const parsed = await pdfParse(fileBuffer);
+  return normalizeText(parsed?.text);
 }
 
-function cosineSimilarity(vectorA, vectorB) {
-  if (!Array.isArray(vectorA) || !Array.isArray(vectorB)) return -1;
-  if (vectorA.length === 0 || vectorA.length !== vectorB.length) return -1;
+async function readDocumentAsText(fileInfo) {
+  const ext = path.extname(fileInfo.absolutePath).toLowerCase();
 
-  let dotProduct = 0;
-  let normA = 0;
-  let normB = 0;
-
-  for (let i = 0; i < vectorA.length; i += 1) {
-    const a = vectorA[i];
-    const b = vectorB[i];
-    dotProduct += a * b;
-    normA += a * a;
-    normB += b * b;
+  if (ext === ".csv") {
+    return readCsvAsText(fileInfo);
   }
 
-  if (normA === 0 || normB === 0) return -1;
-  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+  if (ext === ".pdf") {
+    return readPdfAsText(fileInfo);
+  }
+
+  const text = await fs.readFile(fileInfo.absolutePath, "utf8");
+  return normalizeText(text);
+}
+
+async function loadDocuments(documentFiles) {
+  const documents = [];
+
+  for (const fileInfo of documentFiles) {
+    const content = await readDocumentAsText(fileInfo);
+    if (!content) continue;
+
+    documents.push(
+      new Document({
+        pageContent: content,
+        metadata: {
+          source: fileInfo.relativePath,
+        },
+      })
+    );
+  }
+
+  if (!documents.length) {
+    throw new RagRetrievalError(
+      "All documents are empty after parsing. Please add readable text content.",
+      400
+    );
+  }
+
+  return documents;
+}
+
+function annotateChunkMetadata(chunks) {
+  const totalBySource = new Map();
+
+  for (const chunk of chunks) {
+    const source = normalizeText(chunk.metadata?.source) || "unknown";
+    totalBySource.set(source, (totalBySource.get(source) || 0) + 1);
+  }
+
+  const currentBySource = new Map();
+
+  return chunks
+    .map((chunk) => {
+      const source = normalizeText(chunk.metadata?.source) || "unknown";
+      const chunkIndex = (currentBySource.get(source) || 0) + 1;
+      currentBySource.set(source, chunkIndex);
+
+      return new Document({
+        pageContent: normalizeText(chunk.pageContent),
+        metadata: {
+          ...chunk.metadata,
+          source,
+          chunkIndex,
+          totalChunks: totalBySource.get(source) || chunkIndex,
+        },
+      });
+    })
+    .filter((chunk) => Boolean(chunk.pageContent));
 }
 
 function isCacheFresh(cache) {
@@ -324,59 +464,39 @@ async function buildOrRefreshIndex(forceRebuild = false) {
       return indexCache;
     }
 
-    let chunkSize = parseInteger(process.env.RAG_CHUNK_SIZE, DEFAULT_CHUNK_SIZE, 200, 5000);
-    let chunkOverlap = parseInteger(
-      process.env.RAG_CHUNK_OVERLAP,
-      DEFAULT_CHUNK_OVERLAP,
-      0,
-      1000
-    );
+    const { chunkSize, chunkOverlap } = getChunkSettings();
 
-    if (chunkOverlap >= chunkSize) {
-      chunkOverlap = Math.floor(chunkSize / 5);
-    }
+    const documents = await loadDocuments(documentFiles);
+    const splitter = new RecursiveCharacterTextSplitter({
+      chunkSize,
+      chunkOverlap,
+      addStartIndex: true,
+    });
 
-    const chunks = await buildChunks(documentFiles, chunkSize, chunkOverlap);
+    const splitChunks = await splitter.splitDocuments(documents);
+    const chunks = annotateChunkMetadata(splitChunks);
 
     if (!chunks.length) {
       throw new RagRetrievalError(
-        "All documents are empty after parsing. Please add readable text content.",
+        "No chunks were created from the document set. Please review RAG_CHUNK_SIZE and input files.",
         400
       );
     }
 
-    const client = getOpenAiClient();
-    const embeddingModel = getEmbeddingModel();
-    const batchSize = parseInteger(
-      process.env.RAG_EMBEDDING_BATCH_SIZE,
-      DEFAULT_BATCH_SIZE,
-      1,
-      128
-    );
-
-    const vectors = await createEmbeddings(
-      client,
-      chunks.map((chunk) => chunk.text),
-      embeddingModel,
-      batchSize
-    );
-
-    const entries = chunks.map((chunk, index) => ({
-      ...chunk,
-      vector: vectors[index],
-    }));
+    const embeddings = createEmbeddingModel();
+    const vectorStore = await MemoryVectorStore.fromDocuments(chunks, embeddings);
 
     indexCache = {
       fingerprint,
       builtAtMs: Date.now(),
       builtAt: new Date().toISOString(),
       docsDir,
-      embeddingModel,
+      documentCount: documentFiles.length,
+      chunkCount: chunks.length,
       chunkSize,
       chunkOverlap,
-      documentCount: documentFiles.length,
-      chunkCount: entries.length,
-      entries,
+      embeddingModel: getEmbeddingModelName(),
+      vectorStore,
     };
 
     return indexCache;
@@ -387,6 +507,21 @@ async function buildOrRefreshIndex(forceRebuild = false) {
   } finally {
     indexBuildPromise = null;
   }
+}
+
+function applyScoreThreshold(items, scoreThreshold) {
+  if (scoreThreshold <= -1) return items;
+
+  const mode = getScoreMode();
+  if (mode === SCORE_MODE_DISTANCE) {
+    return items.filter((item) => item.score <= scoreThreshold);
+  }
+
+  return items.filter((item) => item.score >= scoreThreshold);
+}
+
+function toSourceRelativePath(source) {
+  return toPosixPath(normalizeText(source));
 }
 
 export function getRagDefaults() {
@@ -410,9 +545,6 @@ export async function retrieveRelevantChunks({ query, topK, scoreThreshold }) {
   const retrievalStart = Date.now();
   const index = await buildOrRefreshIndex(false);
 
-  const client = getOpenAiClient();
-  const [queryVector] = await createEmbeddings(client, [normalizedQuery], index.embeddingModel, 1);
-
   const resolvedTopK = parseInteger(
     topK,
     parseInteger(process.env.RAG_TOP_K_DEFAULT, DEFAULT_TOP_K, 1, 50),
@@ -427,34 +559,35 @@ export async function retrieveRelevantChunks({ query, topK, scoreThreshold }) {
     1
   );
 
-  const scored = index.entries
-    .map((entry) => ({
-      ...entry,
-      score: cosineSimilarity(queryVector, entry.vector),
-    }))
-    .filter((entry) => Number.isFinite(entry.score))
-    .sort((a, b) => b.score - a.score);
+  const fetchK = Math.max(resolvedTopK * 4, resolvedTopK);
+  const searchResults = await index.vectorStore.similaritySearchWithScore(normalizedQuery, fetchK);
 
-  const filtered =
-    resolvedScoreThreshold <= -1
-      ? scored
-      : scored.filter((entry) => entry.score >= resolvedScoreThreshold);
+  const scoredItems = searchResults
+    .map(([document, score], rowIndex) => {
+      const source = toSourceRelativePath(document?.metadata?.source || "unknown");
+      const chunkIndex = Number(document?.metadata?.chunkIndex || rowIndex + 1);
+      const totalChunks = Number(document?.metadata?.totalChunks || chunkIndex);
 
-  const selected = filtered.slice(0, resolvedTopK);
+      return {
+        id: `${source}#${chunkIndex}`,
+        text: normalizeText(document?.pageContent),
+        source,
+        chunkIndex,
+        totalChunks,
+        score: Number(Number(score || 0).toFixed(4)),
+      };
+    })
+    .filter((item) => item.text.length > 0);
+
+  const filtered = applyScoreThreshold(scoredItems, resolvedScoreThreshold).slice(0, resolvedTopK);
 
   return {
-    items: selected.map((entry) => ({
-      id: entry.id,
-      text: entry.text,
-      source: entry.metadata.source,
-      chunkIndex: entry.metadata.chunkIndex,
-      totalChunks: entry.metadata.totalChunks,
-      score: Number(entry.score.toFixed(4)),
-    })),
+    items: filtered,
     meta: {
       retrievalLatencyMs: Date.now() - retrievalStart,
       topK: resolvedTopK,
       scoreThreshold: resolvedScoreThreshold,
+      scoreMode: getScoreMode(),
       embeddingModel: index.embeddingModel,
       indexBuiltAt: index.builtAt,
       corpus: {
@@ -466,4 +599,73 @@ export async function retrieveRelevantChunks({ query, topK, scoreThreshold }) {
       },
     },
   };
+}
+
+function buildContextBlock(retrievedItems) {
+  return retrievedItems
+    .map(
+      (item) =>
+        `[${item.source}#${item.chunkIndex} | score=${item.score}]\n${normalizeText(item.text)}`
+    )
+    .join("\n\n");
+}
+
+export async function generateAnswerFromContext({ query, retrievedItems }) {
+  const normalizedQuery = normalizeText(query);
+  if (!normalizedQuery) {
+    throw new RagRetrievalError("query is required for answer generation", 400);
+  }
+
+  if (!Array.isArray(retrievedItems) || !retrievedItems.length) {
+    return {
+      answer: "Tôi không tìm thấy thông tin này trong dữ liệu hiện có.",
+      llmUsed: false,
+      chatModel: getChatModelName(),
+      generationLatencyMs: 0,
+    };
+  }
+
+  const generationStart = Date.now();
+
+  try {
+    const prompt = ChatPromptTemplate.fromTemplate(ANSWER_TEMPLATE);
+    const chatOptions = {
+      apiKey: getOpenAiApiKey(),
+      model: getChatModelName(),
+    };
+
+    const configuredTemperatureRaw = String(
+      process.env.OPENAI_CHAT_TEMPERATURE ?? ""
+    ).trim();
+
+    if (configuredTemperatureRaw) {
+      chatOptions.temperature = parseFloatNumber(
+        configuredTemperatureRaw,
+        1,
+        0,
+        2
+      );
+    }
+
+    const llm = new ChatOpenAI(chatOptions);
+
+    const chain = prompt.pipe(llm).pipe(new StringOutputParser());
+
+    const answer = await chain.invoke({
+      context: buildContextBlock(retrievedItems),
+      question: normalizedQuery,
+    });
+
+    return {
+      answer: normalizeText(answer),
+      llmUsed: true,
+      chatModel: getChatModelName(),
+      generationLatencyMs: Date.now() - generationStart,
+    };
+  } catch (error) {
+    throw new RagRetrievalError(
+      `Failed to generate answer with LangChain: ${error.message}`,
+      503
+    );
+  }
 }

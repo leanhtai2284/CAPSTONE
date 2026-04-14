@@ -2,6 +2,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import Pantry from "../models/Pantry.js";
 import {
   RagRetrievalError,
+  generateAnswerFromContext,
   getRagDefaults,
   retrieveRelevantChunks,
 } from "../services/ragRetrievalService.js";
@@ -142,6 +143,7 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
     : query;
 
   let retrieval;
+  let generation;
 
   try {
     retrieval = await retrieveRelevantChunks({
@@ -149,13 +151,17 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
       topK,
       scoreThreshold,
     });
+    generation = await generateAnswerFromContext({
+      query,
+      retrievedItems: retrieval.items,
+    });
   } catch (error) {
     if (error instanceof RagRetrievalError) {
       return res.status(error.statusCode).json({
         success: false,
         message: error.message,
         meta: {
-          version: "rag-v1-commit2",
+          version: "rag-v1-langchain",
           query,
           topK,
           scoreThreshold,
@@ -181,19 +187,19 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: "RAG V1 commit2 retrieval ready",
+    message: "RAG LangChain pipeline is ready",
     data: {
       answer: hasContext
-        ? "[commit2] Retrieval is ready. LLM answer generation will be added in the next commit."
-        : "[commit2] Retrieval completed but no matching context was found.",
+        ? generation.answer
+        : "Tôi không tìm thấy thông tin này trong dữ liệu hiện có.",
       sources,
       retrievedContext,
-      llmUsed: false,
+      llmUsed: generation.llmUsed,
       retrievalUsed: true,
-      stage: "retrieval",
+      stage: generation.llmUsed ? "retrieval+generation" : "retrieval",
     },
     meta: {
-      version: "rag-v1-commit2",
+      version: "rag-v1-langchain",
       query,
       topK,
       scoreThreshold,
@@ -201,7 +207,10 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
       pantryItemsUsed: pantryContext.itemCount,
       retrievalQueryMode: pantryContext.text ? "query_plus_pantry" : "query_only",
       embeddingModel: retrieval.meta.embeddingModel,
+      chatModel: generation.chatModel,
       retrievalLatencyMs: retrieval.meta.retrievalLatencyMs,
+      generationLatencyMs: generation.generationLatencyMs,
+      scoreMode: retrieval.meta.scoreMode,
       indexBuiltAt: retrieval.meta.indexBuiltAt,
       corpus: retrieval.meta.corpus,
       userId: req.user?._id || null,
