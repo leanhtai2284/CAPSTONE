@@ -58,6 +58,15 @@ function toGoogleLikeResult(element) {
 
   const tags = element?.tags || {};
   const id = `${element?.type || "node"}-${element?.id || "unknown"}`;
+  const searchableText = [
+    tags.name,
+    tags["name:vi"],
+    tags.cuisine,
+    tags.amenity,
+    parseAddress(tags),
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return {
     place_id: id,
@@ -68,6 +77,8 @@ function toGoogleLikeResult(element) {
     geometry: {
       location,
     },
+    _cuisine: tags.cuisine || "",
+    _searchable_text: searchableText,
   };
 }
 
@@ -100,6 +111,10 @@ function toNominatimResult(item) {
   const lng = Number(item?.lon);
   if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
 
+  const searchableText = [item?.name, item?.display_name, item?.type]
+    .filter(Boolean)
+    .join(" ");
+
   return {
     place_id: `${item?.osm_type || "node"}-${item?.osm_id || "unknown"}`,
     name: item?.name || String(item?.display_name || "Unknown").split(",")[0],
@@ -108,6 +123,8 @@ function toNominatimResult(item) {
     geometry: {
       location: { lat, lng },
     },
+    _cuisine: item?.type || "",
+    _searchable_text: searchableText,
   };
 }
 
@@ -122,6 +139,16 @@ function toPhotonResult(feature) {
   const address = [p?.housenumber, p?.street, p?.district, p?.city, p?.country]
     .filter(Boolean)
     .join(", ");
+  const searchableText = [
+    p?.name,
+    p?.street,
+    p?.district,
+    p?.city,
+    p?.osm_key,
+    p?.osm_value,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return {
     place_id: `${p?.osm_type || "node"}-${p?.osm_id || "unknown"}`,
@@ -131,6 +158,8 @@ function toPhotonResult(feature) {
     geometry: {
       location: { lat, lng },
     },
+    _cuisine: p?.osm_value || "",
+    _searchable_text: searchableText,
   };
 }
 

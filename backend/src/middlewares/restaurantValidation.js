@@ -2,12 +2,13 @@ import Joi from "joi";
 import AppError from "../utils/appError.js";
 
 const restaurantQuerySchema = Joi.object({
-  recipe_id: Joi.string().trim().required(),
+  recipe_id: Joi.string().trim().optional(),
+  recipe_name: Joi.string().trim().max(120).optional(),
   lat: Joi.number().min(-90).max(90).required(),
   lng: Joi.number().min(-180).max(180).required(),
   intent: Joi.string().valid("recipe", "eat-out").optional(),
   diet_tag: Joi.string().trim().max(60).optional(),
-});
+}).or("recipe_id", "recipe_name");
 
 export function validateRestaurantQuery(req, _res, next) {
   const { error, value } = restaurantQuerySchema.validate(req.query, {

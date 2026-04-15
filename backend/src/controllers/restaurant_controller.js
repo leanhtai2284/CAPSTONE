@@ -4,6 +4,7 @@ import { getRestaurantsByDish } from "../services/restaurant_service.js";
 export const getRestaurantsByDishController = asyncHandler(async (req, res) => {
   const {
     recipe_id: recipeId,
+    recipe_name: recipeName,
     lat,
     lng,
     intent,
@@ -12,6 +13,7 @@ export const getRestaurantsByDishController = asyncHandler(async (req, res) => {
 
   const result = await getRestaurantsByDish({
     recipeId,
+    recipeName,
     lat: Number(lat),
     lng: Number(lng),
     intent,

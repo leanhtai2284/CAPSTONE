@@ -62,22 +62,10 @@ function openGoogleMapsNavigation(lat, lng) {
 }
 
 async function getUserLocation() {
-  if (!("geolocation" in navigator)) {
-    throw new Error("Trình duyệt không hỗ trợ định vị.");
-  }
-
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        resolve({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-      },
-      () => reject(new Error("Không thể lấy vị trí hiện tại của bạn.")),
-      { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 },
-    );
-  });
+  return {
+    coords: FALLBACK_LOCATION,
+    notice: `Đang dùng tọa độ cố định Đà Nẵng: ${FALLBACK_LOCATION.lat}, ${FALLBACK_LOCATION.lng}.`,
+  };
 }
 
 export default function RestaurantMap({ meal, onClose }) {
@@ -104,14 +92,8 @@ export default function RestaurantMap({ meal, onClose }) {
     setLocationNotice("");
 
     try {
-      let coords = FALLBACK_LOCATION;
-      try {
-        coords = await getUserLocation();
-      } catch (geoError) {
-        setLocationNotice(
-          `${geoError.message} Đang dùng vị trí mặc định tại TP.HCM.`,
-        );
-      }
+      const { coords, notice } = await getUserLocation();
+      setLocationNotice(notice);
 
       const data = await fetchRestaurantsByDish({
         meal,
@@ -136,6 +118,7 @@ export default function RestaurantMap({ meal, onClose }) {
         apiError?.message ||
         "Không thể tải dữ liệu quán ăn lúc này. Vui lòng thử lại.";
       setError(message);
+
       setRestaurants([]);
       setSelectedRestaurantId(null);
     } finally {
