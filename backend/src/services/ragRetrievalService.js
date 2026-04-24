@@ -1,4 +1,5 @@
 import { createReadStream } from "fs";
+import fsSync from "fs";
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -23,7 +24,7 @@ const SUPPORTED_EXTENSIONS = new Set([".pdf", ".txt", ".md", ".markdown", ".csv"
 
 const DEFAULT_CHUNK_SIZE = 1200;
 const DEFAULT_CHUNK_OVERLAP = 200;
-const DEFAULT_TOP_K = 5;
+const DEFAULT_TOP_K = 12;
 const DEFAULT_SCORE_THRESHOLD = 0.2;
 const DEFAULT_INDEX_TTL_MS = 10 * 60 * 1000;
 const DEFAULT_CSV_MAX_ROWS = 2000;
@@ -72,6 +73,16 @@ const SYSTEM_RULES = [
   "5) Answer in Vietnamese.",
   "6) Use conversation history to understand follow-up questions and pronouns referencing previous topics.",
 ].join("\n");
+
+let nutritionGuideContent = "";
+try {
+  const currentDir = path.dirname(fileURLToPath(import.meta.url));
+  const guidePath = path.resolve(currentDir, "../../data/rag/papers/smartmeal_nutrition_guide_vi.md");
+  nutritionGuideContent = fsSync.readFileSync(guidePath, "utf8");
+} catch (err) {
+  // Fallback in case of path issues
+  console.warn("Could not load nutrition guide for System Prompt:", err.message);
+}
 
 let indexCache = null;
 let indexBuildPromise = null;
@@ -708,11 +719,15 @@ export async function generateAnswerFromContext({ query, retrievedItems, history
 
     const llm = new ChatOpenAI(chatOptions);
 
-    // System message: rules + retrieved context
+    // System message: rules + nutrition guide + retrieved context
     const systemContent = [
       SYSTEM_RULES,
       "",
-      "Context:",
+      "=== CORE NUTRITION KNOWLEDGE ===",
+      nutritionGuideContent,
+      "================================",
+      "",
+      "Context (Recipes and other data):",
       buildContextBlock(retrievedItems),
     ].join("\n");
 
