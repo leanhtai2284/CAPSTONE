@@ -5,8 +5,7 @@ import { fileURLToPath } from "url";
 import { createRequire } from "module";
 import csvParser from "csv-parser";
 import { Document } from "@langchain/core/documents";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { StringOutputParser } from "@langchain/core/output_parsers";
+import { HumanMessage, AIMessage, SystemMessage } from "@langchain/core/messages";
 import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "@langchain/classic/text_splitter";
 import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
@@ -32,7 +31,7 @@ const DEFAULT_CSV_MAX_COLUMNS = 12;
 const DEFAULT_CSV_VALUE_MAX_LENGTH = 180;
 
 const DEFAULT_EMBEDDING_MODEL = "text-embedding-3-large";
-const DEFAULT_CHAT_MODEL = "gpt-5-mini";
+const DEFAULT_CHAT_MODEL = "gpt-4o-mini";
 
 const SCORE_MODE_SIMILARITY = "similarity";
 const SCORE_MODE_DISTANCE = "distance";
@@ -61,19 +60,17 @@ const CSV_PRIORITY_FIELDS = [
   "avoid_for",
 ];
 
-const ANSWER_TEMPLATE = [
-  "You are a strict, citation-focused assistant for SmartMeal.",
+// System prompt chứa rules cho LLM.
+// Context sẽ được append vào runtime cùng với history.
+const SYSTEM_RULES = [
+  "You are a strict, citation-focused nutrition and food assistant for SmartMeal.",
   "RULES:",
   "1) Use ONLY the provided context to answer.",
   '2) If the answer is not clearly contained in context, answer exactly: "Tôi không tìm thấy thông tin này trong dữ liệu hiện có."',
   "3) Do NOT use outside knowledge or guess.",
   "4) If possible, cite sources as (source#chunk).",
   "5) Answer in Vietnamese.",
-  "",
-  "Context:",
-  "{context}",
-  "",
-  "Question: {question}",
+  "6) Use conversation history to understand follow-up questions and pronouns referencing previous topics.",
 ].join("\n");
 
 let indexCache = null;
@@ -536,6 +533,62 @@ export function getRagDefaults() {
   };
 }
 
+/**
+ * Trả về thông tin hiện tại của RAG index cache.
+ * Nếu chưa build thì built=false.
+ */
+export function getIndexStatus() {
+  if (!indexCache) {
+    return {
+      built: false,
+      builtAt: null,
+      fingerprint: null,
+      docsDir: null,
+      documentCount: 0,
+      chunkCount: 0,
+      chunkSize: null,
+      chunkOverlap: null,
+      embeddingModel: getChatModelName ? null : null,
+      scoreMode: getScoreMode(),
+      ttlMs: parseInteger(
+        process.env.RAG_INDEX_TTL_MS,
+        DEFAULT_INDEX_TTL_MS,
+        1_000,
+        24 * 60 * 60 * 1_000
+      ),
+      fresh: false,
+    };
+  }
+
+  return {
+    built: true,
+    builtAt: indexCache.builtAt,
+    fingerprint: indexCache.fingerprint,
+    docsDir: indexCache.docsDir,
+    documentCount: indexCache.documentCount,
+    chunkCount: indexCache.chunkCount,
+    chunkSize: indexCache.chunkSize,
+    chunkOverlap: indexCache.chunkOverlap,
+    embeddingModel: indexCache.embeddingModel,
+    scoreMode: getScoreMode(),
+    fresh: isCacheFresh(indexCache),
+    ttlMs: parseInteger(
+      process.env.RAG_INDEX_TTL_MS,
+      DEFAULT_INDEX_TTL_MS,
+      1_000,
+      24 * 60 * 60 * 1_000
+    ),
+  };
+}
+
+/**
+ * Force rebuild RAG index ngay lập tức, bỏ qua TTL cache.
+ * Dùng khi admin thêm/sửa file trong data/rag/papers.
+ */
+export async function forceRebuildIndex() {
+  return buildOrRefreshIndex(true);
+}
+
 export async function retrieveRelevantChunks({ query, topK, scoreThreshold }) {
   const normalizedQuery = normalizeText(query);
   if (!normalizedQuery) {
@@ -610,7 +663,14 @@ function buildContextBlock(retrievedItems) {
     .join("\n\n");
 }
 
-export async function generateAnswerFromContext({ query, retrievedItems }) {
+/**
+ * Tạo câu trả lời từ retrieved context + conversation history.
+ * @param {string} query - Câu hỏi hiện tại của user.
+ * @param {Array}  retrievedItems - Các chunk được retrieve từ vector store.
+ * @param {Array}  history - Lịch sử hội thoại [{role: "user"|"assistant", content: string}].
+ *                          FE tự giữ và truyền lên, BE không lưu.
+ */
+export async function generateAnswerFromContext({ query, retrievedItems, history = [] }) {
   const normalizedQuery = normalizeText(query);
   if (!normalizedQuery) {
     throw new RagRetrievalError("query is required for answer generation", 400);
@@ -628,7 +688,6 @@ export async function generateAnswerFromContext({ query, retrievedItems }) {
   const generationStart = Date.now();
 
   try {
-    const prompt = ChatPromptTemplate.fromTemplate(ANSWER_TEMPLATE);
     const chatOptions = {
       apiKey: getOpenAiApiKey(),
       model: getChatModelName(),
@@ -649,15 +708,32 @@ export async function generateAnswerFromContext({ query, retrievedItems }) {
 
     const llm = new ChatOpenAI(chatOptions);
 
-    const chain = prompt.pipe(llm).pipe(new StringOutputParser());
+    // System message: rules + retrieved context
+    const systemContent = [
+      SYSTEM_RULES,
+      "",
+      "Context:",
+      buildContextBlock(retrievedItems),
+    ].join("\n");
 
-    const answer = await chain.invoke({
-      context: buildContextBlock(retrievedItems),
-      question: normalizedQuery,
-    });
+    // Build messages: [system, ...history, current_question]
+    // History giúp bot hiểu follow-up như "còn món đó thì sao?"
+    const safeHistory = Array.isArray(history) ? history : [];
+    const messages = [
+      new SystemMessage(systemContent),
+      ...safeHistory.map((msg) =>
+        msg.role === "assistant"
+          ? new AIMessage(normalizeText(msg.content))
+          : new HumanMessage(normalizeText(msg.content))
+      ),
+      new HumanMessage(normalizedQuery),
+    ];
+
+    const response = await llm.invoke(messages);
+    const answer = normalizeText(String(response?.content || ""));
 
     return {
-      answer: normalizeText(answer),
+      answer: answer || "Tôi không tìm thấy thông tin này trong dữ liệu hiện có.",
       llmUsed: true,
       chatModel: getChatModelName(),
       generationLatencyMs: Date.now() - generationStart,

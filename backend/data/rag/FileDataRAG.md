@@ -25,4 +25,16 @@ RAG_CSV_MAX_COLUMNS=12
 RAG_CSV_VALUE_MAX_LENGTH=180
 ```
 
+Curate raw CSV into papers (recommended flow):
+
+```bash
+npm run rag:curate -- --input "data/raw/Food Ingredients and Recipe Dataset with Image Name Mapping.csv" --output "data/rag/papers/food_ingredients_recipe_curated.csv"
+```
+
+Useful optional flags:
+- `--maxRows 15000`
+- `--dedupe true`
+- `--overwrite true`
+- `--titleCol Title --ingredientsCol Cleaned_Ingredients --instructionsCol Instructions --imageCol Image_Name`
+
 Du lieu den food, expire, cach lam, ... 

@@ -10,6 +10,8 @@
     "seed:dishes": "node src/scripts/seed_recipes.js ./data/wikipedia_vn_dishes_filtered.csv",
     "bootstrap:dishes": "npm run fetch:dishes && npm run seed:dishes",
     "seed:admin": "node src/scripts/seed_admin.js",
+    "rag:curate": "node src/scripts/curate_rag_csv.js",
+    "rag:export": "node src/scripts/export_db_to_rag.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
