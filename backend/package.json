@@ -20,6 +20,7 @@
   "type": "module",
   "dependencies": {
     "@langchain/classic": "^1.0.30",
+    "@langchain/core": "^1.1.41",
     "@langchain/openai": "^1.4.4",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
