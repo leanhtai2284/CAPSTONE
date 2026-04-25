@@ -1,5 +1,6 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Pantry from "../models/Pantry.js";
+import User from "../models/User.js";
 import {
   RagRetrievalError,
   generateAnswerFromContext,
@@ -122,7 +123,29 @@ async function buildPantryContext(userId) {
     const unit = item.unit || "";
     const category = item.category || "other";
     const storage = item.storageLocation || "unknown";
-    return `${index + 1}. ${name} (${quantity}${unit}) | category=${category} | storage=${storage}`;
+    
+    let expiryInfo = "";
+    if (item.expiryDate) {
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      const expDate = new Date(item.expiryDate);
+      expDate.setHours(0, 0, 0, 0);
+      
+      const diffTime = expDate.getTime() - now.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays < 0) {
+        expiryInfo = ` | STATUS: EXPIRED (quá hạn ${Math.abs(diffDays)} ngày)`;
+      } else if (diffDays === 0) {
+        expiryInfo = ` | STATUS: EXPIRING TODAY (hết hạn hôm nay!)`;
+      } else if (diffDays <= 3) {
+        expiryInfo = ` | STATUS: EXPIRING SOON (còn ${diffDays} ngày)`;
+      } else {
+        expiryInfo = ` | expires_in_days=${diffDays}`;
+      }
+    }
+
+    return `${index + 1}. ${name} (${quantity}${unit}) | category=${category} | storage=${storage}${expiryInfo}`;
   });
 
   return {
@@ -169,6 +192,23 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
     ? await buildPantryContext(req.user?._id)
     : { text: "", itemCount: 0 };
 
+  const user = await User.findById(req.user?._id).lean();
+  let userProfileContext = "";
+  if (user && user.preferences) {
+    const prefs = user.preferences;
+    userProfileContext = `USER PROFILE PREFERENCES (Sử dụng thông tin này để cá nhân hóa câu trả lời):
+- Mục tiêu: ${prefs.goal || "không rõ"}
+- Chế độ ăn: ${prefs.diet || "bình thường"}
+- Khẩu vị vùng miền: ${prefs.region || "không rõ"}
+- Số người ăn: ${prefs.familySize || 1}`;
+    if (prefs.likedFoods?.length) {
+      userProfileContext += `\n- Món thích: ${prefs.likedFoods.join(", ")}`;
+    }
+    if (prefs.avoidedFoods?.length) {
+      userProfileContext += `\n- Món phải kiêng/dị ứng: ${prefs.avoidedFoods.join(", ")}`;
+    }
+  }
+
   const retrievalQuery = pantryContext.text
     ? `${query}\n\nUser pantry context:\n${pantryContext.text}`
     : query;
@@ -186,6 +226,8 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
       query,
       retrievedItems: retrieval.items,
       history,
+      userProfileContext,
+      userId: req.user?._id, // Truyền userId xuống cho Agentic Tools
     });
   } catch (error) {
     if (error instanceof RagRetrievalError) {

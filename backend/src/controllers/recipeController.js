@@ -4,6 +4,8 @@ import { buildRecipeQuery } from "../utils/queryParser.js";
 import { getPagination } from "../utils/pagination.js";
 import { suggestDailyMenu, suggestWeeklyMenu } from "../ai_module/engine.js";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import Pantry from "../models/Pantry.js";
 import { createNotification } from "./notificationController.js";
 
 const getRecipeName = (recipe) =>
@@ -284,7 +286,25 @@ export async function getRecipeById(req, res) {
 export async function suggestMenu(req, res) {
   try {
     const prefs = req.body || {};
-    const items = await suggestDailyMenu(prefs);
+    let userId = null;
+
+    // Lấy userId từ JWT nếu user đang login
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+      const token = req.headers.authorization.split(" ")[1];
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        userId = decoded.id;
+      } catch (err) {
+        console.warn("Invalid token for suggestMenu, ignoring...");
+      }
+    }
+
+    let pantryItems = [];
+    if (userId && prefs.use_pantry !== false) {
+      pantryItems = await Pantry.find({ user: userId }).lean();
+    }
+
+    const items = await suggestDailyMenu(prefs, pantryItems);
     res.json({ items });
   } catch (e) {
     console.error(e);
@@ -295,7 +315,24 @@ export async function suggestMenu(req, res) {
 export async function suggestWeeklyMenuEndpoint(req, res) {
   try {
     const prefs = req.body || {};
-    const weeklyMenu = await suggestWeeklyMenu(prefs);
+    let userId = null;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+      const token = req.headers.authorization.split(" ")[1];
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        userId = decoded.id;
+      } catch (err) {
+        console.warn("Invalid token for suggestWeeklyMenu, ignoring...");
+      }
+    }
+
+    let pantryItems = [];
+    if (userId && prefs.use_pantry !== false) {
+      pantryItems = await Pantry.find({ user: userId }).lean();
+    }
+
+    const weeklyMenu = await suggestWeeklyMenu(prefs, pantryItems);
     res.json({ weeklyMenu });
   } catch (e) {
     console.error(e);
