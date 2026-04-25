@@ -2,6 +2,7 @@ import React, { Suspense, useState, useEffect } from "react";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "sonner";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./context/AuthProvider";
 import { MealSelectionProvider } from "./context/MealSelectionContext";
@@ -11,10 +12,12 @@ import AppRouter from "./AppRouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoadingProvider } from "./context/LoadingContext";
 import { LogoutModalProvider } from "./context/LogoutModalContext";
+import { ChatbotBubble, ChatbotInterface } from "./components/chatbot/Chatbot";
 
 function AppContent() {
   const location = useLocation();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   // Scroll to top on route change
   useEffect(() => {
@@ -23,7 +26,7 @@ function AppContent() {
 
   const HIDE_NAVBAR_PATHS = ["/auth"];
   const hideNavbar = HIDE_NAVBAR_PATHS.some((path) =>
-    location.pathname.startsWith(path)
+    location.pathname.startsWith(path),
   );
 
   const SIDEBAR_VISIBLE_PATHS = [
@@ -36,7 +39,7 @@ function AppContent() {
     "/help",
   ];
   const showSidebar = SIDEBAR_VISIBLE_PATHS.some((path) =>
-    location.pathname.startsWith(path)
+    location.pathname.startsWith(path),
   );
 
   const sidebarPadding = showSidebar
@@ -69,6 +72,9 @@ function AppContent() {
           </motion.div>
         </AnimatePresence>
       </motion.div>
+
+      <ChatbotBubble onClick={() => setIsChatbotOpen(true)} />
+      <ChatbotInterface isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
     </>
   );
 }
@@ -100,6 +106,7 @@ function App() {
                 draggable
                 pauseOnHover
               />
+              <Toaster position="top-right" />
             </Suspense>
           </MealSelectionProvider>
         </AuthProvider>

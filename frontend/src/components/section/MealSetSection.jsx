@@ -9,7 +9,12 @@ const mealTypeLabels = {
   snack: "Bữa phụ / Món ăn nhẹ",
 };
 
-const MealSetSection = ({ mealSet, onSwapMeal, isSwapping = null }) => {
+const MealSetSection = ({
+  mealSet,
+  onSwapMeal,
+  isSwapping = null,
+  onFindNearby,
+}) => {
   const { handleMealClick } = useMealSelection();
 
   return (
@@ -21,18 +26,15 @@ const MealSetSection = ({ mealSet, onSwapMeal, isSwapping = null }) => {
       </div>
 
       <div
-        className={`grid gap-4 ${
-          mealSet.mealType === "breakfast"
-            ? "grid-cols-1"
-            : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-        }`}
+        className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
       >
-        {mealSet.dishes.map((meal) => (
+        {mealSet.dishes.map((meal, idx) => (
           <MealCard
-            key={meal._id || meal.id}
+            key={meal._swapId || meal._id || meal.id || `meal-${idx}`}
             meal={meal}
             onClick={() => handleMealClick(meal)}
             onSwap={onSwapMeal}
+            onFindNearby={onFindNearby}
             isSwapping={isSwapping === (meal._id || meal.id)}
           />
         ))}

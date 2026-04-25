@@ -19,6 +19,11 @@ import favoriteRoutes from "./routes/favorite.js";
 import notificationRoutes from "./routes/notification.js";
 import feedbackRoutes from "./routes/feedback.js";
 import newsRoutes from "./routes/news-routes.js";
+import pantryRoutes from "./routes/pantry.js";
+import restaurantRoutes from "./routes/restaurant_routes.js";
+import aiRoutes from "./routes/ai.js";
+import { errorHandler, notFound } from "./middlewares/errorHandler.js";
+import { startPantryExpiryNotificationScheduler } from "./services/pantryExpiryNotificationService.js";
 
 const app = express();
 
@@ -49,11 +54,18 @@ app.use("/api/favorites", favoriteRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/news", newsRoutes);
+app.use("/api/pantry", pantryRoutes);
+app.use("/api", restaurantRoutes);
+app.use("/api/ai", aiRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {
-  app.listen(PORT, () =>
-    console.log(` Backend running at http://localhost:${PORT}`)
-  );
+  app.listen(PORT, () => {
+    console.log(` Backend running at http://localhost:${PORT}`);
+    startPantryExpiryNotificationScheduler();
+  });
 });

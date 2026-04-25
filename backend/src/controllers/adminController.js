@@ -313,6 +313,8 @@ export const getUserStats = async (req, res) => {
     const totalAdmins = await User.countDocuments({ role: "admin" });
     const totalModerators = await User.countDocuments({ role: "moderator" });
     const totalRegularUsers = await User.countDocuments({ role: "user" });
+    const totalBannedUsers = await User.countDocuments({ isBanned: true });
+    const totalOnlineUsers = await User.countDocuments({ isOnline: true });
 
     // Users created in last 30 days
     const thirtyDaysAgo = new Date();
@@ -328,6 +330,8 @@ export const getUserStats = async (req, res) => {
         totalAdmins,
         totalModerators,
         totalRegularUsers,
+        totalBannedUsers,
+        totalOnlineUsers,
         recentUsers,
       },
     });
@@ -335,6 +339,170 @@ export const getUserStats = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Không thể lấy thống kê người dùng",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Ban user
+// @route   PATCH /api/admin/users/:id/ban
+// @access  Private/Admin
+export const banUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reason, bannedUntil } = req.body;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "ID không hợp lệ",
+      });
+    }
+
+    // Prevent banning yourself
+    if (id === req.user._id.toString()) {
+      return res.status(400).json({
+        success: false,
+        message: "Bạn không thể cấm chính mình",
+      });
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy người dùng",
+      });
+    }
+
+    // Prevent banning other admins (optional - you can remove this if you want)
+    if (user.role === "admin" && req.user.role === "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Không thể cấm tài khoản admin khác",
+      });
+    }
+
+    // Set user offline and banned
+    const updateData = {
+      isBanned: true,
+      isOnline: false,
+      banReason: reason || "Vi phạm quy định hệ thống",
+      bannedUntil: bannedUntil ? new Date(bannedUntil) : null,
+      lastLogout: new Date(),
+    };
+
+    const bannedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    await createNotification({
+      user: bannedUser._id,
+      audience: "user",
+      title: "Tài khoản bị cấm",
+      message: `Tài khoản của bạn đã bị cấm. Lý do: ${updateData.banReason}`,
+      type: "user_activity",
+      metadata: {
+        bannedUntil: updateData.bannedUntil,
+        reason: updateData.banReason,
+      },
+    });
+
+    await createNotification({
+      user: null,
+      audience: "admin",
+      title: "Đã cấm người dùng",
+      message: `Admin ${req.user?.email || ""} đã cấm tài khoản ${bannedUser.email}. Lý do: ${updateData.banReason}`,
+      type: "user_activity",
+      metadata: {
+        targetUserId: bannedUser._id,
+        email: bannedUser.email,
+        reason: updateData.banReason,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Cấm người dùng thành công",
+      data: bannedUser,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Không thể cấm người dùng",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Unban user
+// @route   PATCH /api/admin/users/:id/unban
+// @access  Private/Admin
+export const unbanUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "ID không hợp lệ",
+      });
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy người dùng",
+      });
+    }
+
+    const updateData = {
+      isBanned: false,
+      bannedUntil: null,
+      banReason: "",
+    };
+
+    const unbannedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    await createNotification({
+      user: unbannedUser._id,
+      audience: "user",
+      title: "Tài khoản được mở khóa",
+      message: "Tài khoản của bạn đã được mở khóa. Bạn có thể đăng nhập lại.",
+      type: "user_activity",
+      metadata: {
+        unbannedAt: new Date(),
+      },
+    });
+
+    await createNotification({
+      user: null,
+      audience: "admin",
+      title: "Đã mở khóa người dùng",
+      message: `Admin ${req.user?.email || ""} đã mở khóa tài khoản ${unbannedUser.email}`,
+      type: "user_activity",
+      metadata: {
+        targetUserId: unbannedUser._id,
+        email: unbannedUser.email,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Mở khóa người dùng thành công",
+      data: unbannedUser,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Không thể mở khóa người dùng",
       error: error.message,
     });
   }
