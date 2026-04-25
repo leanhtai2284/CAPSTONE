@@ -15,20 +15,20 @@ const OUTPUT_FILE = path.join(OUTPUT_DIR, "db_recipes.md");
 async function exportRecipesToRag() {
   try {
     if (!process.env.MONGO_URI) {
-      console.error("❌ Thiếu MONGO_URI trong file .env");
+      console.error(" Thiếu MONGO_URI trong file .env");
       process.exit(1);
     }
 
     console.log("⏳ Đang kết nối MongoDB...");
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("✅ Kết nối thành công!");
+    console.log(" Kết nối thành công!");
 
-    console.log("⏳ Đang lấy dữ liệu từ collection recipes...");
+    console.log(" Đang lấy dữ liệu từ collection recipes...");
     const recipes = await Recipe.find({}).lean();
-    console.log(`✅ Tìm thấy ${recipes.length} công thức.`);
+    console.log(` Tìm thấy ${recipes.length} công thức.`);
 
     if (recipes.length === 0) {
-      console.log("⚠️ Không có công thức nào để export.");
+      console.log(" Không có công thức nào để export.");
       process.exit(0);
     }
 
@@ -36,7 +36,7 @@ async function exportRecipesToRag() {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
 
-    let markdownContent = `# 🥘 Danh Sách Công Thức Nấu Ăn (Cập nhật từ Database)\n\n`;
+    let markdownContent = `#  Danh Sách Công Thức Nấu Ăn (Cập nhật từ Database)\n\n`;
     markdownContent += `Tài liệu này chứa danh sách các món ăn thực tế đang có trên hệ thống SmartMeal. Bot AI có thể dùng để gợi ý món ăn, nguyên liệu, và cách nấu.\n\n`;
 
     recipes.forEach((recipe) => {
@@ -45,7 +45,7 @@ async function exportRecipesToRag() {
       markdownContent += `- **Vùng miền:** ${recipe.region || "Không xác định"}\n`;
       markdownContent += `- **Loại món (Category):** ${recipe.category || "N/A"}\n`;
       markdownContent += `- **Thích hợp cho bữa:** ${(recipe.meal_types || []).join(", ") || "N/A"}\n`;
-      
+
       const prep = recipe.prep_time_min || 0;
       const cook = recipe.cook_time_min || 0;
       markdownContent += `- **Thời gian:** Chuẩn bị ${prep} phút, Nấu ${cook} phút. Tổng: ${prep + cook} phút.\n`;
@@ -66,7 +66,7 @@ async function exportRecipesToRag() {
 
       markdownContent += `\n### Nguyên liệu cần chuẩn bị:\n`;
       if (recipe.ingredients && recipe.ingredients.length > 0) {
-        recipe.ingredients.forEach(ing => {
+        recipe.ingredients.forEach((ing) => {
           markdownContent += `- ${ing.amount} ${ing.unit} ${ing.name}\n`;
         });
       } else {
@@ -86,12 +86,14 @@ async function exportRecipesToRag() {
     });
 
     fs.writeFileSync(OUTPUT_FILE, markdownContent, "utf8");
-    console.log(`✅ Đã ghi thành công ${recipes.length} món ăn ra file: ${OUTPUT_FILE}`);
+    console.log(
+      ` Đã ghi thành công ${recipes.length} món ăn ra file: ${OUTPUT_FILE}`,
+    );
 
     await mongoose.disconnect();
-    console.log("👋 Đã ngắt kết nối DB.");
+    console.log(" Đã ngắt kết nối DB.");
   } catch (error) {
-    console.error("❌ Lỗi khi export:", error);
+    console.error(" Lỗi khi export:", error);
     process.exit(1);
   }
 }
