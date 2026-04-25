@@ -6,7 +6,8 @@ import { fileURLToPath } from "url";
 import { createRequire } from "module";
 import csvParser from "csv-parser";
 import { Document } from "@langchain/core/documents";
-import { HumanMessage, AIMessage, SystemMessage } from "@langchain/core/messages";
+import { HumanMessage, AIMessage, SystemMessage, ToolMessage } from "@langchain/core/messages";
+import DailyMenu from "../models/DailyMenu.js";
 import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "@langchain/classic/text_splitter";
 import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
@@ -681,7 +682,8 @@ function buildContextBlock(retrievedItems) {
  * @param {Array}  history - Lịch sử hội thoại [{role: "user"|"assistant", content: string}].
  *                          FE tự giữ và truyền lên, BE không lưu.
  */
-export async function generateAnswerFromContext({ query, retrievedItems, history = [] }) {
+export async function generateAnswerFromContext(params = {}) {
+  const { query, retrievedItems = [], history = [], userProfileContext = "", userId = null } = params;
   const normalizedQuery = normalizeText(query);
   if (!normalizedQuery) {
     throw new RagRetrievalError("query is required for answer generation", 400);
@@ -719,9 +721,12 @@ export async function generateAnswerFromContext({ query, retrievedItems, history
 
     const llm = new ChatOpenAI(chatOptions);
 
-    // System message: rules + nutrition guide + retrieved context
     const systemContent = [
       SYSTEM_RULES,
+      "",
+      userProfileContext ? "=== USER PROFILE (PRIORITY) ===" : "",
+      userProfileContext || "",
+      userProfileContext ? "===============================" : "",
       "",
       "=== CORE NUTRITION KNOWLEDGE ===",
       nutritionGuideContent,
@@ -729,7 +734,7 @@ export async function generateAnswerFromContext({ query, retrievedItems, history
       "",
       "Context (Recipes and other data):",
       buildContextBlock(retrievedItems),
-    ].join("\n");
+    ].filter(Boolean).join("\n");
 
     // Build messages: [system, ...history, current_question]
     // History giúp bot hiểu follow-up như "còn món đó thì sao?"
@@ -744,8 +749,83 @@ export async function generateAnswerFromContext({ query, retrievedItems, history
       new HumanMessage(normalizedQuery),
     ];
 
-    const response = await llm.invoke(messages);
-    const answer = normalizeText(String(response?.content || ""));
+    // Định nghĩa Tool lưu thực đơn
+    const saveDailyMenuTool = {
+      type: "function",
+      function: {
+        name: "save_daily_menu",
+        description: "Lưu một thực đơn (bữa sáng, trưa, tối) vào cơ sở dữ liệu của người dùng. Dùng công cụ này KHI người dùng yêu cầu 'Lưu thực đơn', 'Tạo và lưu', v.v.",
+        parameters: {
+          type: "object",
+          properties: {
+            dayIndex: { type: "number", description: "Từ 0 (Thứ 2) đến 6 (Chủ nhật)" },
+            dayName: { type: "string", description: "Tên ngày, ví dụ 'Thứ 2'" },
+            meals: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  type: { type: "string", description: "Loại bữa ăn: 'breakfast', 'lunch', hoặc 'dinner'" },
+                  recipeId: { type: "string", description: "Mã món ăn (ID) lấy từ Context" },
+                  name: { type: "string", description: "Tên món ăn (name_vi)" }
+                },
+                required: ["type", "recipeId", "name"]
+              }
+            }
+          },
+          required: ["dayIndex", "dayName", "meals"]
+        }
+      }
+    };
+
+    const llmWithTools = llm.bindTools([saveDailyMenuTool]);
+    
+    // Gọi LLM lần 1
+    const response = await llmWithTools.invoke(messages);
+    messages.push(response); // Lưu lại phản hồi của AI (có thể chứa tool_calls)
+
+    let finalResponse = response;
+
+    // Xử lý nếu AI quyết định gọi Tool
+    if (response.tool_calls && response.tool_calls.length > 0) {
+      for (const toolCall of response.tool_calls) {
+        if (toolCall.name === "save_daily_menu") {
+          try {
+            const args = toolCall.args;
+            if (params.userId) {
+              await DailyMenu.create({
+                user: params.userId,
+                dayIndex: args.dayIndex,
+                dayName: args.dayName,
+                date: new Date(),
+                meals: args.meals,
+              });
+              
+              // Báo cho AI biết là đã lưu thành công
+              messages.push(new ToolMessage({
+                tool_call_id: toolCall.id,
+                content: "Đã lưu thực đơn vào cơ sở dữ liệu thành công!"
+              }));
+            } else {
+              messages.push(new ToolMessage({
+                tool_call_id: toolCall.id,
+                content: "Lỗi: Không tìm thấy userId (Người dùng chưa đăng nhập)."
+              }));
+            }
+          } catch (err) {
+            console.error("Tool execution error:", err);
+            messages.push(new ToolMessage({
+              tool_call_id: toolCall.id,
+              content: `Lỗi khi lưu thực đơn: ${err.message}`
+            }));
+          }
+        }
+      }
+      // Gọi LLM lần 2 để đúc kết lại kết quả cuối cùng cho user
+      finalResponse = await llmWithTools.invoke(messages);
+    }
+
+    const answer = normalizeText(String(finalResponse?.content || ""));
 
     return {
       answer: answer || "Tôi không tìm thấy thông tin này trong dữ liệu hiện có.",

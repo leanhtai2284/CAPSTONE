@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { syncDbToRag } from "../services/ragSyncService.js";
+
 
 const nutritionSchema = new mongoose.Schema(
   {
@@ -76,5 +78,18 @@ const recipeSchema = new mongoose.Schema(
 );
 
 recipeSchema.index({ name_vi: "text", description: "text" });
+
+// --- Auto-Sync Vector DB Hooks ---
+const triggerRagSync = () => {
+  // Chạy bất đồng bộ, không block luồng xử lý chính
+  syncDbToRag().catch((err) => console.error("[RAG Sync Hook] Lỗi:", err));
+};
+
+recipeSchema.post("save", triggerRagSync);
+recipeSchema.post("findOneAndUpdate", triggerRagSync);
+recipeSchema.post("findOneAndDelete", triggerRagSync);
+recipeSchema.post("findOneAndRemove", triggerRagSync);
+recipeSchema.post("deleteOne", triggerRagSync);
+recipeSchema.post("deleteMany", triggerRagSync);
 
 export default mongoose.model("Recipe", recipeSchema);

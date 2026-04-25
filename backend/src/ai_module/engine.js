@@ -8,7 +8,7 @@ import applyKeto from "./rules/keto.js";
 import applyWeightGain from "./rules/weight_gain.js";
 import applyWeightLoss from "./rules/weight_loss.js";
 
-export async function suggestDailyMenu(prefs) {
+export async function suggestDailyMenu(prefs, pantryItems = []) {
   const baseFilter = {};
 
   if (Array.isArray(prefs?.avoid_allergens) && prefs.avoid_allergens.length) {
@@ -90,14 +90,49 @@ export async function suggestDailyMenu(prefs) {
     const like = new Set(
       prefs.liked_ingredients.map((s) => String(s).toLowerCase())
     );
+    const pantrySet = new Set(
+      pantryItems.map((p) => String(p.name).toLowerCase())
+    );
+
     candidates = candidates.sort((a, b) => {
-      const ac = (a.ingredients || []).some((i) =>
-        like.has(String(i?.name ?? i).toLowerCase())
-      );
-      const bc = (b.ingredients || []).some((i) =>
-        like.has(String(i?.name ?? i).toLowerCase())
-      );
-      return Number(bc) - Number(ac);
+      let scoreA = 0;
+      let scoreB = 0;
+
+      (a.ingredients || []).forEach((i) => {
+        const name = String(i?.name ?? i).toLowerCase();
+        if (like.has(name)) scoreA += 1;
+        if (pantrySet.has(name)) scoreA += 5; // Ưu tiên rất cao cho nguyên liệu Tủ lạnh
+      });
+
+      (b.ingredients || []).forEach((i) => {
+        const name = String(i?.name ?? i).toLowerCase();
+        if (like.has(name)) scoreB += 1;
+        if (pantrySet.has(name)) scoreB += 5;
+      });
+
+      return scoreB - scoreA;
+    });
+  } else if (pantryItems && pantryItems.length > 0) {
+    // Nếu không có liked_ingredients nhưng có pantryItems, vẫn phải sort theo pantry
+    const pantrySet = new Set(
+      pantryItems.map((p) => String(p.name).toLowerCase())
+    );
+
+    candidates = candidates.sort((a, b) => {
+      let scoreA = 0;
+      let scoreB = 0;
+
+      (a.ingredients || []).forEach((i) => {
+        const name = String(i?.name ?? i).toLowerCase();
+        if (pantrySet.has(name)) scoreA += 5;
+      });
+
+      (b.ingredients || []).forEach((i) => {
+        const name = String(i?.name ?? i).toLowerCase();
+        if (pantrySet.has(name)) scoreB += 5;
+      });
+
+      return scoreB - scoreA;
     });
   }
 
@@ -271,7 +306,7 @@ export async function suggestDailyMenu(prefs) {
 }
 
 //ham tao goi y thuc don cho 1 tuan
-export async function suggestWeeklyMenu(prefs) {
+export async function suggestWeeklyMenu(prefs, pantryItems = []) {
   const baseFilter = {};
 
   if (Array.isArray(prefs?.avoid_allergens) && prefs.avoid_allergens.length) {
@@ -335,14 +370,48 @@ export async function suggestWeeklyMenu(prefs) {
     const like = new Set(
       prefs.liked_ingredients.map((s) => String(s).toLowerCase())
     );
+    const pantrySet = new Set(
+      pantryItems.map((p) => String(p.name).toLowerCase())
+    );
+
     candidates = candidates.sort((a, b) => {
-      const ac = (a.ingredients || []).some((i) =>
-        like.has(String(i?.name ?? i).toLowerCase())
-      );
-      const bc = (b.ingredients || []).some((i) =>
-        like.has(String(i?.name ?? i).toLowerCase())
-      );
-      return Number(bc) - Number(ac);
+      let scoreA = 0;
+      let scoreB = 0;
+
+      (a.ingredients || []).forEach((i) => {
+        const name = String(i?.name ?? i).toLowerCase();
+        if (like.has(name)) scoreA += 1;
+        if (pantrySet.has(name)) scoreA += 5; // Ưu tiên tủ lạnh
+      });
+
+      (b.ingredients || []).forEach((i) => {
+        const name = String(i?.name ?? i).toLowerCase();
+        if (like.has(name)) scoreB += 1;
+        if (pantrySet.has(name)) scoreB += 5;
+      });
+
+      return scoreB - scoreA;
+    });
+  } else if (pantryItems && pantryItems.length > 0) {
+    const pantrySet = new Set(
+      pantryItems.map((p) => String(p.name).toLowerCase())
+    );
+
+    candidates = candidates.sort((a, b) => {
+      let scoreA = 0;
+      let scoreB = 0;
+
+      (a.ingredients || []).forEach((i) => {
+        const name = String(i?.name ?? i).toLowerCase();
+        if (pantrySet.has(name)) scoreA += 5;
+      });
+
+      (b.ingredients || []).forEach((i) => {
+        const name = String(i?.name ?? i).toLowerCase();
+        if (pantrySet.has(name)) scoreB += 5;
+      });
+
+      return scoreB - scoreA;
     });
   }
 
