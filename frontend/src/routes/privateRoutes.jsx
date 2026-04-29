@@ -7,6 +7,9 @@ import SearchPage from "../pages/SearchPage";
 import ForYouPage from "../pages/ForYouPage";
 import AccountSettings from "../pages/Settings";
 import PantryDashboard from "../pages/PantryDashboard";
+import GroupDashboard from "../pages/GroupDashboard";
+import GroupDetail from "../pages/GroupDetail";
+import UGCSubmit from "../pages/UGCSubmit";
 import React from "react";
 
 export const privateRoutes = [
@@ -19,4 +22,7 @@ export const privateRoutes = [
   { path: "/help", element: <HelpFeedback /> },
   { path: "/search", element: <SearchPage /> },
   { path: "/settings", element: <AccountSettings /> },
+  { path: "/groups", element: <GroupDashboard /> },
+  { path: "/groups/:groupId", element: <GroupDetail /> },
+  { path: "/ugc/submit", element: <UGCSubmit /> },
 ];

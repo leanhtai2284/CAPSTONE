@@ -16,6 +16,7 @@ import RecipeForm from "./components/admin/RecipeForm";
 import AdminFeedbackPage from "./pages/AdminFeedbackPage";
 import AdminNewsManagement from "./pages/AdminNewsManagement";
 import NewsForm from "./components/admin/NewsForm";
+import AdminUGCReview from "./pages/AdminUGCReview";
 
 // 🌀 Component loading hiển thị trong lúc tải chậm
 const LoadingFallback = () => (
@@ -48,7 +49,8 @@ export default function AppRouter() {
           <Route path="login" element={<AdminLogin />} />
           <Route path="recipes" element={<AdminRecipeManagement />} />
           <Route path="recipes/new" element={<RecipeForm />} />
-          <Route path="recipes/:id/edit" element={<RecipeForm />} />
+            <Route path="recipes/:id/edit" element={<RecipeForm />} />
+            <Route path="ugc" element={<AdminUGCReview />} />
           <Route path="users" element={<AdminUserManagement />} />
           <Route path="reports" element={<AdminReportsPage />} />
           <Route path="feedback" element={<AdminFeedbackPage />} />

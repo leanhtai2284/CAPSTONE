@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { recipeService } from "../../services/recipeService";
 
-const AdminRecipeDetailModal = ({ recipe, onClose }) => {
+const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
   const [recipeData, setRecipeData] = useState(recipe || null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -454,6 +454,23 @@ const AdminRecipeDetailModal = ({ recipe, onClose }) => {
 
         {/* Footer */}
         <div className="flex-shrink-0 border-t dark:border-gray-700 p-4 flex justify-end gap-2">
+          {recipeData?.is_ugc && (recipeData?.ugc_status === "pending" || !recipeData?.ugc_status) && (
+            <>
+              <button
+                onClick={() => onReject && onReject()}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Từ chối
+              </button>
+              <button
+                onClick={() => onApprove && onApprove()}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                Phê duyệt
+              </button>
+            </>
+          )}
+
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
