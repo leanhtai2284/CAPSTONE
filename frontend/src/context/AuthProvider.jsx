@@ -100,13 +100,14 @@ export function AuthProvider({ children }) {
       setLoading(true);
       setError(null);
       await authService.logout();
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      setUser(null);
     } catch (err) {
       setError(err.message || "Đăng xuất thất bại");
       throw err;
     } finally {
+      // Ensure UI state is reset even if logout request fails (e.g., expired token)
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      setUser(null);
       setLoading(false);
     }
   };
