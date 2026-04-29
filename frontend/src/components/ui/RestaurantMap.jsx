@@ -1,6 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  CircleMarker,
+  useMap,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import {
@@ -48,11 +55,18 @@ const selectedIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-function MapUpdater({ center }) {
+let cachedUserLocation = null;
+let cachedUserLocationAt = 0;
+
+function MapUpdater({ center, bounds }) {
   const map = useMap();
   useEffect(() => {
+    if (bounds) {
+      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
+      return;
+    }
     map.flyTo(center, 14, { duration: 0.8 });
-  }, [center, map]);
+  }, [bounds, center, map]);
   return null;
 }
 
@@ -62,10 +76,43 @@ function openGoogleMapsNavigation(lat, lng) {
 }
 
 async function getUserLocation() {
-  return {
-    coords: FALLBACK_LOCATION,
-    notice: `Đang dùng tọa độ cố định Đà Nẵng: ${FALLBACK_LOCATION.lat}, ${FALLBACK_LOCATION.lng}.`,
-  };
+  const now = Date.now();
+  if (cachedUserLocation && now - cachedUserLocationAt < 2 * 60 * 1000) {
+    return { coords: cachedUserLocation, notice: "" };
+  }
+
+  if (!navigator.geolocation) {
+    return {
+      coords: FALLBACK_LOCATION,
+      notice:
+        "Thiết bị không hỗ trợ định vị. Đang dùng tọa độ mặc định Đà Nẵng.",
+    };
+  }
+
+  try {
+    const coords = await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: false,
+        timeout: 8000,
+        maximumAge: 60000,
+      });
+    });
+
+    const resolved = {
+      lat: coords.coords.latitude,
+      lng: coords.coords.longitude,
+    };
+
+    cachedUserLocation = resolved;
+    cachedUserLocationAt = now;
+
+    return { coords: resolved, notice: "" };
+  } catch (_error) {
+    return {
+      coords: FALLBACK_LOCATION,
+      notice: `Không lấy được vị trí hiện tại. Đang dùng tọa độ Đà Nẵng: ${FALLBACK_LOCATION.lat}, ${FALLBACK_LOCATION.lng}.`,
+    };
+  }
 }
 
 export default function RestaurantMap({ meal, onClose }) {
@@ -74,6 +121,8 @@ export default function RestaurantMap({ meal, onClose }) {
   const [error, setError] = useState("");
   const [locationNotice, setLocationNotice] = useState("");
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
+  const [mapBounds, setMapBounds] = useState(null);
   const [mapCenter, setMapCenter] = useState([
     FALLBACK_LOCATION.lat,
     FALLBACK_LOCATION.lng,
@@ -94,6 +143,9 @@ export default function RestaurantMap({ meal, onClose }) {
     try {
       const { coords, notice } = await getUserLocation();
       setLocationNotice(notice);
+      setUserLocation(coords);
+      setMapCenter([coords.lat, coords.lng]);
+      setMapBounds(null);
 
       const data = await fetchRestaurantsByDish({
         meal,
@@ -106,9 +158,12 @@ export default function RestaurantMap({ meal, onClose }) {
       setRestaurants(list);
 
       if (list.length > 0) {
-        const first = list[0];
-        setMapCenter([first.lat, first.lng]);
-        setSelectedRestaurantId(first.name);
+        const bounds = L.latLngBounds([
+          [coords.lat, coords.lng],
+          ...list.map((item) => [item.lat, item.lng]),
+        ]);
+        setMapBounds(bounds);
+        setSelectedRestaurantId(list[0].name);
       } else {
         setMapCenter([coords.lat, coords.lng]);
         setSelectedRestaurantId(null);
@@ -133,6 +188,7 @@ export default function RestaurantMap({ meal, onClose }) {
   const handleRestaurantClick = (restaurant) => {
     setSelectedRestaurantId(restaurant.name);
     setMapCenter([restaurant.lat, restaurant.lng]);
+    setMapBounds(null);
   };
 
   return (
@@ -189,47 +245,59 @@ export default function RestaurantMap({ meal, onClose }) {
           <div className="flex-1 overflow-hidden">
             <div className="h-full flex flex-col lg:flex-row">
               <div className="h-[320px] lg:h-full lg:w-1/2 xl:w-3/5 relative bg-gray-100 dark:bg-gray-800 flex-shrink-0">
+                <MapContainer
+                  center={mapCenter}
+                  zoom={13}
+                  style={{ height: "100%", width: "100%", zIndex: 10 }}
+                  zoomControl={false}
+                >
+                  <TileLayer
+                    url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  <MapUpdater center={mapCenter} bounds={mapBounds} />
+                  {userLocation ? (
+                    <CircleMarker
+                      center={[userLocation.lat, userLocation.lng]}
+                      radius={8}
+                      pathOptions={{
+                        color: "#38bdf8",
+                        fillColor: "#38bdf8",
+                        fillOpacity: 0.9,
+                      }}
+                    >
+                      <Popup>Vị trí của bạn</Popup>
+                    </CircleMarker>
+                  ) : null}
+                  {restaurants.map((restaurant) => (
+                    <Marker
+                      key={`${restaurant.name}-${restaurant.lat}-${restaurant.lng}`}
+                      position={[restaurant.lat, restaurant.lng]}
+                      icon={
+                        selectedRestaurantId === restaurant.name
+                          ? selectedIcon
+                          : defaultIcon
+                      }
+                      eventHandlers={{
+                        click: () => handleRestaurantClick(restaurant),
+                      }}
+                    >
+                      <Popup>
+                        <div className="font-semibold text-gray-900">
+                          {restaurant.name}
+                        </div>
+                        <div className="text-sm text-gray-700">
+                          {restaurant.address}
+                        </div>
+                      </Popup>
+                    </Marker>
+                  ))}
+                </MapContainer>
                 {loading ? (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100/80 dark:bg-gray-800/80">
                     <Loader2 className="w-8 h-8 text-gray-500 animate-spin" />
                   </div>
-                ) : (
-                  <MapContainer
-                    center={mapCenter}
-                    zoom={13}
-                    style={{ height: "100%", width: "100%", zIndex: 10 }}
-                    zoomControl={false}
-                  >
-                    <TileLayer
-                      url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <MapUpdater center={mapCenter} />
-                    {restaurants.map((restaurant) => (
-                      <Marker
-                        key={`${restaurant.name}-${restaurant.lat}-${restaurant.lng}`}
-                        position={[restaurant.lat, restaurant.lng]}
-                        icon={
-                          selectedRestaurantId === restaurant.name
-                            ? selectedIcon
-                            : defaultIcon
-                        }
-                        eventHandlers={{
-                          click: () => handleRestaurantClick(restaurant),
-                        }}
-                      >
-                        <Popup>
-                          <div className="font-semibold text-gray-900">
-                            {restaurant.name}
-                          </div>
-                          <div className="text-sm text-gray-700">
-                            {restaurant.address}
-                          </div>
-                        </Popup>
-                      </Marker>
-                    ))}
-                  </MapContainer>
-                )}
+                ) : null}
               </div>
 
               <div className="flex-1 overflow-y-auto border-t lg:border-t-0 lg:border-l border-gray-300 dark:border-gray-800">
