@@ -8,6 +8,7 @@ import {
   HelpCircle,
   LogOut,
   LayoutDashboard,
+  PlusSquare,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
@@ -30,6 +31,7 @@ const ProfileCard = () => {
   const navItems = [
     { icon: User, label: "Quản lý Hồ sơ", path: "/profile" },
     { icon: BookmarkIcon, label: "Món ăn đã lưu", path: "/saved-menus" },
+    { icon: PlusSquare, label: "Gửi công thức", path: "/ugc/submit" },
     { icon: Calendar, label: "Thực đơn đã lưu", path: "/saved-daily-menus" },
     { icon: PieChart, label: "Báo cáo Dinh dưỡng", path: "/nutrition-report" },
     { icon: Settings, label: "Cài đặt Tài khoản", path: "/settings" },

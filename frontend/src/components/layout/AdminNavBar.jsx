@@ -40,6 +40,18 @@ const navItems = [
     ),
   },
   {
+    path: "/admin/ugc",
+    label: "Kiểm duyệt nội dung",
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M15 10l4.553-2.276A2 2 0 0122 9.618v6.764a2 2 0 01-2.447 1.894L15 16M9 14l-4.553 2.276A2 2 0 012 15.382V8.618A2 2 0 014.447 6.724L9 9"
+      />
+    ),
+  },
+  {
     path: "/admin/news",
     label: "Quản lý Tin tức",
     icon: (

@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./context/AuthProvider";
 import { MealSelectionProvider } from "./context/MealSelectionContext";
+import { GroupProvider } from "./context/GroupContext";
 import NavBar from "./components/layout/NavBar";
 import Sidebar from "./components/layout/Sidebar";
 import AppRouter from "./AppRouter";
@@ -85,15 +86,16 @@ function App() {
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <AuthProvider>
           {/* 🧠 Đặt Provider này ngoài cùng để modal bao trùm toàn app */}
-          <MealSelectionProvider>
-            <Suspense
-              fallback={<div className="text-center mt-10">Đang tải...</div>}
-            >
-              <LoadingProvider>
-                <LogoutModalProvider>
-                  <AppContent />
-                </LogoutModalProvider>
-              </LoadingProvider>
+          <GroupProvider>
+            <MealSelectionProvider>
+              <Suspense
+                fallback={<div className="text-center mt-10">Đang tải...</div>}
+              >
+                <LoadingProvider>
+                  <LogoutModalProvider>
+                    <AppContent />
+                  </LogoutModalProvider>
+                </LoadingProvider>
 
               <ToastContainer
                 position="top-right"
@@ -108,7 +110,8 @@ function App() {
               />
               <Toaster position="top-right" />
             </Suspense>
-          </MealSelectionProvider>
+            </MealSelectionProvider>
+          </GroupProvider>
         </AuthProvider>
       </GoogleOAuthProvider>
     </BrowserRouter>
