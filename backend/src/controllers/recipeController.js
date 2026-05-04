@@ -424,3 +424,100 @@ export async function swapSingleMeal(req, res) {
     res.status(500).json({ message: "Lỗi khi đổi món" });
   }
 }
+
+/**
+ * POST /api/recipes/shopping-list
+ * Nhận vào danh sách recipeId (từ kết quả suggest-weekly),
+ * so sánh với Pantry của user → Xuất danh sách nguyên liệu cần mua.
+ *
+ * Body: { recipeIds: ["id1", "id2", ...] }
+ * Auth: JWT (tùy chọn – có token thì tự trừ đồ đang có trong Pantry)
+ */
+export async function generateShoppingList(req, res) {
+  try {
+    const { recipeIds } = req.body;
+
+    if (!Array.isArray(recipeIds) || recipeIds.length === 0) {
+      return res.status(400).json({ error: "Cần truyền recipeIds là mảng không rỗng" });
+    }
+
+    // 1. Lấy tất cả công thức được yêu cầu
+    const recipes = await Recipe.find({ _id: { $in: recipeIds } }).lean();
+
+    // 2. Gom tất cả nguyên liệu (tổng hợp theo tên)
+    const needed = new Map();
+    for (const recipe of recipes) {
+      for (const ing of recipe.ingredients || []) {
+        const name = String(ing?.name ?? ing).toLowerCase().trim();
+        const qty  = Number(ing?.quantity) || 0;
+        const unit = String(ing?.unit ?? "").trim();
+
+        if (!needed.has(name)) {
+          needed.set(name, { name: ing?.name ?? ing, totalQty: 0, unit, usedIn: [] });
+        }
+        const entry = needed.get(name);
+        entry.totalQty += qty;
+        entry.usedIn.push(recipe.name_vi || recipe.name || String(recipe._id));
+      }
+    }
+
+    // 3. Lấy Pantry của user (nếu có token hợp lệ)
+    const pantryMap = new Map();
+    if (req.headers.authorization?.startsWith("Bearer ")) {
+      try {
+        const token = req.headers.authorization.split(" ")[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const pantryItems = await Pantry.find({ user: decoded.id }).lean();
+        for (const p of pantryItems) {
+          pantryMap.set(String(p.name).toLowerCase().trim(), {
+            quantity: p.quantity,
+            unit: p.unit,
+          });
+        }
+      } catch { /* Token lỗi → không trừ pantry */ }
+    }
+
+    // 4. So sánh cần vs có → tính phần còn thiếu
+    const shoppingList = [];
+    const alreadyHave  = [];
+
+    for (const [key, item] of needed.entries()) {
+      const inPantry = pantryMap.get(key);
+
+      if (!inPantry) {
+        shoppingList.push({
+          name: item.name,
+          need: item.totalQty || null,
+          unit: item.unit || null,
+          usedIn: item.usedIn,
+          status: "missing",
+        });
+      } else if (inPantry.quantity < item.totalQty) {
+        shoppingList.push({
+          name: item.name,
+          need: +(item.totalQty - inPantry.quantity).toFixed(2),
+          unit: item.unit || inPantry.unit,
+          have: inPantry.quantity,
+          usedIn: item.usedIn,
+          status: "insufficient",
+        });
+      } else {
+        alreadyHave.push({ name: item.name, have: inPantry.quantity, unit: inPantry.unit });
+      }
+    }
+
+    return res.json({
+      success: true,
+      summary: {
+        total_ingredients: needed.size,
+        need_to_buy: shoppingList.length,
+        already_have: alreadyHave.length,
+      },
+      shopping_list: shoppingList,
+      already_have: alreadyHave,
+    });
+  } catch (e) {
+    console.error("[generateShoppingList]", e);
+    return res.status(500).json({ error: "Internal error" });
+  }
+}

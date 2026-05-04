@@ -296,3 +296,305 @@ Nếu câu hỏi quá chung chung và trùng lặp từ khóa (Ví dụ: "Ức g
 | `backend/src/services/ragRetrievalService.js` | RAG pipeline (embed, retrieve, generate) |
 | `backend/data/rag/papers/` | Thư mục chứa knowledge base (CSV, MD) |
 | `backend/.env` | Cấu hình API keys và RAG params |
+
+---
+
+# API Tracking & Pantry Deduction (Phase 2)
+
+Khi user bấm **"Đã Nấu"** trên giao diện, hệ thống sẽ tự động thực hiện **2 việc đồng thời**:
+1. **Trừ nguyên liệu** khỏi Tủ lạnh (Pantry) theo công thức đã nấu.
+2. **Cộng dinh dưỡng** (calo, protein...) vào bảng theo dõi hôm nay (DailyTracking).
+
+> **Base URL:** `http://localhost:5000/api/tracking`
+> **Auth:** Tất cả endpoint đều yêu cầu JWT token.
+
+---
+
+## 1. POST `/api/tracking/mark-as-cooked`
+Đánh dấu đã nấu 1 món. Tự động trừ tủ lạnh và cộng calo.
+
+### Headers
+- `Authorization`: `Bearer <token>`
+
+### Body (JSON)
+```json
+{
+  "recipeId": "69c64444c1d478708447dac6"
+}
+```
+*Lấy `recipeId` từ kết quả trả về của `/api/recipes/suggest` hoặc `/api/recipes/suggest-weekly`.*
+
+### Response — Thành công
+```json
+{
+  "success": true,
+  "message": "Đã ghi nhận bạn vừa nấu \"Thịt bò kho tiêu xanh với bí ngòi\"",
+  "data": {
+    "pantry_deducted": [
+      {
+        "name": "Thịt bò",
+        "action": "updated",
+        "before": 500,
+        "after": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Bơ lạt",
+        "action": "removed",
+        "reason": "Đã dùng hết"
+      }
+    ],
+    "today_totals": {
+      "calories": 526,
+      "protein_g": 28,
+      "carbs_g": 4,
+      "fat_g": 43,
+      "fiber_g": 3,
+      "sodium_mg": 401,
+      "sugar_g": 3
+    },
+    "progress": {
+      "calorie_target": 2000,
+      "calories_consumed": 526,
+      "calories_remaining": 1474,
+      "calories_pct": 26,
+      "status": "under"
+    }
+  }
+}
+```
+
+*Ghi chú:*
+- `pantry_deducted`: Danh sách nguyên liệu bị trừ. FE có thể dùng để hiển thị thông báo "Đã dùng hết X".
+- `today_totals`: Tổng dinh dưỡng tích lũy **cả ngày hôm nay**.
+- `progress.calorie_target`: Mục tiêu calo ngày, tự tính theo `goal` trong Profile user.
+  - `lose` → 1700 calo, `maintain` → 2000 calo, `gain` → 2500 calo
+- `progress.status`: `"under"` (< 60%), `"on_track"` (60–109%), `"over"` (≥ 110%)
+- Nếu nguyên liệu trong tủ lạnh không đủ unit khớp → tự động bỏ qua (không báo lỗi).
+
+---
+
+## 2. GET `/api/tracking/today`
+Lấy tổng dinh dưỡng và danh sách các món đã nấu hôm nay.
+
+### Headers
+- `Authorization`: `Bearer <token>`
+
+### Response
+```json
+{
+  "success": true,
+  "data": {
+    "date": "2026-04-27T00:00:00.000Z",
+    "meals_eaten": [
+      {
+        "recipeId": "69c64444c1d478708447dac6",
+        "name_vi": "Thịt bò kho tiêu xanh với bí ngòi",
+        "eaten_at": "2026-04-27T09:30:00.000Z",
+        "nutrition": { "calories": 526, "protein_g": 28, ... }
+      }
+    ],
+    "daily_totals": {
+      "calories": 526,
+      "protein_g": 28,
+      "carbs_g": 4,
+      "fat_g": 43,
+      "fiber_g": 3,
+      "sodium_mg": 401,
+      "sugar_g": 3
+    },
+    "progress": {
+      "calorie_target": 2000,
+      "calories_consumed": 526,
+      "calories_remaining": 1474,
+      "calories_pct": 26,
+      "status": "under"
+    }
+  }
+}
+```
+
+---
+
+## 3. GET `/api/tracking/history?days=7`
+Lấy lịch sử tracking theo số ngày gần nhất (tối đa 30 ngày).
+
+### Headers
+- `Authorization`: `Bearer <token>`
+
+### Query Params
+- `days`: Số ngày muốn xem (mặc định 7, tối đa 30).
+
+### Response
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "date": "2026-04-27T00:00:00.000Z",
+      "daily_totals": { "calories": 1200, "protein_g": 80 },
+      "meals_eaten": [...],
+      "progress": {
+        "calorie_target": 2000,
+        "calories_consumed": 1200,
+        "calories_remaining": 800,
+        "calories_pct": 60,
+        "status": "on_track"
+      }
+    },
+    {
+      "date": "2026-04-26T00:00:00.000Z",
+      "daily_totals": { "calories": 2300, "protein_g": 95 },
+      "meals_eaten": [...],
+      "progress": {
+        "calorie_target": 2000,
+        "calories_consumed": 2300,
+        "calories_remaining": 0,
+        "calories_pct": 115,
+        "status": "over"
+      }
+    }
+  ]
+}
+```
+
+---
+
+## Luồng FE tích hợp Phase 2
+
+```
+1. FE hiển thị thực đơn từ /api/recipes/suggest-weekly
+2. Mỗi món có nút "🍳 Đã Nấu"
+3. User bấm "Đã Nấu" → FE gọi POST /api/tracking/mark-as-cooked { recipeId }
+4. Nhận về today_totals → FE cập nhật thanh calo trên màn hình Tracking
+5. Nhận về pantry_deducted → FE hiển thị toast "Đã trừ 200g Thịt bò khỏi Tủ lạnh"
+```
+
+## Files liên quan (BE)
+
+| File | Vai trò |
+|------|---------|
+| `backend/src/models/DailyTracking.js` | Schema lưu tracking theo ngày |
+| `backend/src/controllers/trackingController.js` | Logic mark-as-cooked, today, history |
+| `backend/src/routes/tracking.js` | Định nghĩa 3 routes |
+
+---
+
+# API Shopping List (Phase 2 - Bổ sung)
+
+Sau khi user có thực đơn tuần, hệ thống tự động tính toán nguyên liệu nào còn thiếu trong tủ lạnh và xuất danh sách cần đi mua.
+
+> **Endpoint:** `POST /api/recipes/shopping-list`
+> **Auth:** JWT token (tùy chọn — có token thì tự trừ đồ đang có trong Pantry)
+
+## Body (JSON)
+```json
+{
+  "recipeIds": [
+    "69c64444c1d478708447dac6",
+    "69c64444c1d478708447dac7",
+    "69c64444c1d478708447dac8"
+  ]
+}
+```
+*Lấy `recipeIds` từ kết quả của `/api/recipes/suggest-weekly` (gom tất cả `_id` của các món trong tuần).*
+
+## Response — Thành công
+```json
+{
+  "success": true,
+  "summary": {
+    "total_ingredients": 15,
+    "need_to_buy": 8,
+    "already_have": 7
+  },
+  "shopping_list": [
+    {
+      "name": "Thịt bò",
+      "need": 300,
+      "unit": "g",
+      "usedIn": ["Thịt bò kho tiêu xanh", "Bò xào rau củ"],
+      "status": "insufficient"
+    },
+    {
+      "name": "Trứng gà",
+      "need": 6,
+      "unit": "pcs",
+      "usedIn": ["Trứng chiên cà chua"],
+      "status": "missing"
+    }
+  ],
+  "already_have": [
+    { "name": "Dầu ăn", "have": 500, "unit": "ml" },
+    { "name": "Hành tím", "have": 200, "unit": "g" }
+  ]
+}
+```
+
+*Ghi chú:*
+- `status: "missing"` → Không có trong tủ lạnh, cần mua toàn bộ.
+- `status: "insufficient"` → Có nhưng không đủ, cần mua thêm phần `need`.
+- Nếu không có token → trả về full list (coi như chưa có gì trong tủ lạnh).
+
+## FE cần làm gì?
+1. Sau khi user xem thực đơn tuần → Thêm nút **"🛒 Tạo danh sách mua"**
+2. Bấm nút → gom tất cả `recipeId` từ thực đơn → gọi `POST /api/recipes/shopping-list`
+3. Hiển thị danh sách `shopping_list` ra màn hình (checkbox để user tích "đã mua")
+
+---
+
+# API Recipe Planning - Bộ lọc Dinh dưỡng Nâng cao (Phase 1)
+
+Cả `/api/recipes/suggest` và `/api/recipes/suggest-weekly` đều hỗ trợ lọc dinh dưỡng chính xác.
+
+## Tham số bổ sung trong Body
+```json
+{
+  "goal": "weight_loss",
+  "min_calories": 300,
+  "max_calories": 500,
+  "min_protein_g": 20,
+  "max_protein_g": 40,
+  "use_pantry": true
+}
+```
+
+| Tham số | Kiểu | Ý nghĩa |
+|---|---|---|
+| `min_calories` | Number | Calo tối thiểu mỗi món |
+| `max_calories` | Number | Calo tối đa mỗi món |
+| `min_protein_g` | Number | Protein tối thiểu (g) mỗi món |
+| `max_protein_g` | Number | Protein tối đa (g) mỗi món |
+| `use_pantry` | Boolean | `true` = gợi ý theo tủ lạnh (mặc định), `false` = bỏ qua tủ lạnh |
+
+*Tất cả tham số đều tùy chọn — không truyền thì không áp dụng lọc.*
+
+## Logic Pantry thông minh (Expiry-first)
+Khi `use_pantry: true`, engine tự động **ưu tiên nguyên liệu sắp hết hạn**:
+
+| Điểm ưu tiên | Điều kiện |
+|---|---|
+| +15 | Hết hạn trong **≤ 3 ngày** (⚠️ Nguy cấp) |
+| +10 | Hết hạn trong **≤ 7 ngày** (⏳ Sắp hết) |
+| +5 | Còn tươi, nhưng vẫn ưu tiên hơn không có |
+
+→ FE không cần làm gì thêm — kết quả suggest tự nhiên thông minh hơn.
+
+---
+
+# Tổng hợp tất cả API đã có
+
+| API | Method | Mô tả |
+|---|---|---|
+| `/api/ai/chat` | POST | Chat với AI RAG Bot |
+| `/api/ai/pantry-suggest` | POST | AI gợi ý món từ tủ lạnh |
+| `/api/ai/nutrition-info` | POST | AI tra cứu dinh dưỡng |
+| `/api/recipes/suggest` | POST | Gợi ý thực đơn 1 ngày |
+| `/api/recipes/suggest-weekly` | POST | Gợi ý thực đơn 1 tuần |
+| `/api/recipes/shopping-list` | POST | Tạo danh sách mua sắm từ thực đơn |
+| `/api/recipes/swap-single-meal` | POST | Đổi 1 món trong thực đơn |
+| `/api/tracking/mark-as-cooked` | POST | Bấm "Đã Nấu" → trừ tủ lạnh + cộng calo |
+| `/api/tracking/today` | GET | Xem tổng calo hôm nay |
+| `/api/tracking/history` | GET | Xem lịch sử tracking 7-30 ngày |
+| `/api/pantry` | GET/POST/PUT/DELETE | Quản lý tủ lạnh |
+
