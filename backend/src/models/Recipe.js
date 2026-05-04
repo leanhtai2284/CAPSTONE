@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { syncDbToRag } from "../services/ragSyncService.js";
 
-
 const nutritionSchema = new mongoose.Schema(
   {
     calories: { type: Number, required: true },
@@ -12,7 +11,7 @@ const nutritionSchema = new mongoose.Schema(
     sodium_mg: Number,
     sugar_g: Number,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const priceSchema = new mongoose.Schema(
@@ -21,7 +20,7 @@ const priceSchema = new mongoose.Schema(
     max: Number,
     currency: { type: String, default: "VND" },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const ingredientSchema = new mongoose.Schema(
@@ -31,7 +30,7 @@ const ingredientSchema = new mongoose.Schema(
     unit: { type: String, required: true },
     scalable: { type: Boolean, default: true }, //  thêm để scale
   },
-  { _id: false }
+  { _id: false },
 );
 
 const recipeSchema = new mongoose.Schema(
@@ -46,7 +45,7 @@ const recipeSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["main", "soup", "snack", "dessert"],
+      enum: ["main", "soup", "snack", "dessert", "salad", "drink"],
       index: true,
     },
     meal_types: [{ type: String, enum: ["breakfast", "lunch", "dinner"] }],
@@ -73,8 +72,21 @@ const recipeSchema = new mongoose.Schema(
 
     suitable_for: [{ type: String }],
     avoid_for: [{ type: String }],
+
+    is_ugc: { type: Boolean, default: false, index: true },
+    ugc_status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "approved",
+      index: true,
+    },
+    uploaded_by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    ugc_reject_reason: String,
+    ugc_reviewed_by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    ugc_reviewed_at: Date,
+    cooking_video_url: String,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 recipeSchema.index({ name_vi: "text", description: "text" });

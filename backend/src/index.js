@@ -23,6 +23,8 @@ import pantryRoutes from "./routes/pantry.js";
 import restaurantRoutes from "./routes/restaurant_routes.js";
 import aiRoutes from "./routes/ai.js";
 import trackingRoutes from "./routes/tracking.js";
+import groupRoutes from "./routes/group.js";
+import inviteRoutes from "./routes/invite.js";
 import { errorHandler, notFound } from "./middlewares/errorHandler.js";
 import { startPantryExpiryNotificationScheduler } from "./services/pantryExpiryNotificationService.js";
 
@@ -59,6 +61,8 @@ app.use("/api/pantry", pantryRoutes);
 app.use("/api", restaurantRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/tracking", trackingRoutes);
+app.use("/api/groups", groupRoutes);
+app.use("/api/invites", inviteRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

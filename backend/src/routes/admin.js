@@ -1,5 +1,9 @@
 import express from "express";
-import { protect, authorizeRoles, admin } from "../middlewares/authMiddleware.js";
+import {
+  protect,
+  authorizeRoles,
+  admin,
+} from "../middlewares/authMiddleware.js";
 import {
   getAllUsers,
   getUserById,
@@ -11,8 +15,11 @@ import {
   unbanUser,
 } from "../controllers/adminController.js";
 import {
-  updateActivityStatus,
-} from "../controllers/userActivityController.js";
+  getPendingUGC,
+  approveUGC,
+  rejectUGC,
+} from "../controllers/ugcController.js";
+import { updateActivityStatus } from "../controllers/userActivityController.js";
 import {
   getStatistics,
   getRecipeStatistics,
@@ -44,5 +51,10 @@ router.post("/users/update-activity", updateActivityStatus);
 router.get("/statistics", getStatistics);
 router.get("/statistics/recipes", getRecipeStatistics);
 router.get("/statistics/users", getUserStatistics);
+
+// UGC review routes
+router.get("/recipes/ugc", getPendingUGC);
+router.patch("/recipes/ugc/:id/approve", approveUGC);
+router.patch("/recipes/ugc/:id/reject", rejectUGC);
 
 export default router;
