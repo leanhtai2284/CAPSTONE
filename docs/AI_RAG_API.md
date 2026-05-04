@@ -791,4 +791,37 @@ Từ bây giờ tất cả 3 API tracking đều trả về `progress` đầy đ
 | `backend/src/routes/user.js` | Thêm 2 routes mới |
 | `backend/src/models/User.js` | Thêm field `fitnessProfile` |
 
+---
 
+# 🚀 Workflow Tích hợp Frontend Toàn diện (Dành cho FE & AI)
+
+Để đảm bảo hệ thống SmartMeal hoạt động mượt mà như một vòng lặp khép kín (Closed-loop System), Frontend cần gọi các API theo luồng sau đây. Đây cũng là tài liệu để AI hiểu cách hướng dẫn user.
+
+## Luồng 1: Onboarding & Profile (Thiết lập ban đầu)
+Khi user mới đăng nhập hoặc vào trang Profile:
+1. Gọi `GET /api/users/profile` để lấy `goal` (lose/maintain/gain) và `activityLevel`.
+2. Gọi `GET /api/users/tdee` để kiểm tra `is_estimated`.
+   - Nếu `is_estimated: true`: Hiển thị form yêu cầu nhập Chiều cao, Cân nặng, Tuổi, Giới tính.
+   - Khi user submit form: Gọi `PUT /api/users/fitness-profile`.
+   - Kết quả trả về sẽ có mục tiêu Calo và Macro chính xác.
+
+## Luồng 2: Dashboard Gợi ý món ăn
+Tại màn hình chính (Gợi ý hôm nay):
+1. Gọi `POST /api/recipes/suggest` để lấy danh sách món ăn đề xuất. Hệ thống đã tự động tính toán dựa trên TDEE và những nguyên liệu sắp hết hạn trong Tủ lạnh.
+2. Nếu user muốn đổi món, gọi `POST /api/recipes/swap-single-meal` kèm ID món cũ.
+3. User quyết định đi siêu thị: Gọi `POST /api/recipes/shopping-list` với danh sách `recipeIds` của các món muốn nấu. API sẽ tự động trừ đi số lượng đã có trong Tủ lạnh và trả về list cần mua.
+
+## Luồng 3: Nấu ăn & Tracking (Khép kín vòng lặp)
+Khi user quyết định nấu một món:
+1. User bấm nút **"Đã Nấu"** (Cooked) trên một công thức.
+2. FE gọi `POST /api/tracking/mark-as-cooked` với `{ "recipeId": "..." }`.
+3. **Phép thuật xảy ra:**
+   - Nguyên liệu tự động biến mất khỏi Tủ lạnh (`pantry_deducted`). FE có thể hiển thị Toast: *"Đã trừ 200g Thịt bò khỏi tủ lạnh"*.
+   - Calo tự động cộng vào `calories_consumed` của ngày hôm nay.
+   - API trả về `progress` mới nhất.
+4. FE update thanh Progress Bar (Tiến độ dinh dưỡng) theo `progress.calories_pct` và hiển thị cảnh báo nếu `status` là `"over"`.
+
+## Luồng 4: Xem lịch sử
+Tại tab Lịch sử / Báo cáo:
+1. Gọi `GET /api/tracking/history?days=7`.
+2. Dùng dữ liệu `daily_totals` và `progress.macro_targets` để vẽ biểu đồ thống kê theo tuần, cho user thấy họ đang đi đúng hướng hay lệch khỏi mục tiêu TDEE.
