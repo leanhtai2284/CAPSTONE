@@ -2,18 +2,28 @@ import Recipe from "../models/Recipe.js";
 import Pantry from "../models/Pantry.js";
 import DailyTracking from "../models/DailyTracking.js";
 import User from "../models/User.js";
+import { calcTDEE, getFallbackCalorieTarget } from "../utils/tdee.js";
 
 // ─────────────────────────────────────────────────────────
-// Helper: Tính mục tiêu calo ngày dựa trên goal của user
-// goal: "lose" → 1700, "gain" → 2500, mặc định → 2000
+// Helper: Lấy mục tiêu calo từ TDEE (ưu tiên) hoặc fallback
 // ─────────────────────────────────────────────────────────
-function getDailyCalorieTarget(userGoal) {
-  switch (userGoal) {
-    case "lose":     return 1700;
-    case "gain":     return 2500;
-    case "maintain":
-    default:         return 2000;
-  }
+async function getCalorieTarget(userId) {
+  const user = await User.findById(userId)
+    .select("fitnessProfile preferences.goal preferences.activityLevel")
+    .lean();
+
+  const tdee = calcTDEE(
+    user?.fitnessProfile,
+    user?.preferences?.activityLevel,
+    user?.preferences?.goal
+  );
+
+  if (tdee) return { target: tdee.daily_calorie_target, is_estimated: false, tdee };
+  return {
+    target: getFallbackCalorieTarget(user?.preferences?.goal),
+    is_estimated: true,
+    tdee: null,
+  };
 }
 
 // ─────────────────────────────────────────────────────────
@@ -128,9 +138,8 @@ export async function markAsCooked(req, res) {
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
 
-    // 5. Tính progress
-    const user = await User.findById(userId).select("preferences.goal").lean();
-    const calorieTarget = getDailyCalorieTarget(user?.preferences?.goal);
+    // 5. Tính progress dùng TDEE thực tế
+    const { target: calorieTarget, is_estimated, tdee } = await getCalorieTarget(userId);
     const progress = calcProgress(tracking.daily_totals, calorieTarget);
 
     return res.json({
@@ -139,7 +148,11 @@ export async function markAsCooked(req, res) {
       data: {
         pantry_deducted: pantryLog,
         today_totals: tracking.daily_totals,
-        progress,
+        progress: {
+          ...progress,
+          is_estimated,
+          macro_targets: tdee?.macro_targets ?? null,
+        },
       },
     });
   } catch (err) {
@@ -158,11 +171,12 @@ export async function getTodayTracking(req, res) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Lấy goal của user để tính mục tiêu calo
-    const user = await User.findById(userId).select("preferences.goal").lean();
-    const calorieTarget = getDailyCalorieTarget(user?.preferences?.goal);
+    // Lấy mục tiêu calo từ TDEE (hoặc fallback)
+    const { target: calorieTarget, is_estimated, tdee } = await getCalorieTarget(userId);
 
     const tracking = await DailyTracking.findOne({ user: userId, date: today }).lean();
+
+    const progressMeta = { is_estimated, macro_targets: tdee?.macro_targets ?? null };
 
     if (!tracking) {
       const emptyTotals = {
@@ -175,7 +189,7 @@ export async function getTodayTracking(req, res) {
         data: {
           meals_eaten: [],
           daily_totals: emptyTotals,
-          progress: calcProgress(emptyTotals, calorieTarget),
+          progress: { ...calcProgress(emptyTotals, calorieTarget), ...progressMeta },
         },
       });
     }
@@ -184,7 +198,7 @@ export async function getTodayTracking(req, res) {
       success: true,
       data: {
         ...tracking,
-        progress: calcProgress(tracking.daily_totals, calorieTarget),
+        progress: { ...calcProgress(tracking.daily_totals, calorieTarget), ...progressMeta },
       },
     });
   } catch (err) {
@@ -206,9 +220,8 @@ export async function getTrackingHistory(req, res) {
     fromDate.setDate(fromDate.getDate() - days);
     fromDate.setHours(0, 0, 0, 0);
 
-    // Lấy goal để hiển thị mục tiêu calo trong history
-    const user = await User.findById(userId).select("preferences.goal").lean();
-    const calorieTarget = getDailyCalorieTarget(user?.preferences?.goal);
+    // Lấy TDEE để hiển thị mục tiêu calo trong history
+    const { target: calorieTarget, is_estimated, tdee } = await getCalorieTarget(userId);
 
     const history = await DailyTracking.find({
       user: userId,
@@ -220,7 +233,11 @@ export async function getTrackingHistory(req, res) {
     // Gắn progress vào từng ngày
     const historyWithProgress = history.map((day) => ({
       ...day,
-      progress: calcProgress(day.daily_totals, calorieTarget),
+      progress: {
+        ...calcProgress(day.daily_totals, calorieTarget),
+        is_estimated,
+        macro_targets: tdee?.macro_targets ?? null,
+      },
     }));
 
     return res.json({ success: true, data: historyWithProgress });
