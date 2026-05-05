@@ -13,6 +13,10 @@ import { protect } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
+const isGoogleOAuthConfigured =
+  Boolean(process.env.GOOGLE_CLIENT_ID) &&
+  Boolean(process.env.GOOGLE_CLIENT_SECRET);
+
 // POST /api/auth/login
 router.post("/login", login);
 
@@ -27,6 +31,14 @@ router.use((req, res, next) => {
 
 // Google OAuth Routes
 router.get("/google", (req, res, next) => {
+  if (!isGoogleOAuthConfigured) {
+    return res.status(503).json({
+      success: false,
+      message:
+        "Google OAuth is not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.",
+    });
+  }
+
   console.log("Starting Google OAuth...");
   passport.authenticate("google", {
     scope: ["profile", "email"],
@@ -36,6 +48,16 @@ router.get("/google", (req, res, next) => {
 
 router.get(
   "/google/callback",
+  (req, res, next) => {
+    if (!isGoogleOAuthConfigured) {
+      return res.status(503).json({
+        success: false,
+        message:
+          "Google OAuth is not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.",
+      });
+    }
+    return next();
+  },
   passport.authenticate("google", { session: false }),
   (req, res) => {
     const token = generateToken(req.user._id, req.user.role);
@@ -51,8 +73,8 @@ router.get(
   }
 );
 
-// POST /api/auth/logout
-router.post("/logout", logout);
+// POST /api/auth/logout (Protected route)
+router.post("/logout", protect, logout);
 
 // POST /api/auth/forgot-password
 router.post("/forgot-password", forgotPassword);

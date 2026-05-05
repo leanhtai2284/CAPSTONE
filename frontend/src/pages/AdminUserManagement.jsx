@@ -34,6 +34,20 @@ const AdminUserManagement = () => {
     loadStats();
   }, [user, navigate, pagination.page, filters]);
 
+  // Auto-update activity status every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        await userService.updateActivityStatus();
+        loadUsers(); // Refresh user list to show updated status
+      } catch (error) {
+        console.error("Failed to update activity status:", error);
+      }
+    }, 10 * 1000); // Every 10 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   const loadUsers = async () => {
     try {
       setLoading(true);
@@ -93,6 +107,43 @@ const AdminUserManagement = () => {
     }
   };
 
+  const handleBanUser = async (userId) => {
+    const reason = prompt("Nhập lý do cấm tài khoản:");
+    if (!reason) return;
+
+    const bannedUntil = prompt("Nhập ngày hết hạn cấm (để trống nếu cấm vĩnh viễn, định dạng: YYYY-MM-DD):");
+    const bannedUntilDate = bannedUntil ? new Date(bannedUntil) : null;
+
+    if (bannedUntil && isNaN(bannedUntilDate.getTime())) {
+      toast.error("Định dạng ngày không hợp lệ!");
+      return;
+    }
+
+    try {
+      await userService.banUser(userId, reason, bannedUntilDate?.toISOString());
+      toast.success("Cấm người dùng thành công!");
+      loadUsers();
+      loadStats();
+    } catch (error) {
+      toast.error(error.message || "Không thể cấm người dùng");
+    }
+  };
+
+  const handleUnbanUser = async (userId) => {
+    if (!window.confirm("Bạn có chắc chắn muốn mở khóa tài khoản này?")) {
+      return;
+    }
+
+    try {
+      await userService.unbanUser(userId);
+      toast.success("Mở khóa người dùng thành công!");
+      loadUsers();
+      loadStats();
+    } catch (error) {
+      toast.error(error.message || "Không thể mở khóa người dùng");
+    }
+  };
+
   const handleFilterChange = (field, value) => {
     setFilters((prev) => ({
       ...prev,
@@ -133,7 +184,7 @@ const AdminUserManagement = () => {
 
           {/* Statistics Cards */}
           {stats && (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
                 <div className="text-sm text-gray-600 dark:text-gray-400">
                   Tổng số
@@ -160,10 +211,18 @@ const AdminUserManagement = () => {
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                  Mới (30 ngày)
+                  Đang hoạt động
                 </div>
                 <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                  {stats.recentUsers}
+                  {stats.totalOnlineUsers}
+                </div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Đã cấm
+                </div>
+                <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+                  {stats.totalBannedUsers}
                 </div>
               </div>
             </div>
@@ -223,6 +282,8 @@ const AdminUserManagement = () => {
             users={users}
             onDelete={handleDelete}
             onUpdateRole={handleUpdateRole}
+            onBanUser={handleBanUser}
+            onUnbanUser={handleUnbanUser}
             currentUserId={user?._id}
             searchTerm={filters.search}
           />

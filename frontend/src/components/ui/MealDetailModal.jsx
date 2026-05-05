@@ -28,15 +28,43 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
   const debounceTimer = useRef(null);
   const hasAllergenWarning = meal?.allergens?.length > 0;
   const totalTime = (meal?.prep_time_min || 0) + (meal?.cook_time_min || 0);
-  // Fallback để hiển thị giá phù hợp cả mock và schema thật
-  // ✅ Tính giá trị trung bình thật (dạng số)
-  const numericPrice =
-    meal?.price_estimate?.min && meal?.price_estimate?.max
-      ? (meal.price_estimate.min + meal.price_estimate.max) / 2
-      : meal?.price_estimate?.min ||
-        meal?.price_estimate?.max ||
-        meal?.cost_estimate ||
-        0;
+  const effectiveMeal = mealData || meal;
+  const priceEstimate =
+    effectiveMeal?.price_estimate || meal?.price_estimate || {};
+  const priceMin = Number(priceEstimate.min);
+  const priceMax = Number(priceEstimate.max);
+  const basePrice =
+    Number.isFinite(priceMin) && priceMin > 0
+      ? priceMin
+      : Number.isFinite(priceMax) && priceMax > 0
+        ? priceMax
+        : Number(effectiveMeal?.cost_estimate || meal?.cost_estimate || 0);
+  const displayPrice = basePrice * servings;
+
+  const scaleNutrition = (nutrition, multiplier) => {
+    if (!nutrition) return nutrition;
+    const factor = Number(multiplier) || 1;
+    return {
+      ...nutrition,
+      calories: (Number(nutrition.calories) || 0) * factor,
+      protein_g: (Number(nutrition.protein_g) || 0) * factor,
+      carbs_g: (Number(nutrition.carbs_g) || 0) * factor,
+      fat_g: (Number(nutrition.fat_g) || 0) * factor,
+      fiber_g: (Number(nutrition.fiber_g) || 0) * factor,
+      sodium_mg: (Number(nutrition.sodium_mg) || 0) * factor,
+      sugar_g: (Number(nutrition.sugar_g) || 0) * factor,
+    };
+  };
+
+  const scaledNutrition = scaleNutrition(
+    effectiveMeal?.nutrition || meal?.nutrition,
+    servings,
+  );
+
+  useEffect(() => {
+    const nextServings = Number(userPreferences?.servings) || 1;
+    setServings(nextServings);
+  }, [userPreferences?.servings, meal?.id, meal?._id]);
 
   useEffect(() => {
     clearTimeout(debounceTimer.current);
@@ -59,7 +87,7 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
         const res = await fetch(
           `http://localhost:5000/api/recipes/${
             mealData.id || mealData._id
-          }?servings=${servings}`
+          }?servings=${servings}`,
         );
         const data = await res.json();
 
@@ -147,16 +175,17 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
             {/* Nút đóng */}
             <button
               onClick={onClose}
-              className="absolute top-3 right-3 p-2 bg-black/50 hover:bg-black/70 rounded-full transition"
+              className="absolute top-3 right-3 p-2 bg-black/50 hover:bg-black/70 rounded-full transition z-10"
               aria-label="Đóng"
             >
               <XIcon className="w-5 h-5 text-white" />
             </button>
 
-            {/* SaveButton */}
-            {/* <div className="absolute bottom-20 right-1">
-            <SaveButton meal={meal} />
-          </div> */}
+            {/* SaveButton - đặt fixed dưới nút đóng */}
+            <SaveButton
+              meal={mealData || meal}
+              className="absolute bottom-4 right-3 bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm transition-transform duration-200 hover:scale-110 z-10"
+            />
 
             {/* Tag dinh dưỡng */}
             <div className="absolute top-0 left-0 p-5 space-y-2">
@@ -200,7 +229,7 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-sm shadow-sm">
                   <FaMoneyBillWave className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
                   <span className="text-sm sm:text-base">
-                    {((meal.price_estimate.min * servings) / 1000).toFixed(0)}
+                    {((displayPrice || 0) / 1000).toFixed(0)}
                     .000&nbsp;VNĐ{" "}
                     <span className="text-gray-200 text-lg sm:text-sm font-bold">
                       / {servings} người
@@ -330,28 +359,13 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
                     </motion.div>
                   ))}
                 </div>
-
-                <button className="w-full flex items-center justify-center gap-2 bg-secondary hover:bg-primary text-white font-medium py-3 rounded-xl transition-all duration-300">
-                  <ShoppingCartIcon className="w-5 h-5" />
-                  Thêm vào danh sách mua sắm
-                </button>
               </div>
             </section>
 
             {/* Nutrition */}
             <section className="space-y-4">
               <h3 className="text-xl font-bold ">Dinh dưỡng</h3>
-              <NutritionChart nutrition={meal.nutrition} />
-              <div className="p-4 bg-white/30 dark:bg-white/10 rounded-xl border border-gray-200 ">
-                <p className=" text-sm">
-                  <span className="text-[#22C55E] font-medium">
-                    Đánh giá AI:
-                  </span>{" "}
-                  Món ăn này phù hợp với mục tiêu "
-                  {userPreferences?.goal || "Cân bằng"}" của bạn. Cung cấp đủ
-                  protein và cân bằng dinh dưỡng.
-                </p>
-              </div>
+              <NutritionChart nutrition={scaledNutrition} />
             </section>
 
             {/* Suitable / Avoid */}

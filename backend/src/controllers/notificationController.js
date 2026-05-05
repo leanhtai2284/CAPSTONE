@@ -1,6 +1,7 @@
 import Notification from "../models/Notification.js";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { runPantryExpiryNotificationJob } from "../services/pantryExpiryNotificationService.js";
 
 // Get notifications for current user (or admin)
 export const getMyNotifications = async (req, res) => {
@@ -173,6 +174,54 @@ export const deleteNotifications = async (req, res) => {
   }
 };
 
+export const runMyPantryExpiryNotifications = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Not authorized" });
+    }
+
+    const expiringDays = req.body?.days;
+    const result = await runPantryExpiryNotificationJob({
+      expiringDays,
+      userId,
+      trigger: "manual_user",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Đã chạy tạo thông báo hết hạn cho tài khoản hiện tại",
+      data: result,
+    });
+  } catch (error) {
+    console.error("runMyPantryExpiryNotifications error", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Không thể chạy thông báo Pantry" });
+  }
+};
+
+export const runAllPantryExpiryNotifications = async (req, res) => {
+  try {
+    const expiringDays = req.body?.days;
+    const result = await runPantryExpiryNotificationJob({
+      expiringDays,
+      trigger: "manual_admin",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Đã chạy tạo thông báo hết hạn cho toàn bộ người dùng",
+      data: result,
+    });
+  } catch (error) {
+    console.error("runAllPantryExpiryNotifications error", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Không thể chạy thông báo Pantry" });
+  }
+};
+
 // Helper để các controller khác có thể tạo thông báo một cách an toàn
 export const createNotification = async (payload) => {
   try {
@@ -220,4 +269,6 @@ export default {
   markAsRead,
   deleteNotifications,
   createNotification,
+  runMyPantryExpiryNotifications,
+  runAllPantryExpiryNotifications,
 };

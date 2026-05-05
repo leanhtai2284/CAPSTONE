@@ -77,8 +77,31 @@ var userSchema = new mongoose.Schema(
         default: [],
       },
     },
+    // ─── Thông tin thể chất để tính TDEE chính xác ───
+    fitnessProfile: {
+      height_cm: {
+        type: Number,
+        min: [50, "Chiều cao tối thiểu 50cm"],
+        max: [300, "Chiều cao tối đa 300cm"],
+      },
+      weight_kg: {
+        type: Number,
+        min: [1, "Cân nặng tối thiểu 1kg"],
+        max: [500, "Cân nặng tối đa 500kg"],
+      },
+      age: {
+        type: Number,
+        min: [1, "Tuổi tối thiểu 1"],
+        max: [120, "Tuổi tối đa 120"],
+      },
+      gender: {
+        type: String,
+        enum: ["male", "female"],
+      },
+    },
+    // ─────────────────────────────────────────────────
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Mã hóa mật khẩu trước khi lưu

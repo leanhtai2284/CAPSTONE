@@ -78,20 +78,26 @@ export const authService = {
 
   // Đăng xuất
   async logout() {
-    const response = await fetch(`${API_URL}/auth/logout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || "Có lỗi xảy ra khi đăng xuất");
+    let data = null;
+    try {
+      const response = await fetch(`${API_URL}/auth/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      data = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(data?.message || "Có lỗi xảy ra khi đăng xuất");
+      }
+      return data;
+    } finally {
+      // Always clear local auth state even if token is expired
+      this.setToken(null);
+      this.setUser(null);
     }
-    this.setToken(null);
-    this.setUser(null);
-    return data;
   },
 
   // Quên mật khẩu
@@ -106,7 +112,7 @@ export const authService = {
     const data = await response.json();
     if (!response.ok) {
       throw new Error(
-        data.message || "Có lỗi xảy ra khi yêu cầu đặt lại mật khẩu"
+        data.message || "Có lỗi xảy ra khi yêu cầu đặt lại mật khẩu",
       );
     }
     return data;
@@ -122,7 +128,7 @@ export const authService = {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ password: newPassword }),
-      }
+      },
     );
     const data = await response.json();
     if (!response.ok) {

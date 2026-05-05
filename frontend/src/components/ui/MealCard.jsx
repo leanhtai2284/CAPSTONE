@@ -9,12 +9,14 @@ import {
 } from "lucide-react";
 import { FaMoneyBillWave } from "react-icons/fa";
 import SaveButton from "./SaveButton";
+import LikeButton from "./LikeButton"
 
 export default function MealCard({
   meal,
   onClick,
   onToggleSave,
   onSwap,
+  onFindNearby,
   isSwapping = false,
 }) {
   if (!meal) return null;
@@ -27,6 +29,11 @@ export default function MealCard({
     if (!isSwapping && onSwap) {
       onSwap(meal._id || meal.id);
     }
+  };
+
+  const handleFindNearbyClick = (e) => {
+    e.stopPropagation();
+    onFindNearby?.(meal);
   };
 
   return (
@@ -60,7 +67,7 @@ export default function MealCard({
             </span>
           </div>
         )}
-
+        <LikeButton meal={meal} />
         <SaveButton meal={meal} onToggleSave={onToggleSave} />
       </div>
 
@@ -113,30 +120,44 @@ export default function MealCard({
             </span>
           )}
         </div>
+        <div>
+          {" "}
+          {onFindNearby && (
+            <button
+              onClick={handleFindNearbyClick}
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md bg-gray-200 text-black hover:bg-gray-300  active:scale-95 transition-all text-xs font-semibold"
+              title={`Tìm quán quanh đây cho: ${dishName}`}
+            >
+              <MapPinIcon size={16} />
+              <span className="whitespace-nowrap">Tìm món quanh đây</span>
+            </button>
+          )}
+        </div>
 
-        {/* Swap button - bottom right corner */}
-        {onSwap && (
-          <button
-            onClick={handleSwapClick}
-            disabled={isSwapping}
-            className={`absolute bottom-0 right-0 flex items-center justify-center gap-1 px-3 py-2 rounded-tl-xl font-semibold transition-all ${
-              isSwapping
-                ? "bg-gray-300 text-gray-600 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
-                : "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 " +
-                  "dark:from-blue-600 dark:to-cyan-600 dark:hover:from-blue-700 dark:hover:to-cyan-700 " +
-                  "hover:shadow-lg hover:shadow-blue-400/50 active:scale-95"
-            }`}
-            title={`Đổi: ${dishName}`}
-          >
-            <RefreshCw
-              size={16}
-              className={`${isSwapping ? "animate-spin" : ""}`}
-            />
-            <span className="text-xs whitespace-nowrap">
-              {isSwapping ? "..." : "Đổi"}
-            </span>
-          </button>
-        )}
+        <div className="absolute bottom-0 right-0 flex flex-col items-end">
+          {onSwap && (
+            <button
+              onClick={handleSwapClick}
+              disabled={isSwapping}
+              className={`flex items-center justify-center gap-1 px-3 py-2 rounded-tl-xl font-semibold transition-all ${
+                isSwapping
+                  ? "bg-gray-300 text-gray-600 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
+                  : "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 " +
+                    "dark:from-blue-600 dark:to-cyan-600 dark:hover:from-blue-700 dark:hover:to-cyan-700 " +
+                    "hover:shadow-lg hover:shadow-blue-400/50 active:scale-95"
+              }`}
+              title={`Đổi: ${dishName}`}
+            >
+              <RefreshCw
+                size={16}
+                className={`${isSwapping ? "animate-spin" : ""}`}
+              />
+              <span className="text-xs whitespace-nowrap">
+                {isSwapping ? "..." : "Đổi"}
+              </span>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

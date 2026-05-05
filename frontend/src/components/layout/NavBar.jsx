@@ -61,7 +61,7 @@ const NavBar = () => {
             to="/"
             className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
               isActive("/")
-                ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
+                ? "bg-primary text-white shadow-md"
                 : "hover:text-green-500"
             }`}
           >
@@ -71,7 +71,7 @@ const NavBar = () => {
             to="/foryou"
             className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
               isActive("/foryou")
-                ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
+                ? "bg-primary text-white shadow-md"
                 : "hover:text-green-500"
             }`}
           >
@@ -81,11 +81,31 @@ const NavBar = () => {
             to="/news"
             className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
               isActive("/news")
-                ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
+                ? "bg-primary text-white shadow-md"
                 : "hover:text-green-500"
             }`}
           >
             Tin tức
+          </Link>
+          <Link
+            to="/pantry"
+            className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
+              isActive("/pantry")
+                ? "bg-primary text-white shadow-md"
+                : "hover:text-green-500"
+            }`}
+          >
+            Nguyên liệu có sẵn
+          </Link>
+          <Link
+            to="/groups"
+            className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
+              isActive("/groups") || location.pathname.startsWith("/groups/")
+                ? "bg-primary text-white shadow-md"
+                : "hover:text-green-500"
+            }`}
+          >
+            Nhóm
           </Link>
           {/* Admin link - only show if user is admin */}
           {user?.role === "admin" && (
@@ -166,6 +186,17 @@ const NavBar = () => {
                 }`}
               >
                 Tin tức
+              </Link>
+              <Link
+                to="/groups"
+                onClick={() => setMenuOpen(false)}
+                className={`block py-2 px-3 rounded-lg text-lg font-semibold transition ${
+                  isActive("/groups") || location.pathname.startsWith("/groups/")
+                    ? "bg-blue-400 text-white dark:bg-blue-500 shadow-md"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+              >
+                Nhóm
               </Link>
               {/* Admin link in mobile menu */}
               {user?.role === "admin" && (

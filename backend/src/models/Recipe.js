@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { syncDbToRag } from "../services/ragSyncService.js";
 
 const nutritionSchema = new mongoose.Schema(
   {
@@ -10,7 +11,7 @@ const nutritionSchema = new mongoose.Schema(
     sodium_mg: Number,
     sugar_g: Number,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const priceSchema = new mongoose.Schema(
@@ -19,7 +20,7 @@ const priceSchema = new mongoose.Schema(
     max: Number,
     currency: { type: String, default: "VND" },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const ingredientSchema = new mongoose.Schema(
@@ -27,9 +28,9 @@ const ingredientSchema = new mongoose.Schema(
     name: { type: String, required: true },
     amount: { type: Number, required: true },
     unit: { type: String, required: true },
-    scalable: { type: Boolean, default: true }, // ✅ thêm để scale
+    scalable: { type: Boolean, default: true }, //  thêm để scale
   },
-  { _id: false }
+  { _id: false },
 );
 
 const recipeSchema = new mongoose.Schema(
@@ -44,7 +45,7 @@ const recipeSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["main", "soup", "snack", "dessert"],
+      enum: ["main", "soup", "snack", "dessert", "salad", "drink"],
       index: true,
     },
     meal_types: [{ type: String, enum: ["breakfast", "lunch", "dinner"] }],
@@ -71,10 +72,36 @@ const recipeSchema = new mongoose.Schema(
 
     suitable_for: [{ type: String }],
     avoid_for: [{ type: String }],
+
+    is_ugc: { type: Boolean, default: false, index: true },
+    ugc_status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "approved",
+      index: true,
+    },
+    uploaded_by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    ugc_reject_reason: String,
+    ugc_reviewed_by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    ugc_reviewed_at: Date,
+    cooking_video_url: String,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 recipeSchema.index({ name_vi: "text", description: "text" });
+
+// --- Auto-Sync Vector DB Hooks ---
+const triggerRagSync = () => {
+  // Chạy bất đồng bộ, không block luồng xử lý chính
+  syncDbToRag().catch((err) => console.error("[RAG Sync Hook] Lỗi:", err));
+};
+
+recipeSchema.post("save", triggerRagSync);
+recipeSchema.post("findOneAndUpdate", triggerRagSync);
+recipeSchema.post("findOneAndDelete", triggerRagSync);
+recipeSchema.post("findOneAndRemove", triggerRagSync);
+recipeSchema.post("deleteOne", triggerRagSync);
+recipeSchema.post("deleteMany", triggerRagSync);
 
 export default mongoose.model("Recipe", recipeSchema);

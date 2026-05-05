@@ -11,6 +11,7 @@ const MealPlanView = ({
   onDayChange,
   meals = [],
   onSwapMeal,
+  onFindNearby,
   isSwapping = false,
   onSaveDailyMenu,
   onResetPlan,
@@ -114,6 +115,7 @@ const MealPlanView = ({
                 <MealSetSection
                   mealSet={mealSet}
                   onSwapMeal={onSwapMeal}
+                  onFindNearby={onFindNearby}
                   isSwapping={isSwapping}
                 />
               </motion.div>
