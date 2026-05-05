@@ -20,7 +20,8 @@ function buildPantryScoreMap(pantryItems) {
     let score = 5; // Baseline: có trong tủ lạnh
     if (p.expiryDate) {
       const daysLeft = (new Date(p.expiryDate) - now) / (1000 * 60 * 60 * 24);
-      if (daysLeft <= 3) score = 15;      // ⚠️ Nguy cấp: hết hạn trong 3 ngày
+      if (daysLeft <= 3)
+        score = 15; // ⚠️ Nguy cấp: hết hạn trong 3 ngày
       else if (daysLeft <= 7) score = 10; // ⏳ Sắp hết: trong 7 ngày
     }
     if (!map.has(name) || map.get(name) < score) {
@@ -38,17 +39,66 @@ function sortByPantryScore(candidates, pantryScoreMap, likedSet = null) {
     let scoreA = 0;
     let scoreB = 0;
     (a.ingredients || []).forEach((i) => {
-      const name = String(i?.name ?? i).toLowerCase().trim();
+      const name = String(i?.name ?? i)
+        .toLowerCase()
+        .trim();
       if (likedSet && likedSet.has(name)) scoreA += 1;
       scoreA += pantryScoreMap.get(name) ?? 0;
     });
     (b.ingredients || []).forEach((i) => {
-      const name = String(i?.name ?? i).toLowerCase().trim();
+      const name = String(i?.name ?? i)
+        .toLowerCase()
+        .trim();
       if (likedSet && likedSet.has(name)) scoreB += 1;
       scoreB += pantryScoreMap.get(name) ?? 0;
     });
     return scoreB - scoreA;
   });
+}
+
+function stripNutritionFilters(filter) {
+  const next = { ...filter };
+  delete next["nutrition.calories"];
+  delete next["nutrition.protein_g"];
+  return next;
+}
+
+function stripBudgetFilter(filter) {
+  const next = { ...filter };
+  delete next["price_estimate.min"];
+  return next;
+}
+
+function buildMinimalFilter(filter) {
+  const next = {};
+  if (filter.allergens) next.allergens = filter.allergens;
+  if (filter.region) next.region = filter.region;
+  return next;
+}
+
+function applyAvoidIngredients(list, prefs) {
+  if (
+    !Array.isArray(prefs?.avoid_ingredients) ||
+    !prefs.avoid_ingredients.length
+  ) {
+    return list;
+  }
+  const avoid = new Set(
+    prefs.avoid_ingredients.map((s) => String(s).toLowerCase()),
+  );
+  return list.filter(
+    (r) =>
+      !(r.ingredients || []).some((i) =>
+        avoid.has(String(i?.name ?? i).toLowerCase()),
+      ),
+  );
+}
+
+function pickRandomFrom(list, maxSample = 8) {
+  if (!list.length) return null;
+  const upper = Math.min(list.length, maxSample);
+  const randomIndex = Math.floor(Math.random() * upper);
+  return list[randomIndex];
 }
 
 // ─────────────────────────────────────────────────────────
@@ -68,13 +118,19 @@ export async function suggestDailyMenu(prefs, pantryItems = []) {
     const budgetPerMeal = Math.ceil(budgetNum / 5);
     if (budgetNum < 175000) {
       baseFilter["price_estimate.min"] = { $gte: 10000, $lte: 30000 };
-      console.log(` Ngân sách THẤP: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 10k-30k VNĐ`);
+      console.log(
+        ` Ngân sách THẤP: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 10k-30k VNĐ`,
+      );
     } else if (budgetNum <= 350000) {
       baseFilter["price_estimate.min"] = { $gte: 30000, $lte: 40000 };
-      console.log(` Ngân sách TRUNG BÌNH: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 30k-40k VNĐ`);
+      console.log(
+        ` Ngân sách TRUNG BÌNH: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 30k-40k VNĐ`,
+      );
     } else {
       baseFilter["price_estimate.min"] = { $gte: 40000, $lte: 50000 };
-      console.log(` Ngân sách CAO: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 40k-50k VNĐ`);
+      console.log(
+        ` Ngân sách CAO: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 40k-50k VNĐ`,
+      );
     }
   }
 
@@ -86,40 +142,54 @@ export async function suggestDailyMenu(prefs, pantryItems = []) {
   const minPro = Number(prefs?.min_protein_g);
   const maxPro = Number(prefs?.max_protein_g);
   if (Number.isFinite(minCal) && minCal > 0) {
-    baseFilter["nutrition.calories"] = { ...baseFilter["nutrition.calories"], $gte: minCal };
+    baseFilter["nutrition.calories"] = {
+      ...baseFilter["nutrition.calories"],
+      $gte: minCal,
+    };
   }
   if (Number.isFinite(maxCal) && maxCal > 0) {
-    baseFilter["nutrition.calories"] = { ...baseFilter["nutrition.calories"], $lte: maxCal };
+    baseFilter["nutrition.calories"] = {
+      ...baseFilter["nutrition.calories"],
+      $lte: maxCal,
+    };
   }
   if (Number.isFinite(minPro) && minPro > 0) {
-    baseFilter["nutrition.protein_g"] = { ...baseFilter["nutrition.protein_g"], $gte: minPro };
+    baseFilter["nutrition.protein_g"] = {
+      ...baseFilter["nutrition.protein_g"],
+      $gte: minPro,
+    };
   }
   if (Number.isFinite(maxPro) && maxPro > 0) {
-    baseFilter["nutrition.protein_g"] = { ...baseFilter["nutrition.protein_g"], $lte: maxPro };
+    baseFilter["nutrition.protein_g"] = {
+      ...baseFilter["nutrition.protein_g"],
+      $lte: maxPro,
+    };
   }
   // ─────────────────────────────────────────────────────────────
 
   let candidates = await Recipe.find(baseFilter).lean();
 
   console.log(` Initial candidates: ${candidates.length}`);
-  console.log(` Breakfast dishes: ${candidates.filter((r) => (r.meal_types || []).includes("breakfast")).length}`);
-  console.log(` Lunch dishes: ${candidates.filter((r) => (r.meal_types || []).includes("lunch")).length}`);
-  console.log(` Dinner dishes: ${candidates.filter((r) => (r.meal_types || []).includes("dinner")).length}`);
+  console.log(
+    ` Breakfast dishes: ${candidates.filter((r) => (r.meal_types || []).includes("breakfast")).length}`,
+  );
+  console.log(
+    ` Lunch dishes: ${candidates.filter((r) => (r.meal_types || []).includes("lunch")).length}`,
+  );
+  console.log(
+    ` Dinner dishes: ${candidates.filter((r) => (r.meal_types || []).includes("dinner")).length}`,
+  );
 
   // Lọc nguyên liệu tránh né
-  if (Array.isArray(prefs?.avoid_ingredients) && prefs.avoid_ingredients.length) {
-    const avoid = new Set(prefs.avoid_ingredients.map((s) => String(s).toLowerCase()));
-    candidates = candidates.filter(
-      (r) => !(r.ingredients || []).some((i) => avoid.has(String(i?.name ?? i).toLowerCase()))
-    );
-  }
+  candidates = applyAvoidIngredients(candidates, prefs);
 
   // Sắp xếp theo pantry score (expiry-aware)
   if (pantryItems && pantryItems.length > 0) {
     const pantryScoreMap = buildPantryScoreMap(pantryItems);
-    const likedSet = Array.isArray(prefs?.liked_ingredients) && prefs.liked_ingredients.length
-      ? new Set(prefs.liked_ingredients.map((s) => String(s).toLowerCase()))
-      : null;
+    const likedSet =
+      Array.isArray(prefs?.liked_ingredients) && prefs.liked_ingredients.length
+        ? new Set(prefs.liked_ingredients.map((s) => String(s).toLowerCase()))
+        : null;
     candidates = sortByPantryScore(candidates, pantryScoreMap, likedSet);
   }
 
@@ -136,17 +206,56 @@ export async function suggestDailyMenu(prefs, pantryItems = []) {
   ];
   for (const s of steps) candidates = s(candidates, prefs);
 
-  const breakfastCount = candidates.filter((r) => (r.meal_types || []).includes("breakfast")).length;
-  const lunchCount = candidates.filter((r) => (r.meal_types || []).includes("lunch")).length;
-  const dinnerCount = candidates.filter((r) => (r.meal_types || []).includes("dinner")).length;
+  const breakfastCount = candidates.filter((r) =>
+    (r.meal_types || []).includes("breakfast"),
+  ).length;
+  const lunchCount = candidates.filter((r) =>
+    (r.meal_types || []).includes("lunch"),
+  ).length;
+  const dinnerCount = candidates.filter((r) =>
+    (r.meal_types || []).includes("dinner"),
+  ).length;
 
   console.log(`After filters: ${candidates.length} total`);
   console.log(`  Breakfast: ${breakfastCount} món`);
   console.log(`  Lunch: ${lunchCount} món`);
   console.log(`  Dinner: ${dinnerCount} món`);
 
+  let relaxedPools = null;
   if (breakfastCount < 1 || lunchCount < 2 || dinnerCount < 2) {
     console.warn(`Không đủ món! Cần nới lỏng điều kiện...`);
+
+    const pantryScoreMap =
+      pantryItems && pantryItems.length > 0
+        ? buildPantryScoreMap(pantryItems)
+        : null;
+    const likedSet =
+      Array.isArray(prefs?.liked_ingredients) && prefs.liked_ingredients.length
+        ? new Set(prefs.liked_ingredients.map((s) => String(s).toLowerCase()))
+        : null;
+
+    const fetchAndSort = async (filter) => {
+      let list = await Recipe.find(filter).lean();
+      list = applyAvoidIngredients(list, prefs);
+      if (pantryScoreMap) {
+        list = sortByPantryScore(list, pantryScoreMap, likedSet);
+      }
+      return list;
+    };
+
+    const noDietRules = await fetchAndSort(baseFilter);
+    const noNutrition = await fetchAndSort(stripNutritionFilters(baseFilter));
+    const noBudget = await fetchAndSort(
+      stripBudgetFilter(stripNutritionFilters(baseFilter)),
+    );
+    const minimal = await fetchAndSort(buildMinimalFilter(baseFilter));
+
+    relaxedPools = {
+      noDietRules,
+      noNutrition,
+      noBudget,
+      minimal,
+    };
   }
 
   if (candidates.length === 0) {
@@ -175,7 +284,10 @@ export async function suggestDailyMenu(prefs, pantryItems = []) {
         }
       }
       if (prefs?.max_calories_per_meal) {
-        const p2 = { ...prefs, max_calories_per_meal: prefs.max_calories_per_meal + 150 };
+        const p2 = {
+          ...prefs,
+          max_calories_per_meal: prefs.max_calories_per_meal + 150,
+        };
         let t = applyKeto(list, p2);
         t = applyVegetarian(t, p2);
         t = applyDiet(t, p2);
@@ -185,7 +297,10 @@ export async function suggestDailyMenu(prefs, pantryItems = []) {
         if (t.length) return t;
       }
       if (Number.isFinite(budgetNum) && budgetNum > 0) {
-        return Recipe.find({ ...baseFilter, ["price_estimate.min"]: { $lte: budgetNum + 20000 } })
+        return Recipe.find({
+          ...baseFilter,
+          ["price_estimate.min"]: { $lte: budgetNum + 20000 },
+        })
           .lean()
           .then((widerList) => {
             let t = widerList;
@@ -202,14 +317,20 @@ export async function suggestDailyMenu(prefs, pantryItems = []) {
     candidates = await relax(await Recipe.find(baseFilter).lean());
   }
 
-  const findDishByMealType = (mealType, excludeIds = []) => {
-    const availableDishes = candidates.filter(
-      (r) => !excludeIds.includes(r._id.toString()) && (r.meal_types || []).includes(mealType)
+  const getMealPool = (list, mealType, excludeIds = []) =>
+    list.filter(
+      (r) =>
+        !excludeIds.includes(r._id.toString()) &&
+        (r.meal_types || []).includes(mealType),
     );
-    if (availableDishes.length === 0) return null;
-    const randomIndex = Math.floor(Math.random() * Math.min(availableDishes.length, 5));
-    return availableDishes[randomIndex];
-  };
+
+  const poolOrder = [
+    candidates,
+    relaxedPools?.noDietRules,
+    relaxedPools?.noNutrition,
+    relaxedPools?.noBudget,
+    relaxedPools?.minimal,
+  ].filter(Boolean);
 
   const chosen = [];
   const usedIds = new Set();
@@ -218,25 +339,41 @@ export async function suggestDailyMenu(prefs, pantryItems = []) {
   for (const [mealType, count] of Object.entries(targetCounts)) {
     let added = 0;
     let attempts = 0;
-    const maxAttempts = 20;
+    const maxAttempts = 30;
     console.log(`\nĐang chọn món ${mealType} (cần ${count} món)...`);
-    while (added < count && attempts < maxAttempts) {
-      const dish = findDishByMealType(mealType, Array.from(usedIds));
-      if (!dish) {
-        console.error(`Không tìm thấy thêm món ${mealType}! Hiện có ${added}/${count}`);
-        break;
+
+    for (const pool of poolOrder) {
+      while (added < count && attempts < maxAttempts) {
+        const available = getMealPool(pool, mealType, Array.from(usedIds));
+        const dish = pickRandomFrom(available);
+        if (!dish) break;
+        chosen.push(dish);
+        usedIds.add(dish._id.toString());
+        console.log(
+          `  Thêm: ${dish.name_vi} (${dish.price_estimate?.min || "N/A"} VNĐ)`,
+        );
+        added++;
+        attempts++;
       }
-      chosen.push(dish);
-      usedIds.add(dish._id.toString());
-      console.log(`  Thêm: ${dish.name_vi} (${dish.price_estimate?.min || "N/A"} VNĐ)`);
-      added++;
-      attempts++;
+      if (added >= count) break;
+    }
+
+    if (added < count) {
+      console.error(
+        `Không tìm thấy thêm món ${mealType}! Hiện có ${added}/${count}`,
+      );
     }
   }
 
-  const finalBreakfast = chosen.filter((m) => (m.meal_types || []).includes("breakfast")).length;
-  const finalLunch = chosen.filter((m) => (m.meal_types || []).includes("lunch")).length;
-  const finalDinner = chosen.filter((m) => (m.meal_types || []).includes("dinner")).length;
+  const finalBreakfast = chosen.filter((m) =>
+    (m.meal_types || []).includes("breakfast"),
+  ).length;
+  const finalLunch = chosen.filter((m) =>
+    (m.meal_types || []).includes("lunch"),
+  ).length;
+  const finalDinner = chosen.filter((m) =>
+    (m.meal_types || []).includes("dinner"),
+  ).length;
 
   console.log(`\nKẾT QUẢ CUỐI CÙNG:`);
   console.log(`  Sáng: ${finalBreakfast}/1 món`);
@@ -262,13 +399,19 @@ export async function suggestWeeklyMenu(prefs, pantryItems = []) {
     const budgetPerMeal = Math.ceil(budgetNum / 5);
     if (budgetNum < 175000) {
       baseFilter["price_estimate.min"] = { $gte: 10000, $lte: 30000 };
-      console.log(` Ngân sách THẤP: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 10k-30k VNĐ`);
+      console.log(
+        ` Ngân sách THẤP: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 10k-30k VNĐ`,
+      );
     } else if (budgetNum <= 350000) {
       baseFilter["price_estimate.min"] = { $gte: 30000, $lte: 40000 };
-      console.log(` Ngân sách TRUNG BÌNH: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 30k-40k VNĐ`);
+      console.log(
+        ` Ngân sách TRUNG BÌNH: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 30k-40k VNĐ`,
+      );
     } else {
       baseFilter["price_estimate.min"] = { $gte: 40000, $lte: 50000 };
-      console.log(` Ngân sách CAO: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 40k-50k VNĐ`);
+      console.log(
+        ` Ngân sách CAO: ${budgetNum} VNĐ/ngày (~${budgetPerMeal} VNĐ/món) → Món giá 40k-50k VNĐ`,
+      );
     }
   }
 
@@ -280,35 +423,56 @@ export async function suggestWeeklyMenu(prefs, pantryItems = []) {
   const minPro = Number(prefs?.min_protein_g);
   const maxPro = Number(prefs?.max_protein_g);
   if (Number.isFinite(minCal) && minCal > 0) {
-    baseFilter["nutrition.calories"] = { ...baseFilter["nutrition.calories"], $gte: minCal };
+    baseFilter["nutrition.calories"] = {
+      ...baseFilter["nutrition.calories"],
+      $gte: minCal,
+    };
   }
   if (Number.isFinite(maxCal) && maxCal > 0) {
-    baseFilter["nutrition.calories"] = { ...baseFilter["nutrition.calories"], $lte: maxCal };
+    baseFilter["nutrition.calories"] = {
+      ...baseFilter["nutrition.calories"],
+      $lte: maxCal,
+    };
   }
   if (Number.isFinite(minPro) && minPro > 0) {
-    baseFilter["nutrition.protein_g"] = { ...baseFilter["nutrition.protein_g"], $gte: minPro };
+    baseFilter["nutrition.protein_g"] = {
+      ...baseFilter["nutrition.protein_g"],
+      $gte: minPro,
+    };
   }
   if (Number.isFinite(maxPro) && maxPro > 0) {
-    baseFilter["nutrition.protein_g"] = { ...baseFilter["nutrition.protein_g"], $lte: maxPro };
+    baseFilter["nutrition.protein_g"] = {
+      ...baseFilter["nutrition.protein_g"],
+      $lte: maxPro,
+    };
   }
   // ─────────────────────────────────────────────────────────────
 
   let candidates = await Recipe.find(baseFilter).lean();
 
   // Lọc nguyên liệu tránh né
-  if (Array.isArray(prefs?.avoid_ingredients) && prefs.avoid_ingredients.length) {
-    const avoid = new Set(prefs.avoid_ingredients.map((s) => String(s).toLowerCase()));
+  if (
+    Array.isArray(prefs?.avoid_ingredients) &&
+    prefs.avoid_ingredients.length
+  ) {
+    const avoid = new Set(
+      prefs.avoid_ingredients.map((s) => String(s).toLowerCase()),
+    );
     candidates = candidates.filter(
-      (r) => !(r.ingredients || []).some((i) => avoid.has(String(i?.name ?? i).toLowerCase()))
+      (r) =>
+        !(r.ingredients || []).some((i) =>
+          avoid.has(String(i?.name ?? i).toLowerCase()),
+        ),
     );
   }
 
   // Sắp xếp theo pantry score (expiry-aware)
   if (pantryItems && pantryItems.length > 0) {
     const pantryScoreMap = buildPantryScoreMap(pantryItems);
-    const likedSet = Array.isArray(prefs?.liked_ingredients) && prefs.liked_ingredients.length
-      ? new Set(prefs.liked_ingredients.map((s) => String(s).toLowerCase()))
-      : null;
+    const likedSet =
+      Array.isArray(prefs?.liked_ingredients) && prefs.liked_ingredients.length
+        ? new Set(prefs.liked_ingredients.map((s) => String(s).toLowerCase()))
+        : null;
     candidates = sortByPantryScore(candidates, pantryScoreMap, likedSet);
   }
 
@@ -351,7 +515,10 @@ export async function suggestWeeklyMenu(prefs, pantryItems = []) {
         }
       }
       if (prefs?.max_calories_per_meal) {
-        const p2 = { ...prefs, max_calories_per_meal: prefs.max_calories_per_meal + 150 };
+        const p2 = {
+          ...prefs,
+          max_calories_per_meal: prefs.max_calories_per_meal + 150,
+        };
         let t = applyKeto(list, p2);
         t = applyVegetarian(t, p2);
         t = applyDiet(t, p2);
@@ -361,7 +528,10 @@ export async function suggestWeeklyMenu(prefs, pantryItems = []) {
         if (t.length) return t;
       }
       if (Number.isFinite(budgetNum) && budgetNum > 0) {
-        return Recipe.find({ ...baseFilter, ["price_estimate.min"]: { $lte: budgetNum + 20000 } })
+        return Recipe.find({
+          ...baseFilter,
+          ["price_estimate.min"]: { $lte: budgetNum + 20000 },
+        })
           .lean()
           .then((widerList) => {
             let t = widerList;
@@ -380,10 +550,14 @@ export async function suggestWeeklyMenu(prefs, pantryItems = []) {
 
   const findDishByMealType = (mealType, excludeIds = []) => {
     const availableDishes = candidates.filter(
-      (r) => !excludeIds.includes(r._id.toString()) && (r.meal_types || []).includes(mealType)
+      (r) =>
+        !excludeIds.includes(r._id.toString()) &&
+        (r.meal_types || []).includes(mealType),
     );
     if (availableDishes.length === 0) return null;
-    const randomIndex = Math.floor(Math.random() * Math.min(availableDishes.length, 5));
+    const randomIndex = Math.floor(
+      Math.random() * Math.min(availableDishes.length, 5),
+    );
     return availableDishes[randomIndex];
   };
 
@@ -404,7 +578,9 @@ export async function suggestWeeklyMenu(prefs, pantryItems = []) {
       while (added < count && attempts < maxAttempts) {
         const dish = findDishByMealType(mealType, Array.from(usedInThisDay));
         if (!dish) {
-          console.warn(`Ngày ${day + 1}: Không tìm thấy thêm món ${mealType}! Hiện có ${added}/${count}`);
+          console.warn(
+            `Ngày ${day + 1}: Không tìm thấy thêm món ${mealType}! Hiện có ${added}/${count}`,
+          );
           break;
         }
         dayMeals.push(dish);
@@ -419,7 +595,15 @@ export async function suggestWeeklyMenu(prefs, pantryItems = []) {
 
     weeklyMenu.push({
       day,
-      dayName: ["Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"][day],
+      dayName: [
+        "Chủ nhật",
+        "Thứ 2",
+        "Thứ 3",
+        "Thứ 4",
+        "Thứ 5",
+        "Thứ 6",
+        "Thứ 7",
+      ][day],
       meals: dayMeals,
     });
   }

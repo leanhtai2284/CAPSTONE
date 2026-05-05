@@ -28,15 +28,43 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
   const debounceTimer = useRef(null);
   const hasAllergenWarning = meal?.allergens?.length > 0;
   const totalTime = (meal?.prep_time_min || 0) + (meal?.cook_time_min || 0);
-  // Fallback để hiển thị giá phù hợp cả mock và schema thật
-  // ✅ Tính giá trị trung bình thật (dạng số)
-  const numericPrice =
-    meal?.price_estimate?.min && meal?.price_estimate?.max
-      ? (meal.price_estimate.min + meal.price_estimate.max) / 2
-      : meal?.price_estimate?.min ||
-        meal?.price_estimate?.max ||
-        meal?.cost_estimate ||
-        0;
+  const effectiveMeal = mealData || meal;
+  const priceEstimate =
+    effectiveMeal?.price_estimate || meal?.price_estimate || {};
+  const priceMin = Number(priceEstimate.min);
+  const priceMax = Number(priceEstimate.max);
+  const basePrice =
+    Number.isFinite(priceMin) && priceMin > 0
+      ? priceMin
+      : Number.isFinite(priceMax) && priceMax > 0
+        ? priceMax
+        : Number(effectiveMeal?.cost_estimate || meal?.cost_estimate || 0);
+  const displayPrice = basePrice * servings;
+
+  const scaleNutrition = (nutrition, multiplier) => {
+    if (!nutrition) return nutrition;
+    const factor = Number(multiplier) || 1;
+    return {
+      ...nutrition,
+      calories: (Number(nutrition.calories) || 0) * factor,
+      protein_g: (Number(nutrition.protein_g) || 0) * factor,
+      carbs_g: (Number(nutrition.carbs_g) || 0) * factor,
+      fat_g: (Number(nutrition.fat_g) || 0) * factor,
+      fiber_g: (Number(nutrition.fiber_g) || 0) * factor,
+      sodium_mg: (Number(nutrition.sodium_mg) || 0) * factor,
+      sugar_g: (Number(nutrition.sugar_g) || 0) * factor,
+    };
+  };
+
+  const scaledNutrition = scaleNutrition(
+    effectiveMeal?.nutrition || meal?.nutrition,
+    servings,
+  );
+
+  useEffect(() => {
+    const nextServings = Number(userPreferences?.servings) || 1;
+    setServings(nextServings);
+  }, [userPreferences?.servings, meal?.id, meal?._id]);
 
   useEffect(() => {
     clearTimeout(debounceTimer.current);
@@ -59,7 +87,7 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
         const res = await fetch(
           `http://localhost:5000/api/recipes/${
             mealData.id || mealData._id
-          }?servings=${servings}`
+          }?servings=${servings}`,
         );
         const data = await res.json();
 
@@ -201,7 +229,7 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-sm shadow-sm">
                   <FaMoneyBillWave className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
                   <span className="text-sm sm:text-base">
-                    {((meal.price_estimate.min * servings) / 1000).toFixed(0)}
+                    {((displayPrice || 0) / 1000).toFixed(0)}
                     .000&nbsp;VNĐ{" "}
                     <span className="text-gray-200 text-lg sm:text-sm font-bold">
                       / {servings} người
@@ -337,7 +365,7 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
             {/* Nutrition */}
             <section className="space-y-4">
               <h3 className="text-xl font-bold ">Dinh dưỡng</h3>
-              <NutritionChart nutrition={meal.nutrition} />
+              <NutritionChart nutrition={scaledNutrition} />
             </section>
 
             {/* Suitable / Avoid */}

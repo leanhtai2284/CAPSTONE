@@ -74,6 +74,10 @@ const ForYouPage = () => {
   const [profileLoading, setProfileLoading] = useState(true);
   const [initialFormValues, setInitialFormValues] = useState(null);
   const [hasCompletedProfileFlow, setHasCompletedProfileFlow] = useState(false);
+  const [profileFamilySize, setProfileFamilySize] = useState(1);
+  const [profileActivityLevel, setProfileActivityLevel] = useState("moderate");
+  const [profileGoal, setProfileGoal] = useState("maintain");
+  const [profileBudget, setProfileBudget] = useState("medium");
   const {
     hasMealPlan,
     isGenerating,
@@ -101,6 +105,10 @@ const ForYouPage = () => {
     setInitialFormValues(values);
     setHasCompletedProfileFlow(true);
     setIsMandatoryModal(false);
+    setProfileFamilySize(Number(values?.familySize) || 1);
+    setProfileActivityLevel(values?.activityLevel || "moderate");
+    setProfileGoal(values?.dietaryGoal || "maintain");
+    setProfileBudget(values?.budget || "medium");
   };
 
   useEffect(() => {
@@ -116,7 +124,12 @@ const ForYouPage = () => {
           resetPlan();
           return;
         }
-        setInitialFormValues(buildInitialFormValues(data));
+        const nextValues = buildInitialFormValues(data);
+        setInitialFormValues(nextValues);
+        setProfileFamilySize(Number(data?.preferences?.familySize) || 1);
+        setProfileActivityLevel(nextValues.activityLevel || "moderate");
+        setProfileGoal(nextValues.dietaryGoal || "maintain");
+        setProfileBudget(nextValues.budget || "medium");
 
         const completed = hasCompletedOnboarding(data);
         setIsMandatoryModal(!completed);
@@ -129,6 +142,10 @@ const ForYouPage = () => {
         setIsMandatoryModal(true);
         setIsModalOpen(true);
         setHasCompletedProfileFlow(false);
+        setProfileFamilySize(1);
+        setProfileActivityLevel("moderate");
+        setProfileGoal("maintain");
+        setProfileBudget("medium");
         resetPlan();
         toast.error(error.message || "Không thể tải thông tin hồ sơ");
       } finally {
@@ -212,11 +229,16 @@ const ForYouPage = () => {
                 selectedDay={selectedDay}
                 viewMode={viewMode}
                 meals={displayedMeals}
+                familySize={profileFamilySize}
+                activityLevel={profileActivityLevel}
+                dietaryGoal={profileGoal}
               />
               <CostSummary
                 meals={displayedMeals}
                 viewMode={viewMode}
                 selectedDay={selectedDay}
+                familySize={profileFamilySize}
+                budget={profileBudget}
               />
             </div>
 

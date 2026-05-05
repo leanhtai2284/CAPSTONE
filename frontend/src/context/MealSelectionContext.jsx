@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 import MealDetailModal from "../components/ui/MealDetailModal";
+import { useAuth } from "../hooks/useAuth";
 
 /**
  * 🧩 MealSelectionContext
@@ -15,6 +16,11 @@ const MealSelectionContext = createContext();
  */
 export const MealSelectionProvider = ({ children }) => {
   const [selectedMeal, setSelectedMeal] = useState(null);
+  const { user } = useAuth();
+  const userPreferences = useMemo(() => {
+    const servings = Number(user?.preferences?.familySize) || 1;
+    return { servings };
+  }, [user]);
 
   const handleMealClick = (meal) => {
     console.log("📖 Xem chi tiết món:", meal.name_vi || meal.title);
@@ -38,7 +44,7 @@ export const MealSelectionProvider = ({ children }) => {
         <MealDetailModal
           meal={selectedMeal}
           onClose={closeModal}
-          userPreferences={{ servings: 1, goal: "Cân bằng" }}
+          userPreferences={userPreferences}
         />
       )}
     </MealSelectionContext.Provider>

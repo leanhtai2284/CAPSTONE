@@ -57,6 +57,15 @@ const UserInputForm = ({
     return mapping[dietType] || "normal";
   };
 
+  const mapActivityLevelToBackend = (activityLevel) => {
+    const mapping = {
+      sedentary: "low",
+      moderate: "moderate",
+      active: "high",
+    };
+    return mapping[activityLevel] || "moderate";
+  };
+
   const mapRegionToPlannerRegion = (region) => {
     const mapping = {
       "mien-bac": "North",
@@ -80,7 +89,7 @@ const UserInputForm = ({
         preferences: {
           region: mapRegionToBackend(formData.region),
           familySize: parseInt(formData.familySize, 10) || 4,
-          activityLevel: formData.activityLevel,
+          activityLevel: mapActivityLevelToBackend(formData.activityLevel),
           goal: formData.dietaryGoal,
           budget: formData.budget,
           diet: mapDietTypeToProfileDiet(formData.dietType),
