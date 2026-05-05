@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { FaMoneyBillWave } from "react-icons/fa";
 import SaveButton from "./SaveButton";
+import LikeButton from "./LikeButton"
 
 export default function MealCard({
   meal,
@@ -66,7 +67,7 @@ export default function MealCard({
             </span>
           </div>
         )}
-
+        <LikeButton meal={meal} />
         <SaveButton meal={meal} onToggleSave={onToggleSave} />
       </div>
 
