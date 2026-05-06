@@ -10,6 +10,20 @@ const getAuthHeaders = () => {
 };
 
 export const recipeService = {
+  async searchRecipes(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const res = await fetch(
+      `${API_BASE}/api/recipes${query ? `?${query}` : ""}`,
+      {
+        headers: getAuthHeaders(),
+      },
+    );
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || err.message || "Không thể tìm công thức");
+    }
+    return res.json();
+  },
   // Get all recipes (for admin)
   async getAllRecipes() {
     const res = await fetch(`${API_BASE}/api/recipes`, {
@@ -17,7 +31,9 @@ export const recipeService = {
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || err.message || "Không thể lấy danh sách công thức");
+      throw new Error(
+        err.error || err.message || "Không thể lấy danh sách công thức",
+      );
     }
     const data = await res.json();
     return Array.isArray(data.items) ? data.items : data;
@@ -77,7 +93,9 @@ export const recipeService = {
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || err.error || "Không thể cập nhật công thức");
+      throw new Error(
+        err.message || err.error || "Không thể cập nhật công thức",
+      );
     }
     return res.json();
   },
@@ -100,12 +118,17 @@ export const recipeService = {
     const token = localStorage.getItem("token");
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
     const query = new URLSearchParams(params).toString();
-    const res = await fetch(`${API_BASE}/api/admin/recipes/ugc${query ? `?${query}` : ""}`, {
-      headers,
-    });
+    const res = await fetch(
+      `${API_BASE}/api/admin/recipes/ugc${query ? `?${query}` : ""}`,
+      {
+        headers,
+      },
+    );
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || err.error || "Không thể lấy danh sách UGC");
+      throw new Error(
+        err.message || err.error || "Không thể lấy danh sách UGC",
+      );
     }
     const data = await res.json();
     return Array.isArray(data.items) ? data.items : data;
@@ -138,4 +161,3 @@ export const recipeService = {
     return res.json();
   },
 };
-

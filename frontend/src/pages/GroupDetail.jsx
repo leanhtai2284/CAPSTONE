@@ -6,8 +6,6 @@ import {
   UtensilsCrossed,
   TrendingUp,
   Plus,
-  Settings,
-  Share2,
   Trash2,
 } from "lucide-react";
 import { useGroup } from "../hooks/useGroup";
@@ -16,6 +14,7 @@ import { toast } from "sonner";
 import GroupMembers from "../components/group/GroupMembers";
 import GroupMenuVoting from "../components/group/GroupMenuVoting";
 import InviteUI from "../components/group/InviteUI";
+import { groupService } from "../services/groupService";
 
 export default function GroupDetail() {
   const { groupId } = useParams();
@@ -36,11 +35,68 @@ export default function GroupDetail() {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [activeTab, setActiveTab] = useState("menu");
   const [isOwner, setIsOwner] = useState(false);
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [statsError, setStatsError] = useState("");
+  const [groupStats, setGroupStats] = useState({
+    members: 0,
+    meals: 0,
+    totalVotes: 0,
+  });
+  const [groupNutrition, setGroupNutrition] = useState({
+    total: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+    average: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+  });
 
   useEffect(() => {
     if (groupId) {
       loadGroupDetail(groupId);
     }
+  }, [groupId]);
+
+  useEffect(() => {
+    if (!groupId) return;
+    let mounted = true;
+    setStatsLoading(true);
+    setStatsError("");
+
+    Promise.all([
+      groupService.getGroupStats(groupId),
+      groupService.getGroupNutrition(groupId),
+    ])
+      .then(([stats, nutrition]) => {
+        if (!mounted) return;
+        setGroupStats({
+          members: stats?.members ?? 0,
+          meals: stats?.meals ?? 0,
+          totalVotes: stats?.totalVotes ?? 0,
+        });
+        setGroupNutrition({
+          total: {
+            calories: nutrition?.total?.calories ?? 0,
+            protein: nutrition?.total?.protein ?? 0,
+            carbs: nutrition?.total?.carbs ?? 0,
+            fat: nutrition?.total?.fat ?? 0,
+          },
+          average: {
+            calories: nutrition?.average?.calories ?? 0,
+            protein: nutrition?.average?.protein ?? 0,
+            carbs: nutrition?.average?.carbs ?? 0,
+            fat: nutrition?.average?.fat ?? 0,
+          },
+        });
+      })
+      .catch((err) => {
+        if (!mounted) return;
+        setStatsError(err?.message || "Không thể tải thống kê nhóm");
+      })
+      .finally(() => {
+        if (!mounted) return;
+        setStatsLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
   }, [groupId]);
 
   useEffect(() => {
@@ -55,7 +111,7 @@ export default function GroupDetail() {
   const handleDeleteGroup = async () => {
     if (
       window.confirm(
-        "Bạn chắc chắn muốn xóa nhóm này? Hành động này không thể hoàn tác."
+        "Bạn chắc chắn muốn xóa nhóm này? Hành động này không thể hoàn tác.",
       )
     ) {
       try {
@@ -167,7 +223,8 @@ export default function GroupDetail() {
                 </h1>
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
-                    {goalIcons[selectedGroup.goal]} {goalLabels[selectedGroup.goal]}
+                    {goalIcons[selectedGroup.goal]}{" "}
+                    {goalLabels[selectedGroup.goal]}
                   </span>
                   {isOwner && (
                     <span className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-semibold rounded">
@@ -204,14 +261,14 @@ export default function GroupDetail() {
             )}
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300 mb-1">
                   <Users className="w-4 h-4" />
                   <span className="text-xs">Thành viên</span>
                 </div>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {groupMembers.length}
+                  {groupStats.members}
                 </p>
               </div>
               <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
@@ -220,25 +277,16 @@ export default function GroupDetail() {
                   <span className="text-xs">Bữa ăn</span>
                 </div>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {groupMenu.length}
+                  {groupStats.meals}
                 </p>
               </div>
               <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300 mb-1">
                   <TrendingUp className="w-4 h-4" />
-                  <span className="text-xs">Hoạt động</span>
+                  <span className="text-xs">Bình chọn</span>
                 </div>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {groupMembers.length * 5}
-                </p>
-              </div>
-              <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4">
-                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300 mb-1">
-                  <Share2 className="w-4 h-4" />
-                  <span className="text-xs">Chia sẻ</span>
-                </div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {Math.floor(groupMembers.length * 2.5)}
+                  {groupStats.totalVotes}
                 </p>
               </div>
             </div>
@@ -308,16 +356,24 @@ export default function GroupDetail() {
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
                 Thống kê dinh dưỡng
               </h2>
+              {statsError && (
+                <div className="mb-4 text-sm text-red-500">{statsError}</div>
+              )}
+              {statsLoading && (
+                <div className="mb-4 text-sm text-gray-500">
+                  Đang tải dữ liệu...
+                </div>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-900/10 rounded-lg p-6 border border-red-200 dark:border-red-800">
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                    Tổng Calo (Trung bình/ngày)
+                    Calo (Trung bình/bữa)
                   </p>
                   <p className="text-3xl font-bold text-red-600 dark:text-red-400">
-                    2,500
+                    {groupNutrition.average.calories}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-                    {groupMembers.length} thành viên
+                    {groupStats.meals} bữa ăn
                   </p>
                 </div>
 
@@ -326,7 +382,7 @@ export default function GroupDetail() {
                     Protein (g)
                   </p>
                   <p className="text-3xl font-bold text-green-600 dark:text-green-400">
-                    125
+                    {groupNutrition.average.protein}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
                     Mỗi bữa ăn
@@ -338,7 +394,7 @@ export default function GroupDetail() {
                     Carbohydrates (g)
                   </p>
                   <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                    275
+                    {groupNutrition.average.carbs}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
                     Mỗi bữa ăn
@@ -350,7 +406,7 @@ export default function GroupDetail() {
                     Fat (g)
                   </p>
                   <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-                    70
+                    {groupNutrition.average.fat}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
                     Mỗi bữa ăn

@@ -15,9 +15,14 @@ export async function searchRecipes(req, res) {
   try {
     // 1️⃣ Xây filter dựa trên query (nếu có)
     const filter = buildRecipeQuery(req.query);
+    const limit = Number(req.query.limit);
 
     // 2️⃣ Lấy toàn bộ dữ liệu, sắp xếp theo món mới nhất
-    const items = await Recipe.find(filter).sort({ createdAt: -1 }).lean();
+    let query = Recipe.find(filter).sort({ createdAt: -1 });
+    if (Number.isFinite(limit) && limit > 0) {
+      query = query.limit(limit);
+    }
+    const items = await query.lean();
 
     // 3️⃣ Trả kết quả ra API
     res.json({
@@ -54,7 +59,7 @@ export async function createRecipe(req, res) {
       audience: "user",
       title: "Có công thức mới",
       message: `Công thức mới '${getRecipeName(
-        recipe
+        recipe,
       )}' đã được thêm vào SmartMealVN`,
       type: "recipe",
       metadata: {
@@ -121,7 +126,7 @@ export async function updateRecipe(req, res) {
       audience: "user",
       title: "Công thức đã được cập nhật",
       message: `Công thức '${getRecipeName(
-        recipe
+        recipe,
       )}' đã được cập nhật. Hãy xem lại chi tiết trước khi nấu.`,
       type: "recipe",
       metadata: {
@@ -187,7 +192,7 @@ export async function deleteRecipe(req, res) {
       audience: "user",
       title: "Công thức đã bị xóa",
       message: `Công thức '${getRecipeName(
-        recipe
+        recipe,
       )}' không còn khả dụng trong hệ thống.`,
       type: "recipe",
       metadata: {
@@ -267,7 +272,7 @@ export async function getRecipeById(req, res) {
     if (e?.name === "CastError" && e?.path === "_id") {
       console.warn(
         "[getRecipeById] CastError _id, fallback to slug only:",
-        idOrSlug
+        idOrSlug,
       );
       try {
         const recipe = await Recipe.findOne({ id: idOrSlug }).lean();
@@ -289,7 +294,10 @@ export async function suggestMenu(req, res) {
     let userId = null;
 
     // Lấy userId từ JWT nếu user đang login
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
       const token = req.headers.authorization.split(" ")[1];
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -317,7 +325,10 @@ export async function suggestWeeklyMenuEndpoint(req, res) {
     const prefs = req.body || {};
     let userId = null;
 
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
       const token = req.headers.authorization.split(" ")[1];
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -362,11 +373,11 @@ export async function similarRecipes(req, res) {
       .sort(
         (a, b) =>
           Math.abs(
-            (a.nutrition?.calories || 0) - (cur.nutrition?.calories || 0)
+            (a.nutrition?.calories || 0) - (cur.nutrition?.calories || 0),
           ) -
           Math.abs(
-            (b.nutrition?.calories || 0) - (cur.nutrition?.calories || 0)
-          )
+            (b.nutrition?.calories || 0) - (cur.nutrition?.calories || 0),
+          ),
       );
 
     res.json({ items: candidates.slice(0, 6) });
@@ -404,7 +415,7 @@ export async function swapSingleMeal(req, res) {
       (r) =>
         r.meal_types &&
         r.meal_types.length === 1 &&
-        r.meal_types[0] === meal_type
+        r.meal_types[0] === meal_type,
     );
 
     if (recipes.length === 0) {
@@ -438,7 +449,9 @@ export async function generateShoppingList(req, res) {
     const { recipeIds } = req.body;
 
     if (!Array.isArray(recipeIds) || recipeIds.length === 0) {
-      return res.status(400).json({ error: "Cần truyền recipeIds là mảng không rỗng" });
+      return res
+        .status(400)
+        .json({ error: "Cần truyền recipeIds là mảng không rỗng" });
     }
 
     // 1. Lấy tất cả công thức được yêu cầu
@@ -448,12 +461,19 @@ export async function generateShoppingList(req, res) {
     const needed = new Map();
     for (const recipe of recipes) {
       for (const ing of recipe.ingredients || []) {
-        const name = String(ing?.name ?? ing).toLowerCase().trim();
-        const qty  = Number(ing?.quantity) || 0;
+        const name = String(ing?.name ?? ing)
+          .toLowerCase()
+          .trim();
+        const qty = Number(ing?.quantity) || 0;
         const unit = String(ing?.unit ?? "").trim();
 
         if (!needed.has(name)) {
-          needed.set(name, { name: ing?.name ?? ing, totalQty: 0, unit, usedIn: [] });
+          needed.set(name, {
+            name: ing?.name ?? ing,
+            totalQty: 0,
+            unit,
+            usedIn: [],
+          });
         }
         const entry = needed.get(name);
         entry.totalQty += qty;
@@ -474,12 +494,14 @@ export async function generateShoppingList(req, res) {
             unit: p.unit,
           });
         }
-      } catch { /* Token lỗi → không trừ pantry */ }
+      } catch {
+        /* Token lỗi → không trừ pantry */
+      }
     }
 
     // 4. So sánh cần vs có → tính phần còn thiếu
     const shoppingList = [];
-    const alreadyHave  = [];
+    const alreadyHave = [];
 
     for (const [key, item] of needed.entries()) {
       const inPantry = pantryMap.get(key);
@@ -502,7 +524,11 @@ export async function generateShoppingList(req, res) {
           status: "insufficient",
         });
       } else {
-        alreadyHave.push({ name: item.name, have: inPantry.quantity, unit: inPantry.unit });
+        alreadyHave.push({
+          name: item.name,
+          have: inPantry.quantity,
+          unit: inPantry.unit,
+        });
       }
     }
 

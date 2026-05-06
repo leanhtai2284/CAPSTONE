@@ -98,4 +98,5 @@ export interface Recipe {
   matchPercentage: number;
   prepTime: string;
   imageUrl: string;
+  raw?: any;
 }

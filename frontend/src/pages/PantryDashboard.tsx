@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Search, SlidersHorizontal, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
-import { PantryItem, PantryListResponse, PantrySummary } from "../types/pantry";
+import {
+  PantryItem,
+  PantryListResponse,
+  PantrySummary,
+  Recipe,
+} from "../types/pantry";
 import { PantryCard } from "../components/pantry/PantryCard";
 import { AddIngredientModal } from "../components/pantry/AddIngredientModal";
 import { BulkUpdateModal } from "../components/pantry/BulkUpdateModal";
 import { RecipeRecommendationPanel } from "../components/pantry/RecipeRecommendationPanel";
 import { EmptyState } from "../components/pantry/EmptyState";
 import { pantryService } from "../services/pantryService";
+import { recipeService } from "../services/recipeService";
+import { useMealSelection } from "../context/MealSelectionContext";
 export function PantryDashboard() {
+  const { handleMealClick } = useMealSelection();
   // Data states
   const [items, setItems] = useState<PantryItem[]>([]);
   const [summary, setSummary] = useState<PantrySummary | null>(null);
@@ -37,6 +45,9 @@ export function PantryDashboard() {
   // Panel states
   const [selectedIngredient, setSelectedIngredient] =
     useState<PantryItem | null>(null);
+  const [recommendedRecipes, setRecommendedRecipes] = useState<Recipe[]>([]);
+  const [recommendationLoading, setRecommendationLoading] = useState(false);
+  const [recommendationError, setRecommendationError] = useState("");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [recipeCheckRecipeId, setRecipeCheckRecipeId] = useState("");
   const [recipeCheckServings, setRecipeCheckServings] = useState(0);
@@ -107,6 +118,122 @@ export function PantryDashboard() {
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
+
+  const buildIngredientNames = (
+    ingredient: PantryItem | null,
+    selected: string[],
+    pantryItems: PantryItem[],
+  ) => {
+    if (!ingredient) return [] as string[];
+    const normalizeName = (value: string) =>
+      String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+    const selectedItems = selected.length
+      ? pantryItems.filter((item) => selected.includes(item._id ?? ""))
+      : [];
+    const rawNames = [
+      ingredient.name,
+      ...selectedItems.map((item) => item.name),
+    ].filter(Boolean);
+    const seen = new Set<string>();
+
+    return rawNames.filter((name) => {
+      const key = normalizeName(name);
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
+  useEffect(() => {
+    if (!selectedIngredient) return;
+    let mounted = true;
+    const ingredientNames = buildIngredientNames(
+      selectedIngredient,
+      selectedIds,
+      items,
+    );
+
+    const normalizeText = (value: string) =>
+      String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+
+    const mapRecipes = (items: any[], ingredientNames: string[]): Recipe[] =>
+      items
+        .map((recipe, index) => {
+          const ingredientList = Array.isArray(recipe.ingredients)
+            ? recipe.ingredients
+            : [];
+          const ingredientTexts = ingredientList
+            .map((ing: any) => normalizeText(ing?.name || ""))
+            .filter(Boolean);
+          const matchedCount = ingredientNames.filter((name) =>
+            ingredientTexts.some((text) => text.includes(normalizeText(name))),
+          ).length;
+          const matchPercentage = ingredientNames.length
+            ? Math.round((matchedCount / ingredientNames.length) * 100)
+            : 0;
+          const totalMinutes =
+            Number(recipe?.prep_time_min || 0) +
+            Number(recipe?.cook_time_min || 0);
+          const prepTime = totalMinutes > 0 ? `${totalMinutes} phút` : "-";
+
+          return {
+            id:
+              String(
+                recipe?._id || recipe?.id || recipe?.name_vi || recipe?.name,
+              ) || `recipe-${index}`,
+            name:
+              recipe?.name_vi || recipe?.name || recipe?.title || "Công thức",
+            description: recipe?.description || "Không có mô tả",
+            matchPercentage,
+            prepTime,
+            imageUrl: recipe?.image_url || "",
+            raw: recipe,
+          } as Recipe;
+        })
+        .filter((recipe) => recipe.matchPercentage > 0);
+
+    setRecommendationLoading(true);
+    setRecommendationError("");
+
+    recipeService
+      .searchRecipes({
+        ingredients: ingredientNames.join(","),
+        ingredients_mode: "all",
+        limit: 8,
+      })
+      .then((res) => {
+        if (!mounted) return;
+        const items = Array.isArray(res?.items)
+          ? res.items
+          : Array.isArray(res?.data)
+            ? res.data
+            : Array.isArray(res)
+              ? res
+              : [];
+        setRecommendedRecipes(mapRecipes(items, ingredientNames));
+      })
+      .catch((err) => {
+        if (!mounted) return;
+        setRecommendationError(err?.message || "Không thể tải gợi ý công thức");
+        setRecommendedRecipes([]);
+      })
+      .finally(() => {
+        if (!mounted) return;
+        setRecommendationLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [selectedIngredient, selectedIds, items]);
   const filteredItems = items; // Items are already filtered by API
   const handleSaveIngredient = async (newItemData: Omit<PantryItem, "id">) => {
     try {
@@ -535,28 +662,31 @@ export function PantryDashboard() {
 
       <RecipeRecommendationPanel
         isOpen={selectedIngredient !== null}
-        onClose={() => setSelectedIngredient(null)}
+        onClose={() => {
+          setSelectedIngredient(null);
+          setRecommendedRecipes([]);
+          setRecommendationError("");
+          setRecommendationLoading(false);
+        }}
         ingredient={selectedIngredient}
-        recipes={[
-          {
-            id: "r1",
-            name: "Công thức mẫu 1",
-            description: "Một công thức ngon sử dụng nguyên liệu này.",
-            matchPercentage: 85,
-            prepTime: "20 phút",
-            imageUrl:
-              "https://images.unsplash.com/photo-1550461716-dbf266b2a8a7?auto=format&fit=crop&q=80&w=800",
-          },
-          {
-            id: "r2",
-            name: "Công thức mẫu 2",
-            description: "Ý tưởng công thức tuyệt vời khác.",
-            matchPercentage: 70,
-            prepTime: "15 phút",
-            imageUrl:
-              "https://images.unsplash.com/photo-1510693062525-8f1980ce713e?auto=format&fit=crop&q=80&w=800",
-          },
-        ]}
+        ingredientNames={buildIngredientNames(
+          selectedIngredient,
+          selectedIds,
+          items,
+        )}
+        recipes={recommendedRecipes}
+        loading={recommendationLoading}
+        error={recommendationError}
+        onRecipeClick={(recipe) => {
+          const mealPayload = recipe.raw || {
+            id: recipe.id,
+            name_vi: recipe.name,
+            image_url: recipe.imageUrl,
+            description: recipe.description,
+          };
+          handleMealClick(mealPayload);
+          setSelectedIngredient(null);
+        }}
       />
     </div>
   );
