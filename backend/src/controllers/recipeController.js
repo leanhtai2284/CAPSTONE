@@ -464,7 +464,7 @@ export async function generateShoppingList(req, res) {
         const name = String(ing?.name ?? ing)
           .toLowerCase()
           .trim();
-        const qty = Number(ing?.quantity) || 0;
+        const qty = Number(ing?.amount) || 0;
         const unit = String(ing?.unit ?? "").trim();
 
         if (!needed.has(name)) {
