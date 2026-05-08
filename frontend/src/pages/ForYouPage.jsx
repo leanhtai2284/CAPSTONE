@@ -5,6 +5,7 @@ import MealPlanView from "../components/section/MealPlanView";
 import NutritionSummary from "../components/section/NutritionSummary";
 import CostSummary from "../components/section/CostSummary";
 import SafetyNotice from "../components/section/SafetyNotice";
+import TrackingSummary from "../components/section/TrackingSummary";
 import useMealPlanner from "../hooks/useMealPlanner";
 import Footer from "../components/layout/Footer";
 import RestaurantMap from "../components/ui/RestaurantMap";
@@ -91,6 +92,9 @@ const ForYouPage = () => {
     setSelectedDay,
     handleSwapMeal,
     handleSaveDailyMenu,
+    handleMarkAsCooked,
+    isCookingMealId,
+    trackingToday,
   } = useMealPlanner();
 
   const canShowMealPlan = hasCompletedProfileFlow && hasMealPlan;
@@ -215,6 +219,8 @@ const ForYouPage = () => {
                   isSwapping={isSwapping}
                   onSaveDailyMenu={handleSaveDailyMenu}
                   onResetPlan={resetPlan}
+                  onMarkAsCooked={handleMarkAsCooked}
+                  isCookingMealId={isCookingMealId}
                 />
               </>
             )}
@@ -224,6 +230,9 @@ const ForYouPage = () => {
         {/* ⭐ FULL-WIDTH SECTION UNDERNEATH — SUMMARY */}
         {shouldShowSummary && (
           <div className="mt-12 space-y-6">
+            {/* Tracking Summary - Full Width */}
+            <TrackingSummary trackingToday={trackingToday} />
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <NutritionSummary
                 selectedDay={selectedDay}

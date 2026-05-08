@@ -14,6 +14,8 @@ const MealSetSection = ({
   onSwapMeal,
   isSwapping = null,
   onFindNearby,
+  onMarkAsCooked,
+  isCookingMealId,
 }) => {
   const { handleMealClick } = useMealSelection();
 
@@ -25,9 +27,7 @@ const MealSetSection = ({
         </h3>
       </div>
 
-      <div
-        className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-      >
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {mealSet.dishes.map((meal, idx) => (
           <MealCard
             key={meal._swapId || meal._id || meal.id || `meal-${idx}`}
@@ -36,6 +36,8 @@ const MealSetSection = ({
             onSwap={onSwapMeal}
             onFindNearby={onFindNearby}
             isSwapping={isSwapping === (meal._id || meal.id)}
+            onMarkAsCooked={onMarkAsCooked}
+            isCookingMealId={isCookingMealId}
           />
         ))}
       </div>

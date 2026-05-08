@@ -6,10 +6,11 @@ import {
   ChefHat,
   MapPinIcon,
   RefreshCw,
+  UtensilsCrossed,
 } from "lucide-react";
 import { FaMoneyBillWave } from "react-icons/fa";
 import SaveButton from "./SaveButton";
-import LikeButton from "./LikeButton"
+import LikeButton from "./LikeButton";
 
 export default function MealCard({
   meal,
@@ -18,16 +19,27 @@ export default function MealCard({
   onSwap,
   onFindNearby,
   isSwapping = false,
+  onMarkAsCooked,
+  isCookingMealId,
 }) {
   if (!meal) return null;
 
   const imageUrl = meal.image_url || meal.image || "/fallback.jpg";
   const dishName = meal.name_vi || meal.title || "Món ăn không tên";
+  const mealId = meal._id || meal.id;
+  const isCooking = isCookingMealId === mealId;
 
   const handleSwapClick = (e) => {
     e.stopPropagation();
     if (!isSwapping && onSwap) {
-      onSwap(meal._id || meal.id);
+      onSwap(mealId);
+    }
+  };
+
+  const handleMarkAsCooked = (e) => {
+    e.stopPropagation();
+    if (!isCooking && onMarkAsCooked) {
+      onMarkAsCooked(mealId, dishName);
     }
   };
 
@@ -134,7 +146,29 @@ export default function MealCard({
           )}
         </div>
 
-        <div className="absolute bottom-0 right-0 flex flex-col items-end">
+        <div className="absolute bottom-0 right-0 flex flex-col items-end gap-2 p-2">
+          {onMarkAsCooked && (
+            <button
+              onClick={handleMarkAsCooked}
+              disabled={isCooking}
+              className={`flex items-center justify-center gap-1 px-3 py-2 rounded-tl-xl font-semibold transition-all ${
+                isCooking
+                  ? "bg-gray-300 text-gray-600 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
+                  : "bg-gradient-to-r from-orange-500 to-yellow-500 text-white hover:from-orange-600 hover:to-yellow-600 " +
+                    "dark:from-orange-600 dark:to-yellow-600 dark:hover:from-orange-700 dark:hover:to-yellow-700 " +
+                    "hover:shadow-lg hover:shadow-orange-400/50 active:scale-95"
+              }`}
+              title={`Đã nấu: ${dishName}`}
+            >
+              <UtensilsCrossed
+                size={16}
+                className={`${isCooking ? "animate-spin" : ""}`}
+              />
+              <span className="text-xs whitespace-nowrap">
+                {isCooking ? "..." : "Đã Nấu"}
+              </span>
+            </button>
+          )}
           {onSwap && (
             <button
               onClick={handleSwapClick}
