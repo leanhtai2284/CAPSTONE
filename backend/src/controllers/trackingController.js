@@ -3,6 +3,8 @@ import Pantry from "../models/Pantry.js";
 import DailyTracking from "../models/DailyTracking.js";
 import User from "../models/User.js";
 import { calcTDEE, getFallbackCalorieTarget } from "../utils/tdee.js";
+import { ChatOpenAI } from "@langchain/openai";
+import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 
 // ─────────────────────────────────────────────────────────
 // Helper: Lấy mục tiêu calo từ TDEE (ưu tiên) hoặc fallback
@@ -243,6 +245,115 @@ export async function getTrackingHistory(req, res) {
     return res.json({ success: true, data: historyWithProgress });
   } catch (err) {
     console.error("[getTrackingHistory]", err);
+    return res.status(500).json({ success: false, message: "Lỗi server" });
+  }
+}
+
+/**
+ * GET /api/tracking/weekly-report
+ * Báo cáo tổng hợp tuần kèm theo nhận xét của AI
+ */
+export async function getWeeklyReport(req, res) {
+  try {
+    const userId = req.user._id;
+    
+    // 1. Lấy dữ liệu 7 ngày qua
+    const days = 7;
+    const fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - days);
+    fromDate.setHours(0, 0, 0, 0);
+
+    const history = await DailyTracking.find({
+      user: userId,
+      date: { $gte: fromDate },
+    }).lean();
+
+    // Lấy mục tiêu calo & macro
+    const { target: calorieTarget, tdee } = await getCalorieTarget(userId);
+
+    // 2. Tính toán các chỉ số trung bình
+    let totalCalories = 0;
+    let totalProtein = 0;
+    let totalFat = 0;
+    let totalCarbs = 0;
+    let goalHitDays = 0;
+
+    history.forEach((day) => {
+      const c = day.daily_totals.calories || 0;
+      totalCalories += c;
+      totalProtein += day.daily_totals.protein_g || 0;
+      totalFat += day.daily_totals.fat_g || 0;
+      totalCarbs += day.daily_totals.carbs_g || 0;
+
+      // Đạt mục tiêu nếu không vượt quá calorieTarget + 100 calo sai số
+      if (c > 0 && c <= calorieTarget + 100) {
+        goalHitDays++;
+      }
+    });
+
+    const numDaysWithData = history.length || 1; // tránh chia cho 0
+    const avgCalories = Math.round(totalCalories / numDaysWithData);
+    const avgProtein = Math.round(totalProtein / numDaysWithData);
+    const avgFat = Math.round(totalFat / numDaysWithData);
+    const avgCarbs = Math.round(totalCarbs / numDaysWithData);
+
+    const macroConsistency = {
+      protein_g: { avg: avgProtein, target: tdee?.macro_targets?.protein_g || 0 },
+      fat_g: { avg: avgFat, target: tdee?.macro_targets?.fat_g || 0 },
+      carbs_g: { avg: avgCarbs, target: tdee?.macro_targets?.carbs_g || 0 },
+    };
+
+    const weekSummary = {
+      avg_calories: avgCalories,
+      goal_hit_days: goalHitDays,
+      days_tracked: history.length,
+      calorie_target: calorieTarget
+    };
+
+    // 3. Gọi LLM để lấy Insight
+    let aiInsight = "Bạn chưa có đủ dữ liệu để AI phân tích.";
+    
+    if (history.length > 0) {
+      try {
+        const llm = new ChatOpenAI({
+          openAIApiKey: process.env.OPENAI_API_KEY,
+          modelName: "gpt-4o-mini", // Dùng model nhẹ, nhanh
+          temperature: 0.7,
+        });
+
+        const promptData = {
+          tdee_target: calorieTarget,
+          macro_targets: tdee?.macro_targets,
+          actual_avg: { calories: avgCalories, protein: avgProtein, fat: avgFat, carbs: avgCarbs },
+          days_tracked: history.length,
+          goal_hit_days: goalHitDays
+        };
+
+        const messages = [
+          new SystemMessage(
+            "Bạn là chuyên gia dinh dưỡng của SmartMeal. Dựa vào dữ liệu ăn uống 7 ngày qua của user, hãy viết 1 đoạn nhận xét và lời khuyên ngắn gọn (khoảng 50-70 chữ) bằng tiếng Việt. Tập trung vào việc họ có đạt mục tiêu calo không, và macronutrients (protein/fat/carbs) có hợp lý chưa."
+          ),
+          new HumanMessage(JSON.stringify(promptData)),
+        ];
+
+        const response = await llm.invoke(messages);
+        aiInsight = response.content;
+      } catch (aiErr) {
+        console.error("Lỗi khi gọi OpenAI API cho Weekly Report:", aiErr);
+        aiInsight = "Dữ liệu tuần của bạn đã được ghi nhận. Hệ thống AI phân tích đang bảo trì.";
+      }
+    }
+
+    return res.json({
+      success: true,
+      data: {
+        week_summary: weekSummary,
+        macro_consistency: macroConsistency,
+        ai_insight: aiInsight,
+      },
+    });
+  } catch (err) {
+    console.error("[getWeeklyReport]", err);
     return res.status(500).json({ success: false, message: "Lỗi server" });
   }
 }

@@ -4,6 +4,7 @@ import {
   markAsCooked,
   getTodayTracking,
   getTrackingHistory,
+  getWeeklyReport,
 } from "../controllers/trackingController.js";
 
 const router = express.Router();
@@ -19,5 +20,8 @@ router.get("/today", getTodayTracking);
 
 // GET /api/tracking/history?days=7 → Xem lịch sử 7 ngày gần nhất
 router.get("/history", getTrackingHistory);
+
+// GET /api/tracking/weekly-report → Báo cáo tuần kèm AI Insight
+router.get("/weekly-report", getWeeklyReport);
 
 export default router;
