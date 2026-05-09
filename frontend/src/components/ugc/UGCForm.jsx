@@ -314,7 +314,7 @@ export default function UGCForm() {
                 <div>
                   <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Thông tin dinh dưỡng</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <input type="number" name="nutrition.calories" value={formData.nutrition.calories} onChange={handleChange} placeholder="Calories" required className="w-full px-4 py-3 border rounded-xl placeholder-gray-400" />
+                    <input type="number" name="nutrition.calories" value={formData.nutrition.calories} onChange={handleChange} placeholder="Calories" className="w-full px-4 py-3 border rounded-xl placeholder-gray-400" />
                     <input type="number" name="nutrition.protein_g" value={formData.nutrition.protein_g} onChange={handleChange} placeholder="Protein (g)" className="w-full px-4 py-3 border rounded-xl placeholder-gray-400" />
                     <input type="number" name="nutrition.carbs_g" value={formData.nutrition.carbs_g} onChange={handleChange} placeholder="Carbs (g)" className="w-full px-4 py-3 border rounded-xl placeholder-gray-400" />
                     <input type="number" name="nutrition.fat_g" value={formData.nutrition.fat_g} onChange={handleChange} placeholder="Fat (g)" className="w-full px-4 py-3 border rounded-xl placeholder-gray-400" />
@@ -381,7 +381,34 @@ export default function UGCForm() {
 
             <div className="flex gap-4 pt-4 border-t">
               <button type="submit" disabled={loading} className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50">{loading ? 'Đang xử lý...' : 'Gửi công thức'}</button>
-              <button type="button" onClick={() => { /* reset */ setFormData({ name_vi: '', region: 'Bắc', category: 'main', meal_types: [], prep_time_min: '', cook_time_min: '', difficulty: 'easy', servings: 1, description: '', image_url: '', spice_level: 0, ingredients: [{ name: '', amount: '', unit: '', scalable: true }], steps: [''], utensils: [], diet_tags: [], allergens: [], taste_profile: [], suitable_for: [], avoid_for: [], nutrition: { calories: '', protein_g: '', carbs_g: '', fat_g: '', fiber_g: '', sodium_mg: '', sugar_g: '' }, price_estimate: { min: '', max: '', currency: 'VND' } }); mediaFiles.forEach(f => f.preview && URL.revokeObjectURL(f.preview)); if (cookingVideo && cookingVideo.preview) URL.revokeObjectURL(cookingVideo.preview); setMediaFiles([]); setCookingVideo(null); }} className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Hủy</button>
+              <button type="button" onClick={() => { 
+                /* reset */ 
+                setFormData({ 
+                  name_vi: '', 
+                  region: 'Bắc', 
+                  category: 'main', 
+                  meal_types: [], 
+                  prep_time_min: '', 
+                  cook_time_min: '', 
+                  difficulty: 'easy', 
+                  servings: 1, 
+                  description: '', 
+                  image_url: '', 
+                  spice_level: 0, 
+                  ingredients: [{ name: '', amount: '', unit: '', scalable: true }], 
+                  steps: [''], 
+                  utensils: [], 
+                  diet_tags: [], 
+                  allergens: [], 
+                  taste_profile: [], 
+                  suitable_for: [], 
+                  avoid_for: [], 
+                  nutrition: { calories: '', protein_g: '', carbs_g: '', fat_g: '', fiber_g: '', sodium_mg: '', sugar_g: '' }, 
+                  price_estimate: { min: '', max: '', currency: 'VND' } 
+                }); 
+                if (cookingVideo && cookingVideo.preview) URL.revokeObjectURL(cookingVideo.preview); 
+                setCookingVideo(null); 
+              }} className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Hủy</button>
             </div>
           </form>
         </div>

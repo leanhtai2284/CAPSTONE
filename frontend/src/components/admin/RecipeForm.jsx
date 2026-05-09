@@ -43,7 +43,10 @@ const RecipeForm = () => {
       max: "",
       currency: "VND",
     },
+    cooking_video_url: "",
   });
+
+  const [cookingVideo, setCookingVideo] = useState(null);
 
   useEffect(() => {
     if (isEdit) {
@@ -61,12 +64,35 @@ const RecipeForm = () => {
           ? recipe.ingredients
           : [{ name: "", amount: "", unit: "", scalable: true }],
         steps: recipe.steps?.length ? recipe.steps : [""],
+        cooking_video_url: recipe.cooking_video_url || "",
       });
     } catch (error) {
       toast.error(error.message || "Không thể tải công thức");
       navigate("/admin/recipes");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleVideoFile = (file) => {
+    if (!file) return;
+    if (file.size > 200 * 1024 * 1024) { // 200MB limit
+      toast.error('Video quá lớn (max 200MB)');
+      return;
+    }
+    const preview = URL.createObjectURL(file);
+    setCookingVideo({ file, preview });
+  };
+
+  const checkIdExists = async (id) => {
+    if (!id || isEdit) return false;
+    try {
+      const response = await fetch(`http://localhost:5000/api/recipes/check-id/${id}`);
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error('Error checking ID:', error);
+      return false;
     }
   };
 
@@ -270,37 +296,75 @@ const RecipeForm = () => {
     try {
       setLoading(true);
       
-      // Clean up data
-      const submitData = {
-        ...formData,
-        ingredients: formData.ingredients.filter(
-          (ing) => ing.name && ing.amount && ing.unit
-        ),
-        steps: formData.steps.filter((step) => step.trim()),
+      // Validate ID uniqueness for new recipes
+      if (!isEdit && formData.id) {
+        const idExists = await checkIdExists(formData.id);
+        if (idExists) {
+          toast.error(`ID "${formData.id}" đã tồn tại. Vui lòng chọn ID khác.`);
+          setLoading(false);
+          return;
+        }
+      }
+      
+      // Use FormData for video upload
+      const fd = new FormData();
+      
+      // Add all form fields
+      Object.entries({
+        id: formData.id,
+        name_vi: formData.name_vi,
+        region: formData.region,
+        category: formData.category,
         prep_time_min: formData.prep_time_min || undefined,
         cook_time_min: formData.cook_time_min || undefined,
-        nutrition: Object.fromEntries(
+        difficulty: formData.difficulty,
+        servings: formData.servings,
+        description: formData.description,
+        image_url: formData.image_url,
+        spice_level: formData.spice_level,
+        meal_types: JSON.stringify(formData.meal_types),
+        ingredients: JSON.stringify(formData.ingredients.filter(
+          (ing) => ing.name && ing.amount && ing.unit
+        )),
+        steps: JSON.stringify(formData.steps.filter((step) => step.trim())),
+        utensils: JSON.stringify(formData.utensils),
+        diet_tags: JSON.stringify(formData.diet_tags),
+        allergens: JSON.stringify(formData.allergens),
+        taste_profile: JSON.stringify(formData.taste_profile),
+        suitable_for: JSON.stringify(formData.suitable_for),
+        avoid_for: JSON.stringify(formData.avoid_for),
+        nutrition: JSON.stringify(Object.fromEntries(
           Object.entries(formData.nutrition).map(([k, v]) => [
             k,
             v === "" ? undefined : Number(v),
           ])
-        ),
-        price_estimate: {
+        )),
+        price_estimate: JSON.stringify({
           min: formData.price_estimate.min ? Number(formData.price_estimate.min) : undefined,
           max: formData.price_estimate.max ? Number(formData.price_estimate.max) : undefined,
           currency: formData.price_estimate.currency,
-        },
-      };
+        }),
+        cooking_video_url: formData.cooking_video_url || "",
+      }).forEach(([k, v]) => {
+        if (v !== undefined && v !== null) fd.append(k, v);
+      });
+
+      // Add video file if exists
+      if (cookingVideo && cookingVideo.file) {
+        fd.append('cooking_video', cookingVideo.file);
+      }
 
       if (isEdit) {
-        await recipeService.updateRecipe(id, submitData);
+        await recipeService.updateRecipe(id, fd);
         toast.success("Cập nhật công thức thành công!");
       } else {
-        await recipeService.createRecipe(submitData);
+        console.log('Creating recipe with FormData:', fd);
+        await recipeService.createRecipe(fd);
         toast.success("Tạo công thức thành công!");
       }
       navigate("/admin/recipes");
     } catch (error) {
+      console.error('RecipeForm submit error:', error);
       toast.error(error.message || "Có lỗi xảy ra");
     } finally {
       setLoading(false);
@@ -472,6 +536,43 @@ const RecipeForm = () => {
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Video nấu ăn (mp4) — tối đa 1
+                </label>
+                <input
+                  type="file"
+                  accept="video/mp4,video/*"
+                  onChange={e => handleVideoFile(e.target.files[0])}
+                  className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                />
+                {(cookingVideo || formData.cooking_video_url) && (
+                  <div className="mt-3 relative border rounded overflow-hidden">
+                    <video 
+                      src={cookingVideo ? cookingVideo.preview : formData.cooking_video_url} 
+                      className="w-full h-48 object-cover" 
+                      controls 
+                    />
+                    <button 
+                      type="button" 
+                      onClick={() => { 
+                        if (cookingVideo && cookingVideo.preview) URL.revokeObjectURL(cookingVideo.preview); 
+                        setCookingVideo(null); 
+                        // Also clear existing video URL from database
+                        setFormData(prev => ({ ...prev, cooking_video_url: "" }));
+                      }} 
+                      className="absolute top-2 right-2 bg-black/50 text-white p-1 rounded"
+                    >
+                      X
+                    </button>
+                    {formData.cooking_video_url && !cookingVideo && (
+                      <div className="absolute bottom-2 left-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
+                        Video hiện tại
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 

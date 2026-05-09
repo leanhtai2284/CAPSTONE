@@ -17,14 +17,21 @@ export async function searchRecipes(req, res) {
     const filter = buildRecipeQuery(req.query);
     const limit = Number(req.query.limit);
 
-    // 2️⃣ Lấy toàn bộ dữ liệu, sắp xếp theo món mới nhất
+    // 2️⃣ Chỉ lấy công thức đã được duyệt - loại bỏ UGC pending/rejected
+    // Public recipes: either not UGC, or UGC with approved status
+    filter.$or = [
+      { is_ugc: { $ne: true } }, // Regular recipes (not UGC)
+      { is_ugc: true, ugc_status: "approved" } // Approved UGC recipes
+    ];
+
+    // 3️⃣ Lấy toàn bộ dữ liệu, sắp xếp theo món mới nhất
     let query = Recipe.find(filter).sort({ createdAt: -1 });
     if (Number.isFinite(limit) && limit > 0) {
       query = query.limit(limit);
     }
     const items = await query.lean();
 
-    // 3️⃣ Trả kết quả ra API
+    // 4️⃣ Trả kết quả ra API
     res.json({
       items,
       total: items.length,
@@ -40,7 +47,60 @@ export async function searchRecipes(req, res) {
 // @access  Private/Admin
 export async function createRecipe(req, res) {
   try {
-    const recipe = await Recipe.create(req.body);
+    console.log('=== CREATE RECIPE DEBUG ===');
+    console.log('req.body keys:', Object.keys(req.body || {}));
+    console.log('req.file:', req.file);
+    console.log('req.files:', req.files);
+    
+    // Handle both JSON and FormData (for video upload)
+    let recipeData;
+    
+    if (req.body && Object.keys(req.body).length > 0) {
+      // FormData case - parse JSON fields
+      recipeData = {};
+      Object.keys(req.body).forEach(key => {
+        try {
+          if (key === 'nutrition' || key === 'price_estimate' || key === 'ingredients' || key === 'steps' || key === 'meal_types' || key === 'utensils' || key === 'diet_tags' || key === 'allergens' || key === 'taste_profile' || key === 'suitable_for' || key === 'avoid_for') {
+            recipeData[key] = JSON.parse(req.body[key]);
+          } else if (key === 'cooking_video_url') {
+            // Handle video URL - empty string means delete video
+            recipeData[key] = req.body[key] || undefined;
+          } else {
+            recipeData[key] = req.body[key];
+          }
+        } catch (parseError) {
+          console.error(`Error parsing field ${key}:`, parseError);
+          console.error(`Field value:`, req.body[key]);
+          throw new Error(`Invalid data format for field: ${key}`);
+        }
+      });
+    } else {
+      // Regular JSON case
+      recipeData = req.body;
+    }
+
+    // Handle video file
+    const videoFile = req.file || (Array.isArray(req.files?.cooking_video) ? req.files.cooking_video[0] : null);
+    if (videoFile) {
+      recipeData.cooking_video_url = `/uploads/ugc/${videoFile.filename}`;
+    }
+
+    console.log('Creating recipe with data:', recipeData);
+    
+    // Check if ID already exists
+    if (recipeData.id) {
+      const existingRecipe = await Recipe.findOne({ id: recipeData.id });
+      if (existingRecipe) {
+        return res.status(400).json({
+          success: false,
+          message: `ID "${recipeData.id}" đã tồn tại. Vui lòng chọn ID khác.`,
+          error: 'DUPLICATE_ID'
+        });
+      }
+    }
+    
+    const recipe = await Recipe.create(recipeData);
+    console.log('Recipe created successfully:', recipe);
     // Thông báo cho admin về công thức mới
     await createNotification({
       user: null,
@@ -73,10 +133,13 @@ export async function createRecipe(req, res) {
       data: recipe,
     });
   } catch (error) {
+    console.error("[createRecipe] ERROR:", error);
+    console.error("Error stack:", error.stack);
+    console.error("Recipe data that caused error:", recipeData);
     res.status(400).json({
       success: false,
-      message: "Không thể tạo công thức",
-      error: error.message,
+      message: error.message || "Không thể tạo công thức",
+      details: error.stack
     });
   }
 }
@@ -104,8 +167,35 @@ export async function updateRecipe(req, res) {
       });
     }
 
+    // Handle both JSON and FormData (for video upload)
+    let updateData;
+    
+    if (req.body && Object.keys(req.body).length > 0) {
+      // FormData case - parse JSON fields
+      updateData = {};
+      Object.keys(req.body).forEach(key => {
+        if (key === 'nutrition' || key === 'price_estimate' || key === 'ingredients' || key === 'steps' || key === 'meal_types' || key === 'utensils' || key === 'diet_tags' || key === 'allergens' || key === 'taste_profile' || key === 'suitable_for' || key === 'avoid_for') {
+          updateData[key] = JSON.parse(req.body[key]);
+        } else if (key === 'cooking_video_url') {
+          // Handle video URL - empty string means delete video
+          updateData[key] = req.body[key] || undefined;
+        } else {
+          updateData[key] = req.body[key];
+        }
+      });
+    } else {
+      // Regular JSON case
+      updateData = req.body;
+    }
+
+    // Handle video file
+    const videoFile = req.file || (Array.isArray(req.files?.cooking_video) ? req.files.cooking_video[0] : null);
+    if (videoFile) {
+      updateData.cooking_video_url = `/uploads/ugc/${videoFile.filename}`;
+    }
+
     // Update the recipe
-    Object.assign(recipe, req.body);
+    Object.assign(recipe, updateData);
     await recipe.save();
 
     // Thông báo cho admin về việc cập nhật công thức

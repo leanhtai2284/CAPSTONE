@@ -53,13 +53,20 @@ export const recipeService = {
 
   // Create new recipe (admin only)
   async createRecipe(recipeData) {
+    // Check if recipeData is FormData (for video upload)
+    const isFormData = recipeData instanceof FormData;
+    
     const res = await fetch(`${API_BASE}/api/recipes`, {
       method: "POST",
-      headers: getAuthHeaders(),
-      body: JSON.stringify(recipeData),
+      headers: isFormData ? 
+        { Authorization: `Bearer ${localStorage.getItem("token")}` } : 
+        getAuthHeaders(),
+      body: isFormData ? recipeData : JSON.stringify(recipeData),
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
+      console.error('CreateRecipe error response:', err);
+      console.error('Response status:', res.status);
       throw new Error(err.message || err.error || "Không thể tạo công thức");
     }
     return res.json();
@@ -86,10 +93,15 @@ export const recipeService = {
 
   // Update recipe (admin only)
   async updateRecipe(id, recipeData) {
+    // Check if recipeData is FormData (for video upload)
+    const isFormData = recipeData instanceof FormData;
+    
     const res = await fetch(`${API_BASE}/api/recipes/${id}`, {
       method: "PUT",
-      headers: getAuthHeaders(),
-      body: JSON.stringify(recipeData),
+      headers: isFormData ? 
+        { Authorization: `Bearer ${localStorage.getItem("token")}` } : 
+        getAuthHeaders(),
+      body: isFormData ? recipeData : JSON.stringify(recipeData),
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));

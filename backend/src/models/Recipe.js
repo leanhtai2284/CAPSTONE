@@ -77,7 +77,10 @@ const recipeSchema = new mongoose.Schema(
     ugc_status: {
       type: String,
       enum: ["pending", "approved", "rejected"],
-      default: "approved",
+      default: function() {
+        // UGC recipes should default to "pending", regular recipes to "approved"
+        return this.is_ugc ? "pending" : "approved";
+      },
       index: true,
     },
     uploaded_by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

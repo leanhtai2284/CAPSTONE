@@ -28,11 +28,12 @@ const normalizeIngredients = (value) => {
       const name = String(item?.name || "").trim();
       const unit = String(item?.unit || "").trim();
       const amount = toNumber(item?.amount, null);
-      if (!name || !unit || amount === null) return null;
+      // Only name is required, amount and unit can be empty
+      if (!name) return null;
       return {
         name,
-        unit,
-        amount,
+        unit: unit || "",
+        amount: amount !== null ? amount : 0,
         scalable: item?.scalable !== false,
       };
     })
@@ -177,7 +178,7 @@ export const approveUGC = async (req, res) => {
         .json({ success: false, message: "Recipe not found" });
     }
 
-    recipe.is_ugc = true;
+    recipe.is_ugc = false; // Set to false since it's now approved and becomes a regular recipe
     recipe.ugc_status = "approved";
     recipe.ugc_reviewed_by = req.user._id;
     recipe.ugc_reviewed_at = new Date();

@@ -13061,3 +13061,76 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 
 ---
 
+## Món ăn: T
+- **Mã món (ID):** undefined
+- **Vùng miền:** Trung
+- **Loại món (Category):** drink
+- **Thích hợp cho bữa:** lunch, breakfast
+- **Thời gian:** Chuẩn bị 12 phút, Nấu 54 phút. Tổng: 66 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 12 calo, 12g protein, 12g carbs, 12g fat.
+- **Mô tả:** HH
+
+### Nguyên liệu cần chuẩn bị:
+- 5 G S
+
+### Cách làm (Steps):
+1. ÁD
+
+---
+
+## Món ăn: Sò lông xào sả ớt
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 0 phút, Nấu 0 phút. Tổng: 0 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 500 calo, 0g protein, 0g carbs, 0g fat.
+
+### Nguyên liệu cần chuẩn bị:
+- (Đang cập nhật)
+
+### Cách làm (Steps):
+- (Đang cập nhật)
+
+---
+
+## Món ăn: Chuối 
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 0 phút, Nấu 0 phút. Tổng: 0 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 0 calo, 0g protein, 0g carbs, 0g fat.
+
+### Nguyên liệu cần chuẩn bị:
+- (Đang cập nhật)
+
+### Cách làm (Steps):
+- (Đang cập nhật)
+
+---
+
+## Món ăn: Chuối 
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 0 phút, Nấu 0 phút. Tổng: 0 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 0 calo, 0g protein, 0g carbs, 0g fat.
+
+### Nguyên liệu cần chuẩn bị:
+- (Đang cập nhật)
+
+### Cách làm (Steps):
+- (Đang cập nhật)
+
+---
+

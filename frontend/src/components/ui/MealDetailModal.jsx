@@ -23,6 +23,7 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
   const [servings, setServings] = useState(userPreferences?.servings || 1);
   const [mealData, setMealData] = useState(meal);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [viewMode, setViewMode] = useState("details"); // 'details' or 'cooking'
   const cacheRef = useRef({});
   const debounceTimer = useRef(null);
@@ -89,6 +90,13 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
             mealData.id || mealData._id
           }?servings=${servings}`,
         );
+        
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          console.error('Recipe fetch error:', errorData);
+          throw new Error(errorData.message || errorData.error || 'Không thể tải thông tin công thức');
+        }
+        
         const data = await res.json();
 
         // ✅ Cache lại
@@ -104,6 +112,7 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
         }));
       } catch (err) {
         console.error("❌ Lỗi tải món:", err);
+        setError(err.message || "Không thể tải thông tin công thức");
       } finally {
         setLoading(false);
       }
@@ -156,6 +165,25 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
             <Loader2 className="w-6 h-6 text-white animate-spin" />
           </div>
         )}
+
+        {/* ❌ Error display */}
+        {error && (
+          <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm mx-4 text-center">
+              <div className="text-red-500 text-lg mb-2">Lỗi</div>
+              <div className="text-gray-700 dark:text-gray-300">{error}</div>
+              <button
+                onClick={() => {
+                  setError(null);
+                  loadRecipeDetails();
+                }}
+                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Thử lại
+              </button>
+            </div>
+          </div>
+        )}
         <style>{`
           @keyframes slideUp {
             from { transform: translateY(100%); opacity: 0; }
@@ -165,11 +193,13 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
         <div className="relative flex flex-col max-h-[90vh] w-full md:max-w-4xl rounded-t-3xl overflow-hidden">
           {/* Header (ảnh + overlay info + nút X + SaveButton) */}
           <div className="relative flex-shrink-0">
-            <img
-              src={meal.image_url}
-              alt={meal.name_vi}
-              className="w-full h-52 sm:h-60 object-cover"
-            />
+            {meal.image_url && (
+              <img
+                src={meal.image_url}
+                alt={meal.name_vi}
+                className="w-full h-52 sm:h-60 object-cover"
+              />
+            )}
 
             {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
