@@ -82,7 +82,6 @@ export const createUGC = async (req, res) => {
     );
 
     const payload = {
-      id: externalId || undefined,
       name_vi: req.body.name_vi,
       region: req.body.region,
       category: req.body.category,
@@ -111,13 +110,28 @@ export const createUGC = async (req, res) => {
       uploaded_by: req.user._id,
     };
 
-    if (req.file) {
-      payload.cooking_video_url = `/uploads/ugc/${req.file.filename}`;
+    if (externalId) {
+      payload.id = externalId;
+    }
+
+    const videoFile =
+      req.file ||
+      (Array.isArray(req.files?.cooking_video)
+        ? req.files.cooking_video[0]
+        : null);
+
+    if (videoFile) {
+      payload.cooking_video_url = `/uploads/ugc/${videoFile.filename}`;
     }
 
     const recipe = await Recipe.create(payload);
+    const data = recipe.toObject();
 
-    res.status(201).json({ success: true, data: recipe });
+    if (videoFile && !data.cooking_video_url) {
+      data.cooking_video_url = `/uploads/ugc/${videoFile.filename}`;
+    }
+
+    res.status(201).json({ success: true, data });
   } catch (error) {
     console.error("createUGC error:", error);
     res.status(400).json({

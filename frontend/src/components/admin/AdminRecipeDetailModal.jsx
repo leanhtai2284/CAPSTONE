@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { recipeService } from "../../services/recipeService";
 
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+const resolveVideoUrl = (url) => {
+  if (!url) return "";
+  return url.startsWith("/") ? `${API_BASE}${url}` : url;
+};
+
 const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
   const [recipeData, setRecipeData] = useState(recipe || null);
   const [loading, setLoading] = useState(false);
@@ -35,8 +42,13 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
     if (recipe) {
       setRecipeData(recipe);
       setError(null);
-      // Load full recipe details if we only have basic info
-      if (!recipe.ingredients || !recipe.steps || !recipe.nutrition) {
+      // Load full recipe details if the list payload is missing fields (incl. video)
+      if (
+        !recipe.ingredients ||
+        !recipe.steps ||
+        !recipe.nutrition ||
+        !recipe.cooking_video_url
+      ) {
         loadFullDetails(recipe);
       }
     }
@@ -109,8 +121,8 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                   {recipeData.difficulty === "easy"
                     ? "Dễ"
                     : recipeData.difficulty === "medium"
-                    ? "Trung bình"
-                    : "Khó"}
+                      ? "Trung bình"
+                      : "Khó"}
                 </span>
               )}
             </div>
@@ -121,7 +133,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
         <div className="flex-1 overflow-y-auto p-6">
           {loading ? (
             <div className="flex items-center justify-center py-8">
-              <div className="text-gray-600 dark:text-gray-300">Đang tải...</div>
+              <div className="text-gray-600 dark:text-gray-300">
+                Đang tải...
+              </div>
             </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-8">
@@ -139,7 +153,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {recipeData.prep_time_min && (
                   <div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Chuẩn bị</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      Chuẩn bị
+                    </div>
                     <div className="font-semibold text-gray-900 dark:text-white">
                       {recipeData.prep_time_min} phút
                     </div>
@@ -147,7 +163,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                 )}
                 {recipeData.cook_time_min && (
                   <div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Nấu</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      Nấu
+                    </div>
                     <div className="font-semibold text-gray-900 dark:text-white">
                       {recipeData.cook_time_min} phút
                     </div>
@@ -155,7 +173,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                 )}
                 {recipeData.servings && (
                   <div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Phần ăn</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      Phần ăn
+                    </div>
                     <div className="font-semibold text-gray-900 dark:text-white">
                       {recipeData.servings}
                     </div>
@@ -163,7 +183,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                 )}
                 {recipeData.spice_level !== undefined && (
                   <div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Độ cay</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      Độ cay
+                    </div>
                     <div className="font-semibold text-gray-900 dark:text-white">
                       {recipeData.spice_level}/5
                     </div>
@@ -180,6 +202,20 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                   <p className="text-gray-700 dark:text-gray-300">
                     {recipeData.description}
                   </p>
+                </div>
+              )}
+
+              {/* Cooking Video */}
+              {recipeData.cooking_video_url && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    Video nấu ăn
+                  </h3>
+                  <video
+                    src={resolveVideoUrl(recipeData.cooking_video_url)}
+                    className="w-full max-h-96 rounded-lg bg-black"
+                    controls
+                  />
                 </div>
               )}
 
@@ -240,7 +276,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded">
                     {recipeData.nutrition.calories && (
                       <div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Calories</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          Calories
+                        </div>
                         <div className="font-semibold text-gray-900 dark:text-white">
                           {recipeData.nutrition.calories} kcal
                         </div>
@@ -248,7 +286,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                     )}
                     {recipeData.nutrition.protein_g && (
                       <div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Protein</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          Protein
+                        </div>
                         <div className="font-semibold text-gray-900 dark:text-white">
                           {recipeData.nutrition.protein_g} g
                         </div>
@@ -256,7 +296,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                     )}
                     {recipeData.nutrition.carbs_g && (
                       <div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Carbs</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          Carbs
+                        </div>
                         <div className="font-semibold text-gray-900 dark:text-white">
                           {recipeData.nutrition.carbs_g} g
                         </div>
@@ -264,7 +306,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                     )}
                     {recipeData.nutrition.fat_g && (
                       <div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Fat</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          Fat
+                        </div>
                         <div className="font-semibold text-gray-900 dark:text-white">
                           {recipeData.nutrition.fat_g} g
                         </div>
@@ -272,7 +316,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                     )}
                     {recipeData.nutrition.fiber_g && (
                       <div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Fiber</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          Fiber
+                        </div>
                         <div className="font-semibold text-gray-900 dark:text-white">
                           {recipeData.nutrition.fiber_g} g
                         </div>
@@ -280,7 +326,9 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                     )}
                     {recipeData.nutrition.sodium_mg && (
                       <div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Sodium</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          Sodium
+                        </div>
                         <div className="font-semibold text-gray-900 dark:text-white">
                           {recipeData.nutrition.sodium_mg} mg
                         </div>
@@ -303,8 +351,8 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                       recipeData.price_estimate.max
                         ? `${recipeData.price_estimate.min.toLocaleString()} - ${recipeData.price_estimate.max.toLocaleString()} ${recipeData.price_estimate.currency || "VND"}`
                         : recipeData.price_estimate.min
-                        ? `Từ ${recipeData.price_estimate.min.toLocaleString()} ${recipeData.price_estimate.currency || "VND"}`
-                        : `Đến ${recipeData.price_estimate.max.toLocaleString()} ${recipeData.price_estimate.currency || "VND"}`}
+                          ? `Từ ${recipeData.price_estimate.min.toLocaleString()} ${recipeData.price_estimate.currency || "VND"}`
+                          : `Đến ${recipeData.price_estimate.max.toLocaleString()} ${recipeData.price_estimate.currency || "VND"}`}
                     </div>
                   </div>
                 )}
@@ -361,31 +409,32 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
                           {type === "breakfast"
                             ? "Sáng"
                             : type === "lunch"
-                            ? "Trưa"
-                            : "Tối"}
+                              ? "Trưa"
+                              : "Tối"}
                         </span>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {recipeData.taste_profile && recipeData.taste_profile.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                      Hương vị
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {recipeData.taste_profile.map((taste, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded text-sm"
-                        >
-                          {taste}
-                        </span>
-                      ))}
+                {recipeData.taste_profile &&
+                  recipeData.taste_profile.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Hương vị
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {recipeData.taste_profile.map((taste, index) => (
+                          <span
+                            key={index}
+                            className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded text-sm"
+                          >
+                            {taste}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
 
               {/* Utensils */}
@@ -454,22 +503,24 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
 
         {/* Footer */}
         <div className="flex-shrink-0 border-t dark:border-gray-700 p-4 flex justify-end gap-2">
-          {recipeData?.is_ugc && (recipeData?.ugc_status === "pending" || !recipeData?.ugc_status) && (
-            <>
-              <button
-                onClick={() => onReject && onReject()}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-              >
-                Từ chối
-              </button>
-              <button
-                onClick={() => onApprove && onApprove()}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              >
-                Phê duyệt
-              </button>
-            </>
-          )}
+          {recipeData?.is_ugc &&
+            (recipeData?.ugc_status === "pending" ||
+              !recipeData?.ugc_status) && (
+              <>
+                <button
+                  onClick={() => onReject && onReject()}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  Từ chối
+                </button>
+                <button
+                  onClick={() => onApprove && onApprove()}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  Phê duyệt
+                </button>
+              </>
+            )}
 
           <button
             onClick={onClose}
@@ -484,4 +535,3 @@ const AdminRecipeDetailModal = ({ recipe, onClose, onApprove, onReject }) => {
 };
 
 export default AdminRecipeDetailModal;
-

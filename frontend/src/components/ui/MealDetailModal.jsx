@@ -94,11 +94,13 @@ const MealDetailModal = ({ meal, onClose, userPreferences }) => {
         // ✅ Cache lại
         cacheRef.current[key] = data;
 
-        // ✅ Chỉ update phần ingredients và nutrition (giữ nguyên ảnh + text)
+        // ✅ Update needed fields while keeping existing UI data
         setMealData((prev) => ({
           ...prev,
           ingredients: data.ingredients || prev.ingredients,
           nutrition: data.nutrition || prev.nutrition,
+          cooking_video_url: data.cooking_video_url || prev.cooking_video_url,
+          video_url: data.video_url || prev.video_url,
         }));
       } catch (err) {
         console.error("❌ Lỗi tải món:", err);

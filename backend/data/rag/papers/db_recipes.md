@@ -13033,8 +13033,8 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 
 ---
 
-## Món ăn: GÀ CHIÊN VỊ BƠ TỎI
-- **Mã món (ID):** undefined
+## Món ăn: Gà Chiên Vị Bơ Tỏi
+- **Mã món (ID):** 28
 - **Vùng miền:** Bắc
 - **Loại món (Category):** main
 - **Thích hợp cho bữa:** dinner, lunch
@@ -13058,6 +13058,139 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 1. Đun nóng dầu ăn, xóc đều gà với 1 gói Aji-Quick® Bột Tẩm Khô Chiên Giòn hương vị Bơ Tỏi, chiên chín vàng, vớt ra để táo dầu.
 2. Pha xốt trộn: 2M Xốt Mayonnaise Aji-mayo® Vị Nguyên Bản, 1M xoài cắt hạt lựu nhỏ, 1m nước cốt chanh, 1/2m vỏ chanh mài và 1/2m ớt sừng cắt nhỏ.
 3. Xếp gà chiên và salad ra dĩa, rưới xốt lên trên.
+
+---
+
+## Món ăn: Test
+- **Mã món (ID):** 29
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 120 phút, Nấu 120 phút. Tổng: 240 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** -100 calo, 0g protein, -1g carbs, 5g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** ngon
+- **Mô tả:** ngonaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+### Nguyên liệu cần chuẩn bị:
+- 1 kg gà
+
+### Cách làm (Steps):
+1. nấu
+2. ăn
+
+---
+
+## Món ăn: Test 2
+- **Mã món (ID):** 22
+- **Vùng miền:** Trung
+- **Loại món (Category):** salad
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị -11 phút, Nấu 0 phút. Tổng: -11 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 202 calo, 0g protein, -1g carbs, 0g fat.
+
+### Nguyên liệu cần chuẩn bị:
+- 3 quả cà chua
+
+### Cách làm (Steps):
+1. 3
+
+---
+
+## Món ăn: Test 2
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 0 phút, Nấu 0 phút. Tổng: 0 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 2 calo, 2g protein, 2g carbs, 2g fat.
+
+### Nguyên liệu cần chuẩn bị:
+- 2 quả gà
+
+### Cách làm (Steps):
+1. ăn
+
+---
+
+## Món ăn: Banh canh
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** salad
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 12 phút, Nấu 20 phút. Tổng: 32 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 23 calo, 32g protein, 32g carbs, 32g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** ád
+
+### Nguyên liệu cần chuẩn bị:
+- 123 123 nấu
+
+### Cách làm (Steps):
+1. nấu ăn
+
+---
+
+## Món ăn: Bánh Canh
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 123 phút, Nấu 21 phút. Tổng: 144 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 123 calo, 12g protein, 12g carbs, 0g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** ád
+
+### Nguyên liệu cần chuẩn bị:
+- 123 123 123
+
+### Cách làm (Steps):
+1. 12312
+
+---
+
+## Món ăn: Bánh canh
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 312 phút, Nấu 123 phút. Tổng: 435 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 312 calo, 3123g protein, 2131g carbs, 123g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** ádasd
+
+### Nguyên liệu cần chuẩn bị:
+- 1232 123 123
+
+### Cách làm (Steps):
+1. 12321
+
+---
+
+## Món ăn: Salad gà nướng thơm
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 12 phút, Nấu 323 phút. Tổng: 335 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 12 calo, 123g protein, 32g carbs, 1213g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** sdfs
+
+### Nguyên liệu cần chuẩn bị:
+- 12 mh sd
+
+### Cách làm (Steps):
+1. 12312asda
 
 ---
 
