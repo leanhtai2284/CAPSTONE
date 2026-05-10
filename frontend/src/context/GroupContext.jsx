@@ -197,7 +197,9 @@ export const GroupProvider = ({ children }) => {
         mealId,
         mealData
       );
-      setGroupMenu([...groupMenu, meal]);
+      // Reload the entire menu to ensure consistency
+      const updatedMenu = await groupService.getGroupMenu(groupId);
+      setGroupMenu(Array.isArray(updatedMenu) ? updatedMenu : []);
       return meal;
     } catch (err) {
       setError(err.message);
