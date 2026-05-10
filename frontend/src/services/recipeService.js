@@ -160,4 +160,20 @@ export const recipeService = {
     }
     return res.json();
   },
+
+  // Get recipes for group menu (simplified version)
+  async getRecipesForGroupMenu(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const res = await fetch(
+      `${API_BASE}/api/group-menu/recipes${query ? `?${query}` : ""}`,
+      {
+        headers: getAuthHeaders(),
+      },
+    );
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || err.message || "Không thể tải danh sách công thức");
+    }
+    return res.json();
+  },
 };

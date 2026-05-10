@@ -25,6 +25,11 @@ const groupMenuMealSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    note: {
+      type: String,
+      maxlength: 200,
+      default: "",
+    },
   },
   { _id: false },
 );

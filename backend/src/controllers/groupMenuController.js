@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Group from "../models/Group.js";
 import GroupInvite from "../models/GroupInvite.js";
 import GroupMenu from "../models/GroupMenu.js";
@@ -25,8 +26,7 @@ const isMember = (group, userId) =>
 
 const canManageMenu = (group, userId) => {
   if (isOwner(group, userId)) return true;
-  const role = getMemberRole(group, userId);
-  return role === "admin";
+  return isMember(group, userId); // All members can add meals to menu
 };
 
 const hasPendingInvite = async (groupId, email) => {
@@ -62,6 +62,7 @@ const mapMeal = (menuItem) => {
     suggestedBy: menuItem.suggestedBy?.name,
     votes: menuItem.votes || 0,
     addedAt: menuItem.addedAt,
+    note: menuItem.note || "",
   };
 };
 
@@ -98,13 +99,32 @@ export const getGroupMenu = async (req, res) => {
 
 export const addMealToMenu = async (req, res) => {
   try {
-    const { mealId } = req.body;
+    const { mealId, note } = req.body;
+    
+    // Debug logging
+    console.log("🔍 Debug - Request body:", req.body);
+    console.log("🔍 Debug - mealId:", mealId);
+    console.log("🔍 Debug - mealId type:", typeof mealId);
+    
+    // Validate mealId
+    if (!mealId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Thiếu ID công thức" });
+    }
+
+    if (typeof mealId !== 'string' && typeof mealId !== 'object') {
+      return res
+        .status(400)
+        .json({ success: false, message: "ID công thức không hợp lệ" });
+    }
+
     const group = await Group.findById(req.params.id);
 
     if (!group) {
       return res
         .status(404)
-        .json({ success: false, message: "Group not found" });
+        .json({ success: false, message: "Không tìm thấy nhóm" });
     }
 
     if (!isMember(group, req.user._id)) {
@@ -112,15 +132,44 @@ export const addMealToMenu = async (req, res) => {
       if (!invited) {
         return res
           .status(403)
-          .json({ success: false, message: "Access denied" });
+          .json({ success: false, message: "Bạn không có quyền truy cập nhóm này" });
       }
     }
 
-    const recipe = await Recipe.findById(mealId);
+    // Try multiple ways to find the recipe
+    let recipe = null;
+    
+    // Try by ObjectId first
+    if (mongoose.Types.ObjectId.isValid(mealId)) {
+      recipe = await Recipe.findById(mealId);
+      console.log("🔍 Debug - Found by ObjectId:", !!recipe);
+    }
+    
+    // If not found, try by custom id field
     if (!recipe) {
+      recipe = await Recipe.findOne({ id: mealId });
+      console.log("🔍 Debug - Found by custom id:", !!recipe);
+    }
+    
+    // If still not found, try by name_vi
+    if (!recipe) {
+      recipe = await Recipe.findOne({ name_vi: mealId });
+      console.log("🔍 Debug - Found by name_vi:", !!recipe);
+    }
+
+    if (!recipe) {
+      console.log("❌ Recipe not found for mealId:", mealId);
       return res
         .status(404)
-        .json({ success: false, message: "Meal not found" });
+        .json({ 
+          success: false, 
+          message: "Không tìm thấy công thức",
+          debug: {
+            mealId,
+            mealIdType: typeof mealId,
+            searchedFields: ['_id', 'id', 'name_vi']
+          }
+        });
     }
 
     const menu =
@@ -134,7 +183,7 @@ export const addMealToMenu = async (req, res) => {
     if (exists) {
       return res
         .status(409)
-        .json({ success: false, message: "Meal already in menu" });
+        .json({ success: false, message: "Món ăn đã có trong menu" });
     }
 
     menu.meals.push({
@@ -143,11 +192,15 @@ export const addMealToMenu = async (req, res) => {
       addedAt: new Date(),
       votes: 0,
       votedBy: [],
+      note: note || "",
     });
 
     await menu.save();
 
-    await menu.populate("meals.meal").populate("meals.suggestedBy", "name");
+    await menu.populate([
+      { path: "meals.meal" },
+      { path: "meals.suggestedBy", select: "name" }
+    ]);
 
     const addedItem = menu.meals.find(
       (m) => m.meal?._id?.toString() === recipe._id.toString(),
@@ -328,6 +381,48 @@ export const getGroupNutrition = async (req, res) => {
     });
   } catch (error) {
     console.error("Error getGroupNutrition:", error);
+    res.status(500).json({ success: false, message: "Lỗi server" });
+  }
+};
+
+// Get recipes for group menu
+export const getRecipesForGroupMenu = async (req, res) => {
+  try {
+    const { search, page = 1, limit = 20 } = req.query;
+    
+    let query = {};
+    if (search) {
+      query = {
+        $or: [
+          { name_vi: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } },
+        ]
+      };
+    }
+    
+    const recipes = await Recipe.find(query)
+      .select("_id name_vi description image_url nutrition prep_time_min cook_time_min servings")
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .sort({ createdAt: -1 })
+      .lean();
+    
+    const total = await Recipe.countDocuments(query);
+    
+    res.json({
+      success: true,
+      data: {
+        items: recipes,
+        pagination: {
+          currentPage: parseInt(page),
+          totalPages: Math.ceil(total / limit),
+          totalItems: total,
+          hasNext: page * limit < total,
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error getting recipes for group menu:", error);
     res.status(500).json({ success: false, message: "Lỗi server" });
   }
 };

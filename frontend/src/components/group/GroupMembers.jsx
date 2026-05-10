@@ -1,11 +1,10 @@
 import React from "react";
-import { User, Mail, Shield, Trash2, Edit } from "lucide-react";
+import { User, Mail, Shield, Trash2 } from "lucide-react";
 
 export default function GroupMembers({
   members,
   isOwner,
   onRemoveMember,
-  onChangeRole,
   loading,
 }) {
   if (!members || members.length === 0) {
@@ -75,24 +74,14 @@ export default function GroupMembers({
             </span>
 
             {isOwner && member.role !== "owner" && (
-              <>
-                <button
-                  onClick={() => onChangeRole?.(member._id, member.role)}
-                  disabled={loading}
-                  className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition disabled:opacity-50"
-                  title="Đổi vai trò"
-                >
-                  <Edit className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => onRemoveMember?.(member._id)}
-                  disabled={loading}
-                  className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition disabled:opacity-50"
-                  title="Xóa thành viên"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </>
+              <button
+                onClick={() => onRemoveMember?.(member._id)}
+                disabled={loading}
+                className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition disabled:opacity-50"
+                title="Xóa thành viên"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
             )}
           </div>
         </div>

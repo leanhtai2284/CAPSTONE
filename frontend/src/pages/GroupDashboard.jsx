@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BellIcon } from "lucide-react";
+import { BellIcon, Plus } from "lucide-react";
 import { useGroup } from "../hooks/useGroup";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "sonner";
@@ -92,6 +92,13 @@ export default function GroupDashboard() {
                 Quản lý kế hoạch dinh dưỡng cùng bạn bè
               </p>
             </div>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium shadow-lg hover:shadow-xl"
+            >
+              <Plus className="w-5 h-5" />
+              Tạo nhóm mới
+            </button>
           </div>
         </div>
 

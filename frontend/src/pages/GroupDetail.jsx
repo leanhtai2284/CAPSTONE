@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import GroupMembers from "../components/group/GroupMembers";
 import GroupMenuVoting from "../components/group/GroupMenuVoting";
 import InviteUI from "../components/group/InviteUI";
+import AddMealModal from "../components/group/AddMealModal";
 import { groupService } from "../services/groupService";
 
 export default function GroupDetail() {
@@ -26,6 +27,7 @@ export default function GroupDetail() {
     groupMenu,
     loadGroupDetail,
     removeMealFromMenu,
+    addMealToMenu,
     removeMember,
     deleteGroup,
     loading,
@@ -33,6 +35,7 @@ export default function GroupDetail() {
   } = useGroup();
 
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [showAddMealModal, setShowAddMealModal] = useState(false);
   const [activeTab, setActiveTab] = useState("menu");
   const [isOwner, setIsOwner] = useState(false);
   const [statsLoading, setStatsLoading] = useState(false);
@@ -139,10 +142,28 @@ export default function GroupDetail() {
     if (window.confirm("Bạn chắc chắn muốn xóa bữa ăn này khỏi menu?")) {
       try {
         await removeMealFromMenu(groupId, mealId);
+        
+        // Reload group detail to refresh menu
+        await loadGroupDetail(groupId);
+        
         toast.success("✅ Đã xóa bữa ăn!");
       } catch (error) {
         toast.error("❌ Lỗi khi xóa bữa ăn");
       }
+    }
+  };
+
+  const handleAddMeal = async (passedGroupId, mealId, mealData) => {
+    try {
+      await addMealToMenu(passedGroupId, mealId, mealData);
+      
+      // Reload group detail to refresh menu
+      await loadGroupDetail(groupId);
+      
+      toast.success("✅ Đã thêm công thức vào menu!");
+    } catch (error) {
+      console.error("❌ Error adding meal:", error);
+      toast.error("❌ Lỗi khi thêm công thức: " + (error.message || "Vui lòng thử lại"));
     }
   };
 
@@ -221,13 +242,16 @@ export default function GroupDetail() {
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                   {selectedGroup.name}
                 </h1>
-                <div className="flex items-center gap-4">
-                  <span className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
-                    {goalIcons[selectedGroup.goal]}{" "}
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 border border-orange-200 dark:border-orange-800 text-orange-800 dark:text-orange-200 text-sm font-medium rounded-full shadow-sm">
+                    <span className="text-lg">{goalIcons[selectedGroup.goal]}</span>
                     {goalLabels[selectedGroup.goal]}
                   </span>
                   {isOwner && (
-                    <span className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-semibold rounded">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 text-sm font-medium rounded-full shadow-sm">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                      </svg>
                       Chủ sở hữu
                     </span>
                   )}
@@ -322,8 +346,20 @@ export default function GroupDetail() {
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                   Menu Hợp Tác
                 </h2>
-                {isOwner && (
-                  <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                {(() => {
+                  // Try multiple ways to match user ID
+                  const isMember1 = groupMembers.some(m => m.user?._id === user?._id);
+                  const isMember2 = groupMembers.some(m => m.user?.toString() === user?._id);
+                  const isMember3 = groupMembers.some(m => m._id === user?._id);
+                  const isMember4 = groupMembers.some(m => m?.toString() === user?._id);
+                  
+                  const isMember = isMember1 || isMember2 || isMember3 || isMember4;
+                  return isOwner || isMember;
+                })() && (
+                  <button 
+                    onClick={() => setShowAddMealModal(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                  >
                     <Plus className="w-4 h-4" />
                     Thêm bữa ăn
                   </button>
@@ -424,6 +460,14 @@ export default function GroupDetail() {
         isOpen={showInviteModal}
         onClose={() => setShowInviteModal(false)}
         groupName={selectedGroup.name}
+      />
+
+      {/* Add Meal Modal */}
+      <AddMealModal
+        isOpen={showAddMealModal}
+        onClose={() => setShowAddMealModal(false)}
+        groupId={groupId}
+        onAddMeal={handleAddMeal}
       />
     </div>
   );
