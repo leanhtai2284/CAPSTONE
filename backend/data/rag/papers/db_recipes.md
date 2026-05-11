@@ -13061,136 +13061,47 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 
 ---
 
-## Món ăn: Test
-- **Mã món (ID):** 29
-- **Vùng miền:** Bắc
+## Món ăn: Salad gà nướng thơm
+- **Mã món (ID):** undefined
+- **Vùng miền:** Trung
 - **Loại món (Category):** main
-- **Thích hợp cho bữa:** lunch, dinner
-- **Thời gian:** Chuẩn bị 120 phút, Nấu 120 phút. Tổng: 240 phút.
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 20 phút. Tổng: 35 phút.
 - **Độ khó:** easy
 - **Khẩu phần:** 1 người ăn.
-- **Dinh dưỡng (ước tính):** -100 calo, 0g protein, -1g carbs, 5g fat.
-- **Chế độ ăn phù hợp (Diet Tags):** ngon
-- **Mô tả:** ngonaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+- **Dinh dưỡng (ước tính):** 423 calo, 74.9g protein, 6.8g carbs, 8.7g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** giau dam, nhieu chat xo, it calo, it carb, it beo
 
 ### Nguyên liệu cần chuẩn bị:
-- 1 kg gà
+- 200 g Má đùi gà rút xương g
+- 100 g Xà lách mỡ
+- 50 g Cà chua bi
+- 20 g Bắp Mỹ hạt
+- 50 g Dưa leo
 
 ### Cách làm (Steps):
-1. nấu
-2. ăn
+1. Má đùi gà lạng mỏng, đập sơ, ướp má đùi gà với 1m hành tỏi băm nhuyễn, 1/2m Hạt nêm Aji-ngon® Heo, 1/2m Bột ngọt AJI-NO-MOTO®, 1/3m tiêu, 1m nước tương “Phú Sĩ”, 1/2M mật ong, để thấm 10 phút.
+2. Xà lách cắt miếng vừa ăn. Cà chua cắt đôi. Bắp Mỹ hạt luộc chín. Dưa leo cắt khoanh tròn. Húng lủi cắt nhỏ Cho salad vào tủ mát.
+3. Thơm bỏ cùi, cắt lát dày 1cm ướp với xíu muối.
 
 ---
 
-## Món ăn: Test 2
-- **Mã món (ID):** 22
-- **Vùng miền:** Trung
-- **Loại món (Category):** salad
-- **Thích hợp cho bữa:** N/A
-- **Thời gian:** Chuẩn bị -11 phút, Nấu 0 phút. Tổng: -11 phút.
-- **Độ khó:** medium
-- **Khẩu phần:** 1 người ăn.
-- **Dinh dưỡng (ước tính):** 202 calo, 0g protein, -1g carbs, 0g fat.
-
-### Nguyên liệu cần chuẩn bị:
-- 3 quả cà chua
-
-### Cách làm (Steps):
-1. 3
-
----
-
-## Món ăn: Test 2
+## Món ăn: Súp cua
 - **Mã món (ID):** undefined
 - **Vùng miền:** Bắc
 - **Loại món (Category):** main
 - **Thích hợp cho bữa:** N/A
 - **Thời gian:** Chuẩn bị 0 phút, Nấu 0 phút. Tổng: 0 phút.
-- **Độ khó:** medium
-- **Khẩu phần:** 1 người ăn.
-- **Dinh dưỡng (ước tính):** 2 calo, 2g protein, 2g carbs, 2g fat.
-
-### Nguyên liệu cần chuẩn bị:
-- 2 quả gà
-
-### Cách làm (Steps):
-1. ăn
-
----
-
-## Món ăn: Banh canh
-- **Mã món (ID):** undefined
-- **Vùng miền:** Bắc
-- **Loại món (Category):** salad
-- **Thích hợp cho bữa:** N/A
-- **Thời gian:** Chuẩn bị 12 phút, Nấu 20 phút. Tổng: 32 phút.
 - **Độ khó:** easy
 - **Khẩu phần:** 1 người ăn.
-- **Dinh dưỡng (ước tính):** 23 calo, 32g protein, 32g carbs, 32g fat.
-- **Chế độ ăn phù hợp (Diet Tags):** ád
+- **Dinh dưỡng (ước tính):** 447 calo, 18.7g protein, 56.7g carbs, 11.7g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** giau dam, it calo, it beo
 
 ### Nguyên liệu cần chuẩn bị:
-- 123 123 nấu
+- 400 g thịt cua
 
 ### Cách làm (Steps):
-1. nấu ăn
-
----
-
-## Món ăn: Bánh Canh
-- **Mã món (ID):** undefined
-- **Vùng miền:** Bắc
-- **Loại món (Category):** main
-- **Thích hợp cho bữa:** N/A
-- **Thời gian:** Chuẩn bị 123 phút, Nấu 21 phút. Tổng: 144 phút.
-- **Độ khó:** easy
-- **Khẩu phần:** 1 người ăn.
-- **Dinh dưỡng (ước tính):** 123 calo, 12g protein, 12g carbs, 0g fat.
-- **Chế độ ăn phù hợp (Diet Tags):** ád
-
-### Nguyên liệu cần chuẩn bị:
-- 123 123 123
-
-### Cách làm (Steps):
-1. 12312
-
----
-
-## Món ăn: Bánh canh
-- **Mã món (ID):** undefined
-- **Vùng miền:** Bắc
-- **Loại món (Category):** main
-- **Thích hợp cho bữa:** N/A
-- **Thời gian:** Chuẩn bị 312 phút, Nấu 123 phút. Tổng: 435 phút.
-- **Độ khó:** easy
-- **Khẩu phần:** 1 người ăn.
-- **Dinh dưỡng (ước tính):** 312 calo, 3123g protein, 2131g carbs, 123g fat.
-- **Chế độ ăn phù hợp (Diet Tags):** ádasd
-
-### Nguyên liệu cần chuẩn bị:
-- 1232 123 123
-
-### Cách làm (Steps):
-1. 12321
-
----
-
-## Món ăn: Salad gà nướng thơm
-- **Mã món (ID):** undefined
-- **Vùng miền:** Bắc
-- **Loại món (Category):** main
-- **Thích hợp cho bữa:** dinner
-- **Thời gian:** Chuẩn bị 12 phút, Nấu 323 phút. Tổng: 335 phút.
-- **Độ khó:** easy
-- **Khẩu phần:** 1 người ăn.
-- **Dinh dưỡng (ước tính):** 12 calo, 123g protein, 32g carbs, 1213g fat.
-- **Chế độ ăn phù hợp (Diet Tags):** sdfs
-
-### Nguyên liệu cần chuẩn bị:
-- 12 mh sd
-
-### Cách làm (Steps):
-1. 12312asda
+- (Đang cập nhật)
 
 ---
 
