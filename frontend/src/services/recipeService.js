@@ -84,6 +84,21 @@ export const recipeService = {
     return res.json();
   },
 
+  // Estimate UGC nutrition/price using backend dataset
+  async estimateUGC(payload) {
+    const res = await fetch(`${API_BASE}/api/recipes/ugc/estimate`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || err.error || "Không thể ước tính");
+    }
+    return res.json();
+  },
+
   // Update recipe (admin only)
   async updateRecipe(id, recipeData) {
     const res = await fetch(`${API_BASE}/api/recipes/${id}`, {
@@ -172,7 +187,9 @@ export const recipeService = {
     );
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || err.message || "Không thể tải danh sách công thức");
+      throw new Error(
+        err.error || err.message || "Không thể tải danh sách công thức",
+      );
     }
     return res.json();
   },

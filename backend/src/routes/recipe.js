@@ -11,7 +11,7 @@ import {
   swapSingleMeal,
   generateShoppingList,
 } from "../controllers/recipeController.js";
-import { createUGC } from "../controllers/ugcController.js";
+import { createUGC, estimateUGC } from "../controllers/ugcController.js";
 import { protect, admin } from "../middlewares/authMiddleware.js";
 import ugcUpload from "../middlewares/ugcUploadMiddleware.js";
 
@@ -27,6 +27,7 @@ router.post("/swap-single-meal", swapSingleMeal);
 router.post("/shopping-list", generateShoppingList);
 
 // UGC submit (logged-in users)
+router.post("/ugc/estimate", protect, estimateUGC);
 router.post(
   "/ugc",
   protect,
