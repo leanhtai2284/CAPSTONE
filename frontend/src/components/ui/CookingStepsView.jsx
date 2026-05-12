@@ -8,6 +8,16 @@ import {
   UserIcon,
 } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+const resolveVideoUrl = (url) => {
+  if (!url) return "";
+  return url.startsWith("/") ? `${API_BASE}${url}` : url;
+};
+
+const isDirectVideoFile = (url) =>
+  /\.(mp4|webm|mov|mkv)(\?.*)?$/i.test(url || "");
+
 function CookingStepsView({ meal, onClose, onBackToDetails }) {
   // Validate meal data
   if (!meal || !meal.steps || meal.steps.length === 0) {
@@ -44,7 +54,11 @@ function CookingStepsView({ meal, onClose, onBackToDetails }) {
   }
 
   // Check if video is valid
-  const hasVideo = meal.video_url && meal.video_url.trim().length > 0;
+  const videoUrl = meal.cooking_video_url || meal.video_url || "";
+  const hasVideo = videoUrl.trim().length > 0;
+  const resolvedVideoUrl = resolveVideoUrl(videoUrl);
+  const useHtmlVideo =
+    resolvedVideoUrl.includes("/uploads/") || isDirectVideoFile(videoUrl);
 
   // Calculate total cooking time (fallback: 30 minutes if not provided)
   const totalTime = meal.total_time || meal.time || 30;
@@ -95,16 +109,24 @@ function CookingStepsView({ meal, onClose, onBackToDetails }) {
                   aspectRatio: "16/9",
                 }}
               >
-                <iframe
-                  src={meal.video_url}
-                  title={`Video hướng dẫn ${meal.name_vi}`}
-                  className="absolute inset-0 w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  onError={(e) => {
-                    console.warn("Video iframe loading error:", e);
-                  }}
-                />
+                {useHtmlVideo ? (
+                  <video
+                    src={resolvedVideoUrl}
+                    className="absolute inset-0 w-full h-full"
+                    controls
+                  />
+                ) : (
+                  <iframe
+                    src={resolvedVideoUrl}
+                    title={`Video hướng dẫn ${meal.name_vi}`}
+                    className="absolute inset-0 w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    onError={(e) => {
+                      console.warn("Video iframe loading error:", e);
+                    }}
+                  />
+                )}
               </div>
               {meal.uploaded_by && (
                 <div className="flex items-center gap-1.5 px-1">

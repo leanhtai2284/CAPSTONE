@@ -1,4 +1,6 @@
 import Recipe from "../models/Recipe.js";
+import { estimateRecipe } from "../utils/recipeEstimate.js";
+import { retrieveNutritionFromDataset } from "../utils/dishNutritionRetrieval.js";
 import { createNotification } from "./notificationController.js";
 
 const parseJson = (value, fallback) => {
@@ -21,6 +23,65 @@ const normalizeStringArray = (value) => {
   return value.map((item) => String(item).trim()).filter(Boolean);
 };
 
+const DIACRITIC_MAP = {
+  "giau dam": "giàu đạm",
+  "dam da": "đậm đà",
+  "an chay": "ăn chay",
+  "nhieu chat xo": "nhiều chất xơ",
+  "it calo": "ít calo",
+  "it carb": "ít carb",
+  "it beo": "ít béo",
+  nhat: "nhạt",
+  ngot: "ngọt",
+  beo: "béo",
+  chua: "chua",
+  man: "mặn",
+  cay: "cay",
+  thom: "thơm",
+  am: "ấm",
+  chao: "chảo",
+  noi: "nồi",
+  "lo nuong": "lò nướng",
+  "noi hap": "nồi hấp",
+  "may xay": "máy xay",
+  "to tron": "tô trộn",
+  dao: "dao",
+  thot: "thớt",
+  "giam can": "giảm cân",
+  "tang co": "tăng cơ",
+  "an kieng": "ăn kiêng",
+  "tre em": "trẻ em",
+  "tieu duong": "tiểu đường",
+  "cao huyet ap": "cao huyết áp",
+  "da day yeu": "dạ dày yếu",
+  "di ung hat": "dị ứng hạt",
+  "hai san": "hải sản",
+  "dau nanh": "đậu nành",
+  sua: "sữa",
+  ca: "cá",
+  trung: "trứng",
+  "dau phong": "đậu phộng",
+  hat: "hạt",
+};
+
+const normalizeKey = (value) =>
+  String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const toVietnameseDiacritics = (value) => {
+  const key = normalizeKey(value);
+  return DIACRITIC_MAP[key] || value;
+};
+
+const normalizeHeuristicList = (value) =>
+  normalizeStringArray(value)
+    .map((item) => toVietnameseDiacritics(item))
+    .filter(Boolean);
+
 const normalizeIngredients = (value) => {
   if (!Array.isArray(value)) return [];
   return value
@@ -37,6 +98,35 @@ const normalizeIngredients = (value) => {
       };
     })
     .filter(Boolean);
+};
+
+const normalizeIngredientsForHeuristic = (value) => {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => {
+      const name = String(item?.name || "").trim();
+      if (!name) return null;
+      const unit = String(item?.unit || "").trim() || "g";
+      const amount = toNumber(item?.amount, 100);
+      return {
+        name,
+        unit,
+        amount,
+        scalable: item?.scalable !== false,
+      };
+    })
+    .filter(Boolean);
+};
+
+const normalizeIngredientNames = (value) => {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => {
+      if (typeof item === "string") return item.trim();
+      return String(item?.name || "").trim();
+    })
+    .filter(Boolean)
+    .map((name) => ({ name }));
 };
 
 const normalizeNutrition = (value) => {
@@ -58,6 +148,64 @@ const normalizePrice = (value) => ({
   currency: value?.currency || "VND",
 });
 
+export const estimateUGC = async (req, res) => {
+  try {
+    const ingredientNames = normalizeIngredientNames(
+      req.body.ingredients || [],
+    );
+    const ingredients = normalizeIngredientsForHeuristic(
+      req.body.ingredients || [],
+    );
+    const steps = normalizeStringArray(req.body.steps || []);
+    const servingsNum = toNumber(req.body.servings, 1);
+    const spiceLevel = toNumber(req.body.spice_level, 0);
+
+    const estimation = estimateRecipe({
+      ingredients,
+      steps,
+      servings: servingsNum,
+      spice_level: spiceLevel,
+    });
+
+    const datasetEstimate = await retrieveNutritionFromDataset({
+      name: req.body.name_vi || req.body.name || "",
+      ingredients: ingredientNames,
+    });
+
+    if (!datasetEstimate) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy món tương tự trong dataset để ước tính",
+      });
+    }
+
+    const nutrition = normalizeNutrition(datasetEstimate.nutrition || {});
+    const priceEstimate = normalizePrice(datasetEstimate.price_estimate || {});
+
+    res.json({
+      success: true,
+      data: {
+        nutrition,
+        price_estimate: priceEstimate,
+        diet_tags: normalizeHeuristicList(estimation?.diet_tags || []),
+        allergens: normalizeHeuristicList(estimation?.allergens || []),
+        taste_profile: normalizeHeuristicList(estimation?.taste_profile || []),
+        utensils: normalizeHeuristicList(estimation?.utensils || []),
+        suitable_for: normalizeHeuristicList(estimation?.suitable_for || []),
+        avoid_for: normalizeHeuristicList(estimation?.avoid_for || []),
+        source: "dataset",
+      },
+    });
+  } catch (error) {
+    console.error("estimateUGC error:", error);
+    res.status(400).json({
+      success: false,
+      message: "Không thể ước tính dinh dưỡng",
+      error: error.message,
+    });
+  }
+};
+
 export const createUGC = async (req, res) => {
   try {
     const externalId = String(req.body.external_id || "").trim();
@@ -71,18 +219,46 @@ export const createUGC = async (req, res) => {
     }
 
     const mealTypes = parseJson(req.body.meal_types, []);
-    const ingredients = normalizeIngredients(
-      parseJson(req.body.ingredients, []),
-    );
+    const rawIngredients = parseJson(req.body.ingredients, []);
+    const ingredients = normalizeIngredients(rawIngredients);
+    const ingredientNames = normalizeIngredientNames(rawIngredients);
     const steps = normalizeStringArray(parseJson(req.body.steps, []));
 
-    const nutrition = normalizeNutrition(parseJson(req.body.nutrition, {}));
-    const priceEstimate = normalizePrice(
-      parseJson(req.body.price_estimate, {}),
+    const servingsNum = toNumber(req.body.servings, 1);
+    const spiceLevel = toNumber(req.body.spice_level, 0);
+
+    const estimation = estimateRecipe({
+      ingredients: normalizeIngredientsForHeuristic(rawIngredients),
+      steps,
+      servings: servingsNum,
+      spice_level: spiceLevel,
+    });
+
+    const datasetEstimate = await retrieveNutritionFromDataset({
+      name: req.body.name_vi,
+      ingredients: ingredientNames,
+    });
+
+    if (!datasetEstimate) {
+      return res.status(422).json({
+        success: false,
+        message: "Không tìm thấy món tương tự trong dataset để ước tính",
+      });
+    }
+
+    const nutrition = normalizeNutrition(datasetEstimate.nutrition || {});
+    const priceEstimate = normalizePrice(datasetEstimate.price_estimate || {});
+
+    const dietTags = normalizeHeuristicList(estimation?.diet_tags || []);
+    const allergens = normalizeHeuristicList(estimation?.allergens || []);
+    const tasteProfile = normalizeHeuristicList(
+      estimation?.taste_profile || [],
     );
+    const utensils = normalizeHeuristicList(estimation?.utensils || []);
+    const suitableFor = normalizeHeuristicList(estimation?.suitable_for || []);
+    const avoidFor = normalizeHeuristicList(estimation?.avoid_for || []);
 
     const payload = {
-      id: externalId || undefined,
       name_vi: req.body.name_vi,
       region: req.body.region,
       category: req.body.category,
@@ -90,20 +266,18 @@ export const createUGC = async (req, res) => {
       prep_time_min: toNumber(req.body.prep_time_min),
       cook_time_min: toNumber(req.body.cook_time_min),
       difficulty: req.body.difficulty,
-      servings: toNumber(req.body.servings, 1),
+      servings: servingsNum,
       description: req.body.description,
       image_url: req.body.image_url,
-      spice_level: toNumber(req.body.spice_level, 0),
+      spice_level: spiceLevel,
       ingredients,
       steps,
-      utensils: normalizeStringArray(parseJson(req.body.utensils, [])),
-      diet_tags: normalizeStringArray(parseJson(req.body.diet_tags, [])),
-      allergens: normalizeStringArray(parseJson(req.body.allergens, [])),
-      taste_profile: normalizeStringArray(
-        parseJson(req.body.taste_profile, []),
-      ),
-      suitable_for: normalizeStringArray(parseJson(req.body.suitable_for, [])),
-      avoid_for: normalizeStringArray(parseJson(req.body.avoid_for, [])),
+      utensils,
+      diet_tags: dietTags,
+      allergens,
+      taste_profile: tasteProfile,
+      suitable_for: suitableFor,
+      avoid_for: avoidFor,
       nutrition,
       price_estimate: priceEstimate,
       is_ugc: true,
@@ -111,13 +285,28 @@ export const createUGC = async (req, res) => {
       uploaded_by: req.user._id,
     };
 
-    if (req.file) {
-      payload.cooking_video_url = `/uploads/ugc/${req.file.filename}`;
+    if (externalId) {
+      payload.id = externalId;
+    }
+
+    const videoFile =
+      req.file ||
+      (Array.isArray(req.files?.cooking_video)
+        ? req.files.cooking_video[0]
+        : null);
+
+    if (videoFile) {
+      payload.cooking_video_url = `/uploads/ugc/${videoFile.filename}`;
     }
 
     const recipe = await Recipe.create(payload);
+    const data = recipe.toObject();
 
-    res.status(201).json({ success: true, data: recipe });
+    if (videoFile && !data.cooking_video_url) {
+      data.cooking_video_url = `/uploads/ugc/${videoFile.filename}`;
+    }
+
+    res.status(201).json({ success: true, data });
   } catch (error) {
     console.error("createUGC error:", error);
     res.status(400).json({

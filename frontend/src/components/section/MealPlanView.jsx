@@ -15,6 +15,8 @@ const MealPlanView = ({
   isSwapping = false,
   onSaveDailyMenu,
   onResetPlan,
+  onMarkAsCooked,
+  isCookingMealId,
 }) => {
   const [mealSets, setMealSets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,7 +33,7 @@ const MealPlanView = ({
 
   const normalizeMealsFromApi = (list) => {
     const breakfast = list.filter((m) =>
-      (m.meal_types || []).includes("breakfast")
+      (m.meal_types || []).includes("breakfast"),
     );
     const lunch = list.filter((m) => (m.meal_types || []).includes("lunch"));
     const dinner = list.filter((m) => (m.meal_types || []).includes("dinner"));
@@ -117,6 +119,8 @@ const MealPlanView = ({
                   onSwapMeal={onSwapMeal}
                   onFindNearby={onFindNearby}
                   isSwapping={isSwapping}
+                  onMarkAsCooked={onMarkAsCooked}
+                  isCookingMealId={isCookingMealId}
                 />
               </motion.div>
             ))}

@@ -13033,8 +13033,8 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 
 ---
 
-## Món ăn: GÀ CHIÊN VỊ BƠ TỎI
-- **Mã món (ID):** undefined
+## Món ăn: Gà Chiên Vị Bơ Tỏi
+- **Mã món (ID):** 28
 - **Vùng miền:** Bắc
 - **Loại món (Category):** main
 - **Thích hợp cho bữa:** dinner, lunch
@@ -13058,6 +13058,50 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 1. Đun nóng dầu ăn, xóc đều gà với 1 gói Aji-Quick® Bột Tẩm Khô Chiên Giòn hương vị Bơ Tỏi, chiên chín vàng, vớt ra để táo dầu.
 2. Pha xốt trộn: 2M Xốt Mayonnaise Aji-mayo® Vị Nguyên Bản, 1M xoài cắt hạt lựu nhỏ, 1m nước cốt chanh, 1/2m vỏ chanh mài và 1/2m ớt sừng cắt nhỏ.
 3. Xếp gà chiên và salad ra dĩa, rưới xốt lên trên.
+
+---
+
+## Món ăn: Salad gà nướng thơm
+- **Mã món (ID):** undefined
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 20 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 423 calo, 74.9g protein, 6.8g carbs, 8.7g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** giau dam, nhieu chat xo, it calo, it carb, it beo
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Má đùi gà rút xương g
+- 100 g Xà lách mỡ
+- 50 g Cà chua bi
+- 20 g Bắp Mỹ hạt
+- 50 g Dưa leo
+
+### Cách làm (Steps):
+1. Má đùi gà lạng mỏng, đập sơ, ướp má đùi gà với 1m hành tỏi băm nhuyễn, 1/2m Hạt nêm Aji-ngon® Heo, 1/2m Bột ngọt AJI-NO-MOTO®, 1/3m tiêu, 1m nước tương “Phú Sĩ”, 1/2M mật ong, để thấm 10 phút.
+2. Xà lách cắt miếng vừa ăn. Cà chua cắt đôi. Bắp Mỹ hạt luộc chín. Dưa leo cắt khoanh tròn. Húng lủi cắt nhỏ Cho salad vào tủ mát.
+3. Thơm bỏ cùi, cắt lát dày 1cm ướp với xíu muối.
+
+---
+
+## Món ăn: Súp cua
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 0 phút, Nấu 0 phút. Tổng: 0 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 447 calo, 18.7g protein, 56.7g carbs, 11.7g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** giau dam, it calo, it beo
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g thịt cua
+
+### Cách làm (Steps):
+- (Đang cập nhật)
 
 ---
 

@@ -35,7 +35,7 @@ const ingredientSchema = new mongoose.Schema(
 
 const recipeSchema = new mongoose.Schema(
   {
-    id: { type: String, unique: true, index: true },
+    id: { type: String, unique: true, sparse: true, index: true },
     name_vi: { type: String, required: true, index: "text" },
     region: {
       type: String,
