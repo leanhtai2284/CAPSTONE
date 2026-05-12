@@ -101,8 +101,8 @@ export function PantryCard({
   return (
     <div
       onClick={handleCardClick}
-      className={`group relative bg-white rounded-2xl p-5 shadow-sm border hover:shadow-xl hover:scale-[1.02] transition-all duration-200 cursor-pointer flex flex-col h-full ${
-        selected ? "border-primary ring-2 ring-primary" : "border-gray-100"
+      className={`group relative bg-white dark:bg-slate-950 rounded-2xl p-5 shadow-sm border hover:shadow-xl hover:scale-[1.02] transition-all duration-200 cursor-pointer flex flex-col h-full ${
+        selected ? "border-primary ring-2 ring-primary" : "dark:border-gray-600"
       }`}
       role="button"
       tabIndex={0}
@@ -112,14 +112,14 @@ export function PantryCard({
       <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         <button
           onClick={handleEdit}
-          className="p-2 bg-white rounded-full text-gray-400 hover:text-blue-100 hover:bg-blue-600 shadow-sm border border-gray-100 transition-colors"
+          className="p-2 bg-white dark:bg-slate-700 rounded-full text-gray-400 hover:text-blue-100 hover:bg-blue-600 dark:hover:bg-blue-600 shadow-sm border border-gray-100 dark:border-gray-800 transition-colors"
           aria-label={`Chỉnh sửa ${item.name}`}
         >
           <Pencil className="w-4 h-4" />
         </button>
         <button
           onClick={handleDelete}
-          className="p-2 bg-white rounded-full text-gray-400 hover:text-red-100 hover:bg-red-600 shadow-sm border border-gray-100 transition-colors"
+          className="p-2 bg-white dark:bg-slate-700 rounded-full text-gray-400 hover:text-red-100 hover:bg-red-600 dark:hover:bg-red-600 shadow-sm border border-gray-100 dark:border-gray-800 transition-colors"
           aria-label={`Xóa ${item.name}`}
         >
           <Trash2 className="w-4 h-4" />
@@ -138,21 +138,21 @@ export function PantryCard({
               }}
               className="form-checkbox h-5 w-5 text-green-600 border-gray-300 rounded"
             />
-            <span className="ml-2 text-xs text-gray-500"></span>
+            <span className="ml-2 text-xs text-gray-500 dark:text-gray-300"></span>
           </label>
         )}
         <div className="flex justify-between items-start">
           <div>
-            <h3 className="text-lg font-bold text-gray-900 " title={item.name}>
+            <h3 className="text-lg font-bold " title={item.name}>
               {item.name}
             </h3>
 
-            <p className="text-gray-500 text- font-medium mt-1">
+            <p className="text-gray-500 dark:text-gray-300 text- font-medium mt-1">
               {item.quantity} {unitLabels[item.unit] || item.unit}
             </p>
           </div>
 
-          <div className="flex text-gray-500 text-sm mt-2 gap-1 items-center">
+          <div className="flex text-gray-500 dark:text-gray-300 text-sm mt-2 gap-1 items-center">
             <Refrigerator className="w-4 h-4" />
             <span>
               {storageLocationLabels[item.storageLocation] ||
@@ -162,7 +162,7 @@ export function PantryCard({
         </div>
 
         {item.notes && (
-          <div className="flex items-start text-xs text-gray-500 mt-2 gap-1">
+          <div className="flex items-start text-xs text-gray-500 dark:text-gray-300 mt-2 gap-1">
             <FileText className="w-3 h-3 mt-0.5 flex-shrink-0" />
             <span
               className="truncate max-h-5 overflow-hidden"

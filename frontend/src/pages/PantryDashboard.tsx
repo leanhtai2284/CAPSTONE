@@ -403,7 +403,7 @@ export function PantryDashboard() {
               </div>
               <button
                 onClick={() => loadPantryItems()}
-                className="inline-flex items-center justify-center px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+                className="inline-flex items-center justify-center px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-300 bg-white dark:bg-slate-950 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
               >
                 <Search className="h-4 w-4 mr-2 text-gray-400" />
                 Tìm kiếm
@@ -413,7 +413,7 @@ export function PantryDashboard() {
             <div className="flex flex-wrap gap-2 items-center sm:justify-start">
               <button
                 onClick={handleSelectAll}
-                className="px-4 py-2 text-sm border border-gray-200 rounded-xl bg-white dark:bg-slate-950 hover:bg-gray-100"
+                className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-slate-950 hover:bg-gray-100"
               >
                 {selectedIds.length === items.length
                   ? "Bỏ chọn tất cả"
@@ -434,31 +434,6 @@ export function PantryDashboard() {
                 Xóa tất cả ({selectedIds.length})
               </button>
             </div>
-
-            <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <input
-                type="text"
-                placeholder="Recipe ID (recipeId)"
-                value={recipeCheckRecipeId}
-                onChange={(e) => setRecipeCheckRecipeId(e.target.value)}
-                className="px-3 py-2 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              <input
-                type="number"
-                min={1}
-                placeholder="Servings"
-                value={recipeCheckServings || ""}
-                onChange={(e) => setRecipeCheckServings(Number(e.target.value))}
-                className="px-3 py-2 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              <button
-                onClick={handleRecipeCheck}
-                disabled={!recipeCheckRecipeId.trim()}
-                className="px-4 py-2 text-sm font-medium text-white bg-emerald-500 rounded-xl hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {recipeCheckLoading ? "Đang kiểm tra..." : "Kiểm tra công thức"}
-              </button>
-            </div>
           </div>
         </div>
       </header>
@@ -469,9 +444,9 @@ export function PantryDashboard() {
         {summary && (
           <div className="mb-8 grid grid-cols-2 md:grid-cols-4 gap-4">
             <div
-              className={`bg-white rounded-xl p-4 border cursor-pointer ${
+              className={`bg-white dark:bg-slate-950 rounded-xl p-4 border cursor-pointer ${
                 filterStatus === ""
-                  ? "border-green-500 shadow-md"
+                  ? "border-secondary shadow-md"
                   : "border-gray-200"
               }`}
               onClick={() => {
@@ -479,10 +454,10 @@ export function PantryDashboard() {
                 setCurrentPage(1);
               }}
             >
-              <div className="text-2xl font-bold text-gray-900">
-                {summary.total}
+              <div className=" text-2xl font-bold ">{summary.total}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Tổng số
               </div>
-              <div className="text-sm text-gray-600">Tổng số</div>
             </div>
             <div
               className={`bg-red-50 rounded-xl p-4 border cursor-pointer ${
