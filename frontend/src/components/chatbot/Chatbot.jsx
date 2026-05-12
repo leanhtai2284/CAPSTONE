@@ -64,6 +64,7 @@ function formatInlineMarkdown(text) {
 
 //Recipe Card hiển thị món ăn được nhắc đến 
 function RecipeCard({ recipe }) {
+  const slug = recipe.slug || recipe._id;
   return (
     <motion.div
       initial={{ opacity: 0, y: 4 }}
@@ -87,12 +88,22 @@ function RecipeCard({ recipe }) {
           )}
         </div>
       </div>
+      {/* Nút Xem công thức */}
+      <a
+        href={`/recipe/${slug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex-shrink-0 text-xs bg-green-500 hover:bg-green-600 text-white px-2.5 py-1.5 rounded-lg transition-colors font-medium whitespace-nowrap"
+        onClick={e => e.stopPropagation()}
+      >
+        Xem →
+      </a>
     </motion.div>
   );
 }
 
-//Bubble mở chatbot 
-const ChatbotBubble = ({ onClick, hasNewMessage }) => {
+//Bubble mở chatbot - AI brain icon
+const ChatbotBubble = ({ onClick }) => {
   return (
     <motion.div
       className="fixed bottom-6 right-6 z-50"
@@ -100,19 +111,26 @@ const ChatbotBubble = ({ onClick, hasNewMessage }) => {
       animate={{ scale: 1 }}
       transition={{ type: 'spring', stiffness: 260, damping: 20 }}
     >
-      <button
+      <motion.button
         onClick={onClick}
-        className="relative bg-gradient-to-br from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-xl transition-all duration-200 hover:scale-110"
-        aria-label="Mở AI Trợ Lý"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="relative bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-xl"
+        aria-label="Mở AI Trợ Lý Smart Chef"
       >
-        <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-            d="M9.75 3.75a6.75 6.75 0 1013.5 0 6.75 6.75 0 00-13.5 0zM3 16.5v.75A2.25 2.25 0 005.25 19.5h13.5A2.25 2.25 0 0021 17.25v-.75M3 16.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 16.5"
-          />
+        {/* Brain / AI icon */}
+        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 5C8.5 5 6 7.5 6 10c0 1.5.7 2.8 1.8 3.7C7 14.5 6.5 15.7 6.5 17c0 .8.7 1.5 1.5 1.5h8c.8 0 1.5-.7 1.5-1.5 0-1.3-.5-2.5-1.3-3.3C17.3 12.8 18 11.5 18 10c0-2.5-2.5-5-6-5z" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+          <line x1="9" y1="12" x2="9" y2="15" />
+          <line x1="12" y1="10" x2="12" y2="14" />
+          <line x1="15" y1="12" x2="15" y2="15" />
         </svg>
-        {/* Dot AI pulse */}
-        <span className="absolute top-1 right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse border-2 border-white" />
-      </button>
+        {/* Live dot */}
+        <span className="absolute top-1 right-1 w-3 h-3 bg-yellow-400 rounded-full border-2 border-white">
+          <span className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" />
+        </span>
+      </motion.button>
     </motion.div>
   );
 };
@@ -135,22 +153,28 @@ function buildPageContext(pathname) {
   return { currentPage: 'home' };
 }
 
+const INITIAL_MESSAGE = {
+  id: 1,
+  text: 'Xin chào! Tôi là **Smart Chef** — AI tư vấn của SmartMeal.\n\nTôi có thể giúp bạn:\n- Gợi ý thực đơn phù hợp\n- Tư vấn dinh dưỡng cá nhân\n- Tìm món từ nguyên liệu sẵn có\n\nBạn cần hỗ trợ gì hôm nay?',
+  sender: 'bot',
+  timestamp: new Date(),
+  suggestedQuestions: [],
+  mentionedRecipes: [],
+};
+
 const ChatbotInterface = ({ isOpen, onClose }) => {
   const location = useLocation();
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: 'Xin chào! Tôi là **Smart Chef** — AI tư vấn của SmartMeal.\n\nTôi có thể giúp bạn:\n- Gợi ý thực đơn phù hợp\n- Tư vấn dinh dưỡng cá nhân\n- Tìm món từ nguyên liệu sẵn có\n\nBạn cần hỗ trợ gì hôm nay?',
-      sender: 'bot',
-      timestamp: new Date(),
-      suggestedQuestions: [],
-      mentionedRecipes: [],
-    },
-  ]);
+  const [messages, setMessages] = useState([INITIAL_MESSAGE]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Hàm xoá lịch sử chat, reset về tin nhắn chào mừng ban đầu
+  const clearHistory = () => {
+    setMessages([{ ...INITIAL_MESSAGE, timestamp: new Date() }]);
+    setInputValue('');
+  };
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -268,9 +292,20 @@ const ChatbotInterface = ({ isOpen, onClose }) => {
               <span className="w-2 h-2 bg-green-300 rounded-full animate-pulse" />
               <span className="text-xs text-green-100">Online</span>
             </div>
+            {/* Nút xoá lịch sử chat */}
+            <button
+              onClick={clearHistory}
+              title="Xoá lịch sử chat"
+              className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
+              aria-label="Xoá lịch sử"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
             <button
               onClick={onClose}
-              className="ml-2 w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
+              className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
               aria-label="Đóng"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
