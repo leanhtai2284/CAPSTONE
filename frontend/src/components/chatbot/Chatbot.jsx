@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import axiosInstance from '../../services/axiosInstance';
 
 const ChatbotBubble = ({ onClick }) => {
   return (
@@ -37,7 +38,7 @@ const ChatbotInterface = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: 'Xin chào! Tôi là trợ lý AI chuyên hỗ trợ quản lý bệnh mãn tính. Bạn cần giúp gì hôm nay?',
+      text: 'Xin chào! Tôi là AI tư vấn hỗ trợ . Bạn cần giúp gì hôm nay?',
       sender: 'bot',
       timestamp: new Date(),
     },
@@ -69,24 +70,26 @@ const ChatbotInterface = ({ isOpen, onClose }) => {
     setIsLoading(true);
 
     try {
-      // Giả sử API endpoint là /api/ai/chat
-      const response = await fetch('/api/ai/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: inputValue }),
+      // Fetch lịch sử chat (tối đa 3 lượt hội thoại gần nhất)
+      const history = messages
+        .filter(m => m.id > 1) // Bỏ qua tin nhắn chào mừng
+        .slice(-6) // Lấy 6 tin nhắn cuối
+        .map(m => ({
+          role: m.sender === 'user' ? 'user' : 'assistant',
+          content: m.text
+        }));
+
+      const response = await axiosInstance.post('/ai/rag/query', {
+        query: inputValue,
+        history: history,
+        options: {
+          includePantryContext: true, // Tự động nhận diện đồ trong tủ lạnh
+        }
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to get response');
-      }
-
-      const data = await response.json();
 
       const botMessage = {
         id: messages.length + 2,
-        text: data.response || 'Xin lỗi, tôi không thể trả lời lúc này.',
+        text: response.data?.data?.answer || 'Xin lỗi, tôi không thể trả lời lúc này.',
         sender: 'bot',
         timestamp: new Date(),
       };
@@ -96,7 +99,7 @@ const ChatbotInterface = ({ isOpen, onClose }) => {
       console.error('Error sending message:', error);
       const errorMessage = {
         id: messages.length + 2,
-        text: 'Xin lỗi, có lỗi xảy ra. Vui lòng thử lại.',
+        text: error.response?.data?.message || 'Xin lỗi, có lỗi xảy ra. Vui lòng thử lại.',
         sender: 'bot',
         timestamp: new Date(),
       };
@@ -134,7 +137,7 @@ const ChatbotInterface = ({ isOpen, onClose }) => {
         >
           {/* Header */}
           <div className="bg-green-500 text-white p-4 rounded-t-lg flex justify-between items-center">
-            <h3 className="font-semibold">AI Trợ Lý Y Tế</h3>
+            <h3 className="font-semibold">Smart Chef - AI Assistant</h3>
             <button
               onClick={onClose}
               className="text-white hover:text-gray-200 transition-colors"
@@ -153,11 +156,10 @@ const ChatbotInterface = ({ isOpen, onClose }) => {
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-xs px-4 py-2 rounded-lg ${
-                    message.sender === 'user'
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-200 text-gray-800'
-                  }`}
+                  className={`max-w-xs px-4 py-2 rounded-lg ${message.sender === 'user'
+                    ? 'bg-green-500 text-white'
+                    : 'bg-gray-200 text-gray-800'
+                    }`}
                 >
                   <p className="text-sm">{message.text}</p>
                   <p className="text-xs opacity-70 mt-1">

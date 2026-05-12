@@ -675,15 +675,91 @@ function buildContextBlock(retrievedItems) {
     .join("\n\n");
 }
 
+// ==================== GRAPHRAG (LIGHTWEIGHT) ====================
+let cachedGraph = null;
+
+async function loadKnowledgeGraph() {
+  if (cachedGraph) return cachedGraph;
+  try {
+    const serviceDir = path.dirname(fileURLToPath(import.meta.url));
+    const graphPath = path.join(serviceDir, "../../data/rag/graph.json");
+    const data = await fs.readFile(graphPath, "utf-8");
+    cachedGraph = JSON.parse(data);
+    return cachedGraph;
+  } catch (e) {
+    console.error("Knowledge Graph not found. Skipping GraphRAG.");
+    return null;
+  }
+}
+
+async function extractEntitiesFromQuery(query) {
+  try {
+    const llm = new ChatOpenAI({
+      apiKey: getOpenAiApiKey(),
+      model: "gpt-4o-mini",
+      temperature: 0,
+    });
+    const prompt = `Từ câu hỏi sau, trích xuất tối đa 5 từ khóa danh từ chính (thực phẩm, chế độ ăn, bệnh lý). Trả về mảng JSON string, không bọc \`\`\`. Ví dụ: ["thịt bò", "giảm cân", "keto"]. Câu hỏi: "${query}"`;
+    const res = await llm.invoke(prompt);
+    let raw = res.content.trim();
+    if (raw.startsWith("```json")) raw = raw.replace(/```json/g, "").replace(/```/g, "").trim();
+    return JSON.parse(raw);
+  } catch (e) {
+    return [];
+  }
+}
+
+async function retrieveGraphContext(query) {
+  const graph = await loadKnowledgeGraph();
+  if (!graph || !graph.nodes) return "";
+
+  const entities = await extractEntitiesFromQuery(query);
+  if (!entities.length) return "";
+
+  const graphSentences = [];
+  
+  for (const entity of entities) {
+    const safeEntity = entity.toLowerCase();
+    // Tìm node có tên chứa entity
+    const matchingNodeIds = Object.keys(graph.nodes).filter(k => k.includes(safeEntity));
+    
+    for (const nodeId of matchingNodeIds) {
+      // Tìm các cạnh liên quan
+      const relatedEdges = graph.edges.filter(e => e.source === nodeId || e.target === nodeId);
+      relatedEdges.forEach(edge => {
+        const sourceName = graph.nodes[edge.source]?.label || edge.source;
+        const targetName = graph.nodes[edge.target]?.label || edge.target;
+        
+        let sentence = "";
+        switch (edge.relation) {
+          case "CONTAINS_INGREDIENT": sentence = `Món "${sourceName}" có chứa nguyên liệu "${targetName}".`; break;
+          case "IS_LOW_CALORIE": sentence = `Món "${sourceName}" là món ăn ít calo (dưới 500 kcal).`; break;
+          case "BELONGS_TO_CATEGORY": sentence = `Món "${sourceName}" thuộc danh mục "${targetName}".`; break;
+        }
+        if (sentence && !graphSentences.includes(sentence)) {
+          graphSentences.push(sentence);
+        }
+      });
+    }
+  }
+
+  // Giới hạn số lượng câu để tránh context quá dài
+  const limitedSentences = graphSentences.slice(0, 15);
+  if (!limitedSentences.length) return "";
+
+  return limitedSentences.join("\n");
+}
+// =================================================================
+
 /**
- * Tạo câu trả lời từ retrieved context + conversation history.
+ * Tạo câu trả lời từ context (Vector RAG + GraphRAG).
  * @param {string} query - Câu hỏi hiện tại của user.
  * @param {Array}  retrievedItems - Các chunk được retrieve từ vector store.
  * @param {Array}  history - Lịch sử hội thoại [{role: "user"|"assistant", content: string}].
  *                          FE tự giữ và truyền lên, BE không lưu.
  */
 export async function generateAnswerFromContext(params = {}) {
-  const { query, retrievedItems = [], history = [], userProfileContext = "", userId = null } = params;
+  const { query, retrievedItems = [], history = [], userProfileContext = "", pantryContext = "", pageContext = "", userId = null } = params;
   const normalizedQuery = normalizeText(query);
   if (!normalizedQuery) {
     throw new RagRetrievalError("query is required for answer generation", 400);
@@ -721,16 +797,30 @@ export async function generateAnswerFromContext(params = {}) {
 
     const llm = new ChatOpenAI(chatOptions);
 
+    const graphContext = await retrieveGraphContext(query);
+
     const systemContent = [
       SYSTEM_RULES,
+      "",
+      pageContext ? "=== NGỮ CẢNH TRANG HIỆN TẠI ===" : "",
+      pageContext || "",
+      pageContext ? "================================" : "",
       "",
       userProfileContext ? "=== USER PROFILE (PRIORITY) ===" : "",
       userProfileContext || "",
       userProfileContext ? "===============================" : "",
       "",
+      pantryContext ? "=== USER PANTRY (AVAILABLE INGREDIENTS) ===" : "",
+      pantryContext || "",
+      pantryContext ? "==========================================" : "",
+      "",
       "=== CORE NUTRITION KNOWLEDGE ===",
       nutritionGuideContent,
       "================================",
+      "",
+      graphContext ? "=== KNOWLEDGE GRAPH CONTEXT (RELATIONSHIPS) ===" : "",
+      graphContext || "",
+      graphContext ? "================================" : "",
       "",
       "Context (Recipes and other data):",
       buildContextBlock(retrievedItems),

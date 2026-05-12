@@ -1,6 +1,7 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Pantry from "../models/Pantry.js";
 import User from "../models/User.js";
+import Recipe from "../models/Recipe.js";
 import {
   RagRetrievalError,
   generateAnswerFromContext,
@@ -154,9 +155,92 @@ async function buildPantryContext(userId) {
   };
 }
 
+// ============================================================
+// Helper: Tìm tên món ăn được nhắc đến trong câu trả lời
+// Lookup MongoDB để lấy thông tin chi tiết
+// ============================================================
+async function extractMentionedRecipes(answerText) {
+  if (!answerText) return [];
+  try {
+    // Lấy tất cả tên món, tìm trong câu trả lời
+    const allRecipes = await Recipe.find({})
+      .select("_id name_vi name slug nutrition.calories price_estimate prep_time_min cook_time_min category meal_types diet_tags")
+      .lean();
+
+    const mentioned = [];
+    const seen = new Set();
+
+    for (const recipe of allRecipes) {
+      const recipeName = recipe.name_vi || recipe.name || "";
+      if (!recipeName || seen.has(String(recipe._id))) continue;
+
+      // Tìm tên món trong câu trả lời (không phân biệt hoa thường)
+      if (answerText.toLowerCase().includes(recipeName.toLowerCase())) {
+        seen.add(String(recipe._id));
+        mentioned.push({
+          _id: recipe._id,
+          name_vi: recipe.name_vi || recipe.name,
+          slug: recipe.slug,
+          calories: recipe.nutrition?.calories || null,
+          price_min: recipe.price_estimate?.min || null,
+          prep_time_min: recipe.prep_time_min || null,
+          cook_time_min: recipe.cook_time_min || null,
+          category: recipe.category,
+          meal_types: recipe.meal_types || [],
+          diet_tags: recipe.diet_tags || [],
+        });
+        if (mentioned.length >= 5) break; // Giới hạn 5 món
+      }
+    }
+    return mentioned;
+  } catch (e) {
+    console.warn("[extractMentionedRecipes] Error:", e.message);
+    return [];
+  }
+}
+
+// ============================================================
+// Helper: Sinh ra 3 câu hỏi gợi ý tiếp theo dựa vào context
+// ============================================================
+function buildSuggestedQuestions(query, mentionedRecipes) {
+  const suggestions = [];
+
+  if (mentionedRecipes.length > 0) {
+    const firstName = mentionedRecipes[0].name_vi;
+    suggestions.push(`Công thức nấu ${firstName} như thế nào?`);
+    suggestions.push(`${firstName} có bao nhiêu calo và phù hợp với ai?`);
+  }
+
+  // Gợi ý mặc định theo nội dung câu hỏi
+  const q = query.toLowerCase();
+  if (q.includes("giảm cân") || q.includes("ít calo")) {
+    suggestions.push("Thực đơn 7 ngày giảm cân ít calo là gì?");
+    suggestions.push("Tôi nên ăn bao nhiêu calo mỗi ngày để giảm cân?");
+  } else if (q.includes("tăng cân") || q.includes("protein") || q.includes("đạm")) {
+    suggestions.push("Món nào nhiều protein nhất để tăng cơ?");
+    suggestions.push("Thực đơn tăng cân trong 1 tuần gợi ý gì?");
+  } else if (q.includes("pantry") || q.includes("tủ lạnh") || q.includes("nguyên liệu")) {
+    suggestions.push("Tôi còn nguyên liệu gì có thể nấu ngay hôm nay?");
+    suggestions.push("Gợi ý món ăn từ những gì có trong tủ lạnh?");
+  } else if (q.includes("keto") || q.includes("eat clean") || q.includes("chay")) {
+    suggestions.push("Thực đơn Keto cho người mới bắt đầu?");
+    suggestions.push("Những lưu ý khi ăn Keto là gì?");
+  } else {
+    suggestions.push("Thực đơn hôm nay nên ăn gì?");
+    suggestions.push("Món nào phù hợp cho bữa tối ít calo?");
+    suggestions.push("Gợi ý món ăn theo mục tiêu sức khỏe của tôi?");
+  }
+
+  // Trả về tối đa 3 câu gợi ý, loại trùng
+  return [...new Set(suggestions)].slice(0, 3);
+}
+
 export const ragQueryV1 = asyncHandler(async (req, res) => {
   const rawQuery = req.body?.query;
   const query = normalizeQuery(rawQuery);
+
+  // [Mức 3] Nhận pageContext từ FE (trang đang xem, ngữ cảnh hiện tại)
+  const pageContext = req.body?.pageContext || null;
 
   if (!query) {
     return res.status(400).json({
@@ -209,6 +293,28 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
     }
   }
 
+  // [Mức 3] Build page context string để inject vào prompt
+  let pageContextStr = "";
+  if (pageContext) {
+    const { currentPage, pantryItemCount, viewingRecipeId, viewingRecipeName } = pageContext;
+    const pageMap = {
+      pantry: "Trang Kho nguyên liệu (Pantry)",
+      "for-you": "Trang Gợi ý thực đơn (For You)",
+      search: "Trang Tìm kiếm món ăn",
+      recipe: "Trang Chi tiết công thức",
+      tracking: "Trang Theo dõi dinh dưỡng",
+      home: "Trang Chủ",
+    };
+    const pageName = pageMap[currentPage] || currentPage;
+    pageContextStr = `TRANG HIỆN TẠI: ${pageName}`;
+    if (pantryItemCount !== undefined) {
+      pageContextStr += `\nSố nguyên liệu trong tủ lạnh: ${pantryItemCount} loại`;
+    }
+    if (viewingRecipeName) {
+      pageContextStr += `\nMón đang xem: ${viewingRecipeName}`;
+    }
+  }
+
   const retrievalQuery = pantryContext.text
     ? `${query}\n\nUser pantry context:\n${pantryContext.text}`
     : query;
@@ -227,7 +333,9 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
       retrievedItems: retrieval.items,
       history,
       userProfileContext,
-      userId: req.user?._id, // Truyền userId xuống cho Agentic Tools
+      pantryContext: pantryContext.text,
+      pageContext: pageContextStr, // [Mức 3] Truyền ngữ cảnh trang
+      userId: req.user?._id,
     });
   } catch (error) {
     if (error instanceof RagRetrievalError) {
@@ -258,14 +366,23 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
 
   const sources = buildSources(retrieval.items);
   const hasContext = retrievedContext.length > 0;
+  const answerText = hasContext
+    ? generation.answer
+    : "Tôi không tìm thấy thông tin này trong dữ liệu hiện có.";
+
+  // [Mức 2] Tìm tên món được nhắc đến trong câu trả lời → Đính kèm data
+  const mentionedRecipes = await extractMentionedRecipes(answerText);
+
+  // [Mức 1] Sinh câu hỏi gợi ý tiếp theo
+  const suggestedQuestions = buildSuggestedQuestions(query, mentionedRecipes);
 
   return res.status(200).json({
     success: true,
     message: "RAG LangChain pipeline is ready",
     data: {
-      answer: hasContext
-        ? generation.answer
-        : "Tôi không tìm thấy thông tin này trong dữ liệu hiện có.",
+      answer: answerText,
+      suggestedQuestions,        // [Mức 1] FE dùng để render nút gợi ý
+      mentionedRecipes,          // [Mức 2] FE dùng để render recipe cards
       sources,
       retrievedContext,
       llmUsed: generation.llmUsed,
@@ -273,11 +390,12 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
       stage: generation.llmUsed ? "retrieval+generation" : "retrieval",
     },
     meta: {
-      version: "rag-v1-langchain",
+      version: "rag-v2-hybrid-graphrag",
       query,
       topK,
       scoreThreshold,
       includePantryContext,
+      pageContext: pageContext || null,  // [Mức 3]
       pantryItemsUsed: pantryContext.itemCount,
       retrievalQueryMode: pantryContext.text ? "query_plus_pantry" : "query_only",
       embeddingModel: retrieval.meta.embeddingModel,
@@ -288,6 +406,7 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
       indexBuiltAt: retrieval.meta.indexBuiltAt,
       corpus: retrieval.meta.corpus,
       historyLength: history.length,
+      mentionedRecipesCount: mentionedRecipes.length,
       userId: req.user?._id || null,
       timestamp: new Date().toISOString(),
     },
