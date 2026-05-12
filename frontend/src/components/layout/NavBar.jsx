@@ -96,64 +96,70 @@ const NavBar = () => {
 
             <div
               aria-hidden={!forYouOpen}
-              className={`absolute left-0 right-0 top-full mt-0 border-t border-gray-200 bg-white/80 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-neutral-900/80 z-50 transform-gpu transition-all duration-300 ease-out whitespace-normal ${
+              className={`absolute left-1/2 top-full mt-0 w-screen -translate-x-1/2 min-h-[240px] border-t border-gray-200 bg-white shadow-2xl dark:border-gray-800 dark:bg-neutral-900 z-[60] transform-gpu transition-all duration-300 ease-out whitespace-normal ${
                 forYouOpen
                   ? "opacity-100 scale-y-100 translate-y-0 pointer-events-auto"
                   : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
               }`}
             >
-              <div className="w-full px-8 py-10">
-                <div className="flex flex-row items-stretch gap-12">
-                  <div
-                    className={`flex-1 min-w-[180px] h-full space-y-3 rounded-xl border border-transparent bg-white/70 px-5 py-4 transition dark:bg-neutral-900/40 ${
-                      isActive("/foryou")
-                        ? "border-green-200 bg-green-100 text-green-800 dark:border-green-800/50 dark:bg-green-900/40 dark:text-green-100"
-                        : "hover:border-green-200 hover:bg-green-50 dark:hover:border-neutral-700 dark:hover:bg-neutral-800"
-                    }`}
-                  >
-                    <div className="text-lg font-semibold">Gợi ý thực đơn</div>
-                    <Link
-                      to="/foryou"
-                      onClick={() => setForYouOpen(false)}
-                      className="block text-sm"
-                    >
-                      Xem đề xuất thực đơn
-                    </Link>
+              <div className="mx-auto max-w-6xl px-8 py-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                  <div>
+                    <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      Gợi ý thực đơn
+                    </div>
+                    <ul className="mt-4 space-y-2 text-base text-gray-600 dark:text-gray-300">
+                      <li>
+                        <Link
+                          to="/foryou"
+                          onClick={() => setForYouOpen(false)}
+                          className={`hover:text-green-600 ${
+                            isActive("/foryou") ? "text-green-700" : ""
+                          }`}
+                        >
+                          Xem đề xuất thực đơn
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
-                  <div
-                    className={`flex-1 min-w-[180px] h-full space-y-3 rounded-xl border border-transparent bg-white/70 px-5 py-4 transition dark:bg-neutral-900/40 ${
-                      isActive("/pantry")
-                        ? "border-green-200 bg-green-100 text-green-800 dark:border-green-800/50 dark:bg-green-900/40 dark:text-green-100"
-                        : "hover:border-green-200 hover:bg-green-50 dark:hover:border-neutral-700 dark:hover:bg-neutral-800"
-                    }`}
-                  >
-                    <div className="text-lg font-semibold">
+                  <div>
+                    <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                       Nguyên liệu có sẵn
                     </div>
-                    <Link
-                      to="/pantry"
-                      onClick={() => setForYouOpen(false)}
-                      className="block text-sm"
-                    >
-                      Quản lý tủ nguyên liệu
-                    </Link>
+                    <ul className="mt-4 space-y-2 text-base text-gray-600 dark:text-gray-300">
+                      <li>
+                        <Link
+                          to="/pantry"
+                          onClick={() => setForYouOpen(false)}
+                          className={`hover:text-green-600 ${
+                            isActive("/pantry") ? "text-green-700" : ""
+                          }`}
+                        >
+                          Quản lý tủ nguyên liệu
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
-                  <div
-                    className={`flex-1 min-w-[180px] h-full space-y-3 rounded-xl border border-transparent bg-white/70 px-5 py-4 transition dark:bg-neutral-900/40 ${
-                      isActive("/groups") ||
-                      location.pathname.startsWith("/groups/")
-                        ? "border-green-200 bg-green-100 text-green-800 dark:border-green-800/50 dark:bg-green-900/40 dark:text-green-100"
-                        : "hover:border-green-200 hover:bg-green-50 dark:hover:border-neutral-700 dark:hover:bg-neutral-800"
-                    }`}
-                  >
-                    <div className="text-lg font-semibold">Nhóm</div>
-                    <Link
-                      to="/groups"
-                      onClick={() => setForYouOpen(false)}
-                      className="block text-sm"
-                    >
-                      Lập nhóm và chia sẻ menu
-                    </Link>
+                  <div>
+                    <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      Nhóm
+                    </div>
+                    <ul className="mt-4 space-y-2 text-base text-gray-600 dark:text-gray-300">
+                      <li>
+                        <Link
+                          to="/groups"
+                          onClick={() => setForYouOpen(false)}
+                          className={`hover:text-green-600 ${
+                            isActive("/groups") ||
+                            location.pathname.startsWith("/groups/")
+                              ? "text-green-700"
+                              : ""
+                          }`}
+                        >
+                          Lập nhóm và chia sẻ menu
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
