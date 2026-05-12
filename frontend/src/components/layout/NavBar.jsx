@@ -127,7 +127,7 @@ const NavBar = () => {
           <SearchBar />
           <DarkModeToggle />
           <NotificationBell />
-          <MailDropdown />
+          
           <UserMenu />
         </div>
 
@@ -191,7 +191,8 @@ const NavBar = () => {
                 to="/groups"
                 onClick={() => setMenuOpen(false)}
                 className={`block py-2 px-3 rounded-lg text-lg font-semibold transition ${
-                  isActive("/groups") || location.pathname.startsWith("/groups/")
+                  isActive("/groups") ||
+                  location.pathname.startsWith("/groups/")
                     ? "bg-blue-400 text-white dark:bg-blue-500 shadow-md"
                     : "hover:bg-gray-100 dark:hover:bg-gray-800"
                 }`}
@@ -218,7 +219,7 @@ const NavBar = () => {
             <div className="flex justify-around items-center pt-3 border-t border-gray-200 dark:border-gray-700">
               <DarkModeToggle />
               <NotificationBell />
-              <MailDropdown />
+
               <UserMenu />
             </div>
           </div>

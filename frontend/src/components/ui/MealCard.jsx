@@ -145,18 +145,15 @@ export default function MealCard({
             </button>
           )}
         </div>
-
-        <div className="absolute bottom-0 right-0 flex flex-col items-end gap-2 p-2">
+        <div>
           {onMarkAsCooked && (
             <button
               onClick={handleMarkAsCooked}
               disabled={isCooking}
-              className={`flex items-center justify-center gap-1 px-3 py-2 rounded-tl-xl font-semibold transition-all ${
+              className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md transition-all text-xs font-semibold ${
                 isCooking
                   ? "bg-gray-300 text-gray-600 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
-                  : "bg-gradient-to-r from-orange-500 to-yellow-500 text-white hover:from-orange-600 hover:to-yellow-600 " +
-                    "dark:from-orange-600 dark:to-yellow-600 dark:hover:from-orange-700 dark:hover:to-yellow-700 " +
-                    "hover:shadow-lg hover:shadow-orange-400/50 active:scale-95"
+                  : "bg-gray-200 text-black hover:bg-gray-300 active:scale-95 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
               }`}
               title={`Đã nấu: ${dishName}`}
             >
@@ -164,11 +161,13 @@ export default function MealCard({
                 size={16}
                 className={`${isCooking ? "animate-spin" : ""}`}
               />
-              <span className="text-xs whitespace-nowrap">
+              <span className="whitespace-nowrap">
                 {isCooking ? "..." : "Đã Nấu"}
               </span>
             </button>
           )}
+        </div>
+        <div className="absolute bottom-0 right-0 flex flex-col items-end gap-2 p-2">
           {onSwap && (
             <button
               onClick={handleSwapClick}
