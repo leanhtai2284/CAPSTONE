@@ -33,10 +33,13 @@ export const GroupProvider = ({ children }) => {
     }
   };
 
-  const loadGroupDetail = async (groupId) => {
+  const loadGroupDetail = async (groupId, options = {}) => {
+    const { silent = false } = options;
     try {
-      setLoading(true);
-      setError(null);
+      if (!silent) {
+        setLoading(true);
+        setError(null);
+      }
       const [groupData, members, menu] = await Promise.all([
         groupService.getGroupById(groupId),
         groupService.getGroupMembers(groupId),
@@ -46,10 +49,14 @@ export const GroupProvider = ({ children }) => {
       setGroupMembers(Array.isArray(members) ? members : []);
       setGroupMenu(Array.isArray(menu) ? menu : []);
     } catch (err) {
-      setError(err.message);
       console.error("❌ Lỗi tải chi tiết group:", err);
+      if (!silent) {
+        setError(err.message);
+      }
     } finally {
-      setLoading(false);
+      if (!silent) {
+        setLoading(false);
+      }
     }
   };
 
@@ -195,7 +202,7 @@ export const GroupProvider = ({ children }) => {
       const meal = await groupService.addMealToGroupMenu(
         groupId,
         mealId,
-        mealData
+        mealData,
       );
       // Reload the entire menu to ensure consistency
       const updatedMenu = await groupService.getGroupMenu(groupId);
@@ -229,8 +236,8 @@ export const GroupProvider = ({ children }) => {
       // Update local menu with new vote count
       setGroupMenu(
         groupMenu.map((m) =>
-          m._id === mealId ? { ...m, votes: result.votes } : m
-        )
+          m._id === mealId ? { ...m, votes: result.votes } : m,
+        ),
       );
       return result;
     } catch (err) {
