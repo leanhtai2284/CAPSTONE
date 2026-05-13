@@ -131,14 +131,14 @@ export const updateUser = async (req, res) => {
     const updateData = {};
     if (name) updateData.name = name;
     if (email) updateData.email = email;
-    if (role && ["user", "admin", "moderator"].includes(role)) {
+    if (role && ["user", "store_owner", "admin", "moderator"].includes(role)) {
       updateData.role = role;
     }
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
       { $set: updateData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).select("-password");
 
     res.status(200).json({
@@ -235,10 +235,14 @@ export const updateUserRole = async (req, res) => {
       });
     }
 
-    if (!role || !["user", "admin", "moderator"].includes(role)) {
+    if (
+      !role ||
+      !["user", "store_owner", "admin", "moderator"].includes(role)
+    ) {
       return res.status(400).json({
         success: false,
-        message: "Role không hợp lệ. Phải là: user, admin, hoặc moderator",
+        message:
+          "Role không hợp lệ. Phải là: user, store_owner, admin, hoặc moderator",
       });
     }
 
@@ -261,7 +265,7 @@ export const updateUserRole = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       id,
       { role },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).select("-password");
 
     // Thông báo cho chính user được đổi role
@@ -313,6 +317,7 @@ export const getUserStats = async (req, res) => {
     const totalAdmins = await User.countDocuments({ role: "admin" });
     const totalModerators = await User.countDocuments({ role: "moderator" });
     const totalRegularUsers = await User.countDocuments({ role: "user" });
+    const totalStoreOwners = await User.countDocuments({ role: "store_owner" });
     const totalBannedUsers = await User.countDocuments({ isBanned: true });
     const totalOnlineUsers = await User.countDocuments({ isOnline: true });
 
@@ -330,6 +335,7 @@ export const getUserStats = async (req, res) => {
         totalAdmins,
         totalModerators,
         totalRegularUsers,
+        totalStoreOwners,
         totalBannedUsers,
         totalOnlineUsers,
         recentUsers,
@@ -395,7 +401,7 @@ export const banUser = async (req, res) => {
     const bannedUser = await User.findByIdAndUpdate(
       id,
       { $set: updateData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).select("-password");
 
     await createNotification({
@@ -468,7 +474,7 @@ export const unbanUser = async (req, res) => {
     const unbannedUser = await User.findByIdAndUpdate(
       id,
       { $set: updateData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).select("-password");
 
     await createNotification({
@@ -507,4 +513,3 @@ export const unbanUser = async (req, res) => {
     });
   }
 };
-

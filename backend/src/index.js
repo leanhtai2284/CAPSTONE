@@ -26,6 +26,7 @@ import trackingRoutes from "./routes/tracking.js";
 import groupRoutes from "./routes/group.js";
 import groupMenuRoutes from "./routes/groupMenu.js";
 import inviteRoutes from "./routes/invite.js";
+import marketRoutes from "./routes/market.js";
 import { errorHandler, notFound } from "./middlewares/errorHandler.js";
 import { startPantryExpiryNotificationScheduler } from "./services/pantryExpiryNotificationService.js";
 
@@ -65,6 +66,7 @@ app.use("/api/tracking", trackingRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/group-menu", groupMenuRoutes);
 app.use("/api/invites", inviteRoutes);
+app.use("/api/market", marketRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

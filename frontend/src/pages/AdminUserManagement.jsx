@@ -111,7 +111,9 @@ const AdminUserManagement = () => {
     const reason = prompt("Nhập lý do cấm tài khoản:");
     if (!reason) return;
 
-    const bannedUntil = prompt("Nhập ngày hết hạn cấm (để trống nếu cấm vĩnh viễn, định dạng: YYYY-MM-DD):");
+    const bannedUntil = prompt(
+      "Nhập ngày hết hạn cấm (để trống nếu cấm vĩnh viễn, định dạng: YYYY-MM-DD):",
+    );
     const bannedUntilDate = bannedUntil ? new Date(bannedUntil) : null;
 
     if (bannedUntil && isNaN(bannedUntilDate.getTime())) {
@@ -271,6 +273,7 @@ const AdminUserManagement = () => {
                 >
                   <option value="">Tất cả</option>
                   <option value="user">Người dùng</option>
+                  <option value="store_owner">Chủ cửa hàng</option>
                   <option value="admin">Quản trị viên</option>
                 </select>
               </div>
@@ -313,7 +316,7 @@ const AdminUserManagement = () => {
                         page === 1 ||
                         page === pagination.pages ||
                         (page >= pagination.page - 1 &&
-                          page <= pagination.page + 1)
+                          page <= pagination.page + 1),
                     )
                     .map((page, index, array) => (
                       <React.Fragment key={page}>

@@ -29,6 +29,15 @@ const ProfileCard = () => {
 
   // Navigation links
   const navItems = [
+    ...(user.role === "store_owner" || user.role === "admin"
+      ? [
+          {
+            icon: LayoutDashboard,
+            label: "Bảng điều khiển cửa hàng",
+            path: "/store/dashboard",
+          },
+        ]
+      : []),
     { icon: User, label: "Quản lý Hồ sơ", path: "/profile" },
     { icon: BookmarkIcon, label: "Món ăn đã lưu", path: "/saved-menus" },
     { icon: PlusSquare, label: "Gửi công thức", path: "/ugc/submit" },

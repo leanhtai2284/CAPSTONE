@@ -33,9 +33,14 @@ const NavBar = () => {
 
   // ✅ Hàm kiểm tra đang ở trang nào
   const isActive = (path) => location.pathname === path;
+  const handleOpenChatbot = () => {
+    window.dispatchEvent(new CustomEvent("smartmeal:open-chatbot"));
+    setForYouOpen(false);
+    setMenuOpen(false);
+  };
 
   return (
-    <header className="sticky top-0 left-0 w-full bg-white/80 dark:bg-black/80 backdrop-blur-lg text-gray-950 dark:text-gray-100 shadow-md transition-colors duration-300 z-50">
+    <header className="sticky top-0 left-0 w-full  bg-white/80 dark:bg-black/80 backdrop-blur-lg text-gray-950 dark:text-gray-100 shadow-md transition-colors duration-300 z-50">
       <div className="container mx-auto flex items-center justify-between px-4 py-2">
         {/* Logo */}
         <Link
@@ -96,14 +101,23 @@ const NavBar = () => {
 
             <div
               aria-hidden={!forYouOpen}
-              className={`absolute left-1/2 top-full mt-0 w-screen -translate-x-1/2 min-h-[240px] border-t border-gray-200 bg-white shadow-2xl dark:border-gray-800 dark:bg-neutral-900 z-[60] transform-gpu transition-all duration-300 ease-out whitespace-normal ${
-                forYouOpen
-                  ? "opacity-100 scale-y-100 translate-y-0 pointer-events-auto"
-                  : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
-              }`}
+              className={`absolute left-1/2 top-full mt-0 
+  w-[1100px] max-w-[95vw] 
+  -translate-x-1/2
+  min-h-[240px]
+  border border-gray-200
+  bg-white shadow-2xl
+  dark:border-gray-800 dark:bg-neutral-900
+  rounded-2xl
+  z-[60]
+  transform-gpu transition-all duration-300 ease-out whitespace-normal ${
+    forYouOpen
+      ? "opacity-100 scale-y-100 translate-y-0 pointer-events-auto"
+      : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
+  }`}
             >
               <div className="mx-auto max-w-6xl px-8 py-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
                   <div>
                     <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                       Gợi ý thực đơn
@@ -161,10 +175,37 @@ const NavBar = () => {
                       </li>
                     </ul>
                   </div>
+                  <div>
+                    <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      Smart Chef AI
+                    </div>
+                    <ul className="mt-4 space-y-2 text-base text-gray-600 dark:text-gray-300">
+                      <li>
+                        <button
+                          type="button"
+                          onClick={handleOpenChatbot}
+                          className="hover:text-green-600 text-left"
+                        >
+                          Tư vấn dinh dưỡng cùng Smart Chef
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <Link
+            to="/market"
+            className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
+              location.pathname.startsWith("/market")
+                ? "bg-primary text-white shadow-md"
+                : "hover:text-green-500"
+            }`}
+          >
+            Mua sắm
+          </Link>
 
           <Link
             to="/news"
@@ -273,6 +314,17 @@ const NavBar = () => {
                   Nhóm
                 </Link>
               </div>
+              <Link
+                to="/market"
+                onClick={() => setMenuOpen(false)}
+                className={`block py-2 px-3 rounded-lg text-lg font-semibold transition ${
+                  location.pathname.startsWith("/market")
+                    ? "bg-yellow-400 text-black dark:bg-yellow-500 shadow-md"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+              >
+                Mua sắm
+              </Link>
               <Link
                 to="/news"
                 onClick={() => setMenuOpen(false)}

@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import AdminUserDetailModal from "./AdminUserDetailModal";
 
-const UserList = ({ users, onDelete, onUpdateRole, onBanUser, onUnbanUser, currentUserId, searchTerm = "" }) => {
+const UserList = ({
+  users,
+  onDelete,
+  onUpdateRole,
+  onBanUser,
+  onUnbanUser,
+  currentUserId,
+  searchTerm = "",
+}) => {
   const [selectedUser, setSelectedUser] = useState(null);
 
   const filteredUsers = searchTerm
     ? users.filter(
         (user) =>
           user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          user.email?.toLowerCase().includes(searchTerm.toLowerCase())
+          user.email?.toLowerCase().includes(searchTerm.toLowerCase()),
       )
     : users;
 
@@ -18,6 +26,8 @@ const UserList = ({ users, onDelete, onUpdateRole, onBanUser, onUnbanUser, curre
         return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
       case "moderator":
         return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
+      case "store_owner":
+        return "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200";
       case "user":
         return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
       default:
@@ -31,6 +41,8 @@ const UserList = ({ users, onDelete, onUpdateRole, onBanUser, onUnbanUser, curre
         return "Quản trị viên";
       case "moderator":
         return "Điều hành viên";
+      case "store_owner":
+        return "Chủ cửa hàng";
       case "user":
         return "Người dùng";
       default:
@@ -46,7 +58,7 @@ const UserList = ({ users, onDelete, onUpdateRole, onBanUser, onUnbanUser, curre
         </span>
       );
     }
-    
+
     if (user.isOnline) {
       return (
         <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
@@ -54,11 +66,11 @@ const UserList = ({ users, onDelete, onUpdateRole, onBanUser, onUnbanUser, curre
         </span>
       );
     }
-    
+
     return (
       <span className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-          Không hoạt động
-        </span>
+        Không hoạt động
+      </span>
     );
   };
 
@@ -92,7 +104,10 @@ const UserList = ({ users, onDelete, onUpdateRole, onBanUser, onUnbanUser, curre
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             {filteredUsers.length === 0 ? (
               <tr>
-                <td colSpan="6" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                <td
+                  colSpan="6"
+                  className="px-6 py-4 text-center text-gray-500 dark:text-gray-400"
+                >
                   Không tìm thấy người dùng nào
                 </td>
               </tr>
@@ -125,7 +140,9 @@ const UserList = ({ users, onDelete, onUpdateRole, onBanUser, onUnbanUser, curre
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-white">{user.email}</div>
+                      <div className="text-sm text-gray-900 dark:text-white">
+                        {user.email}
+                      </div>
                       {user.googleId && (
                         <div className="text-xs text-gray-500 dark:text-gray-400">
                           Google Account
@@ -137,11 +154,12 @@ const UserList = ({ users, onDelete, onUpdateRole, onBanUser, onUnbanUser, curre
                         value={user.role}
                         onChange={(e) => onUpdateRole(user._id, e.target.value)}
                         disabled={isCurrentUser}
-                        className={`px-2 py-1 text-xs font-semibold rounded-full border-0 ${
-                          getRoleBadgeColor(user.role)
-                        } ${isCurrentUser ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                        className={`px-2 py-1 text-xs font-semibold rounded-full border-0 ${getRoleBadgeColor(
+                          user.role,
+                        )} ${isCurrentUser ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                       >
                         <option value="user">Người dùng</option>
+                        <option value="store_owner">Chủ cửa hàng</option>
                         <option value="admin">Quản trị viên</option>
                       </select>
                     </td>
@@ -214,4 +232,3 @@ const UserList = ({ users, onDelete, onUpdateRole, onBanUser, onUnbanUser, curre
 };
 
 export default UserList;
-

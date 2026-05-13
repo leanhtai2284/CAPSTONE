@@ -10,6 +10,8 @@ import PantryDashboard from "../pages/PantryDashboard";
 import GroupDashboard from "../pages/GroupDashboard";
 import GroupDetail from "../pages/GroupDetail";
 import UGCSubmit from "../pages/UGCSubmit";
+import MarketCartPage from "../pages/MarketCartPage";
+import StoreOwnerDashboard from "../pages/StoreOwnerDashboard";
 import React from "react";
 
 export const privateRoutes = [
@@ -25,4 +27,6 @@ export const privateRoutes = [
   { path: "/groups", element: <GroupDashboard /> },
   { path: "/groups/:groupId", element: <GroupDetail /> },
   { path: "/ugc/submit", element: <UGCSubmit /> },
+  { path: "/market/cart", element: <MarketCartPage /> },
+  { path: "/store/dashboard", element: <StoreOwnerDashboard /> },
 ];

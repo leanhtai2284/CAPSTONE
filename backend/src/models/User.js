@@ -27,7 +27,7 @@ var userSchema = new mongoose.Schema(
     // Role-based access control
     role: {
       type: String,
-      enum: ["user", "admin", "moderator"],
+      enum: ["user", "store_owner", "admin", "moderator"],
       default: "user",
     },
     googleId: {

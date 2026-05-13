@@ -13,7 +13,8 @@ import AppRouter from "./AppRouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoadingProvider } from "./context/LoadingContext";
 import { LogoutModalProvider } from "./context/LogoutModalContext";
-import { ChatbotBubble, ChatbotInterface } from "./components/chatbot/Chatbot";
+import { ChatbotInterface } from "./components/chatbot/Chatbot";
+import { MarketCartProvider } from "./context/MarketCartContext";
 
 function AppContent() {
   const location = useLocation();
@@ -24,6 +25,13 @@ function AppContent() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const handleOpenChatbot = () => setIsChatbotOpen(true);
+    window.addEventListener("smartmeal:open-chatbot", handleOpenChatbot);
+    return () =>
+      window.removeEventListener("smartmeal:open-chatbot", handleOpenChatbot);
+  }, []);
 
   const HIDE_NAVBAR_PATHS = ["/auth"];
   const hideNavbar = HIDE_NAVBAR_PATHS.some((path) =>
@@ -74,8 +82,10 @@ function AppContent() {
         </AnimatePresence>
       </motion.div>
 
-      <ChatbotBubble onClick={() => setIsChatbotOpen(true)} />
-      <ChatbotInterface isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
+      <ChatbotInterface
+        isOpen={isChatbotOpen}
+        onClose={() => setIsChatbotOpen(false)}
+      />
     </>
   );
 }
@@ -91,25 +101,27 @@ function App() {
               <Suspense
                 fallback={<div className="text-center mt-10">Đang tải...</div>}
               >
-                <LoadingProvider>
-                  <LogoutModalProvider>
-                    <AppContent />
-                  </LogoutModalProvider>
-                </LoadingProvider>
+                <MarketCartProvider>
+                  <LoadingProvider>
+                    <LogoutModalProvider>
+                      <AppContent />
+                    </LogoutModalProvider>
+                  </LoadingProvider>
+                </MarketCartProvider>
 
-              <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-              />
-              <Toaster position="top-right" />
-            </Suspense>
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />
+                <Toaster position="top-right" />
+              </Suspense>
             </MealSelectionProvider>
           </GroupProvider>
         </AuthProvider>
