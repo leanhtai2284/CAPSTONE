@@ -60,8 +60,8 @@ export const marketService = {
     return res.data;
   },
 
-  async getStoreOrders(storeId) {
-    const res = await axiosInstance.get(`/market/orders/store/${storeId}`);
+  async getStoreOrders(storeId, params = {}) {
+    const res = await axiosInstance.get(`/market/orders/store/${storeId}`, { params });
     return res.data;
   },
 

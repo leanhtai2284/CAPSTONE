@@ -212,6 +212,8 @@ export const getMyOrders = asyncHandler(async (req, res) => {
 
 export const getStoreOrders = asyncHandler(async (req, res) => {
   const { storeId } = req.params;
+  const { status, dateFrom, dateTo } = req.query || {};
+
   const store = await Store.findById(storeId);
 
   if (!store) {
@@ -227,7 +229,34 @@ export const getStoreOrders = asyncHandler(async (req, res) => {
     });
   }
 
-  const orders = await MarketOrder.find({ store: storeId })
+  const filter = { store: storeId };
+
+  // Filter by status (comma-separated or single)
+  if (status && status !== "all") {
+    const statuses = status.split(",").map((s) => s.trim()).filter(Boolean);
+    if (statuses.length === 1) {
+      filter.status = statuses[0];
+    } else if (statuses.length > 1) {
+      filter.status = { $in: statuses };
+    }
+  }
+
+  // Filter by date range
+  if (dateFrom || dateTo) {
+    filter.createdAt = {};
+    if (dateFrom) {
+      const from = new Date(dateFrom);
+      from.setHours(0, 0, 0, 0);
+      filter.createdAt.$gte = from;
+    }
+    if (dateTo) {
+      const to = new Date(dateTo);
+      to.setHours(23, 59, 59, 999);
+      filter.createdAt.$lte = to;
+    }
+  }
+
+  const orders = await MarketOrder.find(filter)
     .sort({ createdAt: -1 })
     .populate("user", "name email")
     .populate("items.product", "name");
