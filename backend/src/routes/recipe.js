@@ -32,7 +32,10 @@ router.post(
   "/ugc",
   protect,
   (req, res, next) => {
-    ugcUpload.single("cooking_video")(req, res, (err) => {
+    ugcUpload.fields([
+      { name: "recipe_images", maxCount: 5 },
+      { name: "cooking_video", maxCount: 1 },
+    ])(req, res, (err) => {
       if (err) {
         return res
           .status(400)

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import {
   BarChart3,
   ClipboardList,
@@ -7,6 +7,9 @@ import {
   Store as StoreIcon,
   Pencil,
   Trash2,
+  X,
+  Filter,
+  Calendar,
 } from "lucide-react";
 import {
   Area,
@@ -32,8 +35,25 @@ const emptyProductForm = {
   price: "",
   salePrice: "",
   stock: "",
-  imageUrl: "",
+  images: [],
   isAvailable: true,
+};
+
+const STATUS_OPTIONS = [
+  { value: "all", label: "Tất cả" },
+  { value: "pending", label: "Chờ xác nhận" },
+  { value: "paid", label: "Đã thanh toán" },
+  { value: "shipping", label: "Đang giao" },
+  { value: "delivered", label: "Đã giao" },
+  { value: "cancelled", label: "Đã hủy" },
+];
+
+const statusColor = {
+  pending: "bg-amber-100 text-amber-700",
+  paid: "bg-blue-100 text-blue-700",
+  shipping: "bg-purple-100 text-purple-700",
+  delivered: "bg-emerald-100 text-emerald-700",
+  cancelled: "bg-rose-100 text-rose-700",
 };
 
 const formatCurrency = (value) =>
@@ -63,6 +83,11 @@ const StoreOwnerDashboard = () => {
     address: "",
     openingHours: "",
   });
+  // Order filters
+  const [orderStatusFilter, setOrderStatusFilter] = useState("all");
+  const [orderDateFrom, setOrderDateFrom] = useState("");
+  const [orderDateTo, setOrderDateTo] = useState("");
+  const productImageRef = useRef(null);
 
   useEffect(() => {
     if (!user) return;
@@ -91,8 +116,15 @@ const StoreOwnerDashboard = () => {
   const loadStoreData = async (storeId) => {
     try {
       setLoading(true);
+      const orderParams = {};
+      if (orderStatusFilter && orderStatusFilter !== "all") {
+        orderParams.status = orderStatusFilter;
+      }
+      if (orderDateFrom) orderParams.dateFrom = orderDateFrom;
+      if (orderDateTo) orderParams.dateTo = orderDateTo;
+
       const [orderRes, productRes] = await Promise.all([
-        marketService.getStoreOrders(storeId),
+        marketService.getStoreOrders(storeId, orderParams),
         marketService.getProducts({ storeId }),
       ]);
       setOrders(orderRes?.data || []);
@@ -120,7 +152,7 @@ const StoreOwnerDashboard = () => {
   useEffect(() => {
     if (!selectedStoreId) return;
     loadStoreData(selectedStoreId);
-  }, [selectedStoreId, revenuePeriod, revenueDays]);
+  }, [selectedStoreId, revenuePeriod, revenueDays, orderStatusFilter, orderDateFrom, orderDateTo]);
 
   const revenueSummary = useMemo(() => {
     const paidOrders = orders.filter((order) =>
@@ -187,22 +219,41 @@ const StoreOwnerDashboard = () => {
     setProductForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleUploadImage = async (file) => {
-    if (!file) return;
+  const handleUploadImages = async (files) => {
+    if (!files || files.length === 0) return;
+    const fileArray = Array.from(files);
+    if (productForm.images.length + fileArray.length > 5) {
+      toast.warning("Tối đa 5 ảnh cho mỗi sản phẩm");
+      return;
+    }
     try {
       setUploadingImage(true);
-      const res = await marketService.uploadProductImage(file);
-      const url = res?.data?.url;
-      if (url) {
-        setProductForm((prev) => ({ ...prev, imageUrl: url }));
-        toast.success("Đã tải ảnh lên");
+      const uploadPromises = fileArray.map((file) =>
+        marketService.uploadProductImage(file).then((res) => res?.data?.url),
+      );
+      const urls = await Promise.all(uploadPromises);
+      const validUrls = urls.filter(Boolean);
+      if (validUrls.length > 0) {
+        setProductForm((prev) => ({
+          ...prev,
+          images: [...prev.images, ...validUrls].slice(0, 5),
+        }));
+        toast.success(`Đã tải ${validUrls.length} ảnh lên`);
       }
     } catch (error) {
       toast.error(error?.message || "Không thể upload ảnh");
     } finally {
       setUploadingImage(false);
+      if (productImageRef.current) productImageRef.current.value = "";
     }
   };
+
+  const removeProductImage = useCallback((index) => {
+    setProductForm((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  }, []);
 
   const resetProductForm = () => {
     setProductForm(emptyProductForm);
@@ -229,7 +280,7 @@ const StoreOwnerDashboard = () => {
           ? Number(productForm.salePrice)
           : undefined,
       stock: Number(productForm.stock) || 0,
-      images: productForm.imageUrl ? [productForm.imageUrl.trim()] : [],
+      images: productForm.images || [],
       isAvailable: productForm.isAvailable,
     };
 
@@ -265,7 +316,7 @@ const StoreOwnerDashboard = () => {
       price: product.price ?? "",
       salePrice: product.salePrice ?? "",
       stock: product.stock ?? "",
-      imageUrl: product.images?.[0] || "",
+      images: product.images || [],
       isAvailable: product.isAvailable !== false,
     });
     setTab("products");
@@ -544,61 +595,131 @@ const StoreOwnerDashboard = () => {
             </div>
           </div>
         ) : tab === "orders" ? (
-          <div className="rounded-3xl bg-white/90 p-6 shadow-lg">
-            <div className="space-y-4">
-              {orders.length === 0 ? (
-                <div className="text-center text-sm text-slate-500 py-8">
-                  Chưa có đơn hàng nào.
-                </div>
-              ) : (
-                orders.map((order) => (
-                  <div
-                    key={order._id}
-                    className="flex flex-col gap-4 rounded-2xl border border-slate-100 p-4 md:flex-row md:items-center md:justify-between"
+          <div className="space-y-4">
+            {/* Order Filters */}
+            <div className="rounded-3xl bg-white/90 p-5 shadow-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Filter className="h-4 w-4 text-slate-500" />
+                <span className="text-sm font-semibold text-slate-700">Bộ lọc đơn hàng</span>
+              </div>
+              <div className="flex flex-wrap items-end gap-4">
+                <div>
+                  <label className="block text-xs text-slate-500 mb-1">Trạng thái</label>
+                  <select
+                    value={orderStatusFilter}
+                    onChange={(e) => setOrderStatusFilter(e.target.value)}
+                    className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm outline-none"
                   >
-                    <div>
-                      <p className="text-sm text-slate-500">Mã đơn</p>
-                      <p className="font-semibold text-slate-900">
-                        #{order._id.slice(-6).toUpperCase()}
-                      </p>
-                      <p className="text-xs text-slate-400">
-                        {new Date(order.createdAt).toLocaleString("vi-VN")}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-slate-500">Khách hàng</p>
-                      <p className="font-semibold text-slate-900">
-                        {order.shipping?.recipientName}
-                      </p>
-                      <p className="text-xs text-slate-400">
-                        {order.shipping?.phone}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-slate-500">Tổng tiền</p>
-                      <p className="font-semibold text-emerald-700">
-                        {formatCurrency(order.total)}
-                      </p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <p className="text-xs text-slate-400">Trạng thái</p>
-                      <select
-                        value={order.status}
-                        onChange={(event) =>
-                          handleUpdateOrderStatus(order._id, event.target.value)
-                        }
-                        className="rounded-full border border-slate-200 px-3 py-1 text-sm"
-                      >
-                        <option value="pending">Chờ xác nhận</option>
-                        <option value="paid">Đã thanh toán</option>
-                        <option value="shipping">Đang giao</option>
-                        <option value="delivered">Đã giao</option>
-                        <option value="cancelled">Đã hủy</option>
-                      </select>
-                    </div>
+                    {STATUS_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-500 mb-1">
+                    <Calendar className="inline h-3 w-3 mr-1" />Từ ngày
+                  </label>
+                  <input
+                    type="date"
+                    value={orderDateFrom}
+                    onChange={(e) => setOrderDateFrom(e.target.value)}
+                    className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-500 mb-1">
+                    <Calendar className="inline h-3 w-3 mr-1" />Đến ngày
+                  </label>
+                  <input
+                    type="date"
+                    value={orderDateTo}
+                    onChange={(e) => setOrderDateTo(e.target.value)}
+                    className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm outline-none"
+                  />
+                </div>
+                {(orderStatusFilter !== "all" || orderDateFrom || orderDateTo) && (
+                  <button
+                    onClick={() => {
+                      setOrderStatusFilter("all");
+                      setOrderDateFrom("");
+                      setOrderDateTo("");
+                    }}
+                    className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-200 transition"
+                  >
+                    <X className="h-3 w-3" />
+                    Xóa lọc
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Order List */}
+            <div className="rounded-3xl bg-white/90 p-6 shadow-lg">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-slate-900">
+                  Đơn hàng ({orders.length})
+                </h2>
+              </div>
+              <div className="space-y-4">
+                {orders.length === 0 ? (
+                  <div className="text-center text-sm text-slate-500 py-8">
+                    Không tìm thấy đơn hàng nào.
                   </div>
-                ))
-              )}
+                ) : (
+                  orders.map((order) => (
+                    <div
+                      key={order._id}
+                      className="flex flex-col gap-4 rounded-2xl border border-slate-100 p-4 md:flex-row md:items-center md:justify-between"
+                    >
+                      <div>
+                        <p className="text-sm text-slate-500">Mã đơn</p>
+                        <p className="font-semibold text-slate-900">
+                          #{order._id.slice(-6).toUpperCase()}
+                        </p>
+                        <p className="text-xs text-slate-400">
+                          {new Date(order.createdAt).toLocaleString("vi-VN")}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-500">Khách hàng</p>
+                        <p className="font-semibold text-slate-900">
+                          {order.shipping?.recipientName}
+                        </p>
+                        <p className="text-xs text-slate-400">
+                          {order.shipping?.phone}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-500">Tổng tiền</p>
+                        <p className="font-semibold text-emerald-700">
+                          {formatCurrency(order.total)}
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <p className="text-xs text-slate-400">Trạng thái</p>
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-1 ${statusColor[order.status] || "bg-slate-100 text-slate-600"}`}>
+                          {STATUS_OPTIONS.find((o) => o.value === order.status)?.label || order.status}
+                        </span>
+                        <select
+                          value={order.status}
+                          onChange={(event) =>
+                            handleUpdateOrderStatus(order._id, event.target.value)
+                          }
+                          className="rounded-full border border-slate-200 px-3 py-1 text-sm"
+                        >
+                          <option value="pending">Chờ xác nhận</option>
+                          <option value="paid">Đã thanh toán</option>
+                          <option value="shipping">Đang giao</option>
+                          <option value="delivered">Đã giao</option>
+                          <option value="cancelled">Đã hủy</option>
+                        </select>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         ) : (
@@ -697,19 +818,44 @@ const StoreOwnerDashboard = () => {
                   <option value="can">can</option>
                   <option value="bag">bag</option>
                 </select>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(event) =>
-                    handleUploadImage(event.target.files?.[0])
-                  }
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none"
-                />
-                {productForm.imageUrl && (
-                  <div className="text-xs text-emerald-600">
-                    Đã chọn ảnh: {productForm.imageUrl}
-                  </div>
-                )}
+                <div>
+                  <label className="block text-xs text-slate-500 mb-1">Hình ảnh sản phẩm (tối đa 5)</label>
+                  <input
+                    ref={productImageRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(event) =>
+                      handleUploadImages(event.target.files)
+                    }
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none"
+                  />
+                  {productForm.images.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {productForm.images.map((url, idx) => (
+                        <div key={idx} className="relative group">
+                          <img
+                            src={url}
+                            alt={`Ảnh ${idx + 1}`}
+                            className="h-16 w-16 rounded-xl object-cover border border-slate-200"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeProductImage(idx)}
+                            className="absolute -top-1.5 -right-1.5 bg-rose-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow"
+                          >
+                            ×
+                          </button>
+                          {idx === 0 && (
+                            <span className="absolute bottom-0.5 left-0.5 bg-emerald-600 text-white text-[9px] px-1 rounded">
+                              Chính
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <div className="flex items-center gap-3 text-sm">
                   <input
                     type="checkbox"

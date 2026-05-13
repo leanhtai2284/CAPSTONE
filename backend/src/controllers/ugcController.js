@@ -289,11 +289,21 @@ export const createUGC = async (req, res) => {
       payload.id = externalId;
     }
 
-    const videoFile =
-      req.file ||
-      (Array.isArray(req.files?.cooking_video)
-        ? req.files.cooking_video[0]
-        : null);
+    // Handle uploaded images
+    const imageFiles = Array.isArray(req.files?.recipe_images)
+      ? req.files.recipe_images
+      : [];
+    if (imageFiles.length > 0) {
+      payload.image_url = `/uploads/ugc/${imageFiles[0].filename}`;
+      payload.additional_images = imageFiles.map(
+        (f) => `/uploads/ugc/${f.filename}`,
+      );
+    }
+
+    // Handle uploaded video
+    const videoFile = Array.isArray(req.files?.cooking_video)
+      ? req.files.cooking_video[0]
+      : req.file || null;
 
     if (videoFile) {
       payload.cooking_video_url = `/uploads/ugc/${videoFile.filename}`;

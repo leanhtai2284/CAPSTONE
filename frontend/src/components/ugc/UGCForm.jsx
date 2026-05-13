@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { toast } from "react-toastify";
 import { recipeService } from "../../services/recipeService";
 
@@ -14,7 +14,7 @@ export default function UGCForm() {
     difficulty: "easy",
     servings: 1,
     description: "",
-    image_url: "",
+
     spice_level: 0,
     ingredients: [{ name: "", amount: "", unit: "", scalable: true }],
     steps: [""],
@@ -37,7 +37,32 @@ export default function UGCForm() {
   });
 
   const [cookingVideo, setCookingVideo] = useState(null);
+  const [recipeImages, setRecipeImages] = useState([]);
   const videoRef = useRef(null);
+  const imageInputRef = useRef(null);
+
+  const handleImageFiles = useCallback((files) => {
+    if (!files || files.length === 0) return;
+    const newFiles = Array.from(files).slice(0, 5 - recipeImages.length);
+    if (newFiles.length === 0) {
+      toast.warning("Tối đa 5 ảnh");
+      return;
+    }
+    const withPreview = newFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    setRecipeImages((prev) => [...prev, ...withPreview].slice(0, 5));
+    if (imageInputRef.current) imageInputRef.current.value = "";
+  }, [recipeImages.length]);
+
+  const removeImage = useCallback((index) => {
+    setRecipeImages((prev) => {
+      const removed = prev[index];
+      if (removed?.preview) URL.revokeObjectURL(removed.preview);
+      return prev.filter((_, i) => i !== index);
+    });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -213,7 +238,7 @@ export default function UGCForm() {
       .filter(Boolean)
       .map((l) => l.replace(/^\d+[\.\)]\s*/, "").replace(/^[-•]\s*/, ""));
 
-  // Note: image file uploads removed for UGC — use `image_url` instead. Only video upload is supported here.
+  // Image uploads handled via recipeImages state + recipe_images FormData field
 
   const handleVideoFile = (file) => {
     if (!file) return;
@@ -269,7 +294,7 @@ export default function UGCForm() {
         difficulty: formData.difficulty,
         servings: formData.servings,
         description: formData.description,
-        image_url: formData.image_url,
+
         spice_level: formData.spice_level,
       }).forEach(([k, v]) => {
         if (v !== undefined && v !== "") fd.append(k, v);
@@ -294,6 +319,11 @@ export default function UGCForm() {
       fd.append("suitable_for", JSON.stringify(formData.suitable_for));
       fd.append("avoid_for", JSON.stringify(formData.avoid_for));
 
+      // Append recipe images
+      recipeImages.forEach((img) => {
+        if (img.file) fd.append("recipe_images", img.file);
+      });
+
       if (cookingVideo && cookingVideo.file)
         fd.append("cooking_video", cookingVideo.file);
 
@@ -309,7 +339,7 @@ export default function UGCForm() {
         difficulty: "easy",
         servings: 1,
         description: "",
-        image_url: "",
+
         spice_level: 0,
         ingredients: [{ name: "", amount: "", unit: "", scalable: true }],
         steps: [""],
@@ -333,6 +363,10 @@ export default function UGCForm() {
       if (cookingVideo && cookingVideo.preview)
         URL.revokeObjectURL(cookingVideo.preview);
       setCookingVideo(null);
+      recipeImages.forEach((img) => {
+        if (img.preview) URL.revokeObjectURL(img.preview);
+      });
+      setRecipeImages([]);
     } catch (err) {
       console.error(err);
       toast.error(err.message || "Lỗi khi gửi công thức");
@@ -485,17 +519,43 @@ export default function UGCForm() {
                   className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </div>
-              <div>
+              <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  URL hình ảnh
+                  Hình ảnh món ăn (tối đa 5 ảnh)
                 </label>
                 <input
-                  type="url"
-                  name="image_url"
-                  value={formData.image_url}
-                  onChange={handleChange}
+                  ref={imageInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/gif,image/webp"
+                  multiple
+                  onChange={(e) => handleImageFiles(e.target.files)}
                   className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
+                {recipeImages.length > 0 && (
+                  <div className="mt-3 grid grid-cols-5 gap-2">
+                    {recipeImages.map((img, idx) => (
+                      <div key={idx} className="relative group">
+                        <img
+                          src={img.preview}
+                          alt={`Preview ${idx + 1}`}
+                          className="w-full h-20 object-cover rounded-lg border"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(idx)}
+                          className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow"
+                        >
+                          ×
+                        </button>
+                        {idx === 0 && (
+                          <span className="absolute bottom-0.5 left-0.5 bg-green-600 text-white text-[10px] px-1 rounded">
+                            Chính
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -966,7 +1026,7 @@ export default function UGCForm() {
                     difficulty: "easy",
                     servings: 1,
                     description: "",
-                    image_url: "",
+
                     spice_level: 0,
                     ingredients: [
                       { name: "", amount: "", unit: "", scalable: true },
@@ -989,12 +1049,12 @@ export default function UGCForm() {
                     },
                     price_estimate: { min: "", max: "", currency: "VND" },
                   });
-                  mediaFiles.forEach(
+                  recipeImages.forEach(
                     (f) => f.preview && URL.revokeObjectURL(f.preview),
                   );
                   if (cookingVideo && cookingVideo.preview)
                     URL.revokeObjectURL(cookingVideo.preview);
-                  setMediaFiles([]);
+                  setRecipeImages([]);
                   setCookingVideo(null);
                 }}
                 className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"

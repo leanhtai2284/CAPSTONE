@@ -20,22 +20,40 @@ const storage = multer.diskStorage({
   },
 });
 
-const fileFilter = (_req, file, cb) => {
-  const allowedExt = /mp4|webm|mov|mkv/;
-  const extname = allowedExt.test(
-    path.extname(file.originalname).toLowerCase(),
-  );
-  const allowedMime = [
-    "video/mp4",
-    "video/webm",
-    "video/quicktime",
-    "video/x-matroska",
-  ].includes(file.mimetype);
+const allowedImageExt = /jpeg|jpg|png|gif|webp/;
+const allowedImageMime = [
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+];
 
-  if (extname && allowedMime) {
-    return cb(null, true);
+const allowedVideoExt = /mp4|webm|mov|mkv/;
+const allowedVideoMime = [
+  "video/mp4",
+  "video/webm",
+  "video/quicktime",
+  "video/x-matroska",
+];
+
+const fileFilter = (_req, file, cb) => {
+  const ext = path.extname(file.originalname).toLowerCase().replace(".", "");
+
+  if (file.fieldname === "recipe_images") {
+    const extOk = allowedImageExt.test(ext);
+    const mimeOk = allowedImageMime.includes(file.mimetype);
+    if (extOk && mimeOk) return cb(null, true);
+    return cb(new Error("Chỉ cho phép upload ảnh (jpeg, png, gif, webp)"));
   }
-  cb(new Error("Chỉ cho phép upload video (mp4, webm, mov, mkv)"));
+
+  if (file.fieldname === "cooking_video") {
+    const extOk = allowedVideoExt.test(ext);
+    const mimeOk = allowedVideoMime.includes(file.mimetype);
+    if (extOk && mimeOk) return cb(null, true);
+    return cb(new Error("Chỉ cho phép upload video (mp4, webm, mov, mkv)"));
+  }
+
+  cb(new Error("Field không hợp lệ"));
 };
 
 const upload = multer({
