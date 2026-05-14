@@ -49,11 +49,20 @@ router.post("/register-as-owner", protect, registerAsStoreOwner);
 
 // Stores
 router.get("/stores", validate(storeQuerySchema, "query"), getStores);
+
+router.get(
+  "/stores/my",
+  protect,
+  authorizeRoles("store_owner", "admin"),
+  getMyStores,
+);
+
 router.get(
   "/stores/:id",
   validate(objectIdParamSchema, "params"),
   getStoreById,
 );
+
 router.post(
   "/stores",
   protect,
@@ -61,12 +70,7 @@ router.post(
   validate(storeCreateSchema),
   createStore,
 );
-router.get(
-  "/stores/my",
-  protect,
-  authorizeRoles("store_owner", "admin"),
-  getMyStores,
-);
+
 router.put(
   "/stores/:id",
   protect,
