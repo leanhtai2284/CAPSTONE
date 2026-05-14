@@ -12732,7 +12732,7 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 
 ---
 
-## Món ăn: Đậu Hủ Nhồi Thịt Sốt Chua Ngọt
+## Món ăn: Đậu Hũ Nhồi Thịt Sốt Chua Ngọt
 - **Mã món (ID):** dau-hu-nhoi-thit-sot-ca-chua
 - **Vùng miền:** Bắc
 - **Loại món (Category):** main
@@ -13102,6 +13102,408 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 
 ### Cách làm (Steps):
 - (Đang cập nhật)
+
+---
+
+## Món ăn: Bánh tráng cuốn thịt heo
+- **Mã món (ID):** banh-trang-cuon-thit-heo
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 5 phút, Nấu 20 phút. Tổng: 25 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 520 calo, 28g protein, 42g carbs, 24g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Bánh tráng cuốn thịt heo là món ăn đặc trưng miền Trung với thịt heo luộc mềm ngọt cuốn cùng bánh tráng, rau sống và dưa leo. Khi chấm với mắm nêm hoặc nước mắm tỏi ớt tạo nên hương vị hài hòa giữa vị mặn, ngọt và tươi mát. Món ăn thanh nhẹ nhưng đầy đủ dinh dưỡng, rất thích hợp cho những bữa ăn gia đình hoặc cuối tuần.
+
+### Nguyên liệu cần chuẩn bị:
+- 150 g Thịt ba chỉ heo
+- 6 cái Bánh tráng cuốn
+- 100 g Bún tươi
+- 50 g Xà lách
+- 1 quả Dưa leo
+- 20 g Rau thơm tổng hợp
+- 1 củ Hành tím
+- 2 muỗng canh Mắm nêm
+- 1 tép Tỏi
+- 1 trái Ớt
+- 1 muỗng cà phê Đường
+- 1 muỗng cà phê Nước cốt chanh
+
+### Cách làm (Steps):
+1. Rửa sạch thịt heo với nước muối loãng.
+2. Cho thịt vào nồi nước cùng hành tím và luộc khoảng 18–20 phút đến khi chín mềm.
+3. Vớt thịt ra để nguội rồi cắt lát mỏng vừa ăn.
+4. Rửa sạch xà lách, rau thơm và dưa leo, để ráo nước.
+5. Pha mắm nêm với tỏi băm, ớt băm, đường và nước cốt chanh cho vừa khẩu vị.
+6. Làm mềm bánh tráng bằng nước lọc.
+7. Cho bánh tráng lên dĩa, xếp rau sống, bún và thịt heo rồi cuốn chặt tay.
+8. Chấm cùng mắm nêm khi ăn.
+
+---
+
+## Món ăn: Vịt kho măng
+- **Mã món (ID):** vit-kho-mang
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 35 phút. Tổng: 50 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 465 calo, 32g protein, 14g carbs, 30g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Vịt kho măng là món ăn đậm chất Việt, kết hợp thịt vịt mềm thơm, thấm gia vị với măng xào săn hơi chua nhẹ đặc trưng. Nước kho sền sệt, vị mặn ngọt hài hòa, xen chút cay ấm của gừng và tiêu. Món này đặc biệt đưa cơm và thường xuất hiện trong bữa ăn gia đình vào những ngày trời mát hoặc khi muốn đổi vị.
+
+### Nguyên liệu cần chuẩn bị:
+- 150 g Thịt vịt (đùi hoặc lườn)
+- 120 g Măng tươi luộc
+- 3 lát gừng
+- 2 củ Hành tím
+- 2 tép Tỏi
+- 1 trái Ớt
+- 1 cây Hành lá
+- 1 muỗng canh Nước mắm
+- 1 muỗng cà phê Đường
+- 1 muỗng cà phê Muối	
+- 1 muỗng cà phê Tiêu xay
+- 1 muỗng canh Dầu ăn
+- 150 ml Nước lọc
+
+### Cách làm (Steps):
+1. Rửa thịt vịt với gừng và muối để khử mùi, cắt miếng vừa ăn.
+2. Ướp vịt với nước mắm, đường, muối, tiêu, hành tím băm, tỏi băm và ớt trong 15 phút.
+3. Xào măng tươi với một ít dầu, nêm nhẹ muối cho măng săn và thơm.
+4. Phi thơm hành tỏi, cho thịt vịt vào xào đến khi săn và hơi vàng cạnh.
+5. Đổ nước vào nồi, đun sôi rồi giảm lửa nhỏ.
+6. Cho măng đã xào vào kho chung, tiếp tục nấu cho đến khi nước sánh và vịt mềm.
+7. Nêm nếm lại cho vừa khẩu vị.
+8. Thêm hành lá và tiêu xay, tắt bếp và múc ra đĩa.
+
+---
+
+## Món ăn: Lưỡi heo luộc chấm ruốc
+- **Mã món (ID):** luoi-heo-luoc-cham-ruoc
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 10 phút, Nấu 35 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 310 calo, 29g protein, 4g carbs, 20g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Lưỡi heo luộc chấm ruốc là món ăn dân dã miền Trung với phần lưỡi heo mềm giòn, thơm ngọt tự nhiên sau khi luộc kỹ. Khi ăn chấm cùng mắm ruốc pha tỏi ớt tạo nên hương vị đậm đà, mặn ngọt hài hòa và cực kỳ đưa cơm. Món ăn phù hợp cho bữa cơm gia đình hoặc làm món nhậu đơn giản.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 cái (~180g) Lưỡi heo	
+- 3 la· Gừng	
+- 2 củ Hành tím
+- 1 muỗng cà phê Muối
+- 1 muỗng canh Mắm ruốc
+- 1 muỗng cà phê Đường	/2
+- 1 tép Tỏi
+- 1 trái Ớt
+- 1 muỗng cà phê Nước cốt chanh
+- 1 muỗng canh Nước lọc
+
+### Cách làm (Steps):
+1. Rửa sạch lưỡi heo với muối và gừng để khử mùi hôi.
+2. Cho lưỡi heo vào nồi nước cùng hành tím và vài lát gừng rồi luộc khoảng 30–35 phút đến khi chín mềm.
+3. Vớt lưỡi heo ra ngâm nước lạnh để giữ độ giòn rồi cạo sạch lớp trắng bên ngoài.
+4. Thái lưỡi heo thành lát mỏng vừa ăn.
+5. Pha mắm ruốc với đường, nước cốt chanh, tỏi băm, ớt băm và nước lọc cho vừa khẩu vị.
+6. Xếp lưỡi heo ra dĩa và dùng kèm mắm ruốc pha.Rửa sạch lưỡi heo với muối và gừng để khử mùi hôi.
+7. Cho lưỡi heo vào nồi nước cùng hành tím và vài lát gừng rồi luộc khoảng 30–35 phút đến khi chín mềm.
+8. Vớt lưỡi heo ra ngâm nước lạnh để giữ độ giòn rồi cạo sạch lớp trắng bên ngoài.
+9. Thái lưỡi heo thành lát mỏng vừa ăn.
+10. Pha mắm ruốc với đường, nước cốt chanh, tỏi băm, ớt băm và nước lọc cho vừa khẩu vị.
+11. Xếp lưỡi heo ra dĩa và dùng kèm mắm ruốc pha.
+
+---
+
+## Món ăn: Cá ngừ sốt chiên mắm tỏi
+- **Mã món (ID):** ca-ngu-chien-sot-mam-toi
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 10 phút, Nấu 15 phút. Tổng: 25 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 390 calo, 34g protein, 12g carbs, 22g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Cá ngừ sốt chiên mắm tỏi là món ăn đậm đà với cá ngừ được chiên vàng bên ngoài nhưng vẫn giữ độ mềm ngọt bên trong. Phần nước sốt mắm tỏi thơm lừng, mặn ngọt hài hòa bám đều lên từng miếng cá tạo nên hương vị rất bắt cơm. Món ăn đơn giản, dễ làm nhưng giàu dinh dưỡng và phù hợp cho bữa cơm gia đình.
+
+### Nguyên liệu cần chuẩn bị:
+- 150 g Cá ngừ lát
+- 3 tép Tỏi
+- 1 trái Ớt
+- 1 muỗng canh Nước mắm
+- 1 muỗng cà phê Đường
+- 1 muỗng canh Nước lọc
+- 1 muỗng cà phê Tiêu xay	/3
+- 2 muỗng canh Dầu ăn
+
+### Cách làm (Steps):
+1. Rửa sạch cá ngừ và thấm khô.
+2. Ướp cá với chút muối và tiêu trong vài phút.
+3. Băm nhuyễn tỏi và ớt.
+4. Làm nóng chảo với dầu ăn rồi chiên cá vàng đều hai mặt.
+5. Gắp cá ra để ráo dầu.
+6. Phi thơm tỏi băm trong phần dầu còn lại.
+7. Cho nước mắm, đường và nước lọc vào chảo, khuấy đều cho sôi nhẹ.
+8. Cho cá ngừ vào rim nhỏ lửa để cá thấm đều nước sốt.
+9. Rắc tiêu và tắt bếp.
+
+---
+
+## Món ăn: cá nục kho riềng
+- **Mã món (ID):** ca-nuc-kho-rieng
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 35 phút. Tổng: 50 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 355 calo, 31g protein, 8g carbs, 22g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Cá nục kho riềng là món ăn đậm chất miền Bắc với cá nục béo thơm được kho cùng riềng tạo hương vị cay nhẹ và thơm nồng đặc trưng. Cá thấm đều nước kho mặn ngọt hài hòa, thịt săn chắc và cực kỳ đưa cơm. Món ăn thích hợp cho những bữa cơm gia đình truyền thống, đặc biệt vào những ngày trời mát.
+
+### Nguyên liệu cần chuẩn bị:
+- 2 con nhỏ (~180g) Cá nục	
+- 6 lát Riềng
+- 2 củ Hành tím
+- 2 tép Tỏi
+- 1 trái Ớt
+- 1.5 muỗng canh Nước mắm
+- 1 muỗng cà phê Nước màu
+- 1 muỗng cà phê Đường
+- 0.5 muỗng cà phê Tiêu xay
+- 150 ml Nước lọc
+
+### Cách làm (Steps):
+1. Sơ chế nguyên liệu: Cá nục làm sạch, bỏ mang, đuôi và vây, rửa sạch rồi để ráo. Riềng rửa sạch, giã nhuyễn.
+2. Ướp cá: Ướp riềng với cá cùng nước mắm, đường, tiêu, tỏi và ớt đập dập trong khoảng 30 phút để cá ngấm vị.
+3. Tạo màu cho món cá nục kho riềng: Bạn có thể dùng bột nghệ hoặc củ nghệ tươi để ướp chung với cá, giúp món ăn thành phẩm hấp dẫn hơn.
+4. Kho cá: Lần lượt cho cá vào, chiên sơ hai mặt cho cá săn và lên màu đẹp. Đổ phần nước ướp vào, đun lửa lớn cho sôi rồi thêm chút nước nóng, đậy nắp và hạ nhỏ lửa. Kho đến khi nước sánh lại, cá thấm đều gia vị là hoàn thành.
+
+---
+
+## Món ăn: Sườn rim chua ngọt
+- **Mã món (ID):** suon-rim-chua-ngot
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 30 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 520 calo, 28g protein, 14g carbs, 38g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Sườn rim chua ngọt miền Trung là món ăn đậm đà với phần sườn non mềm thơm được rim cùng nước mắm, tỏi và vị chua nhẹ đặc trưng. Nước sốt sánh đều bao quanh từng miếng sườn tạo nên vị mặn ngọt hài hòa xen chút cay nhẹ rất bắt cơm. Đây là món ăn quen thuộc trong bữa cơm gia đình miền Trung nhờ hương vị đậm vị và dễ ăn.
+
+### Nguyên liệu cần chuẩn bị:
+- 180 g Sườn non heo
+- 2 củ Hành tím
+- 2 tép Tỏi
+- 1 trái Ớt
+- 1.5 muỗng canh Nước mắm
+- 1 muỗng canh Đường
+- 1 muỗng canh Giấm gạo
+- 1 muỗng cà phê Nước màu
+- 1 muỗng canh Dầu ăn
+- 1 muỗng cà phê Tiêu xay	/3
+- 120 ml Nước lọc
+
+### Cách làm (Steps):
+1. Rửa sạch sườn với nước muối loãng rồi chặt miếng vừa ăn.
+2. Chần sơ sườn trong nước sôi khoảng 2 phút rồi vớt ra để ráo.
+3. Ướp sườn với nước mắm, hành tím băm, tỏi băm và tiêu khoảng 15 phút.
+4. Làm nóng chảo với dầu ăn rồi cho sườn vào đảo săn.
+5. Thêm nước màu, đường, giấm gạo và nước lọc vào chảo.
+6. Rim lửa nhỏ đến khi sườn mềm và nước sốt sánh lại.
+7. Cho ớt cắt lát vào, nêm nếm lại cho vừa ăn rồi tắt bếp.
+
+---
+
+## Món ăn: Cá ngừ sốt cà
+- **Mã món (ID):** ca-ngu-sot-ca
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 10 phút, Nấu 20 phút. Tổng: 30 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 365 calo, 33g protein, 10g carbs, 21g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Cá ngừ sốt cà là món ăn quen thuộc trong bữa cơm gia đình Việt với phần cá ngừ chiên săn thơm kết hợp cùng sốt cà chua đậm vị. Vị chua nhẹ tự nhiên từ cà hòa quyện cùng nước sốt mặn ngọt giúp món ăn thơm ngon, dễ ăn và cực kỳ bắt cơm. Đây là món ăn giàu đạm, dễ chế biến và phù hợp cho cả người lớn lẫn trẻ nhỏ.
+
+### Nguyên liệu cần chuẩn bị:
+- 180 g Cá ngừ lát
+- 2 quả nhỏ Cà chua
+- 1 củ Hành tím
+- 2 tép Tỏi
+- 1 cây Hành lá
+- 1 muỗng canh Nước mắm
+- 1 muỗng cà phê Đường
+- 1.5 muỗng canh Dầu ăn
+- 0.5 muỗng cà phê Tiêu xay
+- 80 ml Nước lọc
+
+### Cách làm (Steps):
+1. Rửa sạch cá ngừ và thấm khô.
+2. Ướp cá với một ít nước mắm và tiêu khoảng 10 phút.
+3. Cà chua cắt múi cau, hành tím và tỏi băm nhỏ.
+4. Làm nóng chảo với dầu ăn rồi chiên sơ cá đến khi vàng nhẹ hai mặt.
+5. Phi thơm hành tím và tỏi rồi cho cà chua vào xào mềm.
+6. Thêm nước lọc, nước mắm và đường vào nấu thành sốt cà.
+7. Cho cá ngừ vào rim nhỏ lửa để cá thấm đều nước sốt.
+8. Rắc hành lá và tiêu rồi tắt bếp.
+
+---
+
+## Món ăn: Cá nục cuốn rau muống
+- **Mã món (ID):** ca-nuc-cuon-rau-muong
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 20 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 410 calo, 30g protein, 28g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Cá nục cuốn rau muống là món ăn dân dã miền Trung với cá nục hấp hoặc luộc mềm ngọt cuốn cùng rau muống chẻ, rau sống và bánh tráng. Khi chấm với nước mắm tỏi ớt hoặc mắm nêm sẽ tạo nên hương vị thanh mát, đậm đà và rất dễ ăn. Món ăn giàu đạm, ít dầu mỡ và phù hợp cho bữa cơm gia đình ngày hè.
+
+### Nguyên liệu cần chuẩn bị:
+- 2 con nhỏ (~180g) Cá nục	
+- 80 g Rau muống chẻ
+- 5 cái Bánh tráng
+- 20 g Rau thơm tổng hợp
+- 1 quả Dưa leo
+- 1 củ Hành tím
+- 1 tép Tỏi
+- 1 trái Ớt
+- 1 muỗng canh Nước mắm
+- 1 muỗng cà phê Đường
+
+### Cách làm (Steps):
+1. Làm sạch cá nục, bỏ ruột và rửa với muối để khử tanh.
+2. Cho cá vào nồi hấp hoặc luộc cùng hành tím khoảng 15 phút đến khi chín.
+3. Vớt cá ra để nguội rồi gỡ lấy phần thịt cá.
+4. Rửa sạch rau muống chẻ, rau thơm và dưa leo rồi để ráo nước.
+5. Pha nước mắm với tỏi băm, ớt băm, đường và nước cốt chanh cho vừa khẩu vị.
+6. Làm mềm bánh tráng bằng nước lọc.
+7. Cho bánh tráng lên dĩa, xếp rau muống, rau thơm, dưa leo và cá nục rồi cuốn chặt tay.
+8. Chấm cùng nước mắm tỏi ớt khi ăn.
+
+---
+
+## Món ăn: Bún mắm thịt luộc
+- **Mã món (ID):** bun-mam-thit-luoc
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, breakfast, dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 20 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 540 calo, 26g protein, 48g carbs, 26g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Bún mắm thịt luộc là món ăn dân dã miền Nam với thịt heo luộc mềm ngọt ăn kèm bún tươi, rau sống và nước mắm tỏi ớt đậm đà. Món ăn có hương vị thanh mát, dễ ăn nhưng vẫn đầy đủ dinh dưỡng nhờ sự kết hợp giữa đạm, rau xanh và tinh bột. Đây là lựa chọn phù hợp cho những bữa ăn nhẹ nhưng vẫn no lâu.
+
+### Nguyên liệu cần chuẩn bị:
+- 120 g Thịt ba chỉ heo
+- 150 g Bún tươi
+- 40 g Xà lách
+- 30 g iá đỗ	g
+- 1 quả Dưa leo
+- 20 g Rau thơm tổng hợp
+- 1 củ Hành tím
+- 1.5 muỗng canh Nước mắm
+- 1 tép Tỏi
+- 1 trái Ớt
+- 1 muỗng cà phê Đường
+- 1 muỗng cà phê Nước cốt chanh
+
+### Cách làm (Steps):
+1. Rửa sạch thịt heo với nước muối loãng.
+2. Cho thịt vào nồi nước cùng hành tím rồi luộc khoảng 18–20 phút đến khi chín mềm.
+3. Vớt thịt ra để nguội rồi cắt lát mỏng vừa ăn.
+4. Rửa sạch xà lách, giá đỗ, rau thơm và dưa leo rồi để ráo nước.
+5. Pha nước mắm với tỏi băm, ớt băm, đường và nước cốt chanh cho vừa khẩu vị.
+6. Cho bún ra tô, xếp thịt heo và rau sống lên trên.
+7. Chan nước mắm hoặc dùng chấm tùy khẩu vị khi ăn.
+
+---
+
+## Món ăn: Cháo chờ Nam Ô
+- **Mã món (ID):** chao-cho-nam-o
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 45 phút. Tổng: 60 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 320 calo, 20g protein, 34g carbs, 11g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Cháo chờ Nam Ô là món cháo đặc trưng của vùng biển Nam Ô – Đà Nẵng, nổi bật với phần cháo nấu nhuyễn ăn kèm cá nục rim đậm đà.
+
+### Nguyên liệu cần chuẩn bị:
+- 70 g gạo tẻ	
+- 120 g Cá biển (cá nục/cá ngừ nhỏ)
+- 3 lát gừng
+- 1 củ Hành tím
+- 1 cây Hành lá
+- 10 g Rau thơm
+- 1 muỗng canh Nước mắm
+- 1 muỗng cà phê Muối	/3
+- 1 muỗng cà phê Tiêu xay	/3
+- 1 muỗng cà phê Dầu ăn
+- 700 ml Nước lọc
+
+### Cách làm (Steps):
+1. Vo sạch gạo rồi rang sơ cho thơm nhẹ.
+2. Cho gạo vào nồi cùng nước lọc và nấu lửa nhỏ đến khi cháo nhuyễn.
+3. Làm sạch cá nục rồi luộc cùng vài lát gừng để khử tanh.
+4. Gỡ lấy phần thịt cá và bỏ xương.
+5. Phi thơm hành tím với một ít dầu ăn rồi cho thịt cá vào rim cùng nước mắm và tiêu đến khi cá thấm vị.
+6. Nêm cháo với muối và một ít nước mắm cho vừa ăn.
+7. Múc cháo ra tô, cho phần cá rim lên trên.
+8. Rắc hành lá, rau thơm và tiêu xay rồi dùng nóng.
+
+---
+
+## Món ăn: Gà nấu xáo
+- **Mã món (ID):** ga-nau-xao
+- **Vùng miền:** Bắc
+- **Loại món (Category):** soup
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 40 phút. Tổng: 60 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 430 calo, 34g protein, 4g carbs, 30g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Gà nấu xáo là món ăn dân dã miền Trung với thịt gà được nấu mềm cùng các loại rau và gia vị đặc trưng tạo nên nước dùng thơm ngọt tự nhiên.
+
+### Nguyên liệu cần chuẩn bị:
+- 180 g Thịt gà
+- 2 củ Hành tím
+- 2 tép Tỏi
+- 3 g ừng	lát
+- 1 cây Hành lá
+- 5 g Rau ngò
+- 1 muỗng canh Nước mắm
+- 0.5 muỗng cà phê Muối	
+- 0.5 muỗng cà phê Tiêu xay
+- 1 muỗng canh Dầu ăn
+- 500 ml Nước lọc
+
+### Cách làm (Steps):
+1. Rửa sạch thịt gà với muối và gừng để khử mùi tanh.
+2. Chặt gà thành miếng vừa ăn rồi ướp với nước mắm, hành tím băm và tiêu khoảng 15 phút.
+3. Phi thơm hành tím và tỏi với dầu ăn.
+4. Cho thịt gà vào xào săn đến khi thịt hơi vàng.
+5. Đổ nước lọc vào nồi rồi nấu lửa vừa đến khi gà chín mềm.
+6. Nêm muối và nước mắm vừa khẩu vị.
+7. Cho hành lá và rau ngò vào trước khi tắt bếp.
+8. Múc ra tô và dùng nóng.
 
 ---
 
