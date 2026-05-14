@@ -11,7 +11,14 @@ export const marketService = {
     return res.data;
   },
 
+  // Đăng ký làm Store Owner: nâng role + tạo store đầu tiên
+  async registerAsStoreOwner(payload) {
+    const res = await axiosInstance.post("/market/register-as-owner", payload);
+    return res.data;
+  },
+
   async getProducts(params = {}) {
+
     const res = await axiosInstance.get("/market/products", { params });
     return res.data;
   },

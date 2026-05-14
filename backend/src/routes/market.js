@@ -17,6 +17,7 @@ import {
 } from "../middlewares/marketValidation.js";
 import upload from "../middlewares/marketUploadMiddleware.js";
 import {
+  registerAsStoreOwner,
   createStore,
   getStores,
   getMyStores,
@@ -42,6 +43,9 @@ import {
 import { uploadProductImage } from "../controllers/marketProductController.js";
 
 const router = express.Router();
+
+// ─── Đăng ký trở thành Store Owner (bất kỳ user đã đăng nhập) ───────────────
+router.post("/register-as-owner", protect, registerAsStoreOwner);
 
 // Stores
 router.get("/stores", validate(storeQuerySchema, "query"), getStores);

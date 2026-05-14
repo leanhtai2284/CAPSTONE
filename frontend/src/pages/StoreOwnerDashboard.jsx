@@ -89,12 +89,22 @@ const StoreOwnerDashboard = () => {
   const [orderDateTo, setOrderDateTo] = useState("");
   const productImageRef = useRef(null);
 
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [registerForm, setRegisterForm] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    description: "",
+    openingHours: "",
+  });
+
   useEffect(() => {
     if (!user) return;
-    if (user.role !== "store_owner" && user.role !== "admin") {
+    // Admin và store_owner mới được vào dashboard
+    // User thường sẽ thấy form đăng ký (không redirect)
+    if (user.role !== "store_owner" && user.role !== "admin" && user.role !== "user") {
       toast.error("Bạn không có quyền truy cập khu vực cửa hàng");
       navigate("/");
-      return;
     }
   }, [user, navigate]);
 
@@ -349,6 +359,134 @@ const StoreOwnerDashboard = () => {
 
   if (!user) {
     return null;
+  }
+
+  // ─── Mnình đăng ký cho user thường chưa phải store_owner ───────────────────────
+  if (user.role === "user") {
+    const handleRegister = async () => {
+      if (!registerForm.name.trim()) {
+        toast.error("Tên cửa hàng là bắt buộc");
+        return;
+      }
+      try {
+        setIsRegistering(true);
+        const res = await marketService.registerAsStoreOwner(registerForm);
+        toast.success(res.message || "Đăng ký thành công!");
+        // Reload lại trang để auth context cập nhật role mới
+        setTimeout(() => window.location.reload(), 800);
+      } catch (error) {
+        toast.error(error?.response?.data?.message || "Không thể đăng ký");
+      } finally {
+        setIsRegistering(false);
+      }
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-emerald-50 flex items-center justify-center px-4 py-16">
+        <div className="w-full max-w-2xl">
+          {/* Hero badge */}
+          <div className="flex justify-center mb-8">
+            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-100 text-emerald-700 px-5 py-2 text-sm font-semibold">
+              <StoreIcon className="h-4 w-4" />
+              Đối tác bán hàng
+            </span>
+          </div>
+
+          <div className="rounded-3xl border border-white/70 bg-white/90 shadow-2xl shadow-emerald-100 overflow-hidden">
+            {/* Header gradient */}
+            <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-8 text-white">
+              <h1 className="text-3xl font-serif font-bold">Mở cửa hàng trên SmartMeal</h1>
+              <p className="mt-2 text-emerald-100 text-sm leading-relaxed">
+                Tiếp cận hàng ngàn khách hàng đang tìm kiếm nguyên liệu tươi sạch.
+                Đăng ký miễn phí, bắt đầu bán ngay hôm nay.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-4 text-xs">
+                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-yellow-300" /> Quản lý đơn hàng realtime</span>
+                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-yellow-300" /> Biểu đồ doanh thu</span>
+                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-yellow-300" /> AI gợi ý sản phẩm</span>
+              </div>
+            </div>
+
+            {/* Form */}
+            <div className="px-8 py-8">
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-5">Thông tin cửa hàng</p>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Tên cửa hàng <span className="text-rose-500">*</span></label>
+                  <input
+                    value={registerForm.name}
+                    onChange={e => setRegisterForm(f => ({ ...f, name: e.target.value }))}
+                    placeholder="Ví dụ: Siêu Thị Xanh Organic"
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Mô tả cửa hàng</label>
+                  <textarea
+                    value={registerForm.description}
+                    onChange={e => setRegisterForm(f => ({ ...f, description: e.target.value }))}
+                    placeholder="Mô tả ngắn về cửa hàng của bạn..."
+                    rows={2}
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500 resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Số điện thoại</label>
+                  <input
+                    value={registerForm.phone}
+                    onChange={e => setRegisterForm(f => ({ ...f, phone: e.target.value }))}
+                    placeholder="0901 234 567"
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Giờ mở cửa</label>
+                  <input
+                    value={registerForm.openingHours}
+                    onChange={e => setRegisterForm(f => ({ ...f, openingHours: e.target.value }))}
+                    placeholder="6:00 - 22:00"
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Địa chỉ</label>
+                  <input
+                    value={registerForm.address}
+                    onChange={e => setRegisterForm(f => ({ ...f, address: e.target.value }))}
+                    placeholder="Số nhà, đường, phường, quận..."
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+
+              <button
+                onClick={handleRegister}
+                disabled={isRegistering}
+                className="mt-8 w-full flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 disabled:opacity-60 text-white font-semibold py-4 transition-all shadow-lg shadow-emerald-200"
+              >
+                {isRegistering ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                    </svg>
+                    Đang xử lý...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-5 w-5" />
+                    Đăng ký mở cửa hàng miễn phí
+                  </>
+                )}
+              </button>
+              <p className="text-center text-xs text-slate-400 mt-3">
+                Bằng cách đăng ký, tài khoản của bạn sẽ được cấp quyền Store Owner.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!selectedStoreId && stores.length === 0 && !loading) {
