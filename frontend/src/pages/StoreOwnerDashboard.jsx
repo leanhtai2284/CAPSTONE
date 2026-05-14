@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { marketService } from "../services/marketService";
+import MapPicker from "../components/ui/MapPicker";
 
 const emptyProductForm = {
   name: "",
@@ -82,6 +83,8 @@ const StoreOwnerDashboard = () => {
     phone: "",
     address: "",
     openingHours: "",
+    lat: null,
+    lng: null,
   });
   // Order filters
   const [orderStatusFilter, setOrderStatusFilter] = useState("all");
@@ -96,6 +99,8 @@ const StoreOwnerDashboard = () => {
     address: "",
     description: "",
     openingHours: "",
+    lat: null,
+    lng: null,
   });
 
   useEffect(() => {
@@ -212,10 +217,12 @@ const StoreOwnerDashboard = () => {
         phone: storeForm.phone.trim(),
         address: storeForm.address.trim(),
         openingHours: storeForm.openingHours.trim(),
+        lat: storeForm.lat,
+        lng: storeForm.lng,
       });
       const created = res?.data;
       toast.success("Tạo cửa hàng thành công!");
-      setStoreForm({ name: "", phone: "", address: "", openingHours: "" });
+      setStoreForm({ name: "", phone: "", address: "", openingHours: "", lat: null, lng: null });
       if (created?._id) {
         setStores((prev) => [created, ...prev]);
         setSelectedStoreId(created._id);
@@ -457,6 +464,12 @@ const StoreOwnerDashboard = () => {
                     className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500"
                   />
                 </div>
+                <div className="md:col-span-2">
+                  <MapPicker 
+                    onChange={(lat, lng) => setRegisterForm(f => ({ ...f, lat, lng }))}
+                    defaultPosition={registerForm.lat && registerForm.lng ? { lat: registerForm.lat, lng: registerForm.lng } : null}
+                  />
+                </div>
               </div>
 
               <button
@@ -540,6 +553,15 @@ const StoreOwnerDashboard = () => {
                 placeholder="Giờ mở cửa"
                 className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500"
               />
+              <div className="md:col-span-2">
+                <MapPicker 
+                  onChange={(lat, lng) => {
+                    handleStoreFormChange("lat", lat);
+                    handleStoreFormChange("lng", lng);
+                  }}
+                  defaultPosition={storeForm.lat && storeForm.lng ? { lat: storeForm.lat, lng: storeForm.lng } : null}
+                />
+              </div>
             </div>
             <button
               onClick={handleCreateStore}
