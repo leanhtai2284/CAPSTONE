@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import {
   BarChart3,
   ClipboardList,
@@ -64,8 +70,9 @@ const formatCurrency = (value) =>
   }).format(value || 0);
 
 const StoreOwnerDashboard = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const navigate = useNavigate();
+  const isSeller = user?.role === "store_owner" || user?.role === "admin";
   const [stores, setStores] = useState([]);
   const [selectedStoreId, setSelectedStoreId] = useState("");
   const [orders, setOrders] = useState([]);
@@ -105,13 +112,12 @@ const StoreOwnerDashboard = () => {
 
   useEffect(() => {
     if (!user) return;
-    // Admin và store_owner mới được vào dashboard
-    // User thường sẽ thấy form đăng ký (không redirect)
-    if (user.role !== "store_owner" && user.role !== "admin" && user.role !== "user") {
+    // Cho phep cac role hop le vao trang nay
+    if (!isSeller && user.role !== "user" && user.role !== "moderator") {
       toast.error("Bạn không có quyền truy cập khu vực cửa hàng");
       navigate("/");
     }
-  }, [user, navigate]);
+  }, [user, navigate, isSeller]);
 
   const loadStores = async () => {
     try {
@@ -157,17 +163,33 @@ const StoreOwnerDashboard = () => {
   };
 
   useEffect(() => {
+    if (!user) return;
+    if (!isSeller) {
+      setLoading(false);
+      return;
+    }
+
     loadStores().then((list) => {
       if (list.length === 0) {
         setLoading(false);
       }
     });
-  }, []);
+  }, [user, isSeller]);
 
   useEffect(() => {
     if (!selectedStoreId) return;
+    if (!user || !isSeller) return;
     loadStoreData(selectedStoreId);
-  }, [selectedStoreId, revenuePeriod, revenueDays, orderStatusFilter, orderDateFrom, orderDateTo]);
+  }, [
+    selectedStoreId,
+    revenuePeriod,
+    revenueDays,
+    orderStatusFilter,
+    orderDateFrom,
+    orderDateTo,
+    user,
+    isSeller,
+  ]);
 
   const revenueSummary = useMemo(() => {
     const paidOrders = orders.filter((order) =>
@@ -222,7 +244,14 @@ const StoreOwnerDashboard = () => {
       });
       const created = res?.data;
       toast.success("Tạo cửa hàng thành công!");
-      setStoreForm({ name: "", phone: "", address: "", openingHours: "", lat: null, lng: null });
+      setStoreForm({
+        name: "",
+        phone: "",
+        address: "",
+        openingHours: "",
+        lat: null,
+        lng: null,
+      });
       if (created?._id) {
         setStores((prev) => [created, ...prev]);
         setSelectedStoreId(created._id);
@@ -369,7 +398,7 @@ const StoreOwnerDashboard = () => {
   }
 
   // ─── Mnình đăng ký cho user thường chưa phải store_owner ───────────────────────
-  if (user.role === "user") {
+  if (!isSeller) {
     const handleRegister = async () => {
       if (!registerForm.name.trim()) {
         toast.error("Tên cửa hàng là bắt buộc");
@@ -379,8 +408,11 @@ const StoreOwnerDashboard = () => {
         setIsRegistering(true);
         const res = await marketService.registerAsStoreOwner(registerForm);
         toast.success(res.message || "Đăng ký thành công!");
-        // Reload lại trang để auth context cập nhật role mới
-        setTimeout(() => window.location.reload(), 800);
+
+        const nextRole = res?.data?.newRole || "store_owner";
+        const nextUser = { ...(user || {}), role: nextRole };
+        localStorage.setItem("user", JSON.stringify(nextUser));
+        setUser?.(nextUser);
       } catch (error) {
         toast.error(error?.response?.data?.message || "Không thể đăng ký");
       } finally {
@@ -402,72 +434,120 @@ const StoreOwnerDashboard = () => {
           <div className="rounded-3xl border border-white/70 bg-white/90 shadow-2xl shadow-emerald-100 overflow-hidden">
             {/* Header gradient */}
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-8 text-white">
-              <h1 className="text-3xl font-serif font-bold">Mở cửa hàng trên SmartMeal</h1>
+              <h1 className="text-3xl font-serif font-bold">
+                Mở cửa hàng trên SmartMeal
+              </h1>
               <p className="mt-2 text-emerald-100 text-sm leading-relaxed">
-                Tiếp cận hàng ngàn khách hàng đang tìm kiếm nguyên liệu tươi sạch.
-                Đăng ký miễn phí, bắt đầu bán ngay hôm nay.
+                Tiếp cận hàng ngàn khách hàng đang tìm kiếm nguyên liệu tươi
+                sạch. Đăng ký miễn phí, bắt đầu bán ngay hôm nay.
               </p>
               <div className="mt-4 flex flex-wrap gap-4 text-xs">
-                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-yellow-300" /> Quản lý đơn hàng realtime</span>
-                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-yellow-300" /> Biểu đồ doanh thu</span>
-                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-yellow-300" /> AI gợi ý sản phẩm</span>
+                <span className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-300" />{" "}
+                  Quản lý đơn hàng realtime
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-300" />{" "}
+                  Biểu đồ doanh thu
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-300" /> AI
+                  gợi ý sản phẩm
+                </span>
               </div>
             </div>
 
             {/* Form */}
             <div className="px-8 py-8">
-              <p className="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-5">Thông tin cửa hàng</p>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-5">
+                Thông tin cửa hàng
+              </p>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Tên cửa hàng <span className="text-rose-500">*</span></label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Tên cửa hàng <span className="text-rose-500">*</span>
+                  </label>
                   <input
                     value={registerForm.name}
-                    onChange={e => setRegisterForm(f => ({ ...f, name: e.target.value }))}
+                    onChange={(e) =>
+                      setRegisterForm((f) => ({ ...f, name: e.target.value }))
+                    }
                     placeholder="Ví dụ: Siêu Thị Xanh Organic"
                     className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Mô tả cửa hàng</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Mô tả cửa hàng
+                  </label>
                   <textarea
                     value={registerForm.description}
-                    onChange={e => setRegisterForm(f => ({ ...f, description: e.target.value }))}
+                    onChange={(e) =>
+                      setRegisterForm((f) => ({
+                        ...f,
+                        description: e.target.value,
+                      }))
+                    }
                     placeholder="Mô tả ngắn về cửa hàng của bạn..."
                     rows={2}
                     className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500 resize-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Số điện thoại</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Số điện thoại
+                  </label>
                   <input
                     value={registerForm.phone}
-                    onChange={e => setRegisterForm(f => ({ ...f, phone: e.target.value }))}
+                    onChange={(e) =>
+                      setRegisterForm((f) => ({ ...f, phone: e.target.value }))
+                    }
                     placeholder="0901 234 567"
                     className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Giờ mở cửa</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Giờ mở cửa
+                  </label>
                   <input
                     value={registerForm.openingHours}
-                    onChange={e => setRegisterForm(f => ({ ...f, openingHours: e.target.value }))}
+                    onChange={(e) =>
+                      setRegisterForm((f) => ({
+                        ...f,
+                        openingHours: e.target.value,
+                      }))
+                    }
                     placeholder="6:00 - 22:00"
                     className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Địa chỉ</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Địa chỉ
+                  </label>
                   <input
                     value={registerForm.address}
-                    onChange={e => setRegisterForm(f => ({ ...f, address: e.target.value }))}
+                    onChange={(e) =>
+                      setRegisterForm((f) => ({
+                        ...f,
+                        address: e.target.value,
+                      }))
+                    }
                     placeholder="Số nhà, đường, phường, quận..."
                     className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <MapPicker 
-                    onChange={(lat, lng) => setRegisterForm(f => ({ ...f, lat, lng }))}
-                    defaultPosition={registerForm.lat && registerForm.lng ? { lat: registerForm.lat, lng: registerForm.lng } : null}
+                  <MapPicker
+                    onChange={(lat, lng) =>
+                      setRegisterForm((f) => ({ ...f, lat, lng }))
+                    }
+                    defaultPosition={
+                      registerForm.lat && registerForm.lng
+                        ? { lat: registerForm.lat, lng: registerForm.lng }
+                        : null
+                    }
                   />
                 </div>
               </div>
@@ -479,9 +559,24 @@ const StoreOwnerDashboard = () => {
               >
                 {isRegistering ? (
                   <>
-                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                    <svg
+                      className="animate-spin h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8z"
+                      />
                     </svg>
                     Đang xử lý...
                   </>
@@ -493,7 +588,8 @@ const StoreOwnerDashboard = () => {
                 )}
               </button>
               <p className="text-center text-xs text-slate-400 mt-3">
-                Bằng cách đăng ký, tài khoản của bạn sẽ được cấp quyền Store Owner.
+                Bằng cách đăng ký, tài khoản của bạn sẽ được cấp quyền Store
+                Owner.
               </p>
             </div>
           </div>
@@ -554,12 +650,16 @@ const StoreOwnerDashboard = () => {
                 className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500"
               />
               <div className="md:col-span-2">
-                <MapPicker 
+                <MapPicker
                   onChange={(lat, lng) => {
                     handleStoreFormChange("lat", lat);
                     handleStoreFormChange("lng", lng);
                   }}
-                  defaultPosition={storeForm.lat && storeForm.lng ? { lat: storeForm.lat, lng: storeForm.lng } : null}
+                  defaultPosition={
+                    storeForm.lat && storeForm.lng
+                      ? { lat: storeForm.lat, lng: storeForm.lng }
+                      : null
+                  }
                 />
               </div>
             </div>
@@ -760,11 +860,15 @@ const StoreOwnerDashboard = () => {
             <div className="rounded-3xl bg-white/90 p-5 shadow-lg">
               <div className="flex items-center gap-2 mb-3">
                 <Filter className="h-4 w-4 text-slate-500" />
-                <span className="text-sm font-semibold text-slate-700">Bộ lọc đơn hàng</span>
+                <span className="text-sm font-semibold text-slate-700">
+                  Bộ lọc đơn hàng
+                </span>
               </div>
               <div className="flex flex-wrap items-end gap-4">
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Trạng thái</label>
+                  <label className="block text-xs text-slate-500 mb-1">
+                    Trạng thái
+                  </label>
                   <select
                     value={orderStatusFilter}
                     onChange={(e) => setOrderStatusFilter(e.target.value)}
@@ -779,7 +883,8 @@ const StoreOwnerDashboard = () => {
                 </div>
                 <div>
                   <label className="block text-xs text-slate-500 mb-1">
-                    <Calendar className="inline h-3 w-3 mr-1" />Từ ngày
+                    <Calendar className="inline h-3 w-3 mr-1" />
+                    Từ ngày
                   </label>
                   <input
                     type="date"
@@ -790,7 +895,8 @@ const StoreOwnerDashboard = () => {
                 </div>
                 <div>
                   <label className="block text-xs text-slate-500 mb-1">
-                    <Calendar className="inline h-3 w-3 mr-1" />Đến ngày
+                    <Calendar className="inline h-3 w-3 mr-1" />
+                    Đến ngày
                   </label>
                   <input
                     type="date"
@@ -799,7 +905,9 @@ const StoreOwnerDashboard = () => {
                     className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm outline-none"
                   />
                 </div>
-                {(orderStatusFilter !== "all" || orderDateFrom || orderDateTo) && (
+                {(orderStatusFilter !== "all" ||
+                  orderDateFrom ||
+                  orderDateTo) && (
                   <button
                     onClick={() => {
                       setOrderStatusFilter("all");
@@ -859,13 +967,19 @@ const StoreOwnerDashboard = () => {
                       </div>
                       <div className="flex flex-col gap-1">
                         <p className="text-xs text-slate-400">Trạng thái</p>
-                        <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-1 ${statusColor[order.status] || "bg-slate-100 text-slate-600"}`}>
-                          {STATUS_OPTIONS.find((o) => o.value === order.status)?.label || order.status}
+                        <span
+                          className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-1 ${statusColor[order.status] || "bg-slate-100 text-slate-600"}`}
+                        >
+                          {STATUS_OPTIONS.find((o) => o.value === order.status)
+                            ?.label || order.status}
                         </span>
                         <select
                           value={order.status}
                           onChange={(event) =>
-                            handleUpdateOrderStatus(order._id, event.target.value)
+                            handleUpdateOrderStatus(
+                              order._id,
+                              event.target.value,
+                            )
                           }
                           className="rounded-full border border-slate-200 px-3 py-1 text-sm"
                         >
@@ -979,15 +1093,15 @@ const StoreOwnerDashboard = () => {
                   <option value="bag">bag</option>
                 </select>
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Hình ảnh sản phẩm (tối đa 5)</label>
+                  <label className="block text-xs text-slate-500 mb-1">
+                    Hình ảnh sản phẩm (tối đa 5)
+                  </label>
                   <input
                     ref={productImageRef}
                     type="file"
                     accept="image/*"
                     multiple
-                    onChange={(event) =>
-                      handleUploadImages(event.target.files)
-                    }
+                    onChange={(event) => handleUploadImages(event.target.files)}
                     className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none"
                   />
                   {productForm.images.length > 0 && (

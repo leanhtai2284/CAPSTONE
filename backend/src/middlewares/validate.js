@@ -14,7 +14,30 @@ export function validate(schema, property = "body") {
       return next(new AppError(message, 400, "VALIDATION_ERROR"));
     }
 
-    req[property] = value;
+    let descriptor = null;
+    let target = req;
+
+    while (target && !descriptor) {
+      descriptor = Object.getOwnPropertyDescriptor(target, property);
+      target = Object.getPrototypeOf(target);
+    }
+
+    const canAssign = descriptor
+      ? Boolean(descriptor.writable || descriptor.set)
+      : true;
+
+    if (canAssign) {
+      req[property] = value;
+      return next();
+    }
+
+    if (req[property] && typeof req[property] === "object") {
+      Object.assign(req[property], value);
+      return next();
+    }
+
+    req.validated = req.validated || {};
+    req.validated[property] = value;
     return next();
   };
 }

@@ -65,12 +65,13 @@ router.get(
       _id: req.user._id,
       name: req.user.name,
       email: req.user.email,
+      role: req.user.role,
     };
     const userParam = encodeURIComponent(JSON.stringify(user));
     res.redirect(
-      `${process.env.FRONTEND_URL}/login-success?token=${token}&user=${userParam}`
+      `${process.env.FRONTEND_URL}/login-success?token=${token}&user=${userParam}`,
     );
-  }
+  },
 );
 
 // POST /api/auth/logout (Protected route)
