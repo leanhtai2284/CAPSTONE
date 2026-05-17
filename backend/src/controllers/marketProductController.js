@@ -101,7 +101,7 @@ export const getProducts = asyncHandler(async (req, res) => {
 
   const products = await MarketProduct.find(filter)
     .sort({ createdAt: -1 })
-    .populate("store", "name");
+    .populate("store", "name location");
 
   return res.status(200).json({ success: true, data: products });
 });
@@ -109,7 +109,7 @@ export const getProducts = asyncHandler(async (req, res) => {
 export const getProductById = asyncHandler(async (req, res) => {
   const product = await MarketProduct.findById(req.params.id).populate(
     "store",
-    "name",
+    "name location",
   );
 
   if (!product) {

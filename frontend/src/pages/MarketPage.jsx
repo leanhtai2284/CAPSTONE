@@ -3,12 +3,28 @@ import { Link } from "react-router-dom";
 import { ShoppingBag, Store, Tag, Search, ShoppingCart } from "lucide-react";
 import { marketService } from "../services/marketService";
 import { useMarketCart } from "../context/MarketCartContext";
+import { toast } from "react-toastify";
 
 const formatCurrency = (value) =>
   new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
   }).format(value || 0);
+
+// Tính khoảng cách Haversine (km)
+const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+  const R = 6371; // Bán kính trái đất (km)
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+};
 
 const MarketPage = () => {
   const { addItem, summary } = useMarketCart();
@@ -19,6 +35,8 @@ const MarketPage = () => {
   const [selectedStore, setSelectedStore] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
+  const [userLocation, setUserLocation] = useState(null);
+  const [locating, setLocating] = useState(false);
 
   useEffect(() => {
     const loadMarket = async () => {
@@ -93,6 +111,24 @@ const MarketPage = () => {
 
     setMessage("Đã thêm sản phẩm vào giỏ hàng.");
     setTimeout(() => setMessage(""), 2000);
+  };
+
+  const handleGetLocation = () => {
+    if (!navigator.geolocation) {
+      toast.error("Trình duyệt của bạn không hỗ trợ định vị");
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setLocating(false);
+      },
+      (err) => {
+        console.error(err);
+        setLocating(false);
+      }
+    );
   };
 
   return (
@@ -191,6 +227,14 @@ const MarketPage = () => {
                   ))}
                 </select>
               </div>
+              <button
+                onClick={handleGetLocation}
+                disabled={locating}
+                className="flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700 hover:bg-emerald-100 transition disabled:opacity-50"
+              >
+                <span className="text-lg">📍</span>
+                {locating ? "Đang định vị..." : userLocation ? "Đã lấy vị trí" : "Khoảng cách"}
+              </button>
               <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm">
                 <Tag className="h-4 w-4 text-amber-600" />
                 <span className="text-slate-500">
@@ -242,6 +286,16 @@ const MarketPage = () => {
                       <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-emerald-700">
                         {product.store?.name || "Siêu thị"}
                       </div>
+                      {userLocation && product.store?.location?.coordinates && (
+                        <div className="absolute right-4 top-4 rounded-full bg-amber-400/90 px-2 py-1 text-[10px] font-bold text-slate-900 shadow-sm">
+                          Cách {(getDistanceFromLatLonInKm(
+                            userLocation.lat,
+                            userLocation.lng,
+                            product.store.location.coordinates[1],
+                            product.store.location.coordinates[0]
+                          )).toFixed(1)} km
+                        </div>
+                      )}
                     </div>
                     <div className="flex flex-1 flex-col p-4">
                       <div className="flex items-center justify-between">
