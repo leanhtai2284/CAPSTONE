@@ -103,6 +103,7 @@ const StoreOwnerDashboard = () => {
   const [viewReceiptUrl, setViewReceiptUrl] = useState(null);
 
   const [isRegistering, setIsRegistering] = useState(false);
+  const [isPendingApproval, setIsPendingApproval] = useState(false);
   const [registerForm, setRegisterForm] = useState({
     name: "",
     phone: "",
@@ -411,17 +412,38 @@ const StoreOwnerDashboard = () => {
         setIsRegistering(true);
         const res = await marketService.registerAsStoreOwner(registerForm);
         toast.success(res.message || "Đăng ký thành công!");
-
-        const nextRole = res?.data?.newRole || "store_owner";
-        const nextUser = { ...(user || {}), role: nextRole };
-        localStorage.setItem("user", JSON.stringify(nextUser));
-        setUser?.(nextUser);
+        setIsPendingApproval(true);
+        // Không tự động đổi role nữa
       } catch (error) {
         toast.error(error?.response?.data?.message || "Không thể đăng ký");
       } finally {
         setIsRegistering(false);
       }
     };
+
+    if (isPendingApproval) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-emerald-50 flex items-center justify-center px-4 py-16">
+          <div className="w-full max-w-md rounded-3xl border border-white/70 bg-white/90 shadow-2xl p-8 text-center">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 mb-6">
+              <StoreIcon className="h-8 w-8" />
+            </div>
+            <h2 className="text-2xl font-serif font-bold text-slate-900 mb-4">
+              Đơn đăng ký đã gửi!
+            </h2>
+            <p className="text-slate-600 mb-6">
+              Cảm ơn bạn đã đăng ký mở gian hàng trên SmartMeal. Đơn đăng ký của bạn đang được Ban Quản Trị xét duyệt. Vui lòng quay lại sau!
+            </p>
+            <button
+              onClick={() => window.location.href = "/"}
+              className="w-full rounded-full bg-slate-900 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+            >
+              Về trang chủ
+            </button>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-emerald-50 flex items-center justify-center px-4 py-16">
@@ -586,13 +608,12 @@ const StoreOwnerDashboard = () => {
                 ) : (
                   <>
                     <Plus className="h-5 w-5" />
-                    Đăng ký mở cửa hàng miễn phí
+                    Gửi đơn đăng ký đối tác
                   </>
                 )}
               </button>
               <p className="text-center text-xs text-slate-400 mt-3">
-                Bằng cách đăng ký, tài khoản của bạn sẽ được cấp quyền Store
-                Owner.
+                Đơn đăng ký của bạn sẽ được xét duyệt bởi Ban Quản Trị trước khi gian hàng hoạt động.
               </p>
             </div>
           </div>

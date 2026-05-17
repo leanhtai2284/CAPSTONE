@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import mongoose from "mongoose";
 import { createNotification } from "./notificationController.js";
+import Store from "../models/Store.js";
 
 // @desc    Get all users
 // @route   GET /api/admin/users
@@ -267,6 +268,13 @@ export const updateUserRole = async (req, res) => {
       { role },
       { new: true, runValidators: true },
     ).select("-password");
+
+    // Kích hoạt/Khóa gian hàng tự động khi Admin đổi role
+    if (role === "store_owner") {
+      await Store.findOneAndUpdate({ owner: id }, { isActive: true });
+    } else if (role === "user") {
+      await Store.findOneAndUpdate({ owner: id }, { isActive: false });
+    }
 
     // Thông báo cho chính user được đổi role
     await createNotification({

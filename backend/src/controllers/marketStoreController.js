@@ -34,8 +34,7 @@ const canManageStore = (user, store) =>
 
 // ─── Đăng ký trở thành Store Owner ──────────────────────────────────────────
 // Bất kỳ user đã đăng nhập đều có thể gọi endpoint này.
-// BE sẽ: 1) Nâng role → store_owner  2) Tạo Store đầu tiên
-// Nếu đã là store_owner thì chỉ tạo thêm store mới.
+// BE sẽ tạo Store với trạng thái isActive: false và chờ Admin duyệt.
 export const registerAsStoreOwner = asyncHandler(async (req, res) => {
   const { name, description, phone, address, openingHours } = req.body || {};
 
@@ -43,11 +42,10 @@ export const registerAsStoreOwner = asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, message: "Tên cửa hàng là bắt buộc" });
   }
 
-  const User = (await import("../models/User.js")).default;
-
-  // Nâng role nếu chưa phải store_owner
-  if (req.user.role === "user") {
-    await User.findByIdAndUpdate(req.user._id, { role: "store_owner" });
+  // Kiểm tra xem user đã có store nào chưa
+  const existingStore = await Store.findOne({ owner: req.user._id });
+  if (existingStore) {
+    return res.status(400).json({ success: false, message: "Bạn đã gửi đơn đăng ký hoặc đã có cửa hàng rồi" });
   }
 
   const location = buildLocation(req.body) || undefined;
@@ -60,14 +58,15 @@ export const registerAsStoreOwner = asyncHandler(async (req, res) => {
     address: address?.trim(),
     openingHours: openingHours?.trim(),
     location,
+    isActive: false, // Chờ duyệt
   });
 
   return res.status(201).json({
     success: true,
-    message: "Đăng ký thành công! Tài khoản của bạn đã được nâng cấp thành Store Owner.",
+    message: "Đăng ký thành công! Đơn đăng ký của bạn đang chờ Ban Quản Trị xét duyệt.",
     data: {
       store,
-      newRole: "store_owner",
+      newRole: req.user.role, // Giữ nguyên role cũ
     },
   });
 });
