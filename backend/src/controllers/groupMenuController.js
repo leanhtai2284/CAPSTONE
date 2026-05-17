@@ -61,6 +61,7 @@ const mapMeal = (menuItem) => {
       carbs: nutrition.carbs_g || nutrition.carbs || 0,
       fat: nutrition.fat_g || nutrition.fat || 0,
     },
+    ingredients: meal.ingredients || [],
     suggestedBy: menuItem.suggestedBy?.name,
     votes: menuItem.votes || 0,
     addedAt: menuItem.addedAt,

@@ -7,6 +7,7 @@ import {
   TrendingUp,
   Plus,
   Trash2,
+  ShoppingCart,
 } from "lucide-react";
 import { useGroup } from "../hooks/useGroup";
 import { useAuth } from "../hooks/useAuth";
@@ -38,6 +39,54 @@ export default function GroupDetail() {
   const [showAddMealModal, setShowAddMealModal] = useState(false);
   const [activeTab, setActiveTab] = useState("menu");
   const [isOwner, setIsOwner] = useState(false);
+
+  const [checkedIngredients, setCheckedIngredients] = useState(() => {
+    const saved = localStorage.getItem(`group_shopping_${groupId}`);
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  const toggleIngredientCheck = (key) => {
+    setCheckedIngredients((prev) => {
+      const updated = { ...prev, [key]: !prev[key] };
+      localStorage.setItem(`group_shopping_${groupId}`, JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const getSharedShoppingList = () => {
+    const list = {};
+    const meals = groupMenu || [];
+
+    meals.forEach((meal) => {
+      const ingredients = meal.ingredients || [];
+      ingredients.forEach((ing) => {
+        if (!ing.name) return;
+        const name = ing.name.trim();
+        const unit = (ing.unit || "").trim();
+        const key = `${name.toLowerCase()}_${unit.toLowerCase()}`;
+
+        if (list[key]) {
+          list[key].amount += Number(ing.amount) || 0;
+        } else {
+          list[key] = {
+            name,
+            amount: Number(ing.amount) || 0,
+            unit,
+          };
+        }
+      });
+    });
+
+    return Object.values(list);
+  };
+
+  const shoppingList = getSharedShoppingList();
+  const totalItems = shoppingList.length;
+  const completedItems = shoppingList.filter(item => {
+    const key = `${item.name.toLowerCase()}_${item.unit.toLowerCase()}`;
+    return checkedIngredients[key];
+  }).length;
+  const completionPct = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
   const [statsLoading, setStatsLoading] = useState(false);
   const [statsError, setStatsError] = useState("");
   const [groupStats, setGroupStats] = useState({
@@ -337,9 +386,10 @@ export default function GroupDetail() {
         {/* Tabs */}
         <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-gray-700">
           {[
-            { id: "menu", label: "📋 Thực đơn", icon: UtensilsCrossed },
+            { id: "menu", label: "📋 Thực đơn dã ngoại", icon: UtensilsCrossed },
+            { id: "shopping-list", label: "🛒 Đi chợ chung", icon: ShoppingCart },
             { id: "members", label: "👥 Thành viên", icon: Users },
-            { id: "nutrition", label: "🥗 Dinh dưỡng", icon: TrendingUp },
+            { id: "nutrition", label: "🥗 Chỉ số TB", icon: TrendingUp },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -410,6 +460,89 @@ export default function GroupDetail() {
                 onRemoveMember={handleRemoveMember}
                 loading={loading}
               />
+            </div>
+          )}
+
+          {activeTab === "shopping-list" && (
+            <div>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                    🛒 Danh sách đi chợ chung cho chuyến đi/sự kiện
+                  </h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Tự động tổng hợp và gom tất cả nguyên liệu từ thực đơn dã ngoại đã lên lịch.
+                  </p>
+                </div>
+                {totalItems > 0 && (
+                  <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-900/50 px-4 py-2 rounded-xl border border-gray-100 dark:border-gray-800">
+                    <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Tiến độ mua sắm:</span>
+                    <div className="w-24 bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
+                      <div 
+                        className="bg-green-500 h-full transition-all duration-300"
+                        style={{ width: `${completionPct}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-xs font-bold text-green-600 dark:text-green-400">
+                      {completedItems}/{totalItems} ({completionPct}%)
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {shoppingList.length === 0 ? (
+                <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900/50 rounded-xl p-8 text-center">
+                  <div className="text-4xl mb-3">🧺</div>
+                  <p className="text-yellow-800 dark:text-yellow-300 font-medium">Danh sách đi chợ đang trống!</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 max-w-md mx-auto">
+                    Vui lòng sang tab 📋 <strong>Thực đơn dã ngoại</strong>, thêm các món ăn cho chuyến đi dã ngoại/gia đình để hệ thống tự động gom nguyên liệu cần mua.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {shoppingList.map((item) => {
+                    const key = `${item.name.toLowerCase()}_${item.unit.toLowerCase()}`;
+                    const isChecked = !!checkedIngredients[key];
+
+                    return (
+                      <div 
+                        key={key}
+                        onClick={() => toggleIngredientCheck(key)}
+                        className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none ${
+                          isChecked 
+                            ? "bg-green-50/50 dark:bg-green-950/10 border-green-200 dark:border-green-900/50 opacity-70"
+                            : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-800 shadow-sm"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-5 h-5 rounded flex items-center justify-center border transition-all ${
+                            isChecked 
+                              ? "bg-green-500 border-green-500 text-white" 
+                              : "border-gray-300 dark:border-gray-600 bg-transparent"
+                          }`}>
+                            {isChecked && (
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </div>
+                          <span className={`font-semibold text-gray-800 dark:text-gray-200 ${isChecked ? "line-through text-gray-400 dark:text-gray-500" : ""}`}>
+                            {item.name}
+                          </span>
+                        </div>
+                        <div className="text-right">
+                          <span className={`text-base font-bold ${isChecked ? "text-gray-400 dark:text-gray-500" : "text-green-600 dark:text-green-400"}`}>
+                            {parseFloat(item.amount.toFixed(2))}
+                          </span>
+                          <span className={`text-xs ml-1 font-medium ${isChecked ? "text-gray-400 dark:text-gray-500" : "text-gray-500 dark:text-gray-400"}`}>
+                            {item.unit}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
