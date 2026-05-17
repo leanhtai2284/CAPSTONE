@@ -9,7 +9,9 @@ import {
   retrieveRelevantChunks,
   getIndexStatus,
   forceRebuildIndex,
+  extractEntitiesFromQuery,
 } from "../services/ragRetrievalService.js";
+import MarketProduct from "../models/MarketProduct.js";
 
 const MIN_QUERY_LENGTH = 2;
 const MAX_QUERY_LENGTH = 500;
@@ -235,6 +237,48 @@ function buildSuggestedQuestions(query, mentionedRecipes) {
   return [...new Set(suggestions)].slice(0, 3);
 }
 
+// ============================================================
+// Helper: Tìm sản phẩm từ Market (AI-Market Synergy)
+// ============================================================
+async function extractSuggestedProducts(query, mentionedRecipes = []) {
+  try {
+    let textToExtract = query;
+    if (mentionedRecipes && mentionedRecipes.length > 0) {
+      textToExtract += " " + mentionedRecipes.map(r => r.name_vi).join(", ");
+    }
+    const entities = await extractEntitiesFromQuery(textToExtract);
+    if (!entities || entities.length === 0) return [];
+
+    // Tìm kiếm các sản phẩm khớp với các từ khóa thực thể
+    // Tìm các sản phẩm đang bán (isAvailable) và còn hàng (stock > 0)
+    const regexQueries = entities.map(entity => ({
+      name: { $regex: entity, $options: "i" }
+    }));
+
+    const products = await MarketProduct.find({
+      $or: regexQueries,
+      isAvailable: true,
+      stock: { $gt: 0 }
+    })
+    .populate("store", "name address")
+    .limit(3)
+    .lean();
+
+    return products.map(p => ({
+      _id: p._id,
+      name: p.name,
+      price: p.price,
+      salePrice: p.salePrice,
+      images: p.images,
+      unit: p.unit,
+      store: p.store ? { name: p.store.name, address: p.store.address } : null
+    }));
+  } catch (error) {
+    console.error("[extractSuggestedProducts] Error:", error.message);
+    return [];
+  }
+}
+
 export const ragQueryV1 = asyncHandler(async (req, res) => {
   const rawQuery = req.body?.query;
   const query = normalizeQuery(rawQuery);
@@ -376,6 +420,9 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
   // [Mức 1] Sinh câu hỏi gợi ý tiếp theo
   const suggestedQuestions = buildSuggestedQuestions(query, mentionedRecipes);
 
+  // [Mức 4] AI-Market Synergy: Quét gian hàng tìm nguyên liệu/sản phẩm (kết hợp câu hỏi và món gợi ý)
+  const suggestedProducts = await extractSuggestedProducts(query, mentionedRecipes);
+
   return res.status(200).json({
     success: true,
     message: "RAG LangChain pipeline is ready",
@@ -383,6 +430,7 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
       answer: answerText,
       suggestedQuestions,        // [Mức 1] FE dùng để render nút gợi ý
       mentionedRecipes,          // [Mức 2] FE dùng để render recipe cards
+      suggestedProducts,         // [Mức 4] FE dùng để render product cards
       sources,
       retrievedContext,
       llmUsed: generation.llmUsed,

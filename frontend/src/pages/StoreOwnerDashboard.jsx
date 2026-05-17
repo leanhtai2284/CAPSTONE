@@ -100,7 +100,11 @@ const StoreOwnerDashboard = () => {
   const [orderDateTo, setOrderDateTo] = useState("");
   const productImageRef = useRef(null);
 
+  // Receipt Modal State
+  const [viewReceiptUrl, setViewReceiptUrl] = useState(null);
+
   const [isRegistering, setIsRegistering] = useState(false);
+  const [isPendingApproval, setIsPendingApproval] = useState(false);
   const [registerForm, setRegisterForm] = useState({
     name: "",
     phone: "",
@@ -409,17 +413,38 @@ const StoreOwnerDashboard = () => {
         setIsRegistering(true);
         const res = await marketService.registerAsStoreOwner(registerForm);
         toast.success(res.message || "Đăng ký thành công!");
-
-        const nextRole = res?.data?.newRole || "store_owner";
-        const nextUser = { ...(user || {}), role: nextRole };
-        localStorage.setItem("user", JSON.stringify(nextUser));
-        setUser?.(nextUser);
+        setIsPendingApproval(true);
+        // Không tự động đổi role nữa
       } catch (error) {
         toast.error(error?.response?.data?.message || "Không thể đăng ký");
       } finally {
         setIsRegistering(false);
       }
     };
+
+    if (isPendingApproval) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-emerald-50 flex items-center justify-center px-4 py-16">
+          <div className="w-full max-w-md rounded-3xl border border-white/70 bg-white/90 shadow-2xl p-8 text-center">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 mb-6">
+              <StoreIcon className="h-8 w-8" />
+            </div>
+            <h2 className="text-2xl font-serif font-bold text-slate-900 mb-4">
+              Đơn đăng ký đã gửi!
+            </h2>
+            <p className="text-slate-600 mb-6">
+              Cảm ơn bạn đã đăng ký mở gian hàng trên SmartMeal. Đơn đăng ký của bạn đang được Ban Quản Trị xét duyệt. Vui lòng quay lại sau!
+            </p>
+            <button
+              onClick={() => window.location.href = "/"}
+              className="w-full rounded-full bg-slate-900 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+            >
+              Về trang chủ
+            </button>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-emerald-50 flex items-center justify-center px-4 py-16">
@@ -584,13 +609,12 @@ const StoreOwnerDashboard = () => {
                 ) : (
                   <>
                     <Plus className="h-5 w-5" />
-                    Đăng ký mở cửa hàng miễn phí
+                    Gửi đơn đăng ký đối tác
                   </>
                 )}
               </button>
               <p className="text-center text-xs text-slate-400 mt-3">
-                Bằng cách đăng ký, tài khoản của bạn sẽ được cấp quyền Store
-                Owner.
+                Đơn đăng ký của bạn sẽ được xét duyệt bởi Ban Quản Trị trước khi gian hàng hoạt động.
               </p>
             </div>
           </div>
@@ -966,10 +990,10 @@ const StoreOwnerDashboard = () => {
                           {formatCurrency(order.total)}
                         </p>
                       </div>
-                      <div className="flex flex-col gap-1">
-                        <p className="text-xs text-slate-400">Trạng thái</p>
+                      <div className="flex flex-col gap-1 items-end">
+                        <p className="text-xs text-slate-400 w-full text-left">Trạng thái</p>
                         <span
-                          className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-1 ${statusColor[order.status] || "bg-slate-100 text-slate-600"}`}
+                          className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-1 w-full text-center ${statusColor[order.status] || "bg-slate-100 text-slate-600"}`}
                         >
                           {STATUS_OPTIONS.find((o) => o.value === order.status)
                             ?.label || order.status}
@@ -982,7 +1006,7 @@ const StoreOwnerDashboard = () => {
                               event.target.value,
                             )
                           }
-                          className="rounded-full border border-slate-200 px-3 py-1 text-sm"
+                          className="rounded-full border border-slate-200 px-3 py-1 text-sm w-full"
                         >
                           <option value="pending">Chờ xác nhận</option>
                           <option value="paid">Đã thanh toán</option>
@@ -990,6 +1014,18 @@ const StoreOwnerDashboard = () => {
                           <option value="delivered">Đã giao</option>
                           <option value="cancelled">Đã hủy</option>
                         </select>
+                        {order.payment?.method === "vietqr" && order.payment?.proofOfPayment && (
+                          <button
+                            onClick={() => setViewReceiptUrl(`http://localhost:5000${order.payment.proofOfPayment}`)}
+                            className="mt-2 text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1 w-full justify-center border border-blue-200 rounded-full py-1 hover:bg-blue-50"
+                          >
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            Xem Biên Lai
+                          </button>
+                        )}
                       </div>
                     </div>
                   ))
@@ -1230,6 +1266,29 @@ const StoreOwnerDashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Receipt Modal */}
+      {viewReceiptUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl relative">
+            <button
+              onClick={() => setViewReceiptUrl(null)}
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <h3 className="text-lg font-bold text-slate-900 mb-4">Biên lai chuyển khoản</h3>
+            <div className="rounded-xl overflow-hidden border border-slate-200 bg-slate-50 flex justify-center">
+              <img src={viewReceiptUrl} alt="Biên lai" className="max-h-[60vh] object-contain" />
+            </div>
+            <p className="text-xs text-slate-500 mt-4 text-center">
+              Nếu biên lai hợp lệ, hãy đổi trạng thái đơn hàng thành "Đã thanh toán".
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -11,6 +11,11 @@ export const marketService = {
     return res.data;
   },
 
+  async getStoreById(id) {
+    const res = await axiosInstance.get(`/market/stores/${id}`);
+    return res.data;
+  },
+
   // Đăng ký làm Store Owner: nâng role + tạo store đầu tiên
   async registerAsStoreOwner(payload) {
     const res = await axiosInstance.post("/market/register-as-owner", payload);
@@ -86,6 +91,17 @@ export const marketService = {
         params,
       },
     );
+    return res.data;
+  },
+
+  async uploadReceipt(orderId, file) {
+    const formData = new FormData();
+    formData.append("receipt", file);
+    const res = await axiosInstance.post(`/market/orders/${orderId}/upload-receipt`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return res.data;
   },
 };
