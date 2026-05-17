@@ -123,9 +123,7 @@ const MapPicker = ({
           zoom={13}
           scrollWheelZoom={true}
           style={{ height: "100%", width: "100%", zIndex: 1 }}
-          whenCreated={(map) => {
-            mapRef.current = map;
-          }}
+          ref={mapRef}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

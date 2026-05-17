@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 import { Link } from "react-router-dom";
 import { ShoppingBag, Store, Tag, Search, ShoppingCart } from "lucide-react";
 import { marketService } from "../services/marketService";
@@ -14,6 +15,7 @@ const formatCurrency = (value) =>
 
 const MarketPage = () => {
   const { addItem, summary } = useMarketCart();
+  const { user } = useAuth();
   const [stores, setStores] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -422,12 +424,19 @@ const MarketPage = () => {
                               </p>
                             )}
                         </div>
-                        <button
-                          onClick={() => handleAddToCart(product)}
-                          className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
-                        >
-                          Thêm vào giỏ
-                        </button>
+                        {user?.role === "store_owner" &&
+                        product.store?.owner === user._id ? (
+                          <span className="rounded-full bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500 cursor-default">
+                            Sản phẩm của bạn
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => handleAddToCart(product)}
+                            className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+                          >
+                            Thêm vào giỏ
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>

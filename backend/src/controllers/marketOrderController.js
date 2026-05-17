@@ -62,6 +62,14 @@ export const createOrder = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Không tìm thấy cửa hàng" });
   }
 
+  // Chặn store owner đặt hàng từ chính cửa hàng của mình
+  if (store.owner?.toString() === req.user._id?.toString()) {
+    return res.status(403).json({
+      success: false,
+      message: "Bạn không thể đặt hàng từ chính cửa hàng của mình",
+    });
+  }
+
   const { normalizedItems, invalidItems } = normalizeItems(items);
   if (invalidItems.length > 0 || normalizedItems.length === 0) {
     return res.status(400).json({
