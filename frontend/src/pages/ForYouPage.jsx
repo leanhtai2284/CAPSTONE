@@ -44,6 +44,7 @@ const normalizeActivityLevel = (activityLevel) =>
 
 const hasCompletedOnboarding = (profileData) => {
   const preferences = profileData?.preferences || {};
+  const fitness = profileData?.fitnessProfile || {};
   return Boolean(
     profileData?.name &&
     preferences?.region &&
@@ -51,12 +52,17 @@ const hasCompletedOnboarding = (profileData) => {
     preferences?.activityLevel &&
     preferences?.goal &&
     preferences?.budget &&
-    preferences?.diet,
+    preferences?.diet &&
+    fitness?.height_cm &&
+    fitness?.weight_kg &&
+    fitness?.age &&
+    fitness?.gender
   );
 };
 
 const buildInitialFormValues = (profileData) => {
   const preferences = profileData?.preferences || {};
+  const fitness = profileData?.fitnessProfile || {};
   return {
     name: profileData?.name || "",
     region: mapRegionToFrontend(preferences.region),
@@ -65,6 +71,10 @@ const buildInitialFormValues = (profileData) => {
     dietaryGoal: preferences.goal || "maintain",
     budget: preferences.budget || "medium",
     dietType: mapDietToDietType(preferences.diet),
+    height_cm: fitness.height_cm?.toString() || "",
+    weight_kg: fitness.weight_kg?.toString() || "",
+    age: fitness.age?.toString() || "",
+    gender: fitness.gender || "male",
   };
 };
 

@@ -6034,10 +6034,10 @@
         "original_id": "69c64449c1d478708447db41"
       }
     },
-    "miến miến dong ức gà": {
-      "id": "miến miến dong ức gà",
+    "miến dong ức gà": {
+      "id": "miến dong ức gà",
       "type": "Recipe",
-      "label": "Miến miến dong ức gà",
+      "label": "Miến dong ức gà",
       "attributes": {
         "calories": 391,
         "prep_time": 0,
@@ -8882,10 +8882,10 @@
       "label": "Đậu hũ trắng hoặc đậu hũ chiên",
       "attributes": {}
     },
-    "đậu hủ nhồi thịt sốt chua ngọt": {
-      "id": "đậu hủ nhồi thịt sốt chua ngọt",
+    "đậu hũ nhồi thịt sốt chua ngọt": {
+      "id": "đậu hũ nhồi thịt sốt chua ngọt",
       "type": "Recipe",
-      "label": "Đậu Hủ Nhồi Thịt Sốt Chua Ngọt",
+      "label": "Đậu Hũ Nhồi Thịt Sốt Chua Ngọt",
       "attributes": {
         "calories": 599,
         "prep_time": 0,
@@ -9053,7 +9053,7 @@
     "gà chiên vị bơ tỏi": {
       "id": "gà chiên vị bơ tỏi",
       "type": "Recipe",
-      "label": "GÀ CHIÊN VỊ BƠ TỎI",
+      "label": "Gà Chiên Vị Bơ Tỏi",
       "attributes": {
         "calories": 2100,
         "prep_time": 0,
@@ -9106,6 +9106,718 @@
       "id": "rau húng lủi g - 2m",
       "type": "Ingredient",
       "label": "Rau húng lủi g - 2M",
+      "attributes": {}
+    },
+    "salad gà nướng thơm": {
+      "id": "salad gà nướng thơm",
+      "type": "Recipe",
+      "label": "Salad gà nướng thơm",
+      "attributes": {
+        "calories": 423,
+        "prep_time": 0,
+        "original_id": "6a009bfa79720a8c5b3e4193"
+      }
+    },
+    "má đùi gà rút xương g": {
+      "id": "má đùi gà rút xương g",
+      "type": "Ingredient",
+      "label": "Má đùi gà rút xương g",
+      "attributes": {}
+    },
+    "xà lách mỡ": {
+      "id": "xà lách mỡ",
+      "type": "Ingredient",
+      "label": "Xà lách mỡ",
+      "attributes": {}
+    },
+    "bắp mỹ hạt": {
+      "id": "bắp mỹ hạt",
+      "type": "Ingredient",
+      "label": "Bắp Mỹ hạt",
+      "attributes": {}
+    },
+    "bánh tráng cuốn thịt heo": {
+      "id": "bánh tráng cuốn thịt heo",
+      "type": "Recipe",
+      "label": "Bánh tráng cuốn thịt heo",
+      "attributes": {
+        "calories": 520,
+        "prep_time": 0,
+        "original_id": "6a05758d53fe9d1f613ab1c9"
+      }
+    },
+    "thịt ba chỉ heo": {
+      "id": "thịt ba chỉ heo",
+      "type": "Ingredient",
+      "label": "Thịt ba chỉ heo",
+      "attributes": {}
+    },
+    "bánh tráng cuốn": {
+      "id": "bánh tráng cuốn",
+      "type": "Ingredient",
+      "label": "Bánh tráng cuốn",
+      "attributes": {}
+    },
+    "rau thơm tổng hợp": {
+      "id": "rau thơm tổng hợp",
+      "type": "Ingredient",
+      "label": "Rau thơm tổng hợp",
+      "attributes": {}
+    },
+    "mắm nêm": {
+      "id": "mắm nêm",
+      "type": "Ingredient",
+      "label": "Mắm nêm",
+      "attributes": {}
+    },
+    "vịt kho măng": {
+      "id": "vịt kho măng",
+      "type": "Recipe",
+      "label": "Vịt kho măng",
+      "attributes": {
+        "calories": 465,
+        "prep_time": 0,
+        "original_id": "6a05cceec2d1fbaeaedfca0e"
+      }
+    },
+    "thịt vịt (đùi hoặc lườn)": {
+      "id": "thịt vịt (đùi hoặc lườn)",
+      "type": "Ingredient",
+      "label": "Thịt vịt (đùi hoặc lườn)",
+      "attributes": {}
+    },
+    "măng tươi luộc": {
+      "id": "măng tươi luộc",
+      "type": "Ingredient",
+      "label": "Măng tươi luộc",
+      "attributes": {}
+    },
+    "lưỡi heo luộc chấm ruốc": {
+      "id": "lưỡi heo luộc chấm ruốc",
+      "type": "Recipe",
+      "label": "Lưỡi heo luộc chấm ruốc",
+      "attributes": {
+        "calories": 310,
+        "prep_time": 0,
+        "original_id": "6a05d53eb29834bb6b1bb751"
+      }
+    },
+    "mắm ruốc": {
+      "id": "mắm ruốc",
+      "type": "Ingredient",
+      "label": "Mắm ruốc",
+      "attributes": {}
+    },
+    "đường\t/2": {
+      "id": "đường\t/2",
+      "type": "Ingredient",
+      "label": "Đường\t/2",
+      "attributes": {}
+    },
+    "cá ngừ sốt chiên mắm tỏi": {
+      "id": "cá ngừ sốt chiên mắm tỏi",
+      "type": "Recipe",
+      "label": "Cá ngừ sốt chiên mắm tỏi",
+      "attributes": {
+        "calories": 390,
+        "prep_time": 0,
+        "original_id": "6a05d6e4b29834bb6b1bb795"
+      }
+    },
+    "cá ngừ lát": {
+      "id": "cá ngừ lát",
+      "type": "Ingredient",
+      "label": "Cá ngừ lát",
+      "attributes": {}
+    },
+    "tiêu xay\t/3": {
+      "id": "tiêu xay\t/3",
+      "type": "Ingredient",
+      "label": "Tiêu xay\t/3",
+      "attributes": {}
+    },
+    "cá nục kho riềng": {
+      "id": "cá nục kho riềng",
+      "type": "Recipe",
+      "label": "Cá nục kho riềng",
+      "attributes": {
+        "calories": 355,
+        "prep_time": 0,
+        "original_id": "6a05da73b29834bb6b1bb7f4"
+      }
+    },
+    "cá nục": {
+      "id": "cá nục",
+      "type": "Ingredient",
+      "label": "Cá nục",
+      "attributes": {}
+    },
+    "riềng": {
+      "id": "riềng",
+      "type": "Ingredient",
+      "label": "Riềng",
+      "attributes": {}
+    },
+    "sườn rim chua ngọt": {
+      "id": "sườn rim chua ngọt",
+      "type": "Recipe",
+      "label": "Sườn rim chua ngọt",
+      "attributes": {
+        "calories": 520,
+        "prep_time": 0,
+        "original_id": "6a05dce2b29834bb6b1bb8d8"
+      }
+    },
+    "giấm gạo": {
+      "id": "giấm gạo",
+      "type": "Ingredient",
+      "label": "Giấm gạo",
+      "attributes": {}
+    },
+    "cá ngừ sốt cà": {
+      "id": "cá ngừ sốt cà",
+      "type": "Recipe",
+      "label": "Cá ngừ sốt cà",
+      "attributes": {
+        "calories": 365,
+        "prep_time": 0,
+        "original_id": "6a05df4bb29834bb6b1bb96d"
+      }
+    },
+    "cá nục cuốn rau muống": {
+      "id": "cá nục cuốn rau muống",
+      "type": "Recipe",
+      "label": "Cá nục cuốn rau muống",
+      "attributes": {
+        "calories": 410,
+        "prep_time": 0,
+        "original_id": "6a05e28ab29834bb6b1bb9e7"
+      }
+    },
+    "rau muống chẻ": {
+      "id": "rau muống chẻ",
+      "type": "Ingredient",
+      "label": "Rau muống chẻ",
+      "attributes": {}
+    },
+    "bún mắm thịt luộc": {
+      "id": "bún mắm thịt luộc",
+      "type": "Recipe",
+      "label": "Bún mắm thịt luộc",
+      "attributes": {
+        "calories": 540,
+        "prep_time": 0,
+        "original_id": "6a05e4abb29834bb6b1bbac1"
+      }
+    },
+    "iá đỗ\tg": {
+      "id": "iá đỗ\tg",
+      "type": "Ingredient",
+      "label": "iá đỗ\tg",
+      "attributes": {}
+    },
+    "cháo chờ nam ô": {
+      "id": "cháo chờ nam ô",
+      "type": "Recipe",
+      "label": "Cháo chờ Nam Ô",
+      "attributes": {
+        "calories": 320,
+        "prep_time": 0,
+        "original_id": "6a05e915b29834bb6b1bbb29"
+      }
+    },
+    "cá biển (cá nục/cá ngừ nhỏ)": {
+      "id": "cá biển (cá nục/cá ngừ nhỏ)",
+      "type": "Ingredient",
+      "label": "Cá biển (cá nục/cá ngừ nhỏ)",
+      "attributes": {}
+    },
+    "muối\t/3": {
+      "id": "muối\t/3",
+      "type": "Ingredient",
+      "label": "Muối\t/3",
+      "attributes": {}
+    },
+    "gà nấu xáo": {
+      "id": "gà nấu xáo",
+      "type": "Recipe",
+      "label": "Gà nấu xáo",
+      "attributes": {
+        "calories": 430,
+        "prep_time": 0,
+        "original_id": "6a05fca0b29834bb6b1bbb93"
+      }
+    },
+    "thịt gà": {
+      "id": "thịt gà",
+      "type": "Ingredient",
+      "label": "Thịt gà",
+      "attributes": {}
+    },
+    "ừng\tlát": {
+      "id": "ừng\tlát",
+      "type": "Ingredient",
+      "label": "ừng\tlát",
+      "attributes": {}
+    },
+    "lòng xào nghệ": {
+      "id": "lòng xào nghệ",
+      "type": "Recipe",
+      "label": "Lòng xào nghệ",
+      "attributes": {
+        "calories": 360,
+        "prep_time": 0,
+        "original_id": "6a06b87046aadcfdf19e911f"
+      }
+    },
+    "lòng heo": {
+      "id": "lòng heo",
+      "type": "Ingredient",
+      "label": "Lòng heo",
+      "attributes": {}
+    },
+    "đậu que xào tỏi": {
+      "id": "đậu que xào tỏi",
+      "type": "Recipe",
+      "label": "Đậu que xào tỏi",
+      "attributes": {
+        "calories": 120,
+        "prep_time": 0,
+        "original_id": "6a06bcd046aadcfdf19e9132"
+      }
+    },
+    "xôi chả mực quảng ninh": {
+      "id": "xôi chả mực quảng ninh",
+      "type": "Recipe",
+      "label": "Xôi chả mực Quảng Ninh",
+      "attributes": {
+        "calories": 560,
+        "prep_time": 0,
+        "original_id": "6a06c01b46aadcfdf19e93d1"
+      }
+    },
+    "ạo nếp\tg": {
+      "id": "ạo nếp\tg",
+      "type": "Ingredient",
+      "label": "ạo nếp\tg",
+      "attributes": {}
+    },
+    "cá cơm kho tiêu": {
+      "id": "cá cơm kho tiêu",
+      "type": "Recipe",
+      "label": "Cá cơm kho tiêu",
+      "attributes": {
+        "calories": 290,
+        "prep_time": 0,
+        "original_id": "6a06c81c46aadcfdf19e94f2"
+      }
+    },
+    "cá cơm tươi": {
+      "id": "cá cơm tươi",
+      "type": "Ingredient",
+      "label": "Cá cơm tươi",
+      "attributes": {}
+    },
+    "gà xào chua ngọt": {
+      "id": "gà xào chua ngọt",
+      "type": "Recipe",
+      "label": "Gà xào chua ngọt",
+      "attributes": {
+        "calories": 420,
+        "prep_time": 0,
+        "original_id": "6a06c9a046aadcfdf19e9509"
+      }
+    },
+    "đậu hũ dồn thịt sốt cà": {
+      "id": "đậu hũ dồn thịt sốt cà",
+      "type": "Recipe",
+      "label": "Đậu hũ dồn thịt sốt cà",
+      "attributes": {
+        "calories": 430,
+        "prep_time": 0,
+        "original_id": "6a07267246aadcfdf19e9556"
+      }
+    },
+    "hành lá\tcây": {
+      "id": "hành lá\tcây",
+      "type": "Ingredient",
+      "label": "Hành lá\tcây",
+      "attributes": {}
+    },
+    "tép rang thịt ba rọi": {
+      "id": "tép rang thịt ba rọi",
+      "type": "Recipe",
+      "label": "Tép rang thịt ba rọi",
+      "attributes": {
+        "calories": 460,
+        "prep_time": 0,
+        "original_id": "6a07286446aadcfdf19e96ae"
+      }
+    },
+    "tép đồng": {
+      "id": "tép đồng",
+      "type": "Ingredient",
+      "label": "Tép đồng",
+      "attributes": {}
+    },
+    "mì quảng cá lóc": {
+      "id": "mì quảng cá lóc",
+      "type": "Recipe",
+      "label": "Mì Quảng cá lóc",
+      "attributes": {
+        "calories": 520,
+        "prep_time": 0,
+        "original_id": "6a072a4646aadcfdf19e97b5"
+      }
+    },
+    "mì quảng tươi": {
+      "id": "mì quảng tươi",
+      "type": "Ingredient",
+      "label": "Mì Quảng tươi",
+      "attributes": {}
+    },
+    "gà kho gừng": {
+      "id": "gà kho gừng",
+      "type": "Recipe",
+      "label": "Gà kho gừng",
+      "attributes": {
+        "calories": 410,
+        "prep_time": 0,
+        "original_id": "6a072c4a46aadcfdf19e9836"
+      }
+    },
+    "mực hấp bia": {
+      "id": "mực hấp bia",
+      "type": "Recipe",
+      "label": "Mực hấp bia",
+      "attributes": {
+        "calories": 220,
+        "prep_time": 0,
+        "original_id": "6a072e3c46aadcfdf19e9969"
+      }
+    },
+    "bia": {
+      "id": "bia",
+      "type": "Ingredient",
+      "label": "Bia",
+      "attributes": {}
+    },
+    "tôm rang muối ớt": {
+      "id": "tôm rang muối ớt",
+      "type": "Recipe",
+      "label": "Tôm rang muối ớt",
+      "attributes": {
+        "calories": 290,
+        "prep_time": 0,
+        "original_id": "6a072f7e46aadcfdf19e99a1"
+      }
+    },
+    "cá điêu hồng sốt cà chua": {
+      "id": "cá điêu hồng sốt cà chua",
+      "type": "Recipe",
+      "label": "Cá điêu hồng sốt cà chua",
+      "attributes": {
+        "calories": 360,
+        "prep_time": 0,
+        "original_id": "6a07469046aadcfdf19e9c30"
+      }
+    },
+    "cá điêu hồng": {
+      "id": "cá điêu hồng",
+      "type": "Ingredient",
+      "label": "Cá điêu hồng",
+      "attributes": {}
+    },
+    "trứng ốp la": {
+      "id": "trứng ốp la",
+      "type": "Recipe",
+      "label": "Trứng ốp la",
+      "attributes": {
+        "calories": 190,
+        "prep_time": 0,
+        "original_id": "6a074a3b46aadcfdf19e9c96"
+      }
+    },
+    "dê nướng mọi": {
+      "id": "dê nướng mọi",
+      "type": "Recipe",
+      "label": "Dê nướng mọi",
+      "attributes": {
+        "calories": 430,
+        "prep_time": 0,
+        "original_id": "6a07501946aadcfdf19e9d26"
+      }
+    },
+    "thịt dê": {
+      "id": "thịt dê",
+      "type": "Ingredient",
+      "label": "Thịt dê",
+      "attributes": {}
+    },
+    "sả\tcây": {
+      "id": "sả\tcây",
+      "type": "Ingredient",
+      "label": "Sả\tcây",
+      "attributes": {}
+    },
+    "bò cuốn lá lốt": {
+      "id": "bò cuốn lá lốt",
+      "type": "Recipe",
+      "label": "Bò cuốn lá lốt",
+      "attributes": {
+        "calories": 470,
+        "prep_time": 0,
+        "original_id": "6a0750ef46aadcfdf19e9d33"
+      }
+    },
+    "thịt bò xay": {
+      "id": "thịt bò xay",
+      "type": "Ingredient",
+      "label": "Thịt bò xay",
+      "attributes": {}
+    },
+    "lốt\tlá": {
+      "id": "lốt\tlá",
+      "type": "Ingredient",
+      "label": "lốt\tlá",
+      "attributes": {}
+    },
+    "dê xào sả ớt": {
+      "id": "dê xào sả ớt",
+      "type": "Recipe",
+      "label": "Dê xào sả ớt",
+      "attributes": {
+        "calories": 390,
+        "prep_time": 0,
+        "original_id": "6a07526446aadcfdf19e9d76"
+      }
+    },
+    "lẩu dê": {
+      "id": "lẩu dê",
+      "type": "Recipe",
+      "label": "Lẩu dê",
+      "attributes": {
+        "calories": 680,
+        "prep_time": 0,
+        "original_id": "6a07539f46aadcfdf19e9d98"
+      }
+    },
+    "xương dê": {
+      "id": "xương dê",
+      "type": "Ingredient",
+      "label": "Xương dê",
+      "attributes": {}
+    },
+    "đậu hũ trắng\tmiến": {
+      "id": "đậu hũ trắng\tmiến",
+      "type": "Ingredient",
+      "label": "Đậu hũ trắng\tmiến",
+      "attributes": {}
+    },
+    "rau tần ô": {
+      "id": "rau tần ô",
+      "type": "Ingredient",
+      "label": "Rau tần ô",
+      "attributes": {}
+    },
+    "thuốc bắc lẩu dê": {
+      "id": "thuốc bắc lẩu dê",
+      "type": "Ingredient",
+      "label": "Thuốc bắc lẩu dê",
+      "attributes": {}
+    },
+    "vịt quay": {
+      "id": "vịt quay",
+      "type": "Recipe",
+      "label": "Vịt quay",
+      "attributes": {
+        "calories": 720,
+        "prep_time": 0,
+        "original_id": "6a0757ea46aadcfdf19e9dcc"
+      }
+    },
+    "thịt vịt": {
+      "id": "thịt vịt",
+      "type": "Ingredient",
+      "label": "Thịt vịt",
+      "attributes": {}
+    },
+    "ừng\tg": {
+      "id": "ừng\tg",
+      "type": "Ingredient",
+      "label": "ừng\tg",
+      "attributes": {}
+    },
+    "bò kho bánh mì": {
+      "id": "bò kho bánh mì",
+      "type": "Recipe",
+      "label": "Bò kho bánh mì",
+      "attributes": {
+        "calories": 60,
+        "prep_time": 0,
+        "original_id": "6a087d8ed70fe2199e48896c"
+      }
+    },
+    "bột bò kho": {
+      "id": "bột bò kho",
+      "type": "Ingredient",
+      "label": "Bột bò kho",
+      "attributes": {}
+    },
+    "hành ngò": {
+      "id": "hành ngò",
+      "type": "Ingredient",
+      "label": "Hành ngò",
+      "attributes": {}
+    },
+    "nui xào hải sản": {
+      "id": "nui xào hải sản",
+      "type": "Recipe",
+      "label": "Nui xào hải sản",
+      "attributes": {
+        "calories": 520,
+        "prep_time": 0,
+        "original_id": "6a088cb5d70fe2199e488a5c"
+      }
+    },
+    "nui khô": {
+      "id": "nui khô",
+      "type": "Ingredient",
+      "label": "Nui khô",
+      "attributes": {}
+    },
+    "heo quay kho măng": {
+      "id": "heo quay kho măng",
+      "type": "Recipe",
+      "label": "Heo quay kho măng",
+      "attributes": {
+        "calories": 560,
+        "prep_time": 0,
+        "original_id": "6a08a512d70fe2199e488b70"
+      }
+    },
+    "tim heo nướng ngũ vị": {
+      "id": "tim heo nướng ngũ vị",
+      "type": "Recipe",
+      "label": "Tim heo nướng ngũ vị",
+      "attributes": {
+        "calories": 340,
+        "prep_time": 0,
+        "original_id": "6a08a5e4d70fe2199e488b8c"
+      }
+    },
+    "tim heo": {
+      "id": "tim heo",
+      "type": "Ingredient",
+      "label": "Tim heo",
+      "attributes": {}
+    },
+    "ngũ vị hương\t/3": {
+      "id": "ngũ vị hương\t/3",
+      "type": "Ingredient",
+      "label": "Ngũ vị hương\t/3",
+      "attributes": {}
+    },
+    "bún giò heo cay": {
+      "id": "bún giò heo cay",
+      "type": "Recipe",
+      "label": "Bún giò heo cay",
+      "attributes": {
+        "calories": 720,
+        "prep_time": 0,
+        "original_id": "6a08a721d70fe2199e488bbe"
+      }
+    },
+    "iò heo\tg": {
+      "id": "iò heo\tg",
+      "type": "Ingredient",
+      "label": "iò heo\tg",
+      "attributes": {}
+    },
+    "sa tế": {
+      "id": "sa tế",
+      "type": "Ingredient",
+      "label": "Sa tế",
+      "attributes": {}
+    },
+    "giò heo hon": {
+      "id": "giò heo hon",
+      "type": "Recipe",
+      "label": "Giò heo hon",
+      "attributes": {
+        "calories": 760,
+        "prep_time": 0,
+        "original_id": "6a08a8b0d70fe2199e488be2"
+      }
+    },
+    "đuôi heo nướng chao": {
+      "id": "đuôi heo nướng chao",
+      "type": "Recipe",
+      "label": "Đuôi heo nướng chao",
+      "attributes": {
+        "calories": 620,
+        "prep_time": 0,
+        "original_id": "6a08aaa1d70fe2199e488c65"
+      }
+    },
+    "đuôi heo": {
+      "id": "đuôi heo",
+      "type": "Ingredient",
+      "label": "Đuôi heo",
+      "attributes": {}
+    },
+    "chao trắng": {
+      "id": "chao trắng",
+      "type": "Ingredient",
+      "label": "Chao trắng",
+      "attributes": {}
+    },
+    "thịt heo xông khói hương sả": {
+      "id": "thịt heo xông khói hương sả",
+      "type": "Recipe",
+      "label": "Thịt heo xông khói hương sả",
+      "attributes": {
+        "calories": 640,
+        "prep_time": 0,
+        "original_id": "6a08acadd70fe2199e488cb2"
+      }
+    },
+    "thịt đầu heo": {
+      "id": "thịt đầu heo",
+      "type": "Ingredient",
+      "label": "Thịt đầu heo",
+      "attributes": {}
+    },
+    "mía": {
+      "id": "mía",
+      "type": "Ingredient",
+      "label": "Mía",
+      "attributes": {}
+    },
+    "tim heo xào măng tây": {
+      "id": "tim heo xào măng tây",
+      "type": "Recipe",
+      "label": "Tim heo xào măng tây",
+      "attributes": {
+        "calories": 310,
+        "prep_time": 0,
+        "original_id": "6a08b322d70fe2199e489016"
+      }
+    },
+    "ốc hương xóc xốt trứng muối": {
+      "id": "ốc hương xóc xốt trứng muối",
+      "type": "Recipe",
+      "label": "Ốc Hương Xóc Xốt Trứng Muối",
+      "attributes": {
+        "calories": 420,
+        "prep_time": 0,
+        "original_id": "6a08b42fd70fe2199e48903c"
+      }
+    },
+    "ốc hương": {
+      "id": "ốc hương",
+      "type": "Ingredient",
+      "label": "Ốc hương",
       "attributes": {}
     }
   },
@@ -33366,117 +34078,117 @@
       "relation": "IS_LOW_CALORIE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "miến dong",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "miến dong",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "ức gà",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "ức gà",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "cải bó xôi hoặc cải thìa",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "cải bó xôi hoặc cải thìa",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "cà rốt",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "cà rốt",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "hành tây",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "hành tây",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "tỏi băm",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "tỏi băm",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "dầu ôliu",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "dầu ôliu",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "nước lọc",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "nước lọc",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "muối",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "muối",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "tiêu",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "tiêu",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "nước cốt chanh",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "nước cốt chanh",
-      "target": "miến miến dong ức gà",
+      "target": "miến dong ức gà",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "miến miến dong ức gà",
+      "source": "miến dong ức gà",
       "target": "low_calorie",
       "relation": "IS_LOW_CALORIE"
     },
@@ -48436,153 +49148,153 @@
       "relation": "IS_LOW_CALORIE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "đậu hũ trắng",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "đậu hũ trắng",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "thịt heo xay",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "thịt heo xay",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "nấm hương tươi băm",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "nấm hương tươi băm",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "hành tím",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "hành tím",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "tỏi băm",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "tỏi băm",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "cà chua",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "cà chua",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "tương cà",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "tương cà",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "nước mắm",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "nước mắm",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "giấm",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "giấm",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "đường",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "đường",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "muối",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "muối",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "nước lọc",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "nước lọc",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "dầu ăn",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "dầu ăn",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "tiêu",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "tiêu",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
-      "source": "đậu hủ nhồi thịt sốt chua ngọt",
+      "source": "đậu hũ nhồi thịt sốt chua ngọt",
       "target": "hành lá",
       "relation": "CONTAINS_INGREDIENT"
     },
     {
       "source": "hành lá",
-      "target": "đậu hủ nhồi thịt sốt chua ngọt",
+      "target": "đậu hũ nhồi thịt sốt chua ngọt",
       "relation": "USED_IN_RECIPE"
     },
     {
@@ -49559,6 +50271,4291 @@
       "source": "rau húng lủi g - 2m",
       "target": "gà chiên vị bơ tỏi",
       "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "salad gà nướng thơm",
+      "target": "má đùi gà rút xương g",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "má đùi gà rút xương g",
+      "target": "salad gà nướng thơm",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "salad gà nướng thơm",
+      "target": "xà lách mỡ",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "xà lách mỡ",
+      "target": "salad gà nướng thơm",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "salad gà nướng thơm",
+      "target": "cà chua bi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cà chua bi",
+      "target": "salad gà nướng thơm",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "salad gà nướng thơm",
+      "target": "bắp mỹ hạt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bắp mỹ hạt",
+      "target": "salad gà nướng thơm",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "salad gà nướng thơm",
+      "target": "dưa leo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dưa leo",
+      "target": "salad gà nướng thơm",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "salad gà nướng thơm",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "thịt ba chỉ heo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt ba chỉ heo",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "bánh tráng cuốn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bánh tráng cuốn",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "bún tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bún tươi",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "xà lách",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "xà lách",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "dưa leo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dưa leo",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "rau thơm tổng hợp",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau thơm tổng hợp",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "mắm nêm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "mắm nêm",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bánh tráng cuốn thịt heo",
+      "target": "nước cốt chanh",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước cốt chanh",
+      "target": "bánh tráng cuốn thịt heo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "thịt vịt (đùi hoặc lườn)",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt vịt (đùi hoặc lườn)",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "măng tươi luộc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "măng tươi luộc",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "gừng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "gừng",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "vịt kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt kho măng",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "lưỡi heo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "lưỡi heo",
+      "target": "lưỡi heo luộc chấm ruốc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "gừng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "gừng",
+      "target": "lưỡi heo luộc chấm ruốc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "lưỡi heo luộc chấm ruốc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "lưỡi heo luộc chấm ruốc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "mắm ruốc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "mắm ruốc",
+      "target": "lưỡi heo luộc chấm ruốc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "đường\t/2",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường\t/2",
+      "target": "lưỡi heo luộc chấm ruốc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "lưỡi heo luộc chấm ruốc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "lưỡi heo luộc chấm ruốc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "nước cốt chanh",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước cốt chanh",
+      "target": "lưỡi heo luộc chấm ruốc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "lưỡi heo luộc chấm ruốc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lưỡi heo luộc chấm ruốc",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "cá ngừ sốt chiên mắm tỏi",
+      "target": "cá ngừ lát",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cá ngừ lát",
+      "target": "cá ngừ sốt chiên mắm tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt chiên mắm tỏi",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "cá ngừ sốt chiên mắm tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt chiên mắm tỏi",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "cá ngừ sốt chiên mắm tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt chiên mắm tỏi",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "cá ngừ sốt chiên mắm tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt chiên mắm tỏi",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "cá ngừ sốt chiên mắm tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt chiên mắm tỏi",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "cá ngừ sốt chiên mắm tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt chiên mắm tỏi",
+      "target": "tiêu xay\t/3",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay\t/3",
+      "target": "cá ngừ sốt chiên mắm tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt chiên mắm tỏi",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "cá ngừ sốt chiên mắm tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt chiên mắm tỏi",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "cá nục",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cá nục",
+      "target": "cá nục kho riềng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "riềng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "riềng",
+      "target": "cá nục kho riềng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "cá nục kho riềng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "cá nục kho riềng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "cá nục kho riềng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "cá nục kho riềng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "nước màu",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước màu",
+      "target": "cá nục kho riềng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "cá nục kho riềng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "cá nục kho riềng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "cá nục kho riềng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục kho riềng",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "sườn non heo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sườn non heo",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "giấm gạo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "giấm gạo",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "nước màu",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước màu",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "tiêu xay\t/3",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay\t/3",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "sườn rim chua ngọt",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "sườn rim chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "cá ngừ lát",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cá ngừ lát",
+      "target": "cá ngừ sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "cà chua",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cà chua",
+      "target": "cá ngừ sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "cá ngừ sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "cá ngừ sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "cá ngừ sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "cá ngừ sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "cá ngừ sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "cá ngừ sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "cá ngừ sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "cá ngừ sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá ngừ sốt cà",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "cá nục",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cá nục",
+      "target": "cá nục cuốn rau muống",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "rau muống chẻ",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau muống chẻ",
+      "target": "cá nục cuốn rau muống",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "bánh tráng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bánh tráng",
+      "target": "cá nục cuốn rau muống",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "rau thơm tổng hợp",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau thơm tổng hợp",
+      "target": "cá nục cuốn rau muống",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "dưa leo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dưa leo",
+      "target": "cá nục cuốn rau muống",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "cá nục cuốn rau muống",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "cá nục cuốn rau muống",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "cá nục cuốn rau muống",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "cá nục cuốn rau muống",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "cá nục cuốn rau muống",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá nục cuốn rau muống",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "thịt ba chỉ heo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt ba chỉ heo",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "bún tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bún tươi",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "xà lách",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "xà lách",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "iá đỗ\tg",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "iá đỗ\tg",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "dưa leo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dưa leo",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "rau thơm tổng hợp",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau thơm tổng hợp",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún mắm thịt luộc",
+      "target": "nước cốt chanh",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước cốt chanh",
+      "target": "bún mắm thịt luộc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "gạo tẻ",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "gạo tẻ",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "cá biển (cá nục/cá ngừ nhỏ)",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cá biển (cá nục/cá ngừ nhỏ)",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "gừng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "gừng",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "rau thơm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau thơm",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "muối\t/3",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối\t/3",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "tiêu xay\t/3",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay\t/3",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "cháo chờ nam ô",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cháo chờ nam ô",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "thịt gà",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt gà",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "ừng\tlát",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ừng\tlát",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "rau ngò",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau ngò",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "gà nấu xáo",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà nấu xáo",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "lòng xào nghệ",
+      "target": "lòng heo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "lòng heo",
+      "target": "lòng xào nghệ",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lòng xào nghệ",
+      "target": "nghệ tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nghệ tươi",
+      "target": "lòng xào nghệ",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lòng xào nghệ",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "lòng xào nghệ",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lòng xào nghệ",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "lòng xào nghệ",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lòng xào nghệ",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "lòng xào nghệ",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lòng xào nghệ",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "lòng xào nghệ",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lòng xào nghệ",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "lòng xào nghệ",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lòng xào nghệ",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "lòng xào nghệ",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lòng xào nghệ",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "lòng xào nghệ",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lòng xào nghệ",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "đậu que xào tỏi",
+      "target": "đậu que",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đậu que",
+      "target": "đậu que xào tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu que xào tỏi",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "đậu que xào tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu que xào tỏi",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "đậu que xào tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu que xào tỏi",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "đậu que xào tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu que xào tỏi",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "đậu que xào tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu que xào tỏi",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "đậu que xào tỏi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu que xào tỏi",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "xôi chả mực quảng ninh",
+      "target": "ạo nếp\tg",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ạo nếp\tg",
+      "target": "xôi chả mực quảng ninh",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "xôi chả mực quảng ninh",
+      "target": "chả mực",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "chả mực",
+      "target": "xôi chả mực quảng ninh",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "xôi chả mực quảng ninh",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "xôi chả mực quảng ninh",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "xôi chả mực quảng ninh",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "xôi chả mực quảng ninh",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "xôi chả mực quảng ninh",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "xôi chả mực quảng ninh",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "xôi chả mực quảng ninh",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "xôi chả mực quảng ninh",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "xôi chả mực quảng ninh",
+      "target": "hành phi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành phi",
+      "target": "xôi chả mực quảng ninh",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "cá cơm tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cá cơm tươi",
+      "target": "cá cơm kho tiêu",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "cá cơm kho tiêu",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "cá cơm kho tiêu",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "cá cơm kho tiêu",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "cá cơm kho tiêu",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "cá cơm kho tiêu",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "cá cơm kho tiêu",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "cá cơm kho tiêu",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "nước màu",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước màu",
+      "target": "cá cơm kho tiêu",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "cá cơm kho tiêu",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá cơm kho tiêu",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "thịt gà",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt gà",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "cà chua",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cà chua",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "hành tây",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tây",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "ớt chuông",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt chuông",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "giấm gạo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "giấm gạo",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "gà xào chua ngọt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà xào chua ngọt",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "đậu hũ trắng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đậu hũ trắng",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "thịt heo xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt heo xay",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "cà chua",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cà chua",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "hành lá\tcây",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá\tcây",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "tiêu xay\t/3",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay\t/3",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "bột năng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bột năng",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "đậu hũ dồn thịt sốt cà",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đậu hũ dồn thịt sốt cà",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "tép đồng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tép đồng",
+      "target": "tép rang thịt ba rọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "thịt ba rọi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt ba rọi",
+      "target": "tép rang thịt ba rọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "tép rang thịt ba rọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "tép rang thịt ba rọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "tép rang thịt ba rọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "tép rang thịt ba rọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "tép rang thịt ba rọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "tép rang thịt ba rọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "tép rang thịt ba rọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "tép rang thịt ba rọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tép rang thịt ba rọi",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "cá lóc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cá lóc",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "mì quảng tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "mì quảng tươi",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "nghệ tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nghệ tươi",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "rau sống",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau sống",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "đậu phộng rang",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đậu phộng rang",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "bánh tráng nướng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bánh tráng nướng",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "ớt bột",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt bột",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mì quảng cá lóc",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "mì quảng cá lóc",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "thịt gà",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt gà",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "gừng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "gừng",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "nước màu",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước màu",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "gà kho gừng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "gà kho gừng",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "mực hấp bia",
+      "target": "mực tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "mực tươi",
+      "target": "mực hấp bia",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mực hấp bia",
+      "target": "bia",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bia",
+      "target": "mực hấp bia",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mực hấp bia",
+      "target": "sả",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sả",
+      "target": "mực hấp bia",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mực hấp bia",
+      "target": "gừng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "gừng",
+      "target": "mực hấp bia",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mực hấp bia",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "mực hấp bia",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mực hấp bia",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "mực hấp bia",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mực hấp bia",
+      "target": "nước cốt chanh",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước cốt chanh",
+      "target": "mực hấp bia",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mực hấp bia",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "mực hấp bia",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mực hấp bia",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "mực hấp bia",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "mực hấp bia",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "tôm rang muối ớt",
+      "target": "tôm tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tôm tươi",
+      "target": "tôm rang muối ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tôm rang muối ớt",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "tôm rang muối ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tôm rang muối ớt",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "tôm rang muối ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tôm rang muối ớt",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "tôm rang muối ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tôm rang muối ớt",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "tôm rang muối ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tôm rang muối ớt",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "tôm rang muối ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tôm rang muối ớt",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "tôm rang muối ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tôm rang muối ớt",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "tôm rang muối ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tôm rang muối ớt",
+      "target": "bột ngọt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bột ngọt",
+      "target": "tôm rang muối ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tôm rang muối ớt",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "cá điêu hồng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cá điêu hồng",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "cà chua",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cà chua",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "tiêu xay\t/3",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay\t/3",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "bột năng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bột năng",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "cá điêu hồng sốt cà chua",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "cá điêu hồng sốt cà chua",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "trứng ốp la",
+      "target": "trứng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "trứng",
+      "target": "trứng ốp la",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "trứng ốp la",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "trứng ốp la",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "trứng ốp la",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "trứng ốp la",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "trứng ốp la",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "trứng ốp la",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "trứng ốp la",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "thịt dê",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt dê",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "sả\tcây",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sả\tcây",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "ngũ vị hương",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ngũ vị hương",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "rau sống",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau sống",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "chuối chát",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "chuối chát",
+      "target": "dê nướng mọi",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê nướng mọi",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "thịt bò xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt bò xay",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "lốt\tlá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "lốt\tlá",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "hành lá\tcây",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá\tcây",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "bún tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bún tươi",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "rau sống",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau sống",
+      "target": "bò cuốn lá lốt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò cuốn lá lốt",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "thịt dê",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt dê",
+      "target": "dê xào sả ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "sả",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sả",
+      "target": "dê xào sả ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "dê xào sả ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "dê xào sả ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "dê xào sả ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "dê xào sả ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "dê xào sả ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "dê xào sả ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "dê xào sả ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "gừng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "gừng",
+      "target": "dê xào sả ớt",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "dê xào sả ớt",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "thịt dê",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt dê",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "xương dê",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "xương dê",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "khoai môn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "khoai môn",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "đậu hũ trắng\tmiến",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đậu hũ trắng\tmiến",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "nấm rơm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nấm rơm",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "rau tần ô",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau tần ô",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "sả",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sả",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "gừng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "gừng",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "thuốc bắc lẩu dê",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thuốc bắc lẩu dê",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "lẩu dê",
+      "target": "mì trứng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "mì trứng",
+      "target": "lẩu dê",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "thịt vịt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt vịt",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "ngũ vị hương",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ngũ vị hương",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "ừng\tg",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ừng\tg",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "mật ong",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "mật ong",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "nước tương",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước tương",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "dầu hào",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu hào",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "rượu trắng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rượu trắng",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "vịt quay",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "vịt quay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "thịt bò",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt bò",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "cà rốt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cà rốt",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "sả",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sả",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "gừng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "gừng",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "bột bò kho",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bột bò kho",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "dầu điều",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu điều",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "bánh mì",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bánh mì",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "hành ngò",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành ngò",
+      "target": "bò kho bánh mì",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bò kho bánh mì",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "nui khô",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nui khô",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "tôm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tôm",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "mực",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "mực",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "cà rốt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "cà rốt",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "hành tây",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tây",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "nước tương",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước tương",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "dầu hào",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu hào",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "nui xào hải sản",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "nui xào hải sản",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "heo quay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "heo quay",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "măng tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "măng tươi",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "dầu hào",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu hào",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "heo quay kho măng",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "heo quay kho măng",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "tim heo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tim heo",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "ngũ vị hương\t/3",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ngũ vị hương\t/3",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "mật ong",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "mật ong",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "dầu hào",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu hào",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "dưa leo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dưa leo",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "rau sống",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau sống",
+      "target": "tim heo nướng ngũ vị",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo nướng ngũ vị",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "iò heo\tg",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "iò heo\tg",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "bún tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bún tươi",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "sả",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sả",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "ớt bột",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt bột",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "sa tế",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sa tế",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "rau sống",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau sống",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "bún giò heo cay",
+      "target": "nước lọc",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước lọc",
+      "target": "bún giò heo cay",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "giò heo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "giò heo",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "nước dừa tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước dừa tươi",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "sả",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sả",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "ớt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ớt",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "dầu điều",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu điều",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "giò heo hon",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "giò heo hon",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "đuôi heo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đuôi heo",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "chao trắng",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "chao trắng",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "sa tế",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sa tế",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "dưa leo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dưa leo",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "đuôi heo nướng chao",
+      "target": "rau sống",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau sống",
+      "target": "đuôi heo nướng chao",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "thịt heo xông khói hương sả",
+      "target": "thịt đầu heo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "thịt đầu heo",
+      "target": "thịt heo xông khói hương sả",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "thịt heo xông khói hương sả",
+      "target": "nước dừa tươi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước dừa tươi",
+      "target": "thịt heo xông khói hương sả",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "thịt heo xông khói hương sả",
+      "target": "sả cây đập dập",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sả cây đập dập",
+      "target": "thịt heo xông khói hương sả",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "thịt heo xông khói hương sả",
+      "target": "mía",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "mía",
+      "target": "thịt heo xông khói hương sả",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "tim heo",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tim heo",
+      "target": "tim heo xào măng tây",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "măng tây",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "măng tây",
+      "target": "tim heo xào măng tây",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "tim heo xào măng tây",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "tim heo xào măng tây",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "hành lá",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành lá",
+      "target": "tim heo xào măng tây",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "dầu ăn",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu ăn",
+      "target": "tim heo xào măng tây",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "tim heo xào măng tây",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "dầu hào",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "dầu hào",
+      "target": "tim heo xào măng tây",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "tim heo xào măng tây",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "muối",
+      "target": "tim heo xào măng tây",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "tim heo xào măng tây",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "ốc hương",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "ốc hương",
+      "target": "ốc hương xóc xốt trứng muối",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "trứng muối",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "trứng muối",
+      "target": "ốc hương xóc xốt trứng muối",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "bơ lạt",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "bơ lạt",
+      "target": "ốc hương xóc xốt trứng muối",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "tỏi",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tỏi",
+      "target": "ốc hương xóc xốt trứng muối",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "hành tím",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "hành tím",
+      "target": "ốc hương xóc xốt trứng muối",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "sữa tươi không đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "sữa tươi không đường",
+      "target": "ốc hương xóc xốt trứng muối",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "đường",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "đường",
+      "target": "ốc hương xóc xốt trứng muối",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "nước mắm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "nước mắm",
+      "target": "ốc hương xóc xốt trứng muối",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "tiêu xay",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "tiêu xay",
+      "target": "ốc hương xóc xốt trứng muối",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "rau răm",
+      "relation": "CONTAINS_INGREDIENT"
+    },
+    {
+      "source": "rau răm",
+      "target": "ốc hương xóc xốt trứng muối",
+      "relation": "USED_IN_RECIPE"
+    },
+    {
+      "source": "ốc hương xóc xốt trứng muối",
+      "target": "low_calorie",
+      "relation": "IS_LOW_CALORIE"
     }
   ]
 }

@@ -13,6 +13,10 @@ const DEFAULT_FORM = {
   dietaryGoal: "maintain",
   budget: "medium",
   dietType: "eat-clean",
+  height_cm: "",
+  weight_kg: "",
+  age: "",
+  gender: "male",
 };
 
 const UserInputForm = ({
@@ -82,6 +86,23 @@ const UserInputForm = ({
       return;
     }
 
+    const height = parseFloat(formData.height_cm);
+    const weight = parseFloat(formData.weight_kg);
+    const age = parseInt(formData.age, 10);
+
+    if (!height || height < 50 || height > 300) {
+      toast.error("Chiều cao phải từ 50 đến 300 cm");
+      return;
+    }
+    if (!weight || weight < 1 || weight > 500) {
+      toast.error("Cân nặng phải từ 1 đến 500 kg");
+      return;
+    }
+    if (!age || age < 1 || age > 120) {
+      toast.error("Tuổi phải từ 1 đến 120 tuổi");
+      return;
+    }
+
     try {
       setIsSaving(true);
       const profilePayload = {
@@ -93,6 +114,12 @@ const UserInputForm = ({
           goal: formData.dietaryGoal,
           budget: formData.budget,
           diet: mapDietTypeToProfileDiet(formData.dietType),
+        },
+        fitnessProfile: {
+          height_cm: height,
+          weight_kg: weight,
+          age: age,
+          gender: formData.gender || "male",
         },
       };
 
@@ -210,6 +237,73 @@ const UserInputForm = ({
                         }
                         className="w-full bg-gray-100 dark:bg-slate-950 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:border-green-500 transition-colors"
                       />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Giới tính
+                      </label>
+                      <select
+                        value={formData.gender}
+                        onChange={(e) => handleChange("gender", e.target.value)}
+                        className="w-full bg-gray-100 dark:bg-slate-950 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:border-green-500 transition-colors"
+                      >
+                        <option value="male">Nam</option>
+                        <option value="female">Nữ</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Tuổi
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="120"
+                        value={formData.age}
+                        onChange={(e) => handleChange("age", e.target.value)}
+                        className="w-full bg-gray-100 dark:bg-slate-950 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:border-green-500 transition-colors"
+                        placeholder="Ví dụ: 25"
+                        required
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          Chiều cao (cm)
+                        </label>
+                        <input
+                          type="number"
+                          min="50"
+                          max="300"
+                          value={formData.height_cm}
+                          onChange={(e) =>
+                            handleChange("height_cm", e.target.value)
+                          }
+                          className="w-full bg-gray-100 dark:bg-slate-950 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:border-green-500 transition-colors"
+                          placeholder="170"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          Cân nặng (kg)
+                        </label>
+                        <input
+                          type="number"
+                          min="1"
+                          max="500"
+                          value={formData.weight_kg}
+                          onChange={(e) =>
+                            handleChange("weight_kg", e.target.value)
+                          }
+                          className="w-full bg-gray-100 dark:bg-slate-950 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:border-green-500 transition-colors"
+                          placeholder="60"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
