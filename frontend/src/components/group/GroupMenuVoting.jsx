@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ThumbsUp, X, Eye } from "lucide-react";
+import { ThumbsUp, X, Eye, Flame, Activity, Wheat, Droplet } from "lucide-react";
 import { useGroup } from "../../hooks/useGroup";
 import { toast } from "sonner";
 import RecipeDetailModal from "./RecipeDetailModal";
@@ -129,7 +129,7 @@ export default function GroupMenuVoting({ groupId, meals, onRemove }) {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="text-center">
                     <div className="w-12 h-12 mx-auto mb-2 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
-                      <span className="text-orange-600 dark:text-orange-400 text-lg font-bold">🔥</span>
+                      <Flame className="w-6 h-6 text-orange-600 dark:text-orange-400" />
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Calo</p>
                     <p className="text-lg font-bold text-gray-900 dark:text-white">
@@ -138,7 +138,7 @@ export default function GroupMenuVoting({ groupId, meals, onRemove }) {
                   </div>
                   <div className="text-center">
                     <div className="w-12 h-12 mx-auto mb-2 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                      <span className="text-green-600 dark:text-green-400 text-lg font-bold">💪</span>
+                      <Activity className="w-6 h-6 text-green-600 dark:text-green-400" />
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Protein</p>
                     <p className="text-lg font-bold text-gray-900 dark:text-white">
@@ -147,7 +147,7 @@ export default function GroupMenuVoting({ groupId, meals, onRemove }) {
                   </div>
                   <div className="text-center">
                     <div className="w-12 h-12 mx-auto mb-2 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                      <span className="text-blue-600 dark:text-blue-400 text-lg font-bold">🌾</span>
+                      <Wheat className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Carbs</p>
                     <p className="text-lg font-bold text-gray-900 dark:text-white">
@@ -156,7 +156,7 @@ export default function GroupMenuVoting({ groupId, meals, onRemove }) {
                   </div>
                   <div className="text-center">
                     <div className="w-12 h-12 mx-auto mb-2 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-                      <span className="text-purple-600 dark:text-purple-400 text-lg font-bold">🥑</span>
+                      <Droplet className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Fat</p>
                     <p className="text-lg font-bold text-gray-900 dark:text-white">

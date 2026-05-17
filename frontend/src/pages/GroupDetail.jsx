@@ -9,6 +9,7 @@ import {
   Trash2,
   ShoppingCart,
   Target,
+  Copy,
 } from "lucide-react";
 import { useGroup } from "../hooks/useGroup";
 import { useAuth } from "../hooks/useAuth";
@@ -79,6 +80,30 @@ export default function GroupDetail() {
     return checkedIngredients[key];
   }).length;
   const completionPct = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+
+  const handleCopyShoppingList = () => {
+    if (shoppingList.length === 0) {
+      toast.error("Danh sách đi chợ đang trống!");
+      return;
+    }
+
+    let text = `🛒 DANH SÁCH ĐI CHỢ CHO NHÓM: ${selectedGroup?.name || ""}\n`;
+    text += `Tiến độ: ${completedItems}/${totalItems} (${completionPct}%)\n\n`;
+
+    shoppingList.forEach((item, index) => {
+      const isChecked = checkedIngredients[`${item.name.toLowerCase()}_${item.unit.toLowerCase()}`];
+      const checkbox = isChecked ? "[x]" : "[ ]";
+      text += `${index + 1}. ${checkbox} ${item.name}: ${parseFloat(item.amount.toFixed(2))} ${item.unit}\n`;
+    });
+
+    text += `\nĐược tạo bởi SmartMeal.`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success("📋 Đã sao chép danh sách đi chợ!");
+    }).catch(() => {
+      toast.error("❌ Lỗi khi sao chép danh sách!");
+    });
+  };
   const [statsLoading, setStatsLoading] = useState(false);
   const [statsError, setStatsError] = useState("");
   const [groupStats, setGroupStats] = useState({
@@ -477,6 +502,14 @@ export default function GroupDetail() {
                     <span className="text-xs font-bold text-green-600 dark:text-green-400">
                       {completedItems}/{totalItems} ({completionPct}%)
                     </span>
+                    <button
+                      onClick={handleCopyShoppingList}
+                      className="ml-2 flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-800/40 rounded-lg transition text-xs font-semibold"
+                      title="Sao chép gửi Zalo/Messenger"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                      Sao chép
+                    </button>
                   </div>
                 )}
               </div>
