@@ -9,7 +9,7 @@ const OVERPASS_ENDPOINTS = [
 
 const nominatimClient = axios.create({
   baseURL: "https://nominatim.openstreetmap.org",
-  timeout: 12000,
+  timeout: 8000,
   headers: {
     "User-Agent": "smartmeal/1.0",
   },
@@ -17,7 +17,7 @@ const nominatimClient = axios.create({
 
 const photonClient = axios.create({
   baseURL: "https://photon.komoot.io",
-  timeout: 12000,
+  timeout: 8000,
 });
 
 const SEARCH_AMENITIES = "restaurant|fast_food|cafe";
@@ -96,7 +96,7 @@ function buildOverpassQuery({ lat, lng, radius, keyword }) {
     : "";
 
   return `
-[out:json][timeout:25];
+[out:json][timeout:10];
 (
   node["amenity"~"${SEARCH_AMENITIES}"]${keywordFilters}(around:${safeRadius},${safeLat},${safeLng});
   way["amenity"~"${SEARCH_AMENITIES}"]${keywordFilters}(around:${safeRadius},${safeLat},${safeLng});
@@ -234,29 +234,26 @@ async function searchWithNominatim({ lat, lng, keyword, radius }) {
 }
 
 async function executeOverpassQuery(query) {
-  let lastError = null;
-
-  for (const endpoint of OVERPASS_ENDPOINTS) {
-    try {
-      const response = await axios.get(endpoint, {
-        timeout: 12000,
+  const requests = OVERPASS_ENDPOINTS.map((endpoint) =>
+    axios
+      .get(endpoint, {
+        timeout: 6000,
         params: { data: query },
         headers: {
           "User-Agent": "smartmeal/1.0",
         },
-      });
+      })
+      .then((response) =>
+        Array.isArray(response?.data?.elements) ? response.data.elements : [],
+      ),
+  );
 
-      const elements = Array.isArray(response?.data?.elements)
-        ? response.data.elements
-        : [];
-
-      return elements;
-    } catch (error) {
-      lastError = error;
-    }
+  try {
+    return await Promise.any(requests);
+  } catch (error) {
+    const firstError = Array.isArray(error?.errors) ? error.errors[0] : error;
+    throw firstError || new Error("Overpass request failed");
   }
-
-  throw lastError || new Error("Overpass request failed");
 }
 
 export async function searchNearbyRestaurants({

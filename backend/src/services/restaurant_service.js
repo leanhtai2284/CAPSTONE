@@ -186,7 +186,7 @@ function buildSearchKeywords({
 
   return [
     ...new Set(keywords.map((item) => item.trim()).filter(Boolean)),
-  ].slice(0, 12);
+  ].slice(0, 5);
 }
 
 function getDishTokens(recipeName) {
@@ -363,8 +363,9 @@ export async function getRestaurantsByDish({
   });
   const inferredSegments = inferCuisineSegments(recipeContext, dietTag);
 
+  const limitedKeywords = keywords.slice(0, 5);
   const placesGroups = await Promise.allSettled(
-    keywords.map((keyword) =>
+    limitedKeywords.map((keyword) =>
       searchNearbyRestaurants({
         lat: safeLat,
         lng: safeLng,
@@ -382,14 +383,26 @@ export async function getRestaurantsByDish({
     const firstRejected = placesGroups.find(
       (result) => result.status === "rejected",
     );
-    throw (
-      firstRejected?.reason ||
-      new AppError(
-        "Unable to fetch nearby restaurants at the moment",
-        500,
-        "GOOGLE_PLACES_REQUEST_ERROR",
-      )
-    );
+    try {
+      const fallbackList = await searchNearbyRestaurants({
+        lat: safeLat,
+        lng: safeLng,
+        keyword: "quan an gan day",
+        radius: SEARCH_RADIUS_M,
+      });
+      if (fallbackList.length > 0) {
+        fulfilledGroups.push(fallbackList);
+      }
+    } catch (_fallbackError) {
+      throw (
+        firstRejected?.reason ||
+        new AppError(
+          "Unable to fetch nearby restaurants at the moment",
+          500,
+          "GOOGLE_PLACES_REQUEST_ERROR",
+        )
+      );
+    }
   }
 
   const deduped = new Map();

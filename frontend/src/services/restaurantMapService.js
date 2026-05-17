@@ -5,6 +5,32 @@ const FALLBACK_LOCATION = {
   lng: 108.2022,
 };
 
+const CACHE_TTL_MS = 5 * 60 * 1000;
+const restaurantCache = new Map();
+
+function toCacheKey(meal, lat, lng, intent) {
+  const recipeId = resolveRecipeId(meal);
+  const recipeName = resolveRecipeName(meal).toLowerCase();
+  return `${recipeId || recipeName}:${Number(lat).toFixed(3)}:${Number(lng).toFixed(3)}:${intent}`;
+}
+
+function getCachedResult(cacheKey) {
+  const item = restaurantCache.get(cacheKey);
+  if (!item) return null;
+  if (item.expiresAt < Date.now()) {
+    restaurantCache.delete(cacheKey);
+    return null;
+  }
+  return item.payload;
+}
+
+function setCachedResult(cacheKey, payload) {
+  restaurantCache.set(cacheKey, {
+    payload,
+    expiresAt: Date.now() + CACHE_TTL_MS,
+  });
+}
+
 function resolveRecipeId(meal) {
   return meal?._id || meal?.id || meal?.recipe_id || "";
 }
@@ -50,7 +76,12 @@ export async function fetchRestaurantsByDish({
     params.diet_tag = String(meal.diet_tags[0]);
   }
 
+  const cacheKey = toCacheKey(meal, safeLat, safeLng, intent);
+  const cached = getCachedResult(cacheKey);
+  if (cached) return cached;
+
   const { data } = await axiosInstance.get("/restaurants-by-dish", { params });
+  setCachedResult(cacheKey, data);
   return data;
 }
 

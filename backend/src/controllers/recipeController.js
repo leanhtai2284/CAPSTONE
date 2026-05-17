@@ -429,7 +429,14 @@ export async function swapSingleMeal(req, res) {
 
     console.log(" Trả về:", randomRecipe.name_vi, randomRecipe.meal_types);
 
-    res.json({ items: [randomRecipe] });
+    res.json({
+      items: [
+        {
+          ...randomRecipe,
+          assigned_meal_type: meal_type,
+        },
+      ],
+    });
   } catch (error) {
     console.error("❌ Lỗi:", error);
     res.status(500).json({ message: "Lỗi khi đổi món" });

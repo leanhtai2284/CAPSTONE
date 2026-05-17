@@ -247,7 +247,7 @@ export default function useMealPlanner() {
       console.log("🔄 Đổi món:", {
         mealId,
         mealName: currentMeal.name_vi,
-        mealType: currentMeal.meal_types?.[0],
+        mealType: currentMeal.assigned_meal_type || currentMeal.meal_types?.[0],
         dietTags,
         excludeIds,
       });

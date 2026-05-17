@@ -347,7 +347,7 @@ export async function suggestDailyMenu(prefs, pantryItems = []) {
         const available = getMealPool(pool, mealType, Array.from(usedIds));
         const dish = pickRandomFrom(available);
         if (!dish) break;
-        chosen.push(dish);
+        chosen.push({ ...dish, assigned_meal_type: mealType });
         usedIds.add(dish._id.toString());
         console.log(
           `  Thêm: ${dish.name_vi} (${dish.price_estimate?.min || "N/A"} VNĐ)`,
@@ -365,15 +365,16 @@ export async function suggestDailyMenu(prefs, pantryItems = []) {
     }
   }
 
-  const finalBreakfast = chosen.filter((m) =>
-    (m.meal_types || []).includes("breakfast"),
-  ).length;
-  const finalLunch = chosen.filter((m) =>
-    (m.meal_types || []).includes("lunch"),
-  ).length;
-  const finalDinner = chosen.filter((m) =>
-    (m.meal_types || []).includes("dinner"),
-  ).length;
+  const countByAssigned = (mealType) =>
+    chosen.filter(
+      (m) =>
+        (m.assigned_meal_type || "") === mealType ||
+        (!m.assigned_meal_type && (m.meal_types || []).includes(mealType)),
+    ).length;
+
+  const finalBreakfast = countByAssigned("breakfast");
+  const finalLunch = countByAssigned("lunch");
+  const finalDinner = countByAssigned("dinner");
 
   console.log(`\nKẾT QUẢ CUỐI CÙNG:`);
   console.log(`  Sáng: ${finalBreakfast}/1 món`);
@@ -583,7 +584,7 @@ export async function suggestWeeklyMenu(prefs, pantryItems = []) {
           );
           break;
         }
-        dayMeals.push(dish);
+        dayMeals.push({ ...dish, assigned_meal_type: mealType });
         usedInThisDay.add(dish._id.toString());
         console.log(`  ${mealType}: ${dish.name_vi}`);
         added++;

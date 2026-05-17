@@ -1,6 +1,14 @@
 // src/services/recipeApi.js
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    "Content-Type": "application/json",
+    ...(token && { Authorization: `Bearer ${token}` }),
+  };
+};
+
 export async function suggestMenuApi(payload) {
   const res = await fetch(`${API_BASE}/api/recipes/suggest`, {
     method: "POST",
@@ -52,7 +60,7 @@ export async function swapSingleMealApi(meal, dietTags, excludeIds = []) {
   // excludeIds là mảng tất cả các món đang có trong bữa ăn
 
   const payload = {
-    meal_type: meal.meal_types?.[0], // breakfast, lunch, hoặc dinner
+    meal_type: meal.assigned_meal_type || meal.meal_types?.[0], // breakfast, lunch, hoặc dinner
     diet_tags: dietTags || [],
     exclude_ids: excludeIds.length > 0 ? excludeIds : [meal._id || meal.id],
   };
@@ -74,4 +82,19 @@ export async function swapSingleMealApi(meal, dietTags, excludeIds = []) {
 
   const data = await res.json(); // { items: [newMeal] }
   return { success: true, meal: data.items?.[0] };
+}
+
+export async function generateShoppingListApi(recipeIds = []) {
+  const res = await fetch(`${API_BASE}/api/recipes/shopping-list`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ recipeIds }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || err.message || "Không thể tạo danh sách mua");
+  }
+
+  return res.json();
 }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ShoppingBag, Store, Tag, Search, ShoppingCart } from "lucide-react";
 import { marketService } from "../services/marketService";
 import { useMarketCart } from "../context/MarketCartContext";
+import { generateShoppingListApi } from "../services/recipeApi";
 
 const formatCurrency = (value) =>
   new Intl.NumberFormat("vi-VN", {
@@ -19,6 +20,68 @@ const MarketPage = () => {
   const [selectedStore, setSelectedStore] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
+  const [shoppingList, setShoppingList] = useState(null);
+  const [shoppingLoading, setShoppingLoading] = useState(false);
+  const [shoppingError, setShoppingError] = useState("");
+
+  const getRecipeIdsFromPlan = () => {
+    const ids = new Set();
+
+    const addMeals = (meals) => {
+      (meals || []).forEach((meal) => {
+        const id = meal?._id || meal?.id;
+        if (id) ids.add(id);
+      });
+    };
+
+    try {
+      const dailyRaw = localStorage.getItem("mealPlan");
+      const weeklyRaw = localStorage.getItem("weeklyMenu");
+      const dailyMeals = dailyRaw ? JSON.parse(dailyRaw) : [];
+      if (Array.isArray(dailyMeals) && dailyMeals.length) {
+        addMeals(dailyMeals);
+        return Array.from(ids);
+      }
+
+      const weeklyMenu = weeklyRaw ? JSON.parse(weeklyRaw) : [];
+      if (Array.isArray(weeklyMenu) && weeklyMenu.length) {
+        const today = new Date().getDay();
+        const dayObj =
+          weeklyMenu.find((d) => d.day === today) || weeklyMenu[today];
+        if (dayObj && Array.isArray(dayObj.meals)) {
+          addMeals(dayObj.meals);
+          return Array.from(ids);
+        }
+
+        weeklyMenu.forEach((day) => addMeals(day?.meals));
+      }
+    } catch (_error) {
+      return [];
+    }
+
+    return Array.from(ids);
+  };
+
+  const handleGenerateShoppingList = async () => {
+    const recipeIds = getRecipeIdsFromPlan();
+    if (!recipeIds.length) {
+      setShoppingError("Bạn chưa có thực đơn để tạo danh sách mua.");
+      setShoppingList(null);
+      return;
+    }
+
+    setShoppingLoading(true);
+    setShoppingError("");
+    try {
+      const data = await generateShoppingListApi(recipeIds);
+      setShoppingList(data);
+    } catch (err) {
+      setShoppingList(null);
+      setShoppingError(err?.message || "Không thể tạo danh sách mua");
+    } finally {
+      setShoppingLoading(false);
+    }
+  };
 
   useEffect(() => {
     const loadMarket = async () => {
@@ -205,6 +268,95 @@ const MarketPage = () => {
               {message}
             </div>
           )}
+
+          <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 px-5 py-4">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-sm font-semibold text-emerald-700">
+                  Gợi ý mua hàng theo thực đơn
+                </p>
+                <p className="text-xs text-emerald-700/80">
+                  Tự động tạo danh sách nguyên liệu còn thiếu dựa trên pantry.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleGenerateShoppingList}
+                disabled={shoppingLoading}
+                className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-5 py-2 text-xs font-semibold text-white shadow-md transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {shoppingLoading
+                  ? "Đang tạo danh sách..."
+                  : "Tạo danh sách mua"}
+              </button>
+            </div>
+
+            {shoppingError && (
+              <div className="mt-3 rounded-xl bg-rose-50 px-4 py-2 text-xs text-rose-700">
+                {shoppingError}
+              </div>
+            )}
+
+            {shoppingList && (
+              <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                <div className="rounded-2xl bg-white/80 p-4">
+                  <p className="text-sm font-semibold text-slate-900">
+                    Cần mua ({shoppingList?.summary?.need_to_buy || 0})
+                  </p>
+                  <div className="mt-3 space-y-2 text-sm text-slate-600">
+                    {(shoppingList.shopping_list || []).map((item, idx) => (
+                      <div
+                        key={`${item.name}-${idx}`}
+                        className="flex items-center justify-between gap-2"
+                      >
+                        <span className="font-medium text-slate-800">
+                          {item.name}
+                        </span>
+                        <span className="text-xs text-slate-500">
+                          {item.need
+                            ? `${item.need} ${item.unit || ""}`
+                            : "Cần mua"}
+                        </span>
+                      </div>
+                    ))}
+                    {(!shoppingList.shopping_list ||
+                      shoppingList.shopping_list.length === 0) && (
+                      <p className="text-xs text-slate-500">
+                        Pantry đã đủ nguyên liệu cho thực đơn này.
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-white/80 p-4">
+                  <p className="text-sm font-semibold text-slate-900">
+                    Đã có sẵn ({shoppingList?.summary?.already_have || 0})
+                  </p>
+                  <div className="mt-3 space-y-2 text-sm text-slate-600">
+                    {(shoppingList.already_have || []).map((item, idx) => (
+                      <div
+                        key={`${item.name}-${idx}`}
+                        className="flex items-center justify-between gap-2"
+                      >
+                        <span className="font-medium text-slate-800">
+                          {item.name}
+                        </span>
+                        <span className="text-xs text-slate-500">
+                          {item.have} {item.unit || ""}
+                        </span>
+                      </div>
+                    ))}
+                    {(!shoppingList.already_have ||
+                      shoppingList.already_have.length === 0) && (
+                      <p className="text-xs text-slate-500">
+                        Chưa có nguyên liệu nào trong pantry.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
 
           {loading ? (
             <div className="py-12 text-center text-sm text-slate-500">

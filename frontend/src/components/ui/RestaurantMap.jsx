@@ -93,7 +93,7 @@ async function getUserLocation() {
     const coords = await new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, {
         enableHighAccuracy: false,
-        timeout: 8000,
+        timeout: 5000,
         maximumAge: 60000,
       });
     });

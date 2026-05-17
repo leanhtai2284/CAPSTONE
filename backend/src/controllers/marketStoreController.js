@@ -40,7 +40,9 @@ export const registerAsStoreOwner = asyncHandler(async (req, res) => {
   const { name, description, phone, address, openingHours } = req.body || {};
 
   if (!name || !String(name).trim()) {
-    return res.status(400).json({ success: false, message: "Tên cửa hàng là bắt buộc" });
+    return res
+      .status(400)
+      .json({ success: false, message: "Tên cửa hàng là bắt buộc" });
   }
 
   const User = (await import("../models/User.js")).default;
@@ -64,7 +66,7 @@ export const registerAsStoreOwner = asyncHandler(async (req, res) => {
 
   return res.status(201).json({
     success: true,
-    message: "Đăng ký thành công! Tài khoản của bạn đã được nâng cấp thành Store Owner.",
+    message: "Đăng ký thành công !",
     data: {
       store,
       newRole: "store_owner",
@@ -105,7 +107,6 @@ export const createStore = asyncHandler(async (req, res) => {
 
   return res.status(201).json({ success: true, data: store });
 });
-
 
 export const getStores = asyncHandler(async (req, res) => {
   const { q, isActive, owner } = req.query || {};
