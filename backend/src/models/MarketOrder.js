@@ -103,6 +103,10 @@ const marketOrderSchema = new mongoose.Schema(
       paidAt: {
         type: Date,
       },
+      proofOfPayment: {
+        type: String,
+        trim: true,
+      },
     },
     shipping: {
       recipientName: {

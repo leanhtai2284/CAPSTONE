@@ -99,6 +99,9 @@ const StoreOwnerDashboard = () => {
   const [orderDateTo, setOrderDateTo] = useState("");
   const productImageRef = useRef(null);
 
+  // Receipt Modal State
+  const [viewReceiptUrl, setViewReceiptUrl] = useState(null);
+
   const [isRegistering, setIsRegistering] = useState(false);
   const [registerForm, setRegisterForm] = useState({
     name: "",
@@ -965,10 +968,10 @@ const StoreOwnerDashboard = () => {
                           {formatCurrency(order.total)}
                         </p>
                       </div>
-                      <div className="flex flex-col gap-1">
-                        <p className="text-xs text-slate-400">Trạng thái</p>
+                      <div className="flex flex-col gap-1 items-end">
+                        <p className="text-xs text-slate-400 w-full text-left">Trạng thái</p>
                         <span
-                          className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-1 ${statusColor[order.status] || "bg-slate-100 text-slate-600"}`}
+                          className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-1 w-full text-center ${statusColor[order.status] || "bg-slate-100 text-slate-600"}`}
                         >
                           {STATUS_OPTIONS.find((o) => o.value === order.status)
                             ?.label || order.status}
@@ -981,7 +984,7 @@ const StoreOwnerDashboard = () => {
                               event.target.value,
                             )
                           }
-                          className="rounded-full border border-slate-200 px-3 py-1 text-sm"
+                          className="rounded-full border border-slate-200 px-3 py-1 text-sm w-full"
                         >
                           <option value="pending">Chờ xác nhận</option>
                           <option value="paid">Đã thanh toán</option>
@@ -989,6 +992,18 @@ const StoreOwnerDashboard = () => {
                           <option value="delivered">Đã giao</option>
                           <option value="cancelled">Đã hủy</option>
                         </select>
+                        {order.payment?.method === "vietqr" && order.payment?.proofOfPayment && (
+                          <button
+                            onClick={() => setViewReceiptUrl(`http://localhost:5000${order.payment.proofOfPayment}`)}
+                            className="mt-2 text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1 w-full justify-center border border-blue-200 rounded-full py-1 hover:bg-blue-50"
+                          >
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            Xem Biên Lai
+                          </button>
+                        )}
                       </div>
                     </div>
                   ))
@@ -1227,8 +1242,31 @@ const StoreOwnerDashboard = () => {
               </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
+
+      {/* Receipt Modal */}
+      {viewReceiptUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl relative">
+            <button
+              onClick={() => setViewReceiptUrl(null)}
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <h3 className="text-lg font-bold text-slate-900 mb-4">Biên lai chuyển khoản</h3>
+            <div className="rounded-xl overflow-hidden border border-slate-200 bg-slate-50 flex justify-center">
+              <img src={viewReceiptUrl} alt="Biên lai" className="max-h-[60vh] object-contain" />
+            </div>
+            <p className="text-xs text-slate-500 mt-4 text-center">
+              Nếu biên lai hợp lệ, hãy đổi trạng thái đơn hàng thành "Đã thanh toán".
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

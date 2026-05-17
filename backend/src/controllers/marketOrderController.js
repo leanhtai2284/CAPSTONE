@@ -467,6 +467,32 @@ export const getStoreRevenue = asyncHandler(async (req, res) => {
   });
 });
 
+export const uploadReceipt = asyncHandler(async (req, res) => {
+  const order = await MarketOrder.findById(req.params.id);
+
+  if (!order) {
+    return res.status(404).json({ success: false, message: "Không tìm thấy đơn hàng" });
+  }
+
+  // Chú ý: Chỉ người mua mới được up bill
+  if (order.user.toString() !== req.user._id.toString()) {
+    return res.status(403).json({ success: false, message: "Bạn không có quyền thực hiện" });
+  }
+
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: "Vui lòng chọn ảnh biên lai" });
+  }
+
+  // Path trả về từ upload middleware (thường là /uploads/...)
+  const imageUrl = `/uploads/${req.file.filename}`;
+
+  order.payment.proofOfPayment = imageUrl;
+  order.payment.method = "vietqr";
+  await order.save();
+
+  return res.status(200).json({ success: true, data: order });
+});
+
 export default {
   createOrder,
   getMyOrders,
@@ -475,4 +501,5 @@ export default {
   updateOrderStatus,
   updatePaymentStatus,
   getStoreRevenue,
+  uploadReceipt,
 };
