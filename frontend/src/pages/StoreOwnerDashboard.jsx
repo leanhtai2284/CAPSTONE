@@ -1242,7 +1242,7 @@ const StoreOwnerDashboard = () => {
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Receipt Modal */}

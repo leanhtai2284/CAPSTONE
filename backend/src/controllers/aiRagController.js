@@ -240,9 +240,13 @@ function buildSuggestedQuestions(query, mentionedRecipes) {
 // ============================================================
 // Helper: Tìm sản phẩm từ Market (AI-Market Synergy)
 // ============================================================
-async function extractSuggestedProducts(query) {
+async function extractSuggestedProducts(query, mentionedRecipes = []) {
   try {
-    const entities = await extractEntitiesFromQuery(query);
+    let textToExtract = query;
+    if (mentionedRecipes && mentionedRecipes.length > 0) {
+      textToExtract += " " + mentionedRecipes.map(r => r.name_vi).join(", ");
+    }
+    const entities = await extractEntitiesFromQuery(textToExtract);
     if (!entities || entities.length === 0) return [];
 
     // Tìm kiếm các sản phẩm khớp với các từ khóa thực thể
@@ -416,8 +420,8 @@ export const ragQueryV1 = asyncHandler(async (req, res) => {
   // [Mức 1] Sinh câu hỏi gợi ý tiếp theo
   const suggestedQuestions = buildSuggestedQuestions(query, mentionedRecipes);
 
-  // [Mức 4] AI-Market Synergy: Quét gian hàng tìm nguyên liệu/sản phẩm
-  const suggestedProducts = await extractSuggestedProducts(query);
+  // [Mức 4] AI-Market Synergy: Quét gian hàng tìm nguyên liệu/sản phẩm (kết hợp câu hỏi và món gợi ý)
+  const suggestedProducts = await extractSuggestedProducts(query, mentionedRecipes);
 
   return res.status(200).json({
     success: true,
