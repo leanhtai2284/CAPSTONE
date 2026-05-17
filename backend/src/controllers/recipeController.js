@@ -7,6 +7,41 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import Pantry from "../models/Pantry.js";
 import { createNotification } from "./notificationController.js";
+import { ChatOpenAI } from "@langchain/openai";
+import { SystemMessage, HumanMessage } from "@langchain/core/messages";
+
+async function generateAIExplanation(recipes, prefs, pantryItems) {
+  try {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      return "Cấu hình AI chưa hoàn tất. Vui lòng thêm API Key.";
+    }
+
+    const modelName = process.env.OPENAI_CHAT_MODEL || "gpt-4o-mini";
+    const llm = new ChatOpenAI({ apiKey, modelName, temperature: 0.7 });
+
+    const recipeNames = (recipes || []).map((r, i) => `${i + 1}. ${r.name_vi || r.name} (Calo: ${r.nutrition?.calories || 0} kcal, Protein: ${r.nutrition?.protein_g || 0}g)`).join("\n");
+    const pantryList = (pantryItems || []).map((p, i) => `${i + 1}. ${p.name} (Còn ${p.quantity} ${p.unit})`).join("\n");
+
+    const systemPrompt = `You are a professional nutrition expert for SmartMeal. Analyze the rule-based menu selected for the user today and write a short, highly professional, encouraging summary in Vietnamese explaining why this menu is optimal for them.
+
+GUIDELINES:
+1. Reference the user's goal: ${prefs.goal || "duy trì cân nặng"}.
+2. If there are items from their pantry in the menu, congratulate them on saving/utilizing those ingredients.
+3. Be professional, engaging, and brief (3-4 sentences, max 150 words).
+4. Do not list the recipes, just summarize the nutritional synergy. Format with Markdown bold/italic.`;
+
+    const response = await llm.invoke([
+      new SystemMessage(systemPrompt),
+      new HumanMessage(`Danh sách món ăn được lọc ra hôm nay:\n${recipeNames}\n\nDanh sách nguyên liệu hiện có trong tủ lạnh:\n${pantryList}`)
+    ]);
+
+    return response.content;
+  } catch (error) {
+    console.error("AI Sommelier Error:", error);
+    return "Bác sĩ dinh dưỡng AI đang bận, thực đơn của bạn đã sẵn sàng phía dưới!";
+  }
+}
 
 const getRecipeName = (recipe) =>
   (recipe && (recipe.name_vi || recipe.name || recipe.title)) || "";

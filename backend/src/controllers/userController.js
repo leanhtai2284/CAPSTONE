@@ -45,6 +45,14 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     };
   }
 
+  // Cập nhật fitnessProfile
+  if (req.body.fitnessProfile) {
+    user.fitnessProfile = {
+      ...user.fitnessProfile?.toObject(),
+      ...req.body.fitnessProfile,
+    };
+  }
+
   const updatedUser = await user.save();
 
   res.json({
@@ -56,6 +64,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       role: updatedUser.role,
       preferences: updatedUser.preferences,
+      fitnessProfile: updatedUser.fitnessProfile,
     },
   });
 });
