@@ -39,6 +39,7 @@ import {
   updateOrderStatus,
   updatePaymentStatus,
   getStoreRevenue,
+  uploadReceipt,
 } from "../controllers/marketOrderController.js";
 import { uploadProductImage } from "../controllers/marketProductController.js";
 
@@ -141,6 +142,13 @@ router.get(
   protect,
   validate(objectIdParamSchema, "params"),
   getOrderById,
+);
+router.post(
+  "/orders/:id/upload-receipt",
+  protect,
+  validate(objectIdParamSchema, "params"),
+  upload.single("receipt"),
+  uploadReceipt,
 );
 router.patch(
   "/orders/:id/status",

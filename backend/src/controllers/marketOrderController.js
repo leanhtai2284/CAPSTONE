@@ -320,11 +320,25 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
     });
   }
 
+  if (order.status === "cancelled" && status !== "cancelled") {
+    return res.status(400).json({ success: false, message: "Không thể thay đổi trạng thái của đơn hàng đã hủy" });
+  }
+
+  const previousStatus = order.status;
   order.status = status;
 
   if (status === "paid" && order.payment?.status !== "paid") {
     order.payment.status = "paid";
     order.payment.paidAt = new Date();
+  }
+
+  // HOÀN TRẢ TỒN KHO NẾU HỦY ĐƠN HÀNG
+  if (status === "cancelled" && previousStatus !== "cancelled") {
+    for (const item of order.items) {
+      await MarketProduct.findByIdAndUpdate(item.product, {
+        $inc: { stock: item.quantity }
+      });
+    }
   }
 
   await order.save();
@@ -360,14 +374,24 @@ export const updatePaymentStatus = asyncHandler(async (req, res) => {
     });
   }
 
+  const previousPaymentStatus = order.payment.status;
   order.payment.status = status;
   if (method) order.payment.method = method;
   if (transactionId) order.payment.transactionId = transactionId;
+  
   if (status === "paid") {
     order.payment.paidAt = new Date();
     if (order.status === "pending") {
       order.status = "paid";
     }
+  } else if ((status === "failed" || status === "refunded") && order.status !== "cancelled") {
+    // HOÀN TRẢ TỒN KHO NẾU THANH TOÁN THẤT BẠI
+    for (const item of order.items) {
+      await MarketProduct.findByIdAndUpdate(item.product, {
+        $inc: { stock: item.quantity }
+      });
+    }
+    order.status = "cancelled";
   }
 
   await order.save();
@@ -467,6 +491,32 @@ export const getStoreRevenue = asyncHandler(async (req, res) => {
   });
 });
 
+export const uploadReceipt = asyncHandler(async (req, res) => {
+  const order = await MarketOrder.findById(req.params.id);
+
+  if (!order) {
+    return res.status(404).json({ success: false, message: "Không tìm thấy đơn hàng" });
+  }
+
+  // Chú ý: Chỉ người mua mới được up bill
+  if (order.user.toString() !== req.user._id.toString()) {
+    return res.status(403).json({ success: false, message: "Bạn không có quyền thực hiện" });
+  }
+
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: "Vui lòng chọn ảnh biên lai" });
+  }
+
+  // Path trả về từ upload middleware (thường là /uploads/...)
+  const imageUrl = `/uploads/${req.file.filename}`;
+
+  order.payment.proofOfPayment = imageUrl;
+  order.payment.method = "vietqr";
+  await order.save();
+
+  return res.status(200).json({ success: true, data: order });
+});
+
 export default {
   createOrder,
   getMyOrders,
@@ -475,4 +525,5 @@ export default {
   updateOrderStatus,
   updatePaymentStatus,
   getStoreRevenue,
+  uploadReceipt,
 };

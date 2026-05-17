@@ -692,7 +692,7 @@ async function loadKnowledgeGraph() {
   }
 }
 
-async function extractEntitiesFromQuery(query) {
+export async function extractEntitiesFromQuery(query) {
   try {
     const llm = new ChatOpenAI({
       apiKey: getOpenAiApiKey(),

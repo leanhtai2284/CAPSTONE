@@ -102,6 +102,53 @@ function RecipeCard({ recipe }) {
   );
 }
 
+// Product Card hiển thị sản phẩm được gợi ý từ Market
+function ProductCard({ product }) {
+  const imageUrl = product.images?.[0] ? `http://localhost:5000${product.images[0]}` : null;
+  const storeName = product.store?.name || "Cửa hàng";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white border border-blue-100 rounded-xl p-3 shadow-sm flex items-center gap-3 mt-2 hover:shadow-md transition-shadow relative overflow-hidden"
+    >
+      <div className="absolute top-0 right-0 bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-bl-lg font-medium">
+        Gợi ý mua
+      </div>
+      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+        {imageUrl ? (
+          <img src={imageUrl} alt={product.name} className="w-full h-full object-cover" />
+        ) : (
+          <span className="text-xl">🛒</span>
+        )}
+      </div>
+      <div className="flex-1 min-w-0 pr-1">
+        <p className="font-semibold text-sm text-gray-800 truncate" title={product.name}>{product.name}</p>
+        <div className="flex items-center justify-between mt-1">
+          <span className="text-xs font-bold text-red-500">
+            {product.salePrice ? product.salePrice.toLocaleString('vi-VN') : product.price.toLocaleString('vi-VN')}đ<span className="text-gray-400 font-normal">/{product.unit}</span>
+          </span>
+          <span className="text-[10px] text-gray-500 truncate max-w-[80px]" title={storeName}>🏪 {storeName}</span>
+        </div>
+      </div>
+      <a
+        href={`/store/product/${product._id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex-shrink-0 flex items-center justify-center w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full transition-colors"
+        onClick={e => e.stopPropagation()}
+        title="Xem sản phẩm"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </motion.div>
+  );
+}
+
+
 //Bubble mở chatbot - AI brain icon
 const ChatbotBubble = ({ onClick }) => {
   return (
@@ -160,6 +207,7 @@ const INITIAL_MESSAGE = {
   timestamp: new Date(),
   suggestedQuestions: [],
   mentionedRecipes: [],
+  suggestedProducts: [],
 };
 
 const ChatbotInterface = ({ isOpen, onClose }) => {
@@ -228,6 +276,7 @@ const ChatbotInterface = ({ isOpen, onClose }) => {
         timestamp: new Date(),
         suggestedQuestions: data.suggestedQuestions || [],
         mentionedRecipes: data.mentionedRecipes || [],
+        suggestedProducts: data.suggestedProducts || [],
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -240,6 +289,7 @@ const ChatbotInterface = ({ isOpen, onClose }) => {
         timestamp: new Date(),
         suggestedQuestions: [],
         mentionedRecipes: [],
+        suggestedProducts: [],
       }]);
     } finally {
       setIsLoading(false);
@@ -349,9 +399,19 @@ const ChatbotInterface = ({ isOpen, onClose }) => {
                         {/* Recipe Cards — Mức 2 */}
                         {message.mentionedRecipes?.length > 0 && (
                           <div className="space-y-1">
-                            <p className="text-xs text-gray-400 px-1">Món được đề cập:</p>
+                            <p className="text-xs text-gray-400 px-1 mt-2">Món được đề cập:</p>
                             {message.mentionedRecipes.map((recipe) => (
                               <RecipeCard key={String(recipe._id)} recipe={recipe} />
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Product Cards — Mức 4 (AI-Market Synergy) */}
+                        {message.suggestedProducts?.length > 0 && (
+                          <div className="space-y-1">
+                            <p className="text-xs text-blue-500 px-1 font-medium mt-2">✨ Gợi ý từ Cửa hàng:</p>
+                            {message.suggestedProducts.map((product) => (
+                              <ProductCard key={String(product._id)} product={product} />
                             ))}
                           </div>
                         )}
