@@ -145,22 +145,6 @@ export default function CreateGroupModal({ isOpen, onClose }) {
             </select>
           </div>
 
-          {/* Privacy */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Quyền riêng tư
-            </label>
-            <select
-              name="privacy"
-              value={formData.privacy}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="private">Riêng tư (chỉ thành viên được mời)</option>
-              <option value="public">Công khai (ai cũng có thể tham gia)</option>
-            </select>
-          </div>
-
           {/* Buttons */}
           <div className="flex gap-3 pt-4">
             <button
