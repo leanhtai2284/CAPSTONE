@@ -397,7 +397,12 @@ export const getGroupNutrition = async (req, res) => {
 // Get recipes for group menu
 export const getRecipesForGroupMenu = async (req, res) => {
   try {
-    const { search, page = 1, limit = 20 } = req.query;
+    const { search, page = 1, limit = 20, groupId } = req.query;
+    
+    let group = null;
+    if (groupId) {
+      group = await Group.findById(groupId);
+    }
     
     let query = {};
     if (search) {
@@ -409,11 +414,27 @@ export const getRecipesForGroupMenu = async (req, res) => {
       };
     }
     
+    // Dynamic smart sorting based on Group Event Goal
+    let sort = { createdAt: -1 };
+    if (group) {
+      if (group.goal === "picnic") {
+        sort = { cook_time_min: 1, prep_time_min: 1, createdAt: -1 };
+      } else if (group.goal === "family") {
+        sort = { servings: -1, createdAt: -1 };
+      } else if (group.goal === "party") {
+        sort = { servings: -1, cook_time_min: -1 };
+      } else if (group.goal === "office") {
+        sort = { prep_time_min: 1, createdAt: -1 };
+      } else if (group.goal === "diet_challenge") {
+        sort = { "nutrition.protein_g": -1, "nutrition.fat_g": 1 };
+      }
+    }
+    
     const recipes = await Recipe.find(query)
       .select("_id name_vi description image_url nutrition prep_time_min cook_time_min servings")
       .limit(limit * 1)
       .skip((page - 1) * limit)
-      .sort({ createdAt: -1 })
+      .sort(sort)
       .lean();
     
     const total = await Recipe.countDocuments(query);
