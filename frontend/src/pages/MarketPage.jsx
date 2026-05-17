@@ -4,6 +4,7 @@ import { ShoppingBag, Store, Tag, Search, ShoppingCart } from "lucide-react";
 import { marketService } from "../services/marketService";
 import { useMarketCart } from "../context/MarketCartContext";
 import { generateShoppingListApi } from "../services/recipeApi";
+import { resolveAssetUrl } from "../utils/resolveAssetUrl";
 
 const formatCurrency = (value) =>
   new Intl.NumberFormat("vi-VN", {
@@ -130,6 +131,7 @@ const MarketPage = () => {
   }, [products, searchTerm, selectedStore]);
 
   const handleAddToCart = (product) => {
+    const resolvedImage = resolveAssetUrl(product.images?.[0]);
     const unitPrice =
       product.salePrice != null && product.salePrice >= 0
         ? product.salePrice
@@ -138,7 +140,7 @@ const MarketPage = () => {
     const result = addItem({
       productId: product._id,
       name: product.name,
-      image: product.images?.[0] || "",
+      image: resolvedImage || "",
       unit: product.unit,
       storeId: product.store?._id,
       storeName: product.store?.name || "",
@@ -378,7 +380,7 @@ const MarketPage = () => {
                     ? product.salePrice
                     : product.price;
                 const image =
-                  product.images?.[0] ||
+                  resolveAssetUrl(product.images?.[0]) ||
                   "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800";
                 return (
                   <div

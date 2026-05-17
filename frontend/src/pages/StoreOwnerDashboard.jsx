@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { marketService } from "../services/marketService";
 import MapPicker from "../components/ui/MapPicker";
+import { resolveAssetUrl } from "../utils/resolveAssetUrl";
 
 const emptyProductForm = {
   name: "",
@@ -1109,7 +1110,7 @@ const StoreOwnerDashboard = () => {
                       {productForm.images.map((url, idx) => (
                         <div key={idx} className="relative group">
                           <img
-                            src={url}
+                            src={resolveAssetUrl(url)}
                             alt={`Ảnh ${idx + 1}`}
                             className="h-16 w-16 rounded-xl object-cover border border-slate-200"
                           />
@@ -1185,7 +1186,7 @@ const StoreOwnerDashboard = () => {
                     >
                       <img
                         src={
-                          product.images?.[0] ||
+                          resolveAssetUrl(product.images?.[0]) ||
                           "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800"
                         }
                         alt={product.name}

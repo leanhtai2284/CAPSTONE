@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (_req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif|webp/;
+  const allowedTypes = /jpeg|jpg|png|gif|webp|jfif|heic|heif/;
   const extname = allowedTypes.test(
     path.extname(file.originalname).toLowerCase(),
   );
@@ -30,13 +30,17 @@ const fileFilter = (_req, file, cb) => {
   if (mimetype && extname) {
     return cb(null, true);
   }
-  return cb(new Error("Chỉ cho phép upload file ảnh (JPEG, PNG, GIF, WEBP)"));
+  return cb(
+    new Error(
+      "Chỉ cho phép upload file ảnh (JPEG, PNG, GIF, WEBP, JFIF, HEIC/HEIF)",
+    ),
+  );
 };
 
 const upload = multer({
   storage,
   limits: {
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 10 * 1024 * 1024,
   },
   fileFilter,
 });
