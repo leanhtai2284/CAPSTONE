@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BellIcon, Plus } from "lucide-react";
+import { BellIcon, Plus, Crown, Users, Inbox, UserPlus } from "lucide-react";
 import { useGroup } from "../hooks/useGroup";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "sonner";
@@ -85,9 +85,12 @@ export default function GroupDashboard() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                👥 Nhóm Ăn Uống
-              </h1>
+              <div className="flex items-center gap-3 mb-2">
+                <Users className="w-8 h-8 text-green-600 dark:text-green-500" />
+                <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+                  Nhóm Ăn Uống
+                </h1>
+              </div>
               <p className="text-gray-600 dark:text-gray-400">
                 Quản lý kế hoạch dinh dưỡng cùng bạn bè
               </p>
@@ -170,9 +173,9 @@ export default function GroupDashboard() {
         {/* My Groups Section */}
         <div className="mb-12">
           <div className="flex items-center gap-2 mb-6">
-            <span className="text-2xl">🔑</span>
+            <Crown className="w-7 h-7 text-yellow-500" />
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Nhóm của bạn ({myGroups.length})
+              Nhóm do bạn tạo ({myGroups.length})
             </h2>
           </div>
           {myGroups.length > 0 ? (
@@ -185,7 +188,7 @@ export default function GroupDashboard() {
             />
           ) : (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-12 text-center">
-              <div className="text-6xl mb-4">📭</div>
+              <Inbox className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Bạn chưa tạo nhóm nào
               </h3>
@@ -206,9 +209,9 @@ export default function GroupDashboard() {
         {/* Member Groups Section */}
         <div>
           <div className="flex items-center gap-2 mb-6">
-            <span className="text-2xl">👫</span>
+            <Users className="w-7 h-7 text-blue-500" />
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Nhóm của người khác ({memberGroups.length})
+              Nhóm bạn đang tham gia ({memberGroups.length})
             </h2>
           </div>
           {memberGroups.length > 0 ? (
@@ -221,7 +224,7 @@ export default function GroupDashboard() {
             />
           ) : (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-12 text-center">
-              <div className="text-6xl mb-4">🤝</div>
+              <UserPlus className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Bạn chưa tham gia nhóm nào
               </h3>
