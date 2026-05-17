@@ -460,39 +460,7 @@ export const logGroupMealToPersonalTracker = async (req, res) => {
       return res.status(404).json({ success: false, message: "Không tìm thấy món ăn" });
     }
 
-    // 1. Trừ nguyên liệu trong tủ lạnh của user (nếu có)
-    const pantryItems = await Pantry.find({ user: userId });
-    const pantryLog = [];
-
-    for (const ingredient of recipe.ingredients || []) {
-      const ingName   = String(ingredient.name || "").toLowerCase().trim();
-      const ingAmount = Number(ingredient.amount) || 0;
-      const ingUnit   = String(ingredient.unit || "").toLowerCase();
-
-      const pantryItem = pantryItems.find((p) =>
-        String(p.name).toLowerCase().includes(ingName) ||
-        ingName.includes(String(p.name).toLowerCase())
-      );
-
-      if (pantryItem && pantryItem.unit === ingUnit) {
-        const newQty = pantryItem.quantity - ingAmount;
-        if (newQty <= 0) {
-          await Pantry.findByIdAndDelete(pantryItem._id);
-          pantryLog.push({ name: pantryItem.name, action: "removed", reason: "Đã dùng hết" });
-        } else {
-          await Pantry.findByIdAndUpdate(pantryItem._id, { quantity: newQty });
-          pantryLog.push({
-            name: pantryItem.name,
-            action: "updated",
-            before: pantryItem.quantity,
-            after: parseFloat(newQty.toFixed(2)),
-            unit: pantryItem.unit,
-          });
-        }
-      }
-    }
-
-    // 2. Cộng dinh dưỡng vào DailyTracking hôm nay
+    // Cộng dinh dưỡng vào DailyTracking hôm nay (Không trừ tủ lạnh cá nhân vì nguyên liệu dã ngoại nhóm mua riêng)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -533,7 +501,6 @@ export const logGroupMealToPersonalTracker = async (req, res) => {
       success: true,
       message: `Đã đồng bộ món "${recipe.name_vi}" vào nhật ký ăn uống hôm nay của bạn!`,
       data: {
-        pantry_deducted: pantryLog,
         today_totals: tracking.daily_totals,
       }
     });
