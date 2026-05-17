@@ -8,6 +8,7 @@ import {
   Plus,
   Trash2,
   ShoppingCart,
+  Target,
 } from "lucide-react";
 import { useGroup } from "../hooks/useGroup";
 import { useAuth } from "../hooks/useAuth";
@@ -255,18 +256,7 @@ export default function GroupDetail() {
     );
   }
 
-  const goalIcons = {
-    picnic: "🏕️",
-    family: "🏡",
-    party: "🎉",
-    office: "🏢",
-    diet_challenge: "🥑",
-    healthy: "🥗",
-    fitness: "💪",
-    weight_loss: "⚖️",
-    muscle_gain: "🏋️",
-    balanced: "⚖️",
-  };
+
 
   const goalLabels = {
     picnic: "Dã ngoại",
@@ -313,7 +303,7 @@ export default function GroupDetail() {
                 </h1>
                 <div className="flex items-center gap-3 flex-wrap">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900/50 text-orange-700 dark:text-orange-300 text-xs font-semibold rounded-full shadow-sm">
-                    <span className="text-base">{goalIcons[selectedGroup.goal]}</span>
+                    <Target className="w-3.5 h-3.5 text-orange-500" />
                     {goalLabels[selectedGroup.goal]}
                   </span>
                   {isOwner && (

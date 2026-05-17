@@ -137,11 +137,11 @@ export default function CreateGroupModal({ isOpen, onClose }) {
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
             >
-              <option value="picnic">🏕️ Dã ngoại / Cắm trại (Picnic & Camping)</option>
-              <option value="family">🏡 Tiệc gia đình / Sum họp (Family Reunion)</option>
-              <option value="party">🎉 Liên hoan bạn bè / Sinh nhật (Party & BBQ)</option>
-              <option value="office">🏢 Ăn uống văn phòng / Đồng nghiệp (Office Lunch)</option>
-              <option value="diet_challenge">🥑 Thử thách ăn kiêng chung (Diet Challenge)</option>
+              <option value="picnic">Dã ngoại / Cắm trại (Picnic & Camping)</option>
+              <option value="family">Tiệc gia đình / Sum họp (Family Reunion)</option>
+              <option value="party">Liên hoan bạn bè / Sinh nhật (Party & BBQ)</option>
+              <option value="office">Ăn uống văn phòng / Đồng nghiệp (Office Lunch)</option>
+              <option value="diet_challenge">Thử thách ăn kiêng chung (Diet Challenge)</option>
             </select>
           </div>
 
