@@ -95,6 +95,7 @@ const ForYouPage = () => {
     handleMarkAsCooked,
     isCookingMealId,
     trackingToday,
+    aiAnalysis,
   } = useMealPlanner();
 
   const canShowMealPlan = hasCompletedProfileFlow && hasMealPlan;
@@ -208,6 +209,30 @@ const ForYouPage = () => {
               </motion.div>
             ) : (
               <>
+                {aiAnalysis && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="relative overflow-hidden rounded-3xl border border-emerald-100 bg-gradient-to-br from-emerald-50/70 via-white to-amber-50/40 p-6 shadow-md backdrop-blur-sm"
+                  >
+                    <div className="absolute top-0 right-0 h-24 w-24 bg-emerald-200/20 blur-xl rounded-full" />
+                    <div className="absolute bottom-0 left-0 h-24 w-24 bg-amber-200/20 blur-xl rounded-full" />
+                    <div className="relative flex gap-4">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-2xl shadow-inner">
+                        🩺
+                      </div>
+                      <div className="space-y-1.5">
+                        <h3 className="text-sm font-semibold text-emerald-800 uppercase tracking-wider flex items-center gap-1.5 animate-pulse">
+                          <span>✨</span> Phân Tích Chuyên Gia Dinh Dưỡng AI
+                        </h3>
+                        <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-line font-medium italic">
+                          "{aiAnalysis}"
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
                 <MealPlanView
                   viewMode={viewMode}
                   selectedDay={selectedDay}
