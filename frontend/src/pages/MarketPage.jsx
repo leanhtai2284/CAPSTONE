@@ -270,25 +270,37 @@ const MarketPage = () => {
                     ? product.salePrice
                     : product.price;
                 const image =
-                  product.images?.[0] ||
-                  "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800";
+                  product.images?.[0] 
+                    ? `http://localhost:5000${product.images[0]}`
+                    : "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800";
                 return (
                   <div
                     key={product._id}
                     className="group flex flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-md transition hover:-translate-y-1 hover:shadow-2xl"
                   >
-                    <div className="relative h-48 overflow-hidden">
+                    <div className="relative h-48 overflow-hidden bg-slate-50">
                       <img
                         src={image}
                         alt={product.name}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800";
+                        }}
                         className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-emerald-700">
+                      <div className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur">
+                        <Store className="h-3 w-3" />
                         {product.store?.name || "Siêu thị"}
                       </div>
+                      {product.salePrice != null && product.salePrice >= 0 && (
+                        <div className="absolute left-4 top-12 rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
+                          Giảm giá
+                        </div>
+                      )}
                       {userLocation && product.store?.location?.coordinates && (
-                        <div className="absolute right-4 top-4 rounded-full bg-amber-400/90 px-2 py-1 text-[10px] font-bold text-slate-900 shadow-sm">
-                          Cách {(getDistanceFromLatLonInKm(
+                        <div className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-amber-400/95 px-2 py-1 text-[10px] font-bold text-slate-900 shadow-sm backdrop-blur">
+                          <span>📍</span>
+                          {(getDistanceFromLatLonInKm(
                             userLocation.lat,
                             userLocation.lng,
                             product.store.location.coordinates[1],
@@ -298,35 +310,53 @@ const MarketPage = () => {
                       )}
                     </div>
                     <div className="flex flex-1 flex-col p-4">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-slate-900">
-                          {product.name}
-                        </h3>
-                        <span className="text-xs uppercase tracking-widest text-slate-400">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <h3 className="text-lg font-semibold text-slate-900 line-clamp-1">
+                            {product.name}
+                          </h3>
+                          {product.category && (
+                            <span className="mt-1 inline-block text-[10px] uppercase tracking-wider text-emerald-600 font-medium">
+                              {product.category}
+                            </span>
+                          )}
+                        </div>
+                        <span className="shrink-0 rounded bg-slate-100 px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">
                           {product.unit}
                         </span>
                       </div>
-                      <p className="mt-2 text-sm text-slate-500 line-clamp-2">
+                      <p className="mt-2 flex-1 text-sm text-slate-500 line-clamp-2">
                         {product.description ||
                           "Sản phẩm tươi mới mỗi ngày, được chọn lọc kỹ lưỡng."}
                       </p>
-                      <div className="mt-4 flex items-center justify-between">
+                      
+                      {/* Hiển thị Tồn kho */}
+                      {product.stock != null && (
+                        <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
+                          <div className={`h-1.5 w-1.5 rounded-full ${product.stock > 0 ? "bg-emerald-500" : "bg-rose-500"}`} />
+                          {product.stock > 0 ? `Còn ${product.stock} sản phẩm` : "Hết hàng"}
+                        </div>
+                      )}
+
+                      <div className="mt-3 flex items-end justify-between border-t border-slate-100 pt-3">
                         <div>
-                          <p className="text-lg font-semibold text-emerald-700">
+                          <p className="text-lg font-bold text-emerald-700">
                             {formatCurrency(price)}
                           </p>
                           {product.salePrice != null &&
                             product.salePrice >= 0 && (
-                              <p className="text-xs text-slate-400 line-through">
+                              <p className="text-xs font-medium text-slate-400 line-through">
                                 {formatCurrency(product.price)}
                               </p>
                             )}
                         </div>
                         <button
                           onClick={() => handleAddToCart(product)}
-                          className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+                          disabled={product.stock <= 0}
+                          className="flex items-center gap-1.5 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Thêm vào giỏ
+                          <ShoppingCart className="h-4 w-4" />
+                          Mua
                         </button>
                       </div>
                     </div>
