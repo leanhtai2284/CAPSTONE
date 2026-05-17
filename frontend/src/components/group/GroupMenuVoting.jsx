@@ -1,34 +1,14 @@
 import React, { useState } from "react";
-import { ThumbsUp, X, Eye, UtensilsCrossed } from "lucide-react";
+import { ThumbsUp, X, Eye } from "lucide-react";
 import { useGroup } from "../../hooks/useGroup";
 import { toast } from "sonner";
 import RecipeDetailModal from "./RecipeDetailModal";
 
 export default function GroupMenuVoting({ groupId, meals, onRemove }) {
-  const { voteMeal, logGroupMeal, loading } = useGroup();
+  const { voteMeal, loading } = useGroup();
   const [userVotes, setUserVotes] = useState({});
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [showRecipeModal, setShowRecipeModal] = useState(false);
-  const [logLoading, setLogLoading] = useState({});
-
-  const handleLogMeal = async (meal) => {
-    const recipeId = meal._id || meal.meal?._id || meal.meal;
-    if (!recipeId) {
-      toast.error("❌ Không tìm thấy thông tin công thức");
-      return;
-    }
-    try {
-      setLogLoading((prev) => ({ ...prev, [meal._id]: true }));
-      await logGroupMeal(groupId, recipeId);
-      toast.success(
-        `🍽️ Đã đồng bộ món "${meal.name || meal.name_vi || meal.title}" vào Nhật ký dinh dưỡng cá nhân hôm nay!`
-      );
-    } catch (error) {
-      toast.error(error.message || "❌ Lỗi khi đồng bộ món ăn");
-    } finally {
-      setLogLoading((prev) => ({ ...prev, [meal._id]: false }));
-    }
-  };
 
   const handleVote = async (mealId) => {
     try {
@@ -119,16 +99,6 @@ export default function GroupMenuVoting({ groupId, meals, onRemove }) {
                   >
                     <Eye className="w-4 h-4" />
                     <span className="font-medium">Chi tiết</span>
-                  </button>
-
-                  <button
-                    onClick={() => handleLogMeal(meal)}
-                    disabled={logLoading[meal._id]}
-                    className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg font-medium hover:from-green-600 hover:to-emerald-700 transition-all shadow hover:shadow-md active:scale-95 disabled:opacity-50"
-                    title="Đồng bộ món ăn này vào Nhật ký dinh dưỡng cá nhân của bạn"
-                  >
-                    <UtensilsCrossed className="w-4 h-4" />
-                    <span className="font-medium">Ăn món này</span>
                   </button>
 
                   {onRemove && (
