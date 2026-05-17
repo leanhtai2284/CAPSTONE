@@ -5,6 +5,48 @@ import MarketProduct from "../models/MarketProduct.js";
 import MarketOrder from "../models/MarketOrder.js";
 import Pantry from "../models/Pantry.js";
 
+const mapToPantryCategory = (marketCategory) => {
+  if (!marketCategory) return "other";
+  const cat = marketCategory.toLowerCase().trim();
+  
+  if (cat.includes("thịt") || cat.includes("cá") || cat.includes("bò") || cat.includes("heo") || cat.includes("protein") || cat.includes("gà") || cat.includes("hải sản")) {
+    return "protein";
+  }
+  if (cat.includes("rau") || cat.includes("vegetable") || cat.includes("củ")) {
+    return "vegetable";
+  }
+  if (cat.includes("quả") || cat.includes("trái") || cat.includes("fruit")) {
+    return "fruit";
+  }
+  if (cat.includes("sữa") || cat.includes("dairy") || cat.includes("bơ") || cat.includes("cheese")) {
+    return "dairy";
+  }
+  if (cat.includes("nước") || cat.includes("beverage") || cat.includes("uống") || cat.includes("bia") || cat.includes("ngọt")) {
+    return "beverage";
+  }
+  if (cat.includes("gia vị") || cat.includes("condiment") || cat.includes("mắm") || cat.includes("muối") || cat.includes("đường")) {
+    return "condiment";
+  }
+  if (cat.includes("gạo") || cat.includes("grain") || cat.includes("mì") || cat.includes("bột")) {
+    return "grain";
+  }
+  
+  const allowed = ["protein", "vegetable", "fruit", "grain", "dairy", "condiment", "beverage", "other"];
+  if (allowed.includes(cat)) return cat;
+  
+  return "other";
+};
+
+const mapToPantryUnit = (marketUnit) => {
+  const allowed = ["g", "kg", "ml", "l", "pcs", "pack", "bottle", "can"];
+  if (!marketUnit) return "pcs";
+  const u = marketUnit.toLowerCase().trim();
+  if (allowed.includes(u)) return u;
+  if (u === "box") return "pack";
+  if (u === "bag") return "pack";
+  return "pcs";
+};
+
 const toPositiveInt = (value) => {
   const parsed = Number.parseInt(value, 10);
   if (!Number.isFinite(parsed) || parsed <= 0) return null;
@@ -303,10 +345,9 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Trạng thái không hợp lệ" });
   }
 
-  const order = await MarketOrder.findById(req.params.id).populate(
-    "store",
-    "owner",
-  );
+  const order = await MarketOrder.findById(req.params.id)
+    .populate("store", "owner")
+    .populate("items.product");
 
   if (!order) {
     return res
@@ -336,42 +377,47 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
   // HOÀN TRẢ TỒN KHO NẾU HỦY ĐƠN HÀNG
   if (status === "cancelled" && previousStatus !== "cancelled") {
     for (const item of order.items) {
-      await MarketProduct.findByIdAndUpdate(item.product, {
+      const productId = item.product?._id || item.product;
+      await MarketProduct.findByIdAndUpdate(productId, {
         $inc: { stock: item.quantity }
       });
     }
   }
 
-  // AUTO-PANTRY SYNC: THÊM VÀO TỦ LẠNH KHI ĐÃ GIAO
+  // AUTO-PANTRY SYNC KHI ĐƠN HÀNG ĐÃ GIAO THÀNH CÔNG
   if (status === "delivered" && previousStatus !== "delivered") {
-    const pantryUnits = ["g", "kg", "ml", "l", "pcs", "pack", "bottle", "can"];
-    
     for (const item of order.items) {
-      const product = await MarketProduct.findById(item.product);
-      const unit = pantryUnits.includes(item.unit) ? item.unit : "pack";
+      const prod = item.product; // Đã populated
+      const category = mapToPantryCategory(prod?.category);
+      const unit = mapToPantryUnit(item.unit || prod?.unit);
       
-      const catStr = (product?.category || "").toLowerCase();
-      let category = "other";
-      if (catStr.includes("thịt") || catStr.includes("cá") || catStr.includes("trứng") || catStr.includes("hải sản")) category = "protein";
-      else if (catStr.includes("rau") || catStr.includes("củ")) category = "vegetable";
-      else if (catStr.includes("quả") || catStr.includes("trái")) category = "fruit";
-      else if (catStr.includes("sữa")) category = "dairy";
-      else if (catStr.includes("nước") || catStr.includes("uống")) category = "beverage";
-      else if (catStr.includes("gia vị")) category = "condiment";
-
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 7); // Mặc định 7 ngày
-      
-      await Pantry.create({
+      // Kiểm tra xem có món trùng tên chưa hết hạn không để cộng dồn
+      const existingPantryItem = await Pantry.findOne({
         user: order.user,
         name: item.name,
-        quantity: item.quantity,
         unit: unit,
-        category: category,
-        storageLocation: "fridge", // Mặc định vào tủ lạnh
-        expiryDate: expiryDate,
-        notes: `Tự động thêm từ đơn hàng Market #${order._id.toString().slice(-6)}`
+        expiryDate: { $gt: new Date() }
       });
+      
+      if (existingPantryItem) {
+        existingPantryItem.quantity += item.quantity;
+        await existingPantryItem.save();
+      } else {
+        // Tạo mới Pantry item
+        const expiryDays = category === "protein" ? 3 : category === "vegetable" || category === "fruit" ? 5 : 14;
+        const expiryDate = new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000);
+        
+        await Pantry.create({
+          user: order.user,
+          name: item.name,
+          quantity: item.quantity,
+          unit: unit,
+          storageLocation: (category === "protein" || category === "dairy") ? "freezer" : (category === "vegetable" || category === "fruit") ? "fridge" : "pantry",
+          expiryDate: expiryDate,
+          category: category,
+          notes: `Tự động nhập từ đơn hàng Market #${order._id.toString().slice(-6)}`
+        });
+      }
     }
   }
 
@@ -421,7 +467,8 @@ export const updatePaymentStatus = asyncHandler(async (req, res) => {
   } else if ((status === "failed" || status === "refunded") && order.status !== "cancelled") {
     // HOÀN TRẢ TỒN KHO NẾU THANH TOÁN THẤT BẠI
     for (const item of order.items) {
-      await MarketProduct.findByIdAndUpdate(item.product, {
+      const productId = item.product?._id || item.product;
+      await MarketProduct.findByIdAndUpdate(productId, {
         $inc: { stock: item.quantity }
       });
     }
