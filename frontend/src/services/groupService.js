@@ -200,6 +200,20 @@ export const groupService = {
     }
   },
 
+  async logGroupMeal(groupId, mealId) {
+    try {
+      const { data } = await axiosInstance.post(
+        `/groups/${groupId}/menu/meals/log`,
+        { mealId }
+      );
+      return data.data || data;
+    } catch (error) {
+      console.error("❌ Lỗi khi đồng bộ món ăn nhóm vào nhật ký:", error);
+      throw error;
+    }
+  },
+
+
   // ============= GROUP STATS =============
   async getGroupStats(groupId) {
     try {

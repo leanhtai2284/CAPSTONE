@@ -246,6 +246,20 @@ export const GroupProvider = ({ children }) => {
     }
   };
 
+  const logGroupMeal = async (groupId, mealId) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const result = await groupService.logGroupMeal(groupId, mealId);
+      return result;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = {
     // State
     groups,
@@ -271,6 +285,7 @@ export const GroupProvider = ({ children }) => {
     addMealToMenu,
     removeMealFromMenu,
     voteMeal,
+    logGroupMeal,
   };
 
   return (

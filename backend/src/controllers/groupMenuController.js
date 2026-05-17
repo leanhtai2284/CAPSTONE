@@ -3,6 +3,8 @@ import Group from "../models/Group.js";
 import GroupInvite from "../models/GroupInvite.js";
 import GroupMenu from "../models/GroupMenu.js";
 import Recipe from "../models/Recipe.js";
+import Pantry from "../models/Pantry.js";
+import DailyTracking from "../models/DailyTracking.js";
 
 const isOwner = (group, userId) =>
   group.owner?.toString() === userId.toString() ||
@@ -357,7 +359,13 @@ export const getGroupNutrition = async (req, res) => {
     const totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
     const meals = menu?.meals || [];
 
-    meals.forEach((item) => {
+    // Chỉ tính toán dựa trên các món có lượng vote cao nhất (món được nhóm lựa chọn)
+    const maxVotes = meals.length ? Math.max(...meals.map(m => m.votes || 0)) : 0;
+    const activeMeals = maxVotes > 0 
+      ? meals.filter(m => (m.votes || 0) === maxVotes)
+      : meals;
+
+    activeMeals.forEach((item) => {
       const nutrition = item.meal?.nutrition || {};
       totals.calories += nutrition.calories || 0;
       totals.protein += nutrition.protein_g || nutrition.protein || 0;
@@ -369,12 +377,12 @@ export const getGroupNutrition = async (req, res) => {
       success: true,
       data: {
         total: totals,
-        average: meals.length
+        average: activeMeals.length
           ? {
-              calories: Math.round(totals.calories / meals.length),
-              protein: Math.round(totals.protein / meals.length),
-              carbs: Math.round(totals.carbs / meals.length),
-              fat: Math.round(totals.fat / meals.length),
+              calories: Math.round(totals.calories / activeMeals.length),
+              protein: Math.round(totals.protein / activeMeals.length),
+              carbs: Math.round(totals.carbs / activeMeals.length),
+              fat: Math.round(totals.fat / activeMeals.length),
             }
           : { calories: 0, protein: 0, carbs: 0, fat: 0 },
       },
@@ -423,6 +431,113 @@ export const getRecipesForGroupMenu = async (req, res) => {
     });
   } catch (error) {
     console.error("Error getting recipes for group menu:", error);
+    res.status(500).json({ success: false, message: "Lỗi server" });
+  }
+};
+
+// Đồng bộ món ăn nhóm vào Nhật ký dinh dưỡng cá nhân hôm nay
+export const logGroupMealToPersonalTracker = async (req, res) => {
+  try {
+    const { mealId } = req.body;
+    const userId = req.user._id;
+
+    if (!mealId) {
+      return res.status(400).json({ success: false, message: "Thiếu ID công thức" });
+    }
+
+    const group = await Group.findById(req.params.id);
+    if (!group) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy nhóm" });
+    }
+
+    if (!isMember(group, userId)) {
+      return res.status(403).json({ success: false, message: "Bạn không có quyền truy cập nhóm này" });
+    }
+
+    const recipe = await Recipe.findById(mealId);
+    if (!recipe) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy món ăn" });
+    }
+
+    // 1. Trừ nguyên liệu trong tủ lạnh của user (nếu có)
+    const pantryItems = await Pantry.find({ user: userId });
+    const pantryLog = [];
+
+    for (const ingredient of recipe.ingredients || []) {
+      const ingName   = String(ingredient.name || "").toLowerCase().trim();
+      const ingAmount = Number(ingredient.amount) || 0;
+      const ingUnit   = String(ingredient.unit || "").toLowerCase();
+
+      const pantryItem = pantryItems.find((p) =>
+        String(p.name).toLowerCase().includes(ingName) ||
+        ingName.includes(String(p.name).toLowerCase())
+      );
+
+      if (pantryItem && pantryItem.unit === ingUnit) {
+        const newQty = pantryItem.quantity - ingAmount;
+        if (newQty <= 0) {
+          await Pantry.findByIdAndDelete(pantryItem._id);
+          pantryLog.push({ name: pantryItem.name, action: "removed", reason: "Đã dùng hết" });
+        } else {
+          await Pantry.findByIdAndUpdate(pantryItem._id, { quantity: newQty });
+          pantryLog.push({
+            name: pantryItem.name,
+            action: "updated",
+            before: pantryItem.quantity,
+            after: parseFloat(newQty.toFixed(2)),
+            unit: pantryItem.unit,
+          });
+        }
+      }
+    }
+
+    // 2. Cộng dinh dưỡng vào DailyTracking hôm nay
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const nutrition = recipe.nutrition || {};
+    const mealEntry = {
+      recipeId: recipe._id,
+      name_vi: recipe.name_vi,
+      eaten_at: new Date(),
+      nutrition: {
+        calories:   nutrition.calories   || 0,
+        protein_g:  nutrition.protein_g  || 0,
+        carbs_g:    nutrition.carbs_g    || 0,
+        fat_g:      nutrition.fat_g      || 0,
+        fiber_g:    nutrition.fiber_g    || 0,
+        sodium_mg:  nutrition.sodium_mg  || 0,
+        sugar_g:    nutrition.sugar_g    || 0,
+      },
+    };
+
+    const tracking = await DailyTracking.findOneAndUpdate(
+      { user: userId, date: today },
+      {
+        $push: { meals_eaten: mealEntry },
+        $inc: {
+          "daily_totals.calories":  mealEntry.nutrition.calories,
+          "daily_totals.protein_g": mealEntry.nutrition.protein_g,
+          "daily_totals.carbs_g":   mealEntry.nutrition.carbs_g,
+          "daily_totals.fat_g":     mealEntry.nutrition.fat_g,
+          "daily_totals.fiber_g":   mealEntry.nutrition.fiber_g,
+          "daily_totals.sodium_mg": mealEntry.nutrition.sodium_mg,
+          "daily_totals.sugar_g":   mealEntry.nutrition.sugar_g,
+        },
+      },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+
+    res.json({
+      success: true,
+      message: `Đã đồng bộ món "${recipe.name_vi}" vào nhật ký ăn uống hôm nay của bạn!`,
+      data: {
+        pantry_deducted: pantryLog,
+        today_totals: tracking.daily_totals,
+      }
+    });
+  } catch (error) {
+    console.error("Error in logGroupMealToPersonalTracker:", error);
     res.status(500).json({ success: false, message: "Lỗi server" });
   }
 };
