@@ -509,3 +509,56 @@ export const logGroupMealToPersonalTracker = async (req, res) => {
     res.status(500).json({ success: false, message: "Lỗi server" });
   }
 };
+
+export const getCheckedIngredients = async (req, res) => {
+  try {
+    const group = await Group.findById(req.params.id);
+    if (!group) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy nhóm" });
+    }
+
+    const menu = await GroupMenu.findOne({ group: group._id });
+    res.json({
+      success: true,
+      checkedIngredients: menu?.checkedIngredients || []
+    });
+  } catch (error) {
+    console.error("Error in getCheckedIngredients:", error);
+    res.status(500).json({ success: false, message: "Lỗi server" });
+  }
+};
+
+export const toggleCheckedIngredient = async (req, res) => {
+  try {
+    const { key } = req.body;
+    if (!key) {
+      return res.status(400).json({ success: false, message: "Thiếu key nguyên liệu" });
+    }
+
+    const group = await Group.findById(req.params.id);
+    if (!group) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy nhóm" });
+    }
+
+    const menu =
+      (await GroupMenu.findOne({ group: group._id })) ||
+      (await GroupMenu.create({ group: group._id, meals: [] }));
+
+    const index = menu.checkedIngredients.indexOf(key);
+    if (index > -1) {
+      menu.checkedIngredients.splice(index, 1);
+    } else {
+      menu.checkedIngredients.push(key);
+    }
+
+    await menu.save();
+
+    res.json({
+      success: true,
+      checkedIngredients: menu.checkedIngredients
+    });
+  } catch (error) {
+    console.error("Error in toggleCheckedIngredient:", error);
+    res.status(500).json({ success: false, message: "Lỗi server" });
+  }
+};

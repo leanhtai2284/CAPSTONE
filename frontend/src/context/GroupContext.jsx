@@ -11,6 +11,7 @@ export const GroupProvider = ({ children }) => {
   const [pendingInvites, setPendingInvites] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [checkedIngredients, setCheckedIngredients] = useState({});
 
   // ============= LOAD INITIAL DATA =============
   useEffect(() => {
@@ -48,6 +49,7 @@ export const GroupProvider = ({ children }) => {
       setSelectedGroup(groupData);
       setGroupMembers(Array.isArray(members) ? members : []);
       setGroupMenu(Array.isArray(menu) ? menu : []);
+      loadCheckedIngredients(groupId);
     } catch (err) {
       console.error("❌ Lỗi tải chi tiết group:", err);
       if (!silent) {
@@ -260,6 +262,34 @@ export const GroupProvider = ({ children }) => {
     }
   };
 
+  const loadCheckedIngredients = async (groupId) => {
+    try {
+      const keys = await groupService.getCheckedIngredients(groupId);
+      const checkedMap = {};
+      keys.forEach((k) => {
+        checkedMap[k] = true;
+      });
+      setCheckedIngredients(checkedMap);
+    } catch (err) {
+      console.error("❌ Lỗi tải trạng thái đi chợ:", err);
+    }
+  };
+
+  const toggleCheckedIngredient = async (groupId, key) => {
+    try {
+      const keys = await groupService.toggleCheckedIngredient(groupId, key);
+      const checkedMap = {};
+      keys.forEach((k) => {
+        checkedMap[k] = true;
+      });
+      setCheckedIngredients(checkedMap);
+      return checkedMap;
+    } catch (err) {
+      console.error("❌ Lỗi lưu trạng thái đi chợ:", err);
+      throw err;
+    }
+  };
+
   const value = {
     // State
     groups,
@@ -269,6 +299,7 @@ export const GroupProvider = ({ children }) => {
     pendingInvites,
     loading,
     error,
+    checkedIngredients,
 
     // Methods
     loadGroups,
@@ -286,6 +317,8 @@ export const GroupProvider = ({ children }) => {
     removeMealFromMenu,
     voteMeal,
     logGroupMeal,
+    loadCheckedIngredients,
+    toggleCheckedIngredient,
   };
 
   return (

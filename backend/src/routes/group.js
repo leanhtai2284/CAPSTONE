@@ -24,6 +24,8 @@ import {
   getGroupStats,
   getGroupNutrition,
   logGroupMealToPersonalTracker,
+  getCheckedIngredients,
+  toggleCheckedIngredient,
 } from "../controllers/groupMenuController.js";
 
 const router = express.Router();
@@ -53,6 +55,8 @@ router.post("/:id/menu/meals", addMealToMenu);
 router.delete("/:id/menu/meals/:mealId", removeMealFromMenu);
 router.post("/:id/menu/meals/:mealId/vote", voteMeal);
 router.post("/:id/menu/meals/log", logGroupMealToPersonalTracker);
+router.get("/:id/menu/shopping", getCheckedIngredients);
+router.post("/:id/menu/shopping/toggle", toggleCheckedIngredient);
 
 // Stats
 router.get("/:id/stats", getGroupStats);

@@ -33,6 +33,8 @@ export default function GroupDetail() {
     deleteGroup,
     loading,
     error,
+    checkedIngredients,
+    toggleCheckedIngredient,
   } = useGroup();
 
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -40,18 +42,7 @@ export default function GroupDetail() {
   const [activeTab, setActiveTab] = useState("menu");
   const [isOwner, setIsOwner] = useState(false);
 
-  const [checkedIngredients, setCheckedIngredients] = useState(() => {
-    const saved = localStorage.getItem(`group_shopping_${groupId}`);
-    return saved ? JSON.parse(saved) : {};
-  });
 
-  const toggleIngredientCheck = (key) => {
-    setCheckedIngredients((prev) => {
-      const updated = { ...prev, [key]: !prev[key] };
-      localStorage.setItem(`group_shopping_${groupId}`, JSON.stringify(updated));
-      return updated;
-    });
-  };
 
   const getSharedShoppingList = () => {
     const list = {};
@@ -507,7 +498,7 @@ export default function GroupDetail() {
                     return (
                       <div 
                         key={key}
-                        onClick={() => toggleIngredientCheck(key)}
+                        onClick={() => toggleCheckedIngredient(groupId, key)}
                         className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none ${
                           isChecked 
                             ? "bg-green-50/50 dark:bg-green-950/10 border-green-200 dark:border-green-900/50 opacity-70"

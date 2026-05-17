@@ -236,4 +236,24 @@ export const groupService = {
       throw error;
     }
   },
+
+  async getCheckedIngredients(groupId) {
+    try {
+      const { data } = await axiosInstance.get(`/groups/${groupId}/menu/shopping`);
+      return data.checkedIngredients || [];
+    } catch (error) {
+      console.error("❌ Lỗi khi tải danh sách đi chợ:", error);
+      throw error;
+    }
+  },
+
+  async toggleCheckedIngredient(groupId, key) {
+    try {
+      const { data } = await axiosInstance.post(`/groups/${groupId}/menu/shopping/toggle`, { key });
+      return data.checkedIngredients || [];
+    } catch (error) {
+      console.error("❌ Lỗi khi lưu trạng thái đi chợ:", error);
+      throw error;
+    }
+  },
 };
