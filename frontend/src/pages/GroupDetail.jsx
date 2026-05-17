@@ -7,6 +7,9 @@ import {
   TrendingUp,
   Plus,
   Trash2,
+  ShoppingCart,
+  Target,
+  Copy,
 } from "lucide-react";
 import { useGroup } from "../hooks/useGroup";
 import { useAuth } from "../hooks/useAuth";
@@ -32,12 +35,75 @@ export default function GroupDetail() {
     deleteGroup,
     loading,
     error,
+    checkedIngredients,
+    toggleCheckedIngredient,
   } = useGroup();
 
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showAddMealModal, setShowAddMealModal] = useState(false);
   const [activeTab, setActiveTab] = useState("menu");
   const [isOwner, setIsOwner] = useState(false);
+
+
+
+  const getSharedShoppingList = () => {
+    const list = {};
+    const meals = groupMenu || [];
+
+    meals.forEach((meal) => {
+      const ingredients = meal.ingredients || [];
+      ingredients.forEach((ing) => {
+        if (!ing.name) return;
+        const name = ing.name.trim();
+        const unit = (ing.unit || "").trim();
+        const key = `${name.toLowerCase()}_${unit.toLowerCase()}`;
+
+        if (list[key]) {
+          list[key].amount += Number(ing.amount) || 0;
+        } else {
+          list[key] = {
+            name,
+            amount: Number(ing.amount) || 0,
+            unit,
+          };
+        }
+      });
+    });
+
+    return Object.values(list);
+  };
+
+  const shoppingList = getSharedShoppingList();
+  const totalItems = shoppingList.length;
+  const completedItems = shoppingList.filter(item => {
+    const key = `${item.name.toLowerCase()}_${item.unit.toLowerCase()}`;
+    return checkedIngredients[key];
+  }).length;
+  const completionPct = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+
+  const handleCopyShoppingList = () => {
+    if (shoppingList.length === 0) {
+      toast.error("Danh sách đi chợ đang trống!");
+      return;
+    }
+
+    let text = `🛒 DANH SÁCH ĐI CHỢ CHO NHÓM: ${selectedGroup?.name || ""}\n`;
+    text += `Tiến độ: ${completedItems}/${totalItems} (${completionPct}%)\n\n`;
+
+    shoppingList.forEach((item, index) => {
+      const isChecked = checkedIngredients[`${item.name.toLowerCase()}_${item.unit.toLowerCase()}`];
+      const checkbox = isChecked ? "[x]" : "[ ]";
+      text += `${index + 1}. ${checkbox} ${item.name}: ${parseFloat(item.amount.toFixed(2))} ${item.unit}\n`;
+    });
+
+    text += `\nĐược tạo bởi SmartMeal.`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success("📋 Đã sao chép danh sách đi chợ!");
+    }).catch(() => {
+      toast.error("❌ Lỗi khi sao chép danh sách!");
+    });
+  };
   const [statsLoading, setStatsLoading] = useState(false);
   const [statsError, setStatsError] = useState("");
   const [groupStats, setGroupStats] = useState({
@@ -215,15 +281,14 @@ export default function GroupDetail() {
     );
   }
 
-  const goalIcons = {
-    healthy: "🥗",
-    fitness: "💪",
-    weight_loss: "⚖️",
-    muscle_gain: "🏋️",
-    balanced: "⚖️",
-  };
+
 
   const goalLabels = {
+    picnic: "Dã ngoại",
+    family: "Gia đình",
+    party: "Liên hoan",
+    office: "Văn phòng",
+    diet_challenge: "Ăn kiêng chung",
     healthy: "Ăn lành mạnh",
     fitness: "Fitness",
     weight_loss: "Giảm cân",
@@ -249,32 +314,26 @@ export default function GroupDetail() {
           <div className="h-32 bg-gradient-to-r from-green-500 to-blue-500"></div>
 
           {/* Content */}
-          <div className="p-6 -mt-20 relative">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <div className="p-6 relative">
+            {/* Group Avatar & Info Header */}
+            <div className="flex flex-col md:flex-row md:items-end gap-5 -mt-24 mb-6 relative z-10">
+              {/* Styled Circular Avatar with Gradient Background */}
+              <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-green-400 to-blue-500 border-4 border-white dark:border-gray-800 shadow-xl flex items-center justify-center text-white text-4xl font-extrabold transform hover:rotate-6 transition-all duration-300">
+                {selectedGroup.name ? selectedGroup.name.charAt(0).toUpperCase() : "G"}
+              </div>
+              
+              <div className="flex-1">
+                <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-2 leading-tight tracking-tight">
                   {selectedGroup.name}
                 </h1>
                 <div className="flex items-center gap-3 flex-wrap">
-                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 border border-orange-200 dark:border-orange-800 text-orange-800 dark:text-orange-200 text-sm font-medium rounded-full shadow-sm">
-                    <span className="text-lg">
-                      {goalIcons[selectedGroup.goal]}
-                    </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900/50 text-orange-700 dark:text-orange-300 text-xs font-semibold rounded-full shadow-sm">
+                    <Target className="w-3.5 h-3.5 text-orange-500" />
                     {goalLabels[selectedGroup.goal]}
                   </span>
                   {isOwner && (
-                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 text-sm font-medium rounded-full shadow-sm">
-                      <svg
-                        className="w-4 h-4"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900/50 text-green-700 dark:text-green-300 text-xs font-semibold rounded-full shadow-sm">
+                      <span className="w-2 h-2 rounded-full bg-green-500 animate-ping"></span>
                       Chủ sở hữu
                     </span>
                   )}
@@ -282,17 +341,17 @@ export default function GroupDetail() {
               </div>
 
               {isOwner && (
-                <div className="flex gap-2">
+                <div className="flex gap-2 self-start md:self-end mt-4 md:mt-0">
                   <button
                     onClick={() => setShowInviteModal(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold text-sm rounded-xl shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
                   >
                     <Plus className="w-4 h-4" />
                     Mời thành viên
                   </button>
                   <button
                     onClick={handleDeleteGroup}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+                    className="p-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-200 shadow-sm"
                     title="Xóa nhóm"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -302,7 +361,7 @@ export default function GroupDetail() {
             </div>
 
             {selectedGroup.description && (
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-6 bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-100 dark:border-gray-800 text-sm leading-relaxed">
                 {selectedGroup.description}
               </p>
             )}
@@ -343,9 +402,10 @@ export default function GroupDetail() {
         {/* Tabs */}
         <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-gray-700">
           {[
-            { id: "menu", label: "📋 Thực đơn", icon: UtensilsCrossed },
+            { id: "menu", label: "📋 Thực đơn dã ngoại", icon: UtensilsCrossed },
+            { id: "shopping-list", label: "🛒 Đi chợ chung", icon: ShoppingCart },
             { id: "members", label: "👥 Thành viên", icon: Users },
-            { id: "nutrition", label: "🥗 Dinh dưỡng", icon: TrendingUp },
+            { id: "nutrition", label: "🥗 Chỉ số TB", icon: TrendingUp },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -416,6 +476,97 @@ export default function GroupDetail() {
                 onRemoveMember={handleRemoveMember}
                 loading={loading}
               />
+            </div>
+          )}
+
+          {activeTab === "shopping-list" && (
+            <div>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                    🛒 Danh sách đi chợ chung cho chuyến đi/sự kiện
+                  </h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Tự động tổng hợp và gom tất cả nguyên liệu từ thực đơn dã ngoại đã lên lịch.
+                  </p>
+                </div>
+                {totalItems > 0 && (
+                  <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-900/50 px-4 py-2 rounded-xl border border-gray-100 dark:border-gray-800">
+                    <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Tiến độ mua sắm:</span>
+                    <div className="w-24 bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
+                      <div 
+                        className="bg-green-500 h-full transition-all duration-300"
+                        style={{ width: `${completionPct}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-xs font-bold text-green-600 dark:text-green-400">
+                      {completedItems}/{totalItems} ({completionPct}%)
+                    </span>
+                    <button
+                      onClick={handleCopyShoppingList}
+                      className="ml-2 flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-800/40 rounded-lg transition text-xs font-semibold"
+                      title="Sao chép gửi Zalo/Messenger"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                      Sao chép
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {shoppingList.length === 0 ? (
+                <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900/50 rounded-xl p-8 text-center">
+                  <div className="text-4xl mb-3">🧺</div>
+                  <p className="text-yellow-800 dark:text-yellow-300 font-medium">Danh sách đi chợ đang trống!</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 max-w-md mx-auto">
+                    Vui lòng sang tab 📋 <strong>Thực đơn dã ngoại</strong>, thêm các món ăn cho chuyến đi dã ngoại/gia đình để hệ thống tự động gom nguyên liệu cần mua.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {shoppingList.map((item) => {
+                    const key = `${item.name.toLowerCase()}_${item.unit.toLowerCase()}`;
+                    const isChecked = !!checkedIngredients[key];
+
+                    return (
+                      <div 
+                        key={key}
+                        onClick={() => toggleCheckedIngredient(groupId, key)}
+                        className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none ${
+                          isChecked 
+                            ? "bg-green-50/50 dark:bg-green-950/10 border-green-200 dark:border-green-900/50 opacity-70"
+                            : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-800 shadow-sm"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-5 h-5 rounded flex items-center justify-center border transition-all ${
+                            isChecked 
+                              ? "bg-green-500 border-green-500 text-white" 
+                              : "border-gray-300 dark:border-gray-600 bg-transparent"
+                          }`}>
+                            {isChecked && (
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </div>
+                          <span className={`font-semibold text-gray-800 dark:text-gray-200 ${isChecked ? "line-through text-gray-400 dark:text-gray-500" : ""}`}>
+                            {item.name}
+                          </span>
+                        </div>
+                        <div className="text-right">
+                          <span className={`text-base font-bold ${isChecked ? "text-gray-400 dark:text-gray-500" : "text-green-600 dark:text-green-400"}`}>
+                            {parseFloat(item.amount.toFixed(2))}
+                          </span>
+                          <span className={`text-xs ml-1 font-medium ${isChecked ? "text-gray-400 dark:text-gray-500" : "text-gray-500 dark:text-gray-400"}`}>
+                            {item.unit}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 

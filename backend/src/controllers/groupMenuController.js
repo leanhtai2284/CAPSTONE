@@ -3,6 +3,8 @@ import Group from "../models/Group.js";
 import GroupInvite from "../models/GroupInvite.js";
 import GroupMenu from "../models/GroupMenu.js";
 import Recipe from "../models/Recipe.js";
+import Pantry from "../models/Pantry.js";
+import DailyTracking from "../models/DailyTracking.js";
 
 const isOwner = (group, userId) =>
   group.owner?.toString() === userId.toString() ||
@@ -59,6 +61,7 @@ const mapMeal = (menuItem) => {
       carbs: nutrition.carbs_g || nutrition.carbs || 0,
       fat: nutrition.fat_g || nutrition.fat || 0,
     },
+    ingredients: meal.ingredients || [],
     suggestedBy: menuItem.suggestedBy?.name,
     votes: menuItem.votes || 0,
     addedAt: menuItem.addedAt,
@@ -357,7 +360,13 @@ export const getGroupNutrition = async (req, res) => {
     const totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
     const meals = menu?.meals || [];
 
-    meals.forEach((item) => {
+    // Chỉ tính toán dựa trên các món có lượng vote cao nhất (món được nhóm lựa chọn)
+    const maxVotes = meals.length ? Math.max(...meals.map(m => m.votes || 0)) : 0;
+    const activeMeals = maxVotes > 0 
+      ? meals.filter(m => (m.votes || 0) === maxVotes)
+      : meals;
+
+    activeMeals.forEach((item) => {
       const nutrition = item.meal?.nutrition || {};
       totals.calories += nutrition.calories || 0;
       totals.protein += nutrition.protein_g || nutrition.protein || 0;
@@ -369,12 +378,12 @@ export const getGroupNutrition = async (req, res) => {
       success: true,
       data: {
         total: totals,
-        average: meals.length
+        average: activeMeals.length
           ? {
-              calories: Math.round(totals.calories / meals.length),
-              protein: Math.round(totals.protein / meals.length),
-              carbs: Math.round(totals.carbs / meals.length),
-              fat: Math.round(totals.fat / meals.length),
+              calories: Math.round(totals.calories / activeMeals.length),
+              protein: Math.round(totals.protein / activeMeals.length),
+              carbs: Math.round(totals.carbs / activeMeals.length),
+              fat: Math.round(totals.fat / activeMeals.length),
             }
           : { calories: 0, protein: 0, carbs: 0, fat: 0 },
       },
@@ -388,7 +397,12 @@ export const getGroupNutrition = async (req, res) => {
 // Get recipes for group menu
 export const getRecipesForGroupMenu = async (req, res) => {
   try {
-    const { search, page = 1, limit = 20 } = req.query;
+    const { search, page = 1, limit = 20, groupId } = req.query;
+    
+    let group = null;
+    if (groupId) {
+      group = await Group.findById(groupId);
+    }
     
     let query = {};
     if (search) {
@@ -400,11 +414,27 @@ export const getRecipesForGroupMenu = async (req, res) => {
       };
     }
     
+    // Dynamic smart sorting based on Group Event Goal
+    let sort = { createdAt: -1 };
+    if (group) {
+      if (group.goal === "picnic") {
+        sort = { cook_time_min: 1, prep_time_min: 1, createdAt: -1 };
+      } else if (group.goal === "family") {
+        sort = { servings: -1, createdAt: -1 };
+      } else if (group.goal === "party") {
+        sort = { servings: -1, cook_time_min: -1 };
+      } else if (group.goal === "office") {
+        sort = { prep_time_min: 1, createdAt: -1 };
+      } else if (group.goal === "diet_challenge") {
+        sort = { "nutrition.protein_g": -1, "nutrition.fat_g": 1 };
+      }
+    }
+    
     const recipes = await Recipe.find(query)
       .select("_id name_vi description image_url nutrition prep_time_min cook_time_min servings")
       .limit(limit * 1)
       .skip((page - 1) * limit)
-      .sort({ createdAt: -1 })
+      .sort(sort)
       .lean();
     
     const total = await Recipe.countDocuments(query);
@@ -423,6 +453,133 @@ export const getRecipesForGroupMenu = async (req, res) => {
     });
   } catch (error) {
     console.error("Error getting recipes for group menu:", error);
+    res.status(500).json({ success: false, message: "Lỗi server" });
+  }
+};
+
+// Đồng bộ món ăn nhóm vào Nhật ký dinh dưỡng cá nhân hôm nay
+export const logGroupMealToPersonalTracker = async (req, res) => {
+  try {
+    const { mealId } = req.body;
+    const userId = req.user._id;
+
+    if (!mealId) {
+      return res.status(400).json({ success: false, message: "Thiếu ID công thức" });
+    }
+
+    const group = await Group.findById(req.params.id);
+    if (!group) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy nhóm" });
+    }
+
+    if (!isMember(group, userId)) {
+      return res.status(403).json({ success: false, message: "Bạn không có quyền truy cập nhóm này" });
+    }
+
+    const recipe = await Recipe.findById(mealId);
+    if (!recipe) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy món ăn" });
+    }
+
+    // Cộng dinh dưỡng vào DailyTracking hôm nay (Không trừ tủ lạnh cá nhân vì nguyên liệu dã ngoại nhóm mua riêng)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const nutrition = recipe.nutrition || {};
+    const mealEntry = {
+      recipeId: recipe._id,
+      name_vi: recipe.name_vi,
+      eaten_at: new Date(),
+      nutrition: {
+        calories:   nutrition.calories   || 0,
+        protein_g:  nutrition.protein_g  || 0,
+        carbs_g:    nutrition.carbs_g    || 0,
+        fat_g:      nutrition.fat_g      || 0,
+        fiber_g:    nutrition.fiber_g    || 0,
+        sodium_mg:  nutrition.sodium_mg  || 0,
+        sugar_g:    nutrition.sugar_g    || 0,
+      },
+    };
+
+    const tracking = await DailyTracking.findOneAndUpdate(
+      { user: userId, date: today },
+      {
+        $push: { meals_eaten: mealEntry },
+        $inc: {
+          "daily_totals.calories":  mealEntry.nutrition.calories,
+          "daily_totals.protein_g": mealEntry.nutrition.protein_g,
+          "daily_totals.carbs_g":   mealEntry.nutrition.carbs_g,
+          "daily_totals.fat_g":     mealEntry.nutrition.fat_g,
+          "daily_totals.fiber_g":   mealEntry.nutrition.fiber_g,
+          "daily_totals.sodium_mg": mealEntry.nutrition.sodium_mg,
+          "daily_totals.sugar_g":   mealEntry.nutrition.sugar_g,
+        },
+      },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+
+    res.json({
+      success: true,
+      message: `Đã đồng bộ món "${recipe.name_vi}" vào nhật ký ăn uống hôm nay của bạn!`,
+      data: {
+        today_totals: tracking.daily_totals,
+      }
+    });
+  } catch (error) {
+    console.error("Error in logGroupMealToPersonalTracker:", error);
+    res.status(500).json({ success: false, message: "Lỗi server" });
+  }
+};
+
+export const getCheckedIngredients = async (req, res) => {
+  try {
+    const group = await Group.findById(req.params.id);
+    if (!group) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy nhóm" });
+    }
+
+    const menu = await GroupMenu.findOne({ group: group._id });
+    res.json({
+      success: true,
+      checkedIngredients: menu?.checkedIngredients || []
+    });
+  } catch (error) {
+    console.error("Error in getCheckedIngredients:", error);
+    res.status(500).json({ success: false, message: "Lỗi server" });
+  }
+};
+
+export const toggleCheckedIngredient = async (req, res) => {
+  try {
+    const { key } = req.body;
+    if (!key) {
+      return res.status(400).json({ success: false, message: "Thiếu key nguyên liệu" });
+    }
+
+    const group = await Group.findById(req.params.id);
+    if (!group) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy nhóm" });
+    }
+
+    const menu =
+      (await GroupMenu.findOne({ group: group._id })) ||
+      (await GroupMenu.create({ group: group._id, meals: [] }));
+
+    const index = menu.checkedIngredients.indexOf(key);
+    if (index > -1) {
+      menu.checkedIngredients.splice(index, 1);
+    } else {
+      menu.checkedIngredients.push(key);
+    }
+
+    await menu.save();
+
+    res.json({
+      success: true,
+      checkedIngredients: menu.checkedIngredients
+    });
+  } catch (error) {
+    console.error("Error in toggleCheckedIngredient:", error);
     res.status(500).json({ success: false, message: "Lỗi server" });
   }
 };

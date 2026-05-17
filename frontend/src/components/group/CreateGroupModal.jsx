@@ -8,7 +8,7 @@ export default function CreateGroupModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    goal: "healthy",
+    goal: "picnic",
     privacy: "private",
   });
 
@@ -53,7 +53,7 @@ export default function CreateGroupModal({ isOpen, onClose }) {
       setFormData({
         name: "",
         description: "",
-        goal: "healthy",
+        goal: "picnic",
         privacy: "private",
       });
       onClose();
@@ -129,7 +129,7 @@ export default function CreateGroupModal({ isOpen, onClose }) {
           {/* Goal */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Mục tiêu
+              Mục tiêu / Loại sự kiện
             </label>
             <select
               name="goal"
@@ -137,27 +137,11 @@ export default function CreateGroupModal({ isOpen, onClose }) {
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
             >
-              <option value="healthy">Ăn uống lành mạnh</option>
-              <option value="fitness">Fitness & Tập luyện</option>
-              <option value="weight_loss">Giảm cân</option>
-              <option value="muscle_gain">Tăng cơ bắp</option>
-              <option value="balanced">Cân bằng dinh dưỡng</option>
-            </select>
-          </div>
-
-          {/* Privacy */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Quyền riêng tư
-            </label>
-            <select
-              name="privacy"
-              value={formData.privacy}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="private">Riêng tư (chỉ thành viên được mời)</option>
-              <option value="public">Công khai (ai cũng có thể tham gia)</option>
+              <option value="picnic">Dã ngoại / Cắm trại (Picnic & Camping)</option>
+              <option value="family">Tiệc gia đình / Sum họp (Family Reunion)</option>
+              <option value="party">Liên hoan bạn bè / Sinh nhật (Party & BBQ)</option>
+              <option value="office">Ăn uống văn phòng / Đồng nghiệp (Office Lunch)</option>
+              <option value="diet_challenge">Thử thách ăn kiêng chung (Diet Challenge)</option>
             </select>
           </div>
 

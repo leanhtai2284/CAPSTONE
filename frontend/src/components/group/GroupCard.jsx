@@ -5,15 +5,14 @@ import { useNavigate } from "react-router-dom";
 export default function GroupCard({ group, onInvite, onDelete, isOwner }) {
   const navigate = useNavigate();
 
-  const goalIcons = {
-    healthy: "🥗",
-    fitness: "💪",
-    weight_loss: "⚖️",
-    muscle_gain: "🏋️",
-    balanced: "⚖️",
-  };
+
 
   const goalLabels = {
+    picnic: "Dã ngoại",
+    family: "Gia đình",
+    party: "Liên hoan",
+    office: "Văn phòng",
+    diet_challenge: "Ăn kiêng chung",
     healthy: "Ăn lành mạnh",
     fitness: "Fitness",
     weight_loss: "Giảm cân",
@@ -60,7 +59,7 @@ export default function GroupCard({ group, onInvite, onDelete, isOwner }) {
           </div>
 
           <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-            <span className="text-lg">{goalIcons[group.goal]}</span>
+            <Goal className="w-4 h-4 text-green-500 dark:text-green-400" />
             <span>{goalLabels[group.goal]}</span>
           </div>
 

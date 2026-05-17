@@ -43,6 +43,10 @@ const groupMenuSchema = new mongoose.Schema(
       unique: true,
     },
     meals: [groupMenuMealSchema],
+    checkedIngredients: {
+      type: [String],
+      default: [],
+    },
   },
   { timestamps: true },
 );

@@ -200,6 +200,20 @@ export const groupService = {
     }
   },
 
+  async logGroupMeal(groupId, mealId) {
+    try {
+      const { data } = await axiosInstance.post(
+        `/groups/${groupId}/menu/meals/log`,
+        { mealId }
+      );
+      return data.data || data;
+    } catch (error) {
+      console.error("❌ Lỗi khi đồng bộ món ăn nhóm vào nhật ký:", error);
+      throw error;
+    }
+  },
+
+
   // ============= GROUP STATS =============
   async getGroupStats(groupId) {
     try {
@@ -219,6 +233,26 @@ export const groupService = {
       return data.data || data.nutrition || data;
     } catch (error) {
       console.error("❌ Lỗi khi tải thông tin dinh dưỡng nhóm:", error);
+      throw error;
+    }
+  },
+
+  async getCheckedIngredients(groupId) {
+    try {
+      const { data } = await axiosInstance.get(`/groups/${groupId}/menu/shopping`);
+      return data.checkedIngredients || [];
+    } catch (error) {
+      console.error("❌ Lỗi khi tải danh sách đi chợ:", error);
+      throw error;
+    }
+  },
+
+  async toggleCheckedIngredient(groupId, key) {
+    try {
+      const { data } = await axiosInstance.post(`/groups/${groupId}/menu/shopping/toggle`, { key });
+      return data.checkedIngredients || [];
+    } catch (error) {
+      console.error("❌ Lỗi khi lưu trạng thái đi chợ:", error);
       throw error;
     }
   },

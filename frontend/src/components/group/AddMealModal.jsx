@@ -24,6 +24,7 @@ export default function AddMealModal({ isOpen, onClose, groupId, onAddMeal }) {
       const params = {
         page: currentPage,
         limit: 12,
+        groupId,
         ...(searchTerm && { search: searchTerm }),
       };
       const data = await recipeService.getRecipesForGroupMenu(params);
