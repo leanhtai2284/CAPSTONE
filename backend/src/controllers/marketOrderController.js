@@ -3,6 +3,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import Store from "../models/Store.js";
 import MarketProduct from "../models/MarketProduct.js";
 import MarketOrder from "../models/MarketOrder.js";
+import Pantry from "../models/Pantry.js";
 
 const toPositiveInt = (value) => {
   const parsed = Number.parseInt(value, 10);
@@ -337,6 +338,39 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
     for (const item of order.items) {
       await MarketProduct.findByIdAndUpdate(item.product, {
         $inc: { stock: item.quantity }
+      });
+    }
+  }
+
+  // AUTO-PANTRY SYNC: THÊM VÀO TỦ LẠNH KHI ĐÃ GIAO
+  if (status === "delivered" && previousStatus !== "delivered") {
+    const pantryUnits = ["g", "kg", "ml", "l", "pcs", "pack", "bottle", "can"];
+    
+    for (const item of order.items) {
+      const product = await MarketProduct.findById(item.product);
+      const unit = pantryUnits.includes(item.unit) ? item.unit : "pack";
+      
+      const catStr = (product?.category || "").toLowerCase();
+      let category = "other";
+      if (catStr.includes("thịt") || catStr.includes("cá") || catStr.includes("trứng") || catStr.includes("hải sản")) category = "protein";
+      else if (catStr.includes("rau") || catStr.includes("củ")) category = "vegetable";
+      else if (catStr.includes("quả") || catStr.includes("trái")) category = "fruit";
+      else if (catStr.includes("sữa")) category = "dairy";
+      else if (catStr.includes("nước") || catStr.includes("uống")) category = "beverage";
+      else if (catStr.includes("gia vị")) category = "condiment";
+
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 7); // Mặc định 7 ngày
+      
+      await Pantry.create({
+        user: order.user,
+        name: item.name,
+        quantity: item.quantity,
+        unit: unit,
+        category: category,
+        storageLocation: "fridge", // Mặc định vào tủ lạnh
+        expiryDate: expiryDate,
+        notes: `Tự động thêm từ đơn hàng Market #${order._id.toString().slice(-6)}`
       });
     }
   }
