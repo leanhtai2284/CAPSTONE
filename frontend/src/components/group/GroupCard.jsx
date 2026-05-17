@@ -6,6 +6,11 @@ export default function GroupCard({ group, onInvite, onDelete, isOwner }) {
   const navigate = useNavigate();
 
   const goalIcons = {
+    picnic: "🏕️",
+    family: "🏡",
+    party: "🎉",
+    office: "🏢",
+    diet_challenge: "🥑",
     healthy: "🥗",
     fitness: "💪",
     weight_loss: "⚖️",
@@ -14,6 +19,11 @@ export default function GroupCard({ group, onInvite, onDelete, isOwner }) {
   };
 
   const goalLabels = {
+    picnic: "Dã ngoại",
+    family: "Gia đình",
+    party: "Liên hoan",
+    office: "Văn phòng",
+    diet_challenge: "Ăn kiêng chung",
     healthy: "Ăn lành mạnh",
     fitness: "Fitness",
     weight_loss: "Giảm cân",
