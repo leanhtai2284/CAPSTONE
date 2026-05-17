@@ -521,3 +521,96 @@ export const unbanUser = async (req, res) => {
     });
   }
 };
+
+// @desc    Get pending store registrations
+// @route   GET /api/admin/stores/pending
+// @access  Private/Admin
+export const getPendingStores = async (req, res) => {
+  try {
+    const stores = await Store.find({ isActive: false })
+      .populate("owner", "name email")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: stores,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Không thể lấy danh sách đăng ký",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Approve store registration
+// @route   PATCH /api/admin/stores/:id/approve
+// @access  Private/Admin
+export const approveStore = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: "ID không hợp lệ" });
+    }
+
+    const store = await Store.findById(id);
+    if (!store) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy cửa hàng" });
+    }
+
+    store.isActive = true;
+    await store.save();
+
+    const user = await User.findById(store.owner);
+    if (user && user.role !== "store_owner" && user.role !== "admin") {
+      user.role = "store_owner";
+      await user.save();
+    }
+
+    await createNotification({
+      user: store.owner,
+      audience: "user",
+      title: "Đơn đăng ký được duyệt",
+      message: `Chúc mừng! Đơn đăng ký cửa hàng "${store.name}" của bạn đã được duyệt. Bạn có thể bắt đầu bán hàng.`,
+      type: "user_activity",
+    });
+
+    res.status(200).json({ success: true, message: "Đã duyệt cửa hàng" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Không thể duyệt cửa hàng", error: error.message });
+  }
+};
+
+// @desc    Reject store registration
+// @route   PATCH /api/admin/stores/:id/reject
+// @access  Private/Admin
+export const rejectStore = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: "ID không hợp lệ" });
+    }
+
+    const store = await Store.findById(id);
+    if (!store) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy cửa hàng" });
+    }
+
+    await Store.findByIdAndDelete(id);
+
+    await createNotification({
+      user: store.owner,
+      audience: "user",
+      title: "Đơn đăng ký bị từ chối",
+      message: `Rất tiếc, đơn đăng ký cửa hàng "${store.name}" của bạn đã bị từ chối. Vui lòng liên hệ quản trị viên để biết thêm chi tiết.`,
+      type: "user_activity",
+    });
+
+    res.status(200).json({ success: true, message: "Đã từ chối cửa hàng" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Không thể từ chối cửa hàng", error: error.message });
+  }
+};

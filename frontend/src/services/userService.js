@@ -180,4 +180,40 @@ export const userService = {
     }
     return res.json();
   },
+
+  // Store Approval functions
+  async getPendingStores() {
+    const res = await fetch(`${API_BASE}/api/admin/stores/pending`, {
+      headers: getAuthHeaders(),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || err.error || "Không thể lấy danh sách cửa hàng chờ duyệt");
+    }
+    return res.json();
+  },
+
+  async approveStore(id) {
+    const res = await fetch(`${API_BASE}/api/admin/stores/${id}/approve`, {
+      method: "PATCH",
+      headers: getAuthHeaders(),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || err.error || "Không thể duyệt cửa hàng");
+    }
+    return res.json();
+  },
+
+  async rejectStore(id) {
+    const res = await fetch(`${API_BASE}/api/admin/stores/${id}/reject`, {
+      method: "PATCH",
+      headers: getAuthHeaders(),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || err.error || "Không thể từ chối cửa hàng");
+    }
+    return res.json();
+  },
 };

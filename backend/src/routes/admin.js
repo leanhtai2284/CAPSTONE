@@ -13,6 +13,9 @@ import {
   getUserStats,
   banUser,
   unbanUser,
+  getPendingStores,
+  approveStore,
+  rejectStore,
 } from "../controllers/adminController.js";
 import {
   getPendingUGC,
@@ -46,6 +49,11 @@ router.patch("/users/:id/ban", banUser);
 router.patch("/users/:id/unban", unbanUser);
 router.delete("/users/:id", deleteUser);
 router.post("/users/update-activity", updateActivityStatus);
+
+// Store approval routes
+router.get("/stores/pending", getPendingStores);
+router.patch("/stores/:id/approve", approveStore);
+router.patch("/stores/:id/reject", rejectStore);
 
 // Statistics routes
 router.get("/statistics", getStatistics);

@@ -2194,7 +2194,7 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 - 1 muỗng canh Đường thốt nốt
 - 1 / muỗng canh Dầu màu điều
 - 1 ít Gia vị thông dụng
-- 1 cái Bánh mì
+- 6 cái Bánh mì
 - 1 ít Món ăn kèm bánh mì
 
 ### Cách làm (Steps):
@@ -7919,7 +7919,7 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 
 ---
 
-## Món ăn: Miến dong ức gà
+## Món ăn: Miến miến dong ức gà
 - **Mã món (ID):** mien-dong-uc-ga
 - **Vùng miền:** Trung
 - **Loại món (Category):** main
@@ -12732,7 +12732,7 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 
 ---
 
-## Món ăn: Đậu Hũ Nhồi Thịt Sốt Chua Ngọt
+## Món ăn: Đậu Hủ Nhồi Thịt Sốt Chua Ngọt
 - **Mã món (ID):** dau-hu-nhoi-thit-sot-ca-chua
 - **Vùng miền:** Bắc
 - **Loại món (Category):** main
@@ -12868,7 +12868,7 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 - **Mã món (ID):** kho-qua-xao-bo
 - **Vùng miền:** Trung
 - **Loại món (Category):** main
-- **Thích hợp cho bữa:** lunch, dinner
+- **Thích hợp cho bữa:** breakfast
 - **Thời gian:** Chuẩn bị 20 phút, Nấu 30 phút. Tổng: 50 phút.
 - **Độ khó:** easy
 - **Khẩu phần:** 1 người ăn.
@@ -14502,6 +14502,3799 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 7. Cho ốc hương vào chảo rồi xóc đều để xốt phủ quanh ốc.
 8. Đảo thêm khoảng 2–3 phút cho thấm vị rồi tắt bếp.
 9. Dọn ra dĩa và thêm rau răm ăn kèm.
+
+---
+
+## Món ăn: Bánh đa cua
+- **Mã món (ID):** banh-a-cua
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 12 phút, Nấu 70 phút. Tổng: 82 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 500 calo, 20g protein, 60g carbs, 15g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Bánh đa với nước dùng riêu cua
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Bánh đa đỏ
+- 400 g Cua đồng xay
+- 300 g Sườn
+- 150 g Thịt lợn xay
+- 100 g Chả cá - mỡ phần - tôm khô
+- 50 g Rau muống
+- 6 quả Cà chua
+- 100 g Rau sống
+- 20 g Mộc nhĩ
+- 10 g Lá lốt
+- 10 g Hành khô
+- 10 g Hành lá - mùi tàu
+- 3 quả Chanh
+
+### Cách làm (Steps):
+1. Luộc sơ sườn rồi hầm với hành nướng và gia vị
+2. Lọc cua nấu lên cho gạch nổi rồi trút nước hầm sườn vào
+3. Phi hành xào cà chua cho màu và cho vào nồi nước dùng
+4. Xào gạch cua với mắm rồi để riêng
+5. Chiên tóp mỡ và hành phi rồi thêm cà chua vào nồi nước dùng
+6. Làm chả thịt mộc nhĩ nấm hương và rán chín
+7. Hấp bóc nõn tôm rồi rim đến khi săn dai
+8. Ngâm bánh đa cho nở và chuẩn bị rau hành mùi tàu
+
+---
+
+## Món ăn: Cá lóc hấp bầu
+- **Mã món (ID):** ca-loc-hap-bau
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 30 phút. Tổng: 50 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 350 calo, 45g protein, 15g carbs, 8g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn dân dã Nam Bộ với cá lóc ngọt thịt được bao bọc trong quả bầu mềm mại, giữ trọn nước ngọt tiết ra khi hấp.
+
+### Nguyên liệu cần chuẩn bị:
+- 800 g Cá lóc đồng
+- 600 g Bầu sao
+- 20 g Hành lá
+- 15 g Gừng
+- 5 g Ớt
+- 10 g muối
+- 15 g hạt nêm
+- 5 g tiêu xay
+- 10 ml nước mắm
+
+### Cách làm (Steps):
+1. Làm sạch cá
+2. khứa nhẹ mình cá. Ướp cá với gừng
+3. tiêu
+4. hạt nêm 15p. Xẻ dọc quả bầu
+5. khoét bỏ ruột. Đặt cá vào quả bầu
+6. đậy nắp bầu lại. Hấp cách thủy 25-30 phút.
+
+---
+
+## Món ăn: Gỏi ngó sen tôm thịt
+- **Mã món (ID):** goi-ngo-sen-tom-thit
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 15 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 280 calo, 22g protein, 18g carbs, 12g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món gỏi đặc trưng trong các bữa tiệc miền Tây với ngó sen trắng giòn trộn cùng tôm tươi và thịt ba chỉ.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Ngó sen
+- 200 g Tôm sú
+- 200 g Thịt ba chỉ
+- 100 g Cà rốt
+- 20 g Rau răm
+- 30 g Đậu phộng
+- 40 ml Nước mắm chua ngọt
+
+### Cách làm (Steps):
+1. Ngâm ngó sen với giấm đường cho trắng. Luộc chín tôm (lột vỏ) và thịt (thái sợi). Pha nước mắm trộn gỏi. Trộn tất cả nguyên liệu với nước mắm. Rắc thêm rau răm
+2. đậu phộng và hành phi.
+
+---
+
+## Món ăn: Cá lóc kho tộ
+- **Mã món (ID):** ca-loc-kho-to
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 30 phút. Tổng: 50 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 380 calo, 35g protein, 12g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn kinh điển trong mâm cơm gia đình Nam Bộ, cá được kho trong tộ đất giúp giữ nhiệt và tạo lớp sốt sệt kẹo màu cánh gián ngon mắt.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Cá lóc cắt khúc
+- 50 g Mỡ gáy heo
+- 40 ml Nước mắm
+- 35 g Đường thốt nốt
+- 100 ml Nước dừa tươi
+- 15 g Hành
+- 10 g Tỏi băm
+- 5 g Tiêu xay
+- 10 g Ớt
+
+### Cách làm (Steps):
+1. Ướp cá với nước mắm
+2. đường
+3. hành tỏi băm và tiêu trong 20 phút. Thắng mỡ gáy lấy tóp mỡ và nước mỡ. Cho cá và nước ướp vào tộ đất
+4. thêm nước dừa tươi. Kho lửa nhỏ liu riu đến khi nước cạn sệt lại. Thêm tóp mỡ
+5. ớt hiểm và hành lá lên trên trước khi tắt bếp.
+
+---
+
+## Món ăn: Canh chua cá hú
+- **Mã món (ID):** canh-chua-ca-hu
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 20 phút. Tổng: 40 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 290 calo, 24g protein, 16g carbs, 11g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món canh giải nhiệt ngày hè Nam Bộ, kết hợp giữa vị béo của cá da trơn và vị chua ngọt từ các loại rau đồng nội.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Cá hú
+- 100 g Bạc hà
+- 80 g Đậu bắp
+- 60 g Giá đỗ
+- 80 g Thơm
+- 50 g Cà chua
+- 40 g Me chua
+- 30 g Đường cát
+- 25 ml Nước mắm
+- 10 g Rau ngổ
+- 10 g Ngò gai
+- 5 g Ớt
+- 800 ml Nước lọc
+
+### Cách làm (Steps):
+1. Sơ chế sạch cá và các loại rau củ
+2. bạc hà tước vỏ cắt xéo. Đun sôi nước lọc
+3. cho me vào dầm lấy nước cốt chua rồi vớt xác me. Cho cá hú và thơm vào nấu chín tới. Thêm cà chua
+4. đậu bắp
+5. bạc hà và giá đỗ vào nấu sôi lại. Nêm mắm
+6. đường cho vừa vị chua ngọt rồi rắc rau ngổ
+7. ngò gai và ớt lát lên trên.
+
+---
+
+## Món ăn: Bột chiên trứng
+- **Mã món (ID):** bot-chien-trung
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 15 phút. Tổng: 30 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 420 calo, 14g protein, 55g carbs, 16g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn đường phố gốc Hoa ăn sâu vào đời sống Sài Gòn, bột gạo được chiên vàng giòn quyện với trứng gà và đu đủ bào ngâm chua.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Bột gạo đổ khuôn cắt khối
+- 2 quả Trứng gà
+- 30 g Hành lá
+- 50 g Đu đủ xanh bào sợi
+- 30 ml Nước tương đen
+- 15 g Đường
+- 10 ml Nước giấm
+- 20 ml Dầu ăn
+
+### Cách làm (Steps):
+1. Cho dầu ăn vào chảo
+2. xếp các khối bột vào chiên vàng đều hai mặt. Đập trứng gà đổ trực tiếp lên mặt bột
+3. dàn đều. Rắc hành lá cắt nhỏ lên trên
+4. lật mặt cho trứng chín vàng. Pha nước tương đen với đường và giấm tạo vị mặn ngọt chua nhẹ. Bày bột chiên ra đĩa
+5. ăn kèm đu đủ bào sợi và chấm nước tương đã pha.
+
+---
+
+## Món ăn: Hủ tiếu sa tế bò
+- **Mã món (ID):** hu-tieu-sa-te-bo
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 45 phút. Tổng: 75 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 560 calo, 32g protein, 60g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món hủ tiếu độc đáo của người Hoa Chợ Lớn với nước dùng sệt, thơm nức mùi đậu phộng rang và sa tế cay nồng đánh gục vị giác.
+
+### Nguyên liệu cần chuẩn bị:
+- 150 g Bánh hủ tiếu dai
+- 150 g Thịt bắp bò
+- 30 g Sa tế tôm
+- 40 g Đậu phộng rang giã nhuyễn
+- 10 g Mè rang
+- 500 ml Nước hầm xương heo
+- 20 g Sả băm
+- 15 g Tỏi băm
+- 50 g Dưa leo thái sợi
+- 30 g Khế chua
+- 30 g Chuối chát
+- 0 g Gia vị hủ tiếu sa tế (đại hồi
+- 15 g quế chi)
+
+### Cách làm (Steps):
+1. Phi thơm tỏi
+2. sả băm với sa tế
+3. đổ nước hầm xương vào đun sôi. Cho gói gia vị quế
+4. hồi và đậu phộng rang giã nhuyễn vào nấu cùng để nước dùng sệt và béo. Trụng bánh hủ tiếu chín xếp vào tô cùng dưa leo
+5. khế
+6. chuối chát. Trụng thịt bò tái chín
+7. xếp lên mặt bún. Chan nước dùng sa tế nóng hổi ngập bát
+8. rắc mè rang lên trên.
+
+---
+
+## Món ăn: Đậu hũ chiên sả ớt
+- **Mã món (ID):** dau-hu-chien-sa-ot
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 10 phút, Nấu 15 phút. Tổng: 25 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 180 calo, 12g protein, 8g carbs, 10g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** vegetarian
+- **Mô tả:** Món chay dân dã, thanh đạm xuất hiện thường xuyên trong bữa cơm hằng ngày của người Nam Bộ nhờ cách làm nhanh và bắt cơm.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Đậu hũ trắng
+- 40 g Sả băm
+- 10 g Ớt băm
+- 5 g Bột nghệ
+- 15 ml Nước tương
+- 5 g Muối ăn
+- 10 g Đường
+- 30 ml Dầu thực vật
+
+### Cách làm (Steps):
+1. Đậu hũ trắng cắt khối vuông vừa ăn
+2. thấm khô nước. Trộn sả băm
+3. ớt băm với bột nghệ
+4. muối và chút đường. Khía nhẹ lên miếng đậu
+5. nhét một ít hỗn hợp sả ớt vào giữa (hoặc áo đều bên ngoài). Làm nóng dầu ăn trên chảo
+6. cho đậu hũ vào chiên vàng giòn đều các mặt. Vớt ra thấm dầu
+7. dọn ăn kèm nước tương tỏi ớt.
+
+---
+
+## Món ăn: Lẩu thả Phan Thiết
+- **Mã món (ID):** lau-tha-phan-thiet
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 45 phút, Nấu 20 phút. Tổng: 65 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 480 calo, 35g protein, 45g carbs, 12g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món lẩu đặc sản vùng biển Bình Thuận, các nguyên liệu được xếp tinh tế trong bẹ bắp chuối đỏ, ăn bằng cách xếp vào tô rồi chan nước dùng nóng.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Cá mai tươi
+- 150 g Thịt ba chỉ
+- 2 quả Trứng vịt
+- 1 cái Bánh tráng nướng
+- 300 g Bún sợi nhỏ
+- 100 g Bắp chuối cắt sợi
+- 80 g Dưa leo cắt sợi
+- 80 g Xoài xanh cắt sợi
+- 800 ml Nước xương heo
+- 100 g Cà chua
+- 50 g Đậu phộng rang
+- 1 quả Chuối sứ chín
+- 40 ml Nước mắm
+- 30 g Đường thốt nốt
+- 15 g Tỏi băm
+- 10 g Ớt băm
+
+### Cách làm (Steps):
+1. Cá mai làm sạch
+2. phi lê lấy thịt
+3. bóp nước cốt chanh cho tái nhẹ rồi trộn với tỏi ớt băm. Luộc chín thịt ba chỉ rồi xắt sợi mỏng
+4. trứng vịt đánh đều chiên thật mỏng rồi xắt sợi. Làm nước dùng: Phi thơm hành tỏi
+5. xào cà chua băm rồi đổ nước xương vào nấu sôi
+6. nêm nếm vừa ăn. Làm nước chấm đặc trưng: Xay nhuyễn chuối sứ chín
+7. đậu phộng rang
+8. tỏi
+9. ớt cùng nước mắm và đường thốt nốt cho sệt mịn. Xếp tất cả nguyên liệu vào từng bẹ bắp chuối dọn ra bàn. Khi ăn
+10. gắp các loại nhân vào tô
+11. bẻ vụn bánh tráng nướng
+12. chan nước dùng nóng hổi hoặc chấm nước xốt đậu phộng.
+
+---
+
+## Món ăn: Khô cá sặc kho tóp mỡ
+- **Mã món (ID):** kho-ca-sac-kho-top-mo
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 20 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 340 calo, 28g protein, 8g carbs, 22g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn đậm chất đưa cơm của người dân miền Tây sông nước vào những ngày mưa, sự kết hợp giữa vị mặn của khô sặc rằn và vị béo nồng của mỡ heo.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Khô cá sặc rằn
+- 150 g Mỡ gáy heo
+- 20 g Hành tím xắt lát
+- 20 g Hành lá
+- 10 g Ớt hiểm
+- 5 g Tiêu hạt giã dập
+- 20 ml Nước mắm
+- 30 g Đường cát
+- 15 ml Nước tương
+- 80 ml Nước lọc
+
+### Cách làm (Steps):
+1. Khô cá sặc ngâm nước ấm 15 phút cho bớt mặn
+2. rửa sạch
+3. cắt miếng vừa ăn hoặc để nguyên con tùy sở thích. Mỡ heo rửa sạch
+4. thái hạt lựu lớn
+5. cho vào chảo thắng vàng giòn để thu được tóp mỡ và nước cốt mỡ. Sử dụng nồi đất
+6. cho 2 muỗng canh mỡ heo vào phi thơm hành tím xắt lát. Cho nước mắm
+7. nước tương
+8. đường và nước lọc vào đun sôi để tạo hỗn hợp nước kho sánh đặc. Thả khô cá sặc vào kho lửa nhỏ cho thấm gia vị
+9. khi nước kho kẹo lại thì trút tóp mỡ
+10. ớt hiểm
+11. tiêu hạt và hành lá vào đảo đều rồi tắt bếp.
+
+---
+
+## Món ăn: Gỏi bồn bồn tôm thịt
+- **Mã món (ID):** goi-bon-bon-tom-thit
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 15 phút. Tổng: 40 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 260 calo, 20g protein, 16g carbs, 10g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Cây bồn bồn (đặc sản vùng đất nhiễm phèn Cà Mau, Bạc Liêu) lấy phần lõi non trắng ngần làm gỏi trộn tôm thịt vô cùng kích thích vị giác.
+
+### Nguyên liệu cần chuẩn bị:
+- 250 g Lõi bồn bồn tươi (hoặc muối chua nhẹ)
+- 150 g Tôm sú
+- 150 g Thịt ba rọi heo
+- 50 g Cà rốt xắt sợi
+- 15 g Rau răm xắt nhỏ
+- 20 g Đậu phộng rang
+- 10 g Hành phi
+- 30 ml Nước mắm
+- 30 g Đường
+- 25 ml Nước cốt chanh
+- 10 g Tỏi băm
+- 5 g Ớt băm
+
+### Cách làm (Steps):
+1. Bồn bồn rửa sạch
+2. tước nhỏ dọc theo thớ
+3. cắt khúc vừa ăn
+4. ngâm nước đá chanh để giữ độ trắng giòn rồi vắt ráo. Luộc chín tôm sú (bóc vỏ
+5. chẻ lưng) và thịt ba rọi (thái mỏng). Pha nước mắm trộn gỏi: Hòa tan đường
+6. nước cốt chanh
+7. nước mắm
+8. thêm tỏi và ớt băm nhuyễn. Cho bồn bồn
+9. cà rốt
+10. tôm
+11. thịt vào tô trộn lớn
+12. rưới từ từ nước mắm vào bóp nhẹ tay cho thấm. Thêm rau răm
+13. bày ra đĩa rồi rắc đậu phộng rang giã dập và hành phi lên mặt.
+
+---
+
+## Món ăn: Ếch núp lùm
+- **Mã món (ID):** ech-nup-lum
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 20 phút. Tổng: 40 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 410 calo, 30g protein, 18g carbs, 24g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn độc đáo với phần thịt ếch đồng chiên vàng giòn giấu dưới lớp "rơm" làm từ sả xé sợi chiên tẩm gia vị mằn mặn, cay cay.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Thịt ếch đồng làm sạch
+- 150 g Củ sả tươi
+- 40 g Bột bắp (hoặc bột chiên giòn)
+- 15 g Tỏi băm
+- 15 g Hành tím băm
+- 15 g Hạt nêm
+- 5 g Tiêu xay
+- 5 g Ớt bột
+- 250 ml Dầu ăn
+
+### Cách làm (Steps):
+1. Ếch chặt miếng vừa ăn
+2. đem ướp với hành băm
+3. tỏi băm
+4. hạt nêm
+5. tiêu trong 15 phút. Sả củ cắt khúc khoảng 10cm
+6. dùng chày giã dập rồi dùng tay xé thành những sợi thật mảnh như sợi rơm. Áo sả sợi với một chút bột bắp
+7. cho vào chảo dầu nóng chiên vàng giòn
+8. vớt ra để ráo dầu (đây là phần rơm). Thịt ếch lăn qua lớp bột bắp mỏng
+9. thả vào chảo dầu chiên ngập dầu đến khi vàng ruộm và săn giòn
+10. vớt ra. Xếp thịt ếch ra đĩa
+11. sau đó phủ toàn bộ phần sả chiên giòn lên trên tạo hình ếch đang "núp lùm".
+
+---
+
+## Món ăn: Canh khoai mỡ thịt bằm
+- **Mã món (ID):** canh-khoai-mo-thit-bam
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 15 phút. Tổng: 30 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 210 calo, 12g protein, 28g carbs, 6g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món canh màu tím mộng mơ đặc trưng trong mâm cơm hằng ngày của người Nam Bộ, vị khoai mỡ ngọt dẻo kết hợp với rau nêm ngò ôm tạo mùi thơm không lẫn vào đâu được.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Khoai mỡ tím
+- 150 g Thịt heo nạc băm nhuyễn
+- 10 g Hành tím băm
+- 15 g Hành lá
+- 10 g Rau ngò ôm (rau ngổ)
+- 10 g Rau ngò gai
+- 15 g Hạt nêm
+- 5 g Muối ăn
+- 3 g Tiêu xay
+- 15 ml Dầu ăn
+- 700 ml Nước lọc
+
+### Cách làm (Steps):
+1. Khoai mỡ gọt vỏ
+2. rửa sạch
+3. dùng muỗng nạo nhỏ (hoặc đập dập băm nhỏ) để tạo độ nhớt dẻo đặc trưng khi nấu. Ướp thịt băm với chút hạt nêm và tiêu trong 10 phút. Phi thơm hành tím băm với dầu ăn trong nồi
+4. cho thịt băm vào xào săn. Đổ nước lọc vào nấu sôi
+5. hớt bọt
+6. sau đó cho khoai mỡ nạo vào khuấy đều. Nấu lửa vừa đến khi khoai chín mềm dẻo và canh sệt lại
+7. nêm muối và hạt nêm vừa ăn rồi rắc hành lá
+8. ngò ôm
+9. ngò gai cắt nhỏ lên trên.
+
+---
+
+## Món ăn: Cháo cá lóc rau đắng
+- **Mã món (ID):** chao-ca-loc-rau-dang
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 40 phút. Tổng: 65 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 380 calo, 26g protein, 50g carbs, 8g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Sự kết hợp hoàn hảo giữa hạt gạo rang nở bung, thịt cá lóc đồng ngọt thanh và những cọng rau đắng đất nhỏ bé nhưng giàu dược tính.
+
+### Nguyên liệu cần chuẩn bị:
+- 600 g Cá lóc đồng làm sạch
+- 100 g Gạo tẻ
+- 20 g Gạo nếp
+- 150 g Rau đắng đất tươi
+- 15 g Gừng tươi thái sợi
+- 15 g Hành tím phi
+- 20 g Hành lá
+- 100 g Giá đỗ
+- 20 g Hạt nêm
+- 20 ml Nước mắm
+- 5 g Tiêu xay
+- 1500 ml Nước lọc
+
+### Cách làm (Steps):
+1. Gạo tẻ và nếp đem rang trên chảo cho hơi vàng và thơm (giúp cháo không bị nát nhừ). Luộc chín cá lóc với nước lọc và vài lát gừng
+2. vớt cá ra gỡ lấy phi lê thịt
+3. ướp thịt cá với nước mắm và tiêu
+4. giữ lại nước luộc. Cho gạo đã rang vào nồi nước luộc cá
+5. ninh lửa nhỏ đến khi hạt gạo nở bung mềm mại thành cháo. Nêm hạt nêm vào cháo cho vừa vặn
+6. thả phần thịt cá lóc vào đun sôi lại. Khi ăn
+7. xếp giá đỗ và rau đắng đất dưới đáy tô
+8. múc cháo cá nóng hổi chan lên
+9. rắc gừng sợi
+10. hành phi
+11. tiêu xay và hành lá lên trên.
+
+---
+
+## Món ăn: Ốc bươu nướng tiêu xanh
+- **Mã món (ID):** oc-buou-nuong-tieu-xanh
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 15 phút. Tổng: 45 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 190 calo, 18g protein, 6g carbs, 4g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn dân dã nhưng cực kỳ hút khách tại các quán ăn miền Nam, ốc bươu được nướng trực tiếp trên bếp than cùng nước sốt mắm tiêu xanh kẹo lại bên trong vỏ.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 kg Ốc bươu đen tươi sống
+- 50 g Tiêu xanh nguyên chùm
+- 40 ml Nước mắm cốt
+- 30 g Đường cát
+- 10 g Tỏi băm
+- 10 g Hành tím băm
+- 5 g Ớt hiểm
+- 20 g Sả củ
+- 20 g Rau răm ăn kèm
+
+### Cách làm (Steps):
+1. Ốc bươu ngâm nước vo gạo kèm vài lát ớt 2 tiếng cho nhả hết bùn
+2. luộc sơ với sả đập dập khoảng 3 phút rồi chặt bớt phần đít nhọn của vỏ ốc. Làm nước xốt nướng: Giã nhuyễn một nửa lượng tiêu xanh
+3. tỏi
+4. hành tím và ớt
+5. trộn đều với nước mắm và đường tạo hỗn hợp sệt ngọt mặn. Đặt ốc lên vỉ nướng trên bếp than hồng. Khi miệng ốc bắt đầu nóng lên và bốc hơi
+6. múc 1 muỗng cà phê nước xốt tiêu xanh đổ vào từng con ốc
+7. thả thêm vài hạt tiêu xanh nguyên hạt. Nướng đến khi nước xốt bên trong sôi bùng lên
+8. tỏa mùi thơm nức và cạn bớt là ốc chín
+9. dọn ăn nóng cùng rau răm.
+
+---
+
+## Món ăn: Cá lòng tòng kho tiêu
+- **Mã món (ID):** ca-long-tong-kho-tieu
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 20 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 240 calo, 22g protein, 5g carbs, 10g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món cá nước ngọt siêu nhỏ đặc thù của miền Tây, được kho tộ khô ráo, mặn ngọt đậm vị ăn cùng cơm trắng nóng hổi và rau tập tàng luộc.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Cá lòng tòng tươi
+- 35 ml Nước mắm đặc
+- 30 g Đường cát
+- 5 ml Nước hàng (nước màu băm)
+- 20 ml Dầu ăn
+- 10 g Hành tím băm
+- 8 g Tiêu đen xay
+- 15 g Hành lá
+- 5 g Ớt hiểm
+
+### Cách làm (Steps):
+1. Cá lòng tòng cắt bỏ đầu
+2. ruột
+3. rửa sạch bằng nước muối loãng
+4. để thật ráo nước. Ướp cá trực tiếp trong nồi đất với nước mắm
+5. đường
+6. nước màu
+7. hành tím băm và một nửa lượng tiêu xay trong 20 phút cho thịt cá săn lại. Đặt nồi đất lên bếp
+8. thêm dầu ăn
+9. vặn lửa lớn cho cá sôi bùng lên khoảng 3 phút. Hạ lửa thật nhỏ (liu riu)
+10. mở vung kho đến khi nước mắm cạn khô
+11. thấm đượm vào từng con cá làm chúng cứng cáp và chuyển màu vàng nâu sẫm. Rắc phần tiêu xay còn lại
+12. hành lá cắt nhỏ và ớt hiểm lên trên rồi nhấc xuống.
+
+---
+
+## Món ăn: Chè đậu ngự nước cốt dừa
+- **Mã món (ID):** che-dau-ngu-nuoc-cot-dua
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 35 phút. Tổng: 55 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 290 calo, 6g protein, 48g carbs, 8g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** vegetarian
+- **Mô tả:** Món chè ngọt mát Nam Bộ sử dụng hạt đậu ngự lớn, nấu chín nhừ thanh tao kết hợp cùng nước cốt dừa dầm béo ngậy ăn nóng hoặc đá đều ngon.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Hạt đậu ngự tươi (đã bóc vỏ)
+- 120 g Đường phèn
+- 150 ml Nước cốt dừa đặc
+- 10 g Bột năng
+- 3 lá Lá dứa (lá nếp)
+- 2 g Muối tinh
+- 800 ml Nước lọc
+
+### Cách làm (Steps):
+1. Đậu ngự tươi rửa sạch
+2. cho vào nồi luộc với nước lọc đến khi hạt đậu chín mềm
+3. bở bùi nhưng không bị nát. Thêm đường phèn và lá dứa vào nồi đậu
+4. đun lửa nhỏ 10 phút cho hạt đậu ngậm đường ngọt thanh. Làm nước cốt dừa: Cho nước cốt dừa đặc vào nồi nhỏ
+5. thêm muối
+6. 20g đường và bột năng hòa tan với chút nước
+7. khuấy đều trên lửa nhỏ đến khi hỗn hợp sệt lại. Múc chè đậu ngự ra ly hoặc chén. Chan một vá nước cốt dừa béo ngậy lên trên mặt
+8. có thể thêm đá bào nếu ăn lạnh.
+
+---
+
+## Món ăn: Nấm tràm xào tôm thịt
+- **Mã món (ID):** nam-tram-xao-tom-thit
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 15 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 280 calo, 22g protein, 10g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn đặc sản mùa mưa của Phú Quốc và vùng đất miền Nam, nấm tràm có vị đắng độc mộc tự nhiên nhưng khi kết hợp với tôm thịt lại tạo ra vị ngọt hậu vô cùng lôi cuốn.
+
+### Nguyên liệu cần chuẩn bị:
+- 250 g Nấm tràm tươi
+- 150 g Tôm sú tươi
+- 100 g Thịt ba chỉ heo
+- 15 g Hành tím băm
+- 10 g Tỏi băm
+- 20 g Hành lá
+- 5 g Tiêu xay
+- 20 ml Nước mắm
+- 10 g Hạt nêm
+- 20 ml Dầu ăn
+
+### Cách làm (Steps):
+1. Nấm tràm gọt sạch đất
+2. ngâm nước muối 15 phút
+3. đem luộc sơ với chút muối khoảng 3 phút để giảm bớt độ đắng bớt gắt rồi vớt ra xả nước lạnh
+4. vắt ráo. Tôm lột vỏ bỏ chỉ đen
+5. thịt ba chỉ thái mỏng vừa ăn. Phi thơm hành tím và tỏi băm với dầu ăn trên chảo
+6. cho thịt ba chỉ và tôm vào xào săn chín tới
+7. múc tạm ra đĩa. Tiếp tục dùng chảo đó
+8. cho nấm tràm vào xào lửa lớn
+9. nêm nước mắm và hạt nêm cho thấm vị nấm. Trút đĩa tôm thịt vào xào chung với nấm thêm 2 phút
+10. rắc hành lá cắt khúc và thật nhiều tiêu xay lên trên rồi tắt bếp.
+
+---
+
+## Món ăn: Bánh xèo miền Tây
+- **Mã món (ID):** banh-xeo-mien-tay
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 40 phút, Nấu 30 phút. Tổng: 70 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 450 calo, 18g protein, 60g carbs, 15g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Loại bánh xèo khổ lớn đặc trưng của miền Tây với vành bánh mỏng giòn, ăn kèm hàng chục loại rau rừng và nước mắm chua ngọt.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Bột bánh xèo
+- 100 ml Nước cốt dừa
+- 100 g Tôm đất
+- 100 g Thịt ba rọi
+- 50 g Đậu xanh xanh cà
+- 100 g Giá đỗ
+- 20 g Hành lá
+- 5 g Bột nghệ
+- 200 g Rau sống các loại
+- 30 ml Nước mắm
+- 20 g Đường
+- 15 ml Nước cốt chanh
+
+### Cách làm (Steps):
+1. Pha bột bánh xèo với nước cốt dừa
+2. nước lọc
+3. bột nghệ và hành lá. Xào sơ tôm và thịt ba rọi thái mỏng. Đổ bột vào chảo nóng
+4. láng thật mỏng
+5. cho nhân và giá đỗ vào giữa. Đậy nắp 2 phút rồi mở ra chiên đến khi vành bánh giòn vàng
+6. gập đôi bánh. Pha nước mắm chua ngọt đồ chua
+7. ăn kèm rau sống.
+
+---
+
+## Món ăn: Cá linh kho lạt
+- **Mã món (ID):** ca-linh-kho-lat
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 15 phút. Tổng: 30 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 260 calo, 24g protein, 4g carbs, 12g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn linh hồn của mùa nước nổi miền Tây, cá linh non xương mềm xèo, kho lạt để giữ nguyên vị ngọt tự nhiên.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Cá linh non
+- 200 ml Nước dừa tươi
+- 20 g Nghệ tươi băm
+- 15 g Hành tím băm
+- 30 ml Nước mắm cốt
+- 10 g Đường
+- 5 g Tiêu xay
+- 5 g Ớt
+
+### Cách làm (Steps):
+1. Cá linh làm sạch
+2. để nguyên con (không bỏ đầu/ruột vì cá non rất béo). Ướp cá với nghệ
+3. hành băm và chút nước mắm. Cho nước dừa tươi vào nồi đun sôi
+4. thả cá vào kho lửa lớn. Khi nước hơi cạn
+5. nêm lại cho vừa vị ngọt thanh. Rắc tiêu và ớt
+6. ăn kèm bông súng hoặc điên điển.
+
+---
+
+## Món ăn: Đùi gà chiên nước mắm
+- **Mã món (ID):** dui-ga-chien-nuoc-mam
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 20 phút. Tổng: 40 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 520 calo, 35g protein, 12g carbs, 32g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn khoái khẩu của trẻ em và thanh niên miền Nam, đùi gà được áo lớp mắm đường đậm đà, óng ánh.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Đùi gà
+- 40 ml Nước mắm
+- 35 g Đường
+- 20 g Tỏi băm
+- 20 g Bột chiên giòn
+- 5 g Tiêu xay
+- 100 ml Dầu ăn
+
+### Cách làm (Steps):
+1. Gà rửa sạch
+2. khía nhẹ
+3. lăn qua bột chiên giòn mỏng. Chiên gà ngập dầu đến khi vàng giòn
+4. vớt ra ráo dầu. Phi thơm tỏi
+5. cho hỗn hợp mắm đường vào nấu đến khi nổi bong bóng. Cho gà vào đảo nhanh tay để xốt áo đều. Tắt bếp
+6. rắc tiêu.
+
+---
+
+## Món ăn: Canh chua bông điên điển cá linh
+- **Mã món (ID):** canh-chua-bong-dien-dien-ca-linh
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 15 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 250 calo, 22g protein, 14g carbs, 9g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản mùa nước nổi, sự kết hợp tinh túy giữa sản vật sông ngòi và hoa dại miền Tây.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Cá linh non
+- 200 g Bông điên điển
+- 50 g Me chua
+- 0 g Ngò ôm
+- 20 g ngò gai
+- 30 ml Nước mắm
+- 25 g Đường
+- 2 quả Ớt hiểm
+- 1000 ml Nước lọc
+
+### Cách làm (Steps):
+1. Nấu sôi nước với cốt me. Cho cá linh vào nấu chín (rất nhanh chín). Nêm gia vị mắm đường cho vừa miệng. Thả bông điên điển vào và tắt bếp ngay để rau giữ độ giòn. Rắc rau nêm và ớt.
+
+---
+
+## Món ăn: Ba rọi chiên sả ớt
+- **Mã món (ID):** ba-roi-chien-sa-ot
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 20 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 480 calo, 20g protein, 5g carbs, 42g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** keto
+- **Mô tả:** Món cơm gia đình cực kỳ bắt vị với phần sả ớt chiên vàng bám chặt vào miếng thịt heo béo ngậy.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Thịt ba rọi heo
+- 50 g Sả băm
+- 10 g Tỏi băm
+- 10 g Ớt băm
+- 5 g Muối
+- 5 g Hạt nêm
+- 30 ml Dầu ăn
+
+### Cách làm (Steps):
+1. Thịt ba rọi thái miếng dài
+2. ướp với sả
+3. tỏi
+4. ớt và gia vị. Để thịt thấm 15 phút. Cho dầu vào chảo
+5. chiên thịt lửa vừa. Khi thịt vàng đều hai mặt
+6. sả chuyển màu vàng giòn là đạt. Thái miếng vừa ăn khi thịt còn nóng.
+
+---
+
+## Món ăn: Bún mắm miền Tây
+- **Mã món (ID):** bun-mam-mien-tay
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 45 phút, Nấu 60 phút. Tổng: 105 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 550 calo, 32g protein, 65g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Bản giao hưởng của mắm cá linh, cá sặc kết hợp với các loại đặc sản sông nước và rau đồng.
+
+### Nguyên liệu cần chuẩn bị:
+- 150 g Mắm cá linh/sặc
+- 100 g Cá lóc
+- 50 g Tôm sú
+- 50 g Heo quay
+- 200 g Bún tươi
+- 3 nhánh Sả cây
+- 20 g Ngải bún
+- 50 g Cà tím
+- 0 g Rau sống (bông súng
+- 100 g rau nhút)
+
+### Cách làm (Steps):
+1. Nấu rã mắm cá với nước lọc
+2. lọc lấy nước cốt. Đun sôi nước dùng với sả đập dập và ngải bún. Cho cà tím
+3. cá
+4. tôm vào nấu chín. Xếp bún ra tô
+5. cho heo quay và nhân lên trên. Chan nước dùng mắm nóng hổi.
+
+---
+
+## Món ăn: Gỏi cuốn tôm thịt
+- **Mã món (ID):** goi-cuon-tom-thit
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 15 phút. Tổng: 45 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 210 calo, 15g protein, 28g carbs, 5g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** eatclean
+- **Mô tả:** Món ăn nằm trong top những món ngon nhất thế giới, cực kỳ lành mạnh và đầy đủ dinh dưỡng.
+
+### Nguyên liệu cần chuẩn bị:
+- 10 cái Bánh tráng
+- 200 g Tôm sú
+- 200 g Thịt ba chỉ
+- 200 g Bún tươi
+- 20 g Hẹ
+- 0 g Rau thơm
+- 100 g xà lách
+- 50 ml Tương đen
+- 30 g Gan heo (làm xốt)
+- 20 g Đậu phộng
+
+### Cách làm (Steps):
+1. Luộc chín tôm và thịt
+2. tôm chẻ đôi
+3. thịt thái lát mỏng. Nhúng ướt bánh tráng
+4. xếp rau
+5. bún
+6. thịt và tôm (mặt đỏ hướng xuống). Đặt cọng hẹ thò ra ngoài rồi cuốn chặt tay. Làm nước chấm tương đen xào với gan xay và tỏi phi. Rắc đậu phộng rang lên xốt.
+
+---
+
+## Món ăn: Đậu hũ kho nấm rơm
+- **Mã món (ID):** dau-hu-kho-nam-rom
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 20 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 180 calo, 14g protein, 10g carbs, 9g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** vegetarian
+- **Mô tả:** Món chay giản dị nhưng luôn có mặt trong bữa cơm của người miền Nam, cực kỳ đưa cơm.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Đậu hũ chiên
+- 150 g Nấm rơm
+- 30 ml Nước tương
+- 15 g Đường
+- 10 g Hành boa-rô
+- 5 g Tiêu xay
+- 50 ml Nước lọc
+
+### Cách làm (Steps):
+1. Nấm rơm ngâm muối
+2. rửa sạch. Phi thơm hành boa-rô
+3. cho nấm vào xào sơ. Cho đậu hũ và hỗn hợp nước tương
+4. đường vào nồi. Kho lửa nhỏ đến khi nước xốt sệt lại và thấm vào đậu. Rắc tiêu xay.
+
+---
+
+## Món ăn: Sườn non kho khóm
+- **Mã món (ID):** suon-non-kho-khom
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 30 phút. Tổng: 50 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 420 calo, 28g protein, 15g carbs, 25g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Khóm (dứa) giúp thịt sườn nhanh mềm và tạo ra nước kho vàng óng, chua ngọt tự nhiên.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Sườn non heo
+- 200 g Khóm (dứa)
+- 20 g Hành tím băm
+- 30 ml Nước mắm
+- 20 g Đường
+- 5 ml Nước màu
+- 20 g Hành lá
+
+### Cách làm (Steps):
+1. Sườn chặt nhỏ
+2. chần sơ
+3. ướp gia vị hành băm. Xào sườn cho săn rồi cho nước màu vào. Cho khóm thái miếng vào kho chung. Thêm chút nước lọc
+4. kho lửa nhỏ đến khi sườn mềm và nước kẹo lại. Rắc hành lá.
+
+---
+
+## Món ăn: Khổ qua nhồi cá thác lác
+- **Mã món (ID):** kho-qua-nhoi-ca-thac-lac
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 25 phút. Tổng: 55 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 290 calo, 26g protein, 12g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** eatclean
+- **Mô tả:** Món canh giải nhiệt và cũng là món ăn truyền thống trong ngày Tết miền Nam (với ý nghĩa khổ qua đi).
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Khổ qua (mướp đắng)
+- 250 g Cá thác lác nạo sẵn
+- 20 g Hành tím
+- 20 g Hành lá
+- 15 g Muối
+- 15 g tiêu
+- 15 g hạt nêm
+- 1000 ml Nước dùng xương
+
+### Cách làm (Steps):
+1. Quết cá thác lác với hành băm
+2. tiêu thật kỹ để tạo độ dai. Khổ qua bỏ ruột
+3. cắt khúc hoặc để nguyên. Nhồi cá vào trong khổ qua. Đun sôi nước dùng
+4. cho khổ qua vào hầm lửa vừa đến khi chín mềm. Nêm gia vị vừa ăn
+5. rắc hành ngò.
+
+---
+
+## Món ăn: Cá hú kho tộ
+- **Mã món (ID):** ca-hu-kho-to
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 25 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 380 calo, 28g protein, 6g carbs, 22g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món kho đặc trưng Nam Bộ với cá da trơn béo mượt, luôn được thực khách yêu thích.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Cá hú cắt khúc
+- 50 g Mỡ gáy heo
+- 40 ml Nước mắm
+- 35 g Đường
+- 5 ml Nước màu
+- 20 g Hành tím
+- 20 g tỏi băm
+- 5 g Tiêu xay
+- 10 g Ớt
+
+### Cách làm (Steps):
+1. Ướp cá với mắm
+2. đường
+3. nước màu và hành tỏi trong 20 phút. Thắng mỡ lấy tóp mỡ
+4. phi thơm hành tỏi. Cho cá vào nồi đất kho lửa lớn cho săn. Hạ lửa nhỏ
+5. kho đến khi nước sệt lại vàng óng. Cho tóp mỡ
+6. tiêu và ớt lên mặt.
+
+---
+
+## Món ăn: Chè bắp nước cốt dừa
+- **Mã món (ID):** che-bap-nuoc-cot-dua
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 25 phút. Tổng: 40 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 250 calo, 4g protein, 45g carbs, 7g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** vegetarian
+- **Mô tả:** Món tráng miệng dẻo thơm, kết hợp giữa bắp nếp và nước cốt dừa béo ngậy.
+
+### Nguyên liệu cần chuẩn bị:
+- 3 trái Bắp nếp tươi
+- 200 ml Nước cốt dừa
+- 100 g Đường cát
+- 20 g Bột năng
+- 2 lá Lá dứa
+- 2 g Muối
+
+### Cách làm (Steps):
+1. Luộc bắp nếp rồi bào mỏng hạt. Nấu nước với lá dứa
+2. cho bắp vào nấu chín. Thêm đường và bột năng pha loãng để tạo độ dẻo. Thắng nước cốt dừa với muối và đường. Chan cốt dừa lên chè bắp.
+
+---
+
+## Món ăn: Rau muống xào chao
+- **Mã món (ID):** rau-muong-xao-chao
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 10 phút, Nấu 5 phút. Tổng: 15 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 120 calo, 4g protein, 8g carbs, 8g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** vegetarian
+- **Mô tả:** Món xào dân dã nhưng cực kỳ đưa cơm với vị chao béo ngậy.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Rau muống
+- 3 viên Chao trắng
+- 15 g Tỏi băm
+- 10 g Đường
+- 20 ml Dầu ăn
+
+### Cách làm (Steps):
+1. Rau muống nhặt sạch
+2. chần sơ nước sôi. Tán nhuyễn chao với chút đường. Phi thơm tỏi
+3. cho rau muống vào xào lửa lớn. Đổ chao vào đảo nhanh tay. Tắt bếp bày ra đĩa.
+
+---
+
+## Món ăn: Bì cuốn miền Tây
+- **Mã món (ID):** bi-cuon-mien-tay
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 40 phút, Nấu 20 phút. Tổng: 60 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 240 calo, 18g protein, 30g carbs, 6g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Sự kết hợp giữa bì giòn, thịt khìa thơm và rau sống, cuốn trong bánh tráng dẻo.
+
+### Nguyên liệu cần chuẩn bị:
+- 10 cái Bánh tráng
+- 100 g Da heo thái sợi
+- 200 g Thịt đùi khìa
+- 30 g Thính gạo
+- 100 g Rau sống
+- 100 g Bún
+
+### Cách làm (Steps):
+1. Trộn da heo
+2. thịt khìa thái sợi với thính gạo. Làm ướt bánh tráng. Xếp rau sống
+3. bún và hỗn hợp bì lên bánh. Cuốn chặt tay. Ăn kèm nước mắm chua ngọt.
+
+---
+
+## Món ăn: Cá diêu hồng chiên xù
+- **Mã món (ID):** ca-dieu-hong-chien-xu
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 15 phút. Tổng: 30 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 380 calo, 30g protein, 5g carbs, 24g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Cá được chiên nguyên vảy để tạo độ giòn xù độc đáo, giữ thịt bên trong ẩm ngọt.
+
+### Nguyên liệu cần chuẩn bị:
+- 800 g Cá diêu hồng
+- 500 ml Dầu ăn
+- 200 g Rau sống
+- 50 ml Mắm me
+
+### Cách làm (Steps):
+1. Làm sạch cá
+2. để nguyên vảy
+3. lau khô. Đun dầu thật nóng. Thả cá vào chiên ngập dầu đến khi vảy dựng lên và vàng giòn. Vớt ra ráo dầu. Chấm mắm me
+4. cuốn rau sống.
+
+---
+
+## Món ăn: Sườn ram mặn ngọt
+- **Mã món (ID):** suon-ram-man-ngot
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 25 phút. Tổng: 40 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 450 calo, 26g protein, 10g carbs, 35g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món mặn kinh điển trong mâm cơm Nam Bộ với nước xốt sệt óng ánh.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Sườn non
+- 30 ml Nước mắm
+- 30 g Đường
+- 15 g Tỏi băm
+- 5 g Tiêu xay
+
+### Cách làm (Steps):
+1. Sườn chần sơ
+2. ướp với tỏi và mắm. Chiên sườn cho vàng mặt. Cho hỗn hợp mắm đường vào. Ram lửa nhỏ đến khi nước xốt sệt lại bám vào sườn. Rắc tiêu.
+
+---
+
+## Món ăn: Lẩu cá linh bông súng
+- **Mã món (ID):** lau-ca-linh-bong-sung
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 20 phút. Tổng: 50 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 420 calo, 30g protein, 40g carbs, 15g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món lẩu đặc sản miền Tây vào mùa nước nổi với vị chua thanh từ me.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Cá linh
+- 200 g Bông súng
+- 100 g Kèo nèo
+- 50 g Me
+- 1.5 L Nước dùng
+
+### Cách làm (Steps):
+1. Nấu nước dùng với cốt me chua ngọt. Sơ chế rau và cá linh. Khi ăn thả cá vào trước. Thả rau vào nhúng chín tái. Ăn kèm bún và nước mắm mặn.
+
+---
+
+## Món ăn: Bông bí nhồi thịt chiên giòn
+- **Mã món (ID):** bong-bi-nhoi-thit-chien-gion
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 15 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 350 calo, 18g protein, 25g carbs, 20g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Sự sáng tạo từ bông bí vàng tươi, nhồi nhân thịt đậm đà chiên trong lớp bột giòn.
+
+### Nguyên liệu cần chuẩn bị:
+- 15 bông Bông bí tươi
+- 200 g Thịt heo băm
+- 20 g Mộc nhĩ
+- 100 g Bột chiên giòn
+
+### Cách làm (Steps):
+1. Bông bí bỏ nhụy
+2. rửa nhẹ tay. Trộn thịt băm với mộc nhĩ
+3. gia vị. Nhồi nhân vào bông bí. Nhúng qua bột chiên giòn. Chiên vàng trong dầu nóng.
+
+---
+
+## Món ăn: Gỏi củ hũ dừa tôm thịt
+- **Mã món (ID):** goi-cu-thu-dua-tom-thit
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 15 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 290 calo, 20g protein, 15g carbs, 12g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** eatclean
+- **Mô tả:** Đặc sản xứ dừa với phần nõn dừa non nhất, kết hợp cùng tôm thịt tươi ngon.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Củ hũ dừa
+- 150 g Tôm sú
+- 150 g Thịt ba chỉ
+- 20 g Đậu phộng
+- 50 ml Nước mắm chua ngọt
+
+### Cách làm (Steps):
+1. Củ hũ dừa thái lát
+2. ngâm nước chanh cho trắng. Luộc chín tôm thịt
+3. thái mỏng. Pha nước mắm trộn gỏi. Trộn tất cả nguyên liệu với nước xốt. Rắc đậu phộng
+4. hành phi.
+
+---
+
+## Món ăn: Bún Quậy Phú Quốc
+- **Mã món (ID):** bun-quay-phu-quoc
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 15 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 350 calo, 28g protein, 45g carbs, 6g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** eatclean
+- **Mô tả:** Đặc sản trứ danh của đảo ngọc Phú Quốc, điểm độc đáo là chả tôm mực được quết tươi vào tô rồi chan nước dùng nóng hổi, ăn kèm nước chấm tự pha "quậy" đều.
+
+### Nguyên liệu cần chuẩn bị:
+- 80 g Chả tôm tươi
+- 80 g Chả mực tươi
+- 40 g Cá trích phi lê
+- 150 g Bún tươi
+- 20 g Hành lá
+- 5 g Tiêu Phú Quốc
+- 15 ml Nước mắm
+- 15 g Đường
+- 10 ml Nước cốt tắc
+- 5 g Ớt xay
+- 400 ml Nước luộc bún
+
+### Cách làm (Steps):
+1. Chuẩn bị hỗn hợp tôm mực tươi đã được quết nhuyễn với chút tiêu và hành tím. Dùng muỗng quết một lớp mỏng hỗn hợp tôm và mực vào quanh thành tô lớn. Cho hành lá xắt nhỏ và một ít tiêu vào tô. Nấu nước luộc bún cho thật sôi
+2. chan trực tiếp vào tô để làm chín lớp chả tôm mực. Cho bún tươi vào tô
+3. quậy đều để phần chả tróc ra. Tự pha nước chấm gồm: muối
+4. đường
+5. hạt tiêu
+6. ớt và tắc
+7. quậy đến khi sền sệt rồi múc một ít cho vào tô bún
+8. phần còn lại để chấm hải sản.
+
+---
+
+## Món ăn: Lẩu cua đồng hải sản
+- **Mã món (ID):** lau-cua-dong-hai-san
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 40 phút, Nấu 30 phút. Tổng: 70 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 480 calo, 35g protein, 28g carbs, 16g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món lẩu tụ họp gia đình quen thuộc tại Nam Bộ, kết hợp giữa vị ngọt đồng nội của cua giã nhuyễn và các loại hải sản tươi sống sông nước.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Cua đồng xay sẵn
+- 150 g Tôm sú
+- 150 g Mực ống
+- 2 miếng Đậu hũ chiên
+- 2 quả Cà chua
+- 20 g Hành tím
+- 400 g Bún tươi
+- 200 g Rau mồng tơi
+- 200 g mướp hương
+- 20 g Hạt nêm
+- 25 ml Nước mắm
+
+### Cách làm (Steps):
+1. Hòa cua đồng xay với nước lọc
+2. bóp nhẹ rồi lọc qua rây 2-3 lần để lấy nước cốt
+3. bỏ bã. Đun nước cua trên lửa nhỏ
+4. khuấy nhẹ tay theo một chiều đến khi riêu cua kết tụ thành mảng thì vớt ra để riêng. Phi thơm hành tím
+5. xào cà chua tạo màu rồi trút vào nồi nước dùng cua. Nêm nếm hạt nêm
+6. nước mắm cho vừa vị ngọt thanh. Khi ăn
+7. bày đậu hũ
+8. tôm
+9. mực và các loại rau xung quanh nồi lẩu sôi sùng sục
+10. dùng kèm bún tươi.
+
+---
+
+## Món ăn: Gà Hấp Củ Nén
+- **Mã món (ID):** ga-hap-cu-nen
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 40 phút. Tổng: 60 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 390 calo, 32g protein, 8g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** eatclean
+- **Mô tả:** Món ăn bài thuốc dân dã của người miền trong, củ nén (hành tăm) không chỉ khử tanh cực tốt mà còn giúp món gà hấp có hương vị thơm ngon khó cưỡng.
+
+### Nguyên liệu cần chuẩn bị:
+- 1.2 kg Gà ta
+- 100 g Củ nén
+- 5 lá Lá chanh non
+- 30 ml Nước mắm cốt
+- 15 g Hạt nêm
+- 5 g Tiêu hạt giã dập
+- 10 ml Dầu hành
+
+### Cách làm (Steps):
+1. Củ nén rửa sạch
+2. cho vào cối giã dập (không giã quá nát). Trộn củ nén với nước mắm
+3. hạt nêm
+4. tiêu hạt và dầu hành để làm hỗn hợp ướp. Thoa đều hỗn hợp lên khắp mình gà và nhét một ít vào bên trong bụng gà
+5. để thấm 30 phút. Lót một ít củ nén và lá chanh dưới xửng hấp
+6. đặt gà lên trên. Hấp cách thủy lửa vừa trong 35-40 phút đến khi gà chín tới
+7. da vàng bóng thơm nức.
+
+---
+
+## Món ăn: Cá chốt kho sả ớt
+- **Mã món (ID):** ca-chot-kho-sa-ot
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 20 phút. Tổng: 40 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 230 calo, 21g protein, 6g carbs, 9g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Loại cá sông đặc sản sông nước miền Tây, đặc biệt vào mùa trứng cá béo bùi, đem kho tộ với sả ớt băm thì hao cơm vô cùng.
+
+### Nguyên liệu cần chuẩn bị:
+- 350 g Cá chốt tươi
+- 40 g Sả băm nhuyễn
+- 10 g Ớt băm
+- 10 g Tỏi băm
+- 35 ml Nước mắm
+- 25 g Đường cát
+- 5 ml Nước màu dừa
+- 15 ml Dầu ăn
+
+### Cách làm (Steps):
+1. Cá chốt cắt bỏ ngạnh
+2. làm sạch ruột
+3. chà muối cho bớt nhớt rồi rửa sạch
+4. để ráo. Cho sả băm
+5. ớt băm
+6. tỏi băm vào nồi đất phi thơm với dầu ăn
+7. múc bớt một nửa ra đĩa. Xếp cá vào nồi
+8. cho nước mắm
+9. đường
+10. nước màu dừa và phần sả ớt còn lại vào ướp 15 phút. Đặt nồi lên bếp kho lửa lớn cho cá săn lại và thấm màu vàng nâu. Hạ lửa liu riu
+11. thêm xíu nước ấm
+12. kho đến khi nước sệt kẹo lại bám đều vào thân cá thì rắc phần sả ớt phi ban đầu lên trên rồi tắt bếp.
+
+---
+
+## Món ăn: Khô cá sặc rằn trộn gỏi xoài
+- **Mã món (ID):** kho-ca-sac-ran-tron-goi-xoai
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 15 phút. Tổng: 30 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 210 calo, 16g protein, 18g carbs, 6g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món nhắm hoặc món khai vị quen thuộc của người dân miền Tây, ngon nhờ sự kết hợp tương phản giữa khô mặn và trái cây chua.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Khô cá sặc rằn
+- 300 g Xoài xanh
+- 20 g Rau răm
+- 15 ml Nước mắm cốt
+- 30 g Đường cát
+- 5 g Ớt băm
+- 5 g Tỏi băm
+
+### Cách làm (Steps):
+1. Khô cá sặc đem nướng trên bếp than hoặc áp chảo cho chín vàng đều hai mặt
+2. tỏa mùi thơm. Để cá hơi nguội
+3. loại bỏ xương
+4. xé thịt cá thành các miếng nhỏ vừa ăn. Xoài xanh gọt vỏ
+5. dùng đồ bào sợi mỏng
+6. ngâm nước đá 5 phút cho giòn rồi vớt ra vắt thật ráo. Pha nước mắm trộn: Hòa tan đường với nước mắm
+7. tỏi băm và ớt băm tạo thành nước xốt sánh ngọt. Cho xoài sợi
+8. khô sặc xé nhỏ và rau răm cắt khúc vào tô
+9. rưới nước xốt vào trộn đều nhẹ tay
+10. dọn ra đĩa.
+
+---
+
+## Món ăn: Bánh tằm bì nước cốt dừa
+- **Mã món (ID):** banh-tam-bi-nuoc-cot-dua
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 45 phút, Nấu 25 phút. Tổng: 70 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 490 calo, 14g protein, 72g carbs, 16g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Sự kết hợp độc nhất vô nhị của ẩm thực Nam Bộ khi trộn lẫn món mặn (bì, thịt khìa), món bún bánh và nước cốt dừa béo ngậy kèm nước mắm chua ngọt.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Sợi bánh tằm khoai mì/gạo
+- 100 g Bì heo làm sẵn
+- 100 g Thịt nạc heo khìa thái sợi
+- 150 ml Nước cốt dừa đặc
+- 5 g Bột năng
+- 100 g Dưa leo
+- 100 g rau thơm
+- 50 ml Nước mắm chua ngọt pha sẵn
+- 20 g Hành lá làm mỡ hành
+
+### Cách làm (Steps):
+1. Bánh tằm đem hấp lại cho nóng và mềm dẻo. Làm nước cốt dừa: Cho cốt dừa vào nồi
+2. thêm xíu muối
+3. đường và bột năng hòa tan
+4. khuấy đều trên lửa nhỏ cho đến khi xốt sệt nhẹ lại. Làm mỡ hành bằng cách dội dầu sôi vào hành lá cắt nhỏ. Xếp dưa leo băm sợi và rau thơm dưới đĩa
+5. đặt bánh tằm lên trên
+6. cho bì và thịt khìa vào một góc. Chan mỡ hành
+7. rưới nước cốt dừa đặc lên bánh và rưới nước mắm chua ngọt xung quanh khi ăn.
+
+---
+
+## Món ăn: Canh khoai tây sườn non
+- **Mã món (ID):** canh-khoai-tay-suon-non
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 25 phút. Tổng: 40 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 320 calo, 22g protein, 28g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món canh củ quả nấu sườn thanh nhẹ bổ dưỡng, người miền Nam thường nêm thêm một chút xíu đường để nước canh có vị ngọt thanh dịu.
+
+### Nguyên liệu cần chuẩn bị:
+- 350 g Sườn non heo
+- 200 g Khoai tây
+- 100 g Cà rốt
+- 50 g Hành tây
+- 20 g Hành lá
+- 20 g ngò rí
+- 15 g Hạt nêm
+- 15 ml Nước mắm
+- 5 g Đường cát
+- 1200 ml Nước lọc
+
+### Cách làm (Steps):
+1. Sườn non chặt khúc vừa ăn
+2. chần qua nước sôi 2 phút để khử mùi
+3. rửa sạch lại. Khoai tây
+4. cà rốt gọt vỏ
+5. cắt miếng khối vừa ăn. Cho sườn vào nồi cùng nước lọc
+6. đun sôi rồi hạ lửa nhỏ ninh sườn trong 15 phút
+7. hớt bọt liên tục cho nước trong. Cho khoai tây và cà rốt vào hầm chung đến khi các loại củ chín mềm bở. Nêm hạt nêm
+8. nước mắm
+9. đường cho vừa khẩu vị
+10. thả hành tây cắt múi cau và hành ngò vào rồi tắt bếp.
+
+---
+
+## Món ăn: Nước đậu đen hạt sen
+- **Mã món (ID):** nuoc-dau-den-hat-sen
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 40 phút. Tổng: 55 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 160 calo, 5g protein, 32g carbs, 1g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** vegetarian
+- **Mô tả:** Thức uống giải nhiệt thanh lọc cơ thể rất được ưa chuộng tại miền Nam vào những ngày nắng nóng, giúp ngủ ngon và đẹp da.
+
+### Nguyên liệu cần chuẩn bị:
+- 100 g Đậu đen xanh lòng
+- 100 g Hạt sen tươi
+- 60 g Đường phèn
+- 2 lá Lá dứa
+- 1200 ml Nước lọc
+
+### Cách làm (Steps):
+1. Đậu đen rửa sạch
+2. nhặt bỏ hạt lép
+3. đem rang sơ trên chảo cho thơm (giúp nước đậu không bị chát). Cho đậu đen và nước lọc vào nồi ninh lửa nhỏ khoảng 20 phút. Cho hạt sen tươi và lá dứa vào nồi đun chung đến khi cả đậu và sen đều chín mềm mềm bùi. Cho đường phèn vào khuấy tan
+4. đun thêm 5 phút trên lửa riu riu để hạt sen ngấm đường. Vớt lá dứa ra
+5. để nguội
+6. dùng uống nóng hoặc thêm đá viên tùy thích.
+
+---
+
+## Món ăn: Hủ tiếu Nam Vang khô
+- **Mã món (ID):** hu-tieu-nam-vang-kho
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 45 phút. Tổng: 75 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 530 calo, 28g protein, 75g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Phiên bản hủ tiếu khô trộn xốt đậm đà, dọn kèm một chén nước dùng sườn ống thanh ngọt bên cạnh, là món ăn sáng/tối kinh điển tại Sài Gòn.
+
+### Nguyên liệu cần chuẩn bị:
+- 100 g Sợi hủ tiếu khô
+- 50 g Thịt bằm
+- 20 g Tôm sú luộc
+- 30 g Gan heo luộc
+- 2 quả Trứng cút
+- 15 g Tỏi phi vàng
+- 15 ml Hắc xì dầu
+- 10 ml Nước tương
+- 10 g Đường
+- 50 g Giá hẹ
+- 50 g tần ô ăn kèm
+- 300 ml Nước sườn ống ninh
+
+### Cách làm (Steps):
+1. Làm nước xốt trộn: Phi thơm tỏi
+2. cho hắc xì dầu
+3. nước tương
+4. đường và xíu nước sườn vào đun sôi kẹo lại. Trụng chín sợi hủ tiếu qua nước sôi
+5. vớt ra xóc đều với một chút dầu tỏi phi để không bị dính. Xào chín thịt bằm với xíu hạt nêm. Cho hủ tiếu vào tô
+6. rưới nước xốt trộn đều
+7. xếp tôm lột vỏ
+8. gan heo thái lát
+9. trứng cút bóc vỏ và thịt bằm lên trên
+10. rắc nhiều tỏi phi. Bày giá hẹ xung quanh
+11. dọn kèm chén nước dùng sườn ống nóng hổi rắc hành ngò.
+
+---
+
+## Món ăn: Canh bí đao nấu tôm tươi
+- **Mã món (ID):** canh-bi-dao-nau-tom-tuoi
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 12 phút. Tổng: 27 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 140 calo, 15g protein, 10g carbs, 3g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** eatclean
+- **Mô tả:** Món canh quốc dân trong mùa hè, bí đao tính mát kết hợp tôm tươi giã dập tiết ra vị ngọt lành, rất phù hợp cho thực đơn giảm cân giữ dáng.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Bí đao xanh
+- 100 g Tôm sú tươi
+- 10 g Hành tím
+- 15 g Hành lá
+- 15 g ngò rí
+- 10 g Hạt nêm
+- 15 ml Nước mắm
+- 2 g Tiêu xay
+- 900 ml Nước lọc
+
+### Cách làm (Steps):
+1. Bí đao gọt vỏ
+2. bỏ ruột
+3. rửa sạch rồi cắt lát mỏng hoặc thái sợi dày. Tôm lột vỏ
+4. bỏ chỉ đen
+5. đem giã dập sơ (không giã nhuyễn để nước canh ngọt và thịt tôm vẫn có độ giòn)
+6. ướp chút hành tím băm và hạt nêm. Cho xíu dầu ăn vào nồi
+7. phi thơm hành tím
+8. cho tôm vào đảo nhanh tay cho chuyển màu hồng. Đổ nước lọc vào đun sôi
+9. hớt sạch bọt để nước canh được trong veo. Thả bí đao vào nấu chín tới (khoảng 3 phút)
+10. nêm nước mắm cho vừa vặn
+11. rắc hành ngò cắt nhỏ và tiêu xay rồi tắt bếp ngay.
+
+---
+
+## Món ăn: Cá lóc nướng trui miền Tây
+- **Mã món (ID):** ca-loc-nuong-trui-mien-tay
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 20 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 340 calo, 35g protein, 12g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** eatclean
+- **Mô tả:** Trải nghiệm ẩm thực hoang dã trứ danh Nam Bộ, cá lóc không cần cạo vảy hay mổ ruột, xiên vào thanh tre rồi vùi hoàn toàn vào đống rơm khô đốt cháy.
+
+### Nguyên liệu cần chuẩn bị:
+- 700 g Cá lóc đồng
+- 20 g Rơm khô
+- 30 g Hành lá làm mỡ hành
+- 20 g Đậu phộng rang giã dập
+- 200 g Bánh tráng cuốn
+- 200 g bún tươi
+- 200 g rau sống
+- 60 ml Mắm me chấm kèm
+
+### Cách làm (Steps):
+1. Cá lóc rửa sạch nhớt bằng chanh muối
+2. để nguyên vảy
+3. nguyên con không mổ bụng. Dùng thanh tre xiên từ miệng cá dọc xuống đuôi. Cắm thanh tre xuống đất
+4. phủ kín rơm khô xung quanh cá và châm lửa đốt trui khoảng 15-20 phút đến khi rơm cháy rụi hoàn toàn. Vớt cá ra
+5. dùng dao cạo bỏ toàn bộ lớp vảy bị cháy đen bên ngoài
+6. lộ ra phần da cá vàng óng
+7. thịt bốc khói thơm phức. Tách đôi lưng cá
+8. bỏ ruột (hoặc giữ lại mật nếu ăn được vị đắng bùi)
+9. rưới mỡ hành và đậu phộng rang lên thớ thịt trắng phau. Cuốn thịt cá với bánh tráng
+10. bún
+11. rau rừng và chấm mắm me chua ngọt.
+
+---
+
+## Món ăn: Vịt om sấu
+- **Mã món (ID):** vit-om-sau
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 40 phút. Tổng: 60 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 450 calo, 25g protein, 10g carbs, 35g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn giải nhiệt mùa hè đặc trưng của Hà Nội.
+
+### Nguyên liệu cần chuẩn bị:
+- 1.2 kg Vịt cỏ
+- 10 quả Sấu tươi
+- 200 g Khoai môn
+- 40 g Gừng
+- 40 g sả
+- 30 g hành tím
+- 10 g rau ngổ
+- 15 g mùi tàu
+
+### Cách làm (Steps):
+1. Vịt xát muối gừng rửa sạch
+2. chặt miếng vừa ăn. Ướp vịt với hành
+3. sả
+4. gừng băm và gia vị. Xào săn thịt vịt. Đổ nước ngập thịt
+5. cho sấu và khoai môn vào ninh mềm. Dầm sấu lấy vị chua
+6. nêm lại gia vị
+7. rắc rau ngổ mùi tàu.
+
+---
+
+## Món ăn: Chả rươi Tứ Kỳ
+- **Mã món (ID):** cha-ruoi-tu-ky
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 15 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 320 calo, 20g protein, 5g carbs, 25g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản Hải Dương nức tiếng vào mùa rươi.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Rươi tươi
+- 150 g Thịt nạc vai băm
+- 2 quả Trứng gà
+- 5 g Vỏ quýt
+- 20 g lá lốt
+- 15 g hành hoa
+- 15 g thì là
+
+### Cách làm (Steps):
+1. Làm sạch rươi bằng nước ấm (làm lông). Đánh nhẹ rươi rồi trộn cùng thịt băm
+2. trứng
+3. vỏ quýt thái chỉ và các loại rau thơm. Nêm nước mắm
+4. tiêu. Chiên nhỏ lửa thành từng miếng tròn vàng đều hai mặt.
+
+---
+
+## Món ăn: Cá diếc om tương
+- **Mã món (ID):** ca-diec-om-tuong
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 60 phút. Tổng: 75 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 210 calo, 22g protein, 4g carbs, 12g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn dân dã, đậm đà hương vị đồng quê Bắc Bộ.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Cá diếc
+- 100 ml Tương bần
+- 50 g Riềng
+- 20 g gừng
+- 100 g khế chua
+- 30 g sả
+
+### Cách làm (Steps):
+1. Cá làm sạch. Riềng gừng thái lát. Lót riềng gừng
+2. khế dưới đáy nồi
+3. xếp cá lên trên. Đổ tương bần vào
+4. thêm chút nước nếu cần. Kho nhỏ lửa cho đến khi cá chín nhừ
+5. xương mềm và nước cạn sánh.
+
+---
+
+## Món ăn: Nộm rau muống tôm thịt
+- **Mã món (ID):** nom-rau-muong-tom-thit
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 5 phút. Tổng: 30 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 180 calo, 12g protein, 15g carbs, 8g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món nộm phổ biến trong bữa cơm gia đình miền Bắc.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Rau muống chẻ
+- 100 g Tôm tươi
+- 100 g Thịt ba chỉ
+- 40 g Đậu phộng
+- 2 quả chanh
+- 15 g tỏi
+- 2 quả ớt
+- 20 g rau kinh giới
+
+### Cách làm (Steps):
+1. Rau muống luộc sơ
+2. ngâm nước đá cho giòn. Tôm thịt luộc chín
+3. thái mỏng. Pha nước mắm chua ngọt. Trộn rau
+4. tôm
+5. thịt với nước mắm
+6. rắc đậu phộng và rau thơm.
+
+---
+
+## Món ăn: Canh hoa thiên lý thịt băm
+- **Mã món (ID):** canh-hoa-thien-ly-thit-bam
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 10 phút, Nấu 10 phút. Tổng: 20 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 150 calo, 10g protein, 5g carbs, 9g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món canh giải nhiệt, an thần.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Hoa thiên lý
+- 100 g Thịt nạc vai băm
+- 10 g Hành khô
+- 5 ml nước mắm
+- 6 g hạt nêm
+- 1 g tiêu xay
+
+### Cách làm (Steps):
+1. Hoa thiên lý rửa sạch.  Phi thơm hành
+2. xào thịt băm. Đổ nước vào đun sôi
+3. nêm gia vị. Cho hoa vào đun sôi bùng lại rồi tắt bếp ngay để giữ độ xanh giòn.
+
+---
+
+## Món ăn: Bê chao Mộc Châu
+- **Mã món (ID):** be-chao-moc-chau
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 5 phút. Tổng: 25 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 380 calo, 28g protein, 2g carbs, 28g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn đặc sản của vùng cao Mộc Châu, Sơn La.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Thịt bê non
+- 40 g Sả
+- 15 g Gừng
+- 10 g Vừng rang (Mè trắng)
+- 5 ml Nước mắm
+- 3 g Hạt nêm
+- 2 g Đường
+- 5 ml Dầu hào
+- 0.5 g Tiêu xay
+
+### Cách làm (Steps):
+1. Thịt bê thái miếng vừa ăn
+2. ướp gừng sả gia vị. Đun dầu thật nóng. Cho thịt vào chao nhanh tay (khoảng 1-2 phút) rồi vớt ra ngay. Rắc vừng rang lên trên
+3. chấm tương gừng.
+
+---
+
+## Món ăn: Xôi chim măng
+- **Mã món (ID):** xoi-chim-mang
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 45 phút. Tổng: 75 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 550 calo, 18g protein, 85g carbs, 15g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món xôi sang trọng thường dùng trong các dịp lễ tết hoặc đãi khách.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Gạo nếp cái hoa vàng
+- 1 con Chim bồ câu (hoặc chim ngói)
+- 100 g Hành tím phi
+- 20 g Hành khô
+- 4 g Muối
+- 10 ml Nước mắm
+- 3 g Hạt nêm
+- 1 g Tiêu xay
+- 20 ml Dầu hành
+
+### Cách làm (Steps):
+1. Đồ xôi nếp chín dẻo. Chim làm sạch
+2. băm nhỏ cả xương (nếu chim non) hoặc lọc thịt băm. Xào thịt chim với hành khô cho thật săn và thơm. Trộn thịt chim vào xôi
+3. đồ lại thêm 5 phút cho quyện vị. Rắc hành phi lên trên.
+
+---
+
+## Món ăn: Thịt lợn mán nướng lá mắc mật
+- **Mã món (ID):** thit-lon-man-nuong-la-mac-mat
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 20 phút. Tổng: 50 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 420 calo, 26g protein, 2g carbs, 35g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** keto
+- **Mô tả:** Hương vị núi rừng Tây Bắc.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Thịt lợn mán (hoặc lợn bản)
+- 30 g Lá mắc mật tươi
+- 15 ml Mật ong
+- 20 g Hành khô
+- 15 g Tỏi
+- 10 ml Nước mắm
+- 5 g Hạt nêm
+- 10 ml Dầu hào
+- 1 g Tiêu xay
+- 10 ml Dầu ăn
+
+### Cách làm (Steps):
+1. Thịt thái miếng vừa ăn
+2. ướp với gia vị và lá mắc mật vò nát. Xiên thịt xen kẽ với lá mắc mật. Nướng trên than hoa cho đến khi vàng đều
+3. tỏa mùi thơm.
+
+---
+
+## Món ăn: Canh khoai sọ móng giò
+- **Mã món (ID):** canh-khoai-so-mong-gio
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 45 phút. Tổng: 65 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 380 calo, 22g protein, 30g carbs, 20g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món canh ấm áp cho những ngày mưa hoặc trời lạnh.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Móng giò heo
+- 400 g Khoai sọ
+- 20 g Hành khô
+- 100 g Rau muống
+- 10 g mùi tàu
+- 10 ml Nước mắm
+- 6 g Muối
+- 5 g Hạt nêm
+- 0.5 g Tiêu xay
+
+### Cách làm (Steps):
+1. Móng giò chần sạch
+2. ninh mềm. Khoai sọ gọt vỏ
+3. bổ miếng
+4. xào qua với hành và gia vị. Cho khoai vào nồi móng giò hầm đến khi khoai mềm nhừ. Nêm gia vị
+5. rắc rau thơm.
+
+---
+
+## Món ăn: Cốm xào
+- **Mã món (ID):** com-xao
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 10 phút, Nấu 15 phút. Tổng: 25 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 350 calo, 4g protein, 75g carbs, 5g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** vegetarian
+- **Mô tả:** Tinh túy ẩm thực mùa thu Hà Nội.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Cốm tươi
+- 40 g Đường kính
+- 100 ml nước dừa tươi
+- 30 g dừa sợi
+
+### Cách làm (Steps):
+1. Nấu nước đường với nước dừa cho tan. Cho cốm vào đảo đều trên lửa nhỏ. Xào đến khi cốm dẻo quánh
+2. không dính chảo. Bày ra đĩa
+3. rắc dừa sợi lên trên.
+
+---
+
+## Món ăn: Gà chọi xào sả ớt
+- **Mã món (ID):** ga-troi-xao-sa-ot
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 15 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 310 calo, 32g protein, 4g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món nhậu khoái khẩu của nam giới miền Bắc.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Thịt gà chọi
+- 60 g Sả
+- 10 g ớt
+- 20 g tỏi
+- 15 g gừng
+- 5 g lá chanh
+
+### Cách làm (Steps):
+1. Gà chọi thái miếng mỏng. Ướp gà với gừng
+2. sả và gia vị. Phi thơm tỏi sả
+3. cho gà vào xào lửa lớn cho săn và giòn da. Cho ớt và lá chanh vào đảo đều rồi tắt bếp.
+
+---
+
+## Món ăn: Canh hến nấu bầu
+- **Mã món (ID):** canh-hen-nau-bau
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 10 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 140 calo, 15g protein, 10g carbs, 4g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món canh dân dã giải nhiệt ngày hè.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 kg Hến tươi
+- 1 quả nhỏ Bầu
+- 20 g Hành tím
+- 15 g thì là
+- 15 g hành lá
+- 10 ml Nước mắm
+- 5 g Bột canh
+- 5 g Hạt nêm
+- 0.5 g Tiêu xay
+- 5 g Gừng
+
+### Cách làm (Steps):
+1. Luộc hến lấy nước
+2. đãi lấy ruột. Bầu gọt vỏ
+3. băm hoặc thái sợi. Xào ruột hến với hành khô cho thơm. Đổ nước luộc hến vào đun sôi
+4. cho bầu vào nấu chín tới. Rắc hành lá
+5. thì là.
+
+---
+
+## Món ăn: Trứng đúc thịt mộc nhĩ
+- **Mã món (ID):** trung-duc-thit-moc-nhi
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 10 phút, Nấu 10 phút. Tổng: 20 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 280 calo, 18g protein, 3g carbs, 22g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn cơm thường ngày rất đưa miệng.
+
+### Nguyên liệu cần chuẩn bị:
+- 3 quả Trứng gà
+- 100 g Thịt nạc vai băm
+- 10 g Mộc nhĩ
+- 10 g hành khô
+- 5 ml Nước mắm
+- 3 g Hạt nêm
+- 1 g Tiêu xay
+
+### Cách làm (Steps):
+1. Mộc nhĩ ngâm nở
+2. băm nhỏ. Đánh tan trứng với thịt băm
+3. mộc nhĩ và gia vị. Đun nóng dầu
+4. đổ hỗn hợp vào chiên vàng hai mặt hoặc hấp cách thủy.
+
+---
+
+## Món ăn: Cá chép om dưa
+- **Mã món (ID):** ca-chep-om-dua
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 30 phút. Tổng: 55 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 350 calo, 28g protein, 12g carbs, 20g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn phổ biến trong các nhà hàng miền Bắc.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 kg Cá chép
+- 300 g Dưa cải muối chua
+- 50 g tóp mỡ
+- 200 g cà chua
+- 20 g hành khô
+- 20 g thì là
+- 20 g hành lá
+- 15 ml Nước mắm
+- 10 g Hạt nêm
+- 1 củ Nghệ tươi
+- 1 quả ớt
+
+### Cách làm (Steps):
+1. Cá rán sơ. Xào cà chua
+2. dưa chua và tóp mỡ. Đổ nước vào đun sôi dưa. Cho cá vào om khoảng 15-20 phút. Rắc hành
+3. thì là
+4. ăn nóng cùng bún.
+
+---
+
+## Món ăn: Giá đỗ xào lòng gà
+- **Mã món (ID):** gia-do-xao-long-ga
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 10 phút. Tổng: 25 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 220 calo, 18g protein, 10g carbs, 12g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món xào nhanh gọn, phổ biến.
+
+### Nguyên liệu cần chuẩn bị:
+- 2 bộ Lòng gà
+- 300 g Giá đỗ
+- 15 g Hành lá
+- 15 g hành khô
+- 5 ml Nước mắm
+- 5 g Hạt nêm
+- 2 g Muối
+- 1 g Tiêu xay
+- 5 g Gừng
+
+### Cách làm (Steps):
+1. Lòng gà làm sạch
+2. thái miếng ướp gia vị. Phi thơm hành
+3. xào chín lòng gà. Cho giá đỗ vào xào lửa lớn nhanh tay. Nêm gia vị
+4. hành lá rồi tắt bếp.
+
+---
+
+## Món ăn: Thịt trâu lá lồm
+- **Mã món (ID):** thit-trau-la-lom
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 40 phút. Tổng: 60 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 290 calo, 30g protein, 5g carbs, 15g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản của người Mường, Hòa Bình.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Thịt trâu tươi
+- 150 g Lá lồm (lá chua)
+- 30 g tỏi
+- 3 g mắc khén
+- 10 ml Nước mắm
+- 5 g Bột canh
+- 1 quả ớt
+
+### Cách làm (Steps):
+1. Thịt trâu thái miếng
+2. ướp tỏi gia vị. Lá lồm vò nát. Xào sơ thịt trâu rồi đổ nước ninh cùng lá lồm cho đến khi thịt mềm
+3. nước hơi sánh.
+
+---
+
+## Món ăn: Nộm sứa Thái Bình
+- **Mã món (ID):** nom-sua-thai-binh
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 0 phút. Tổng: 30 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 160 calo, 8g protein, 12g carbs, 10g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản vùng biển Thái Bình.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Sứa đã sơ chế
+- 200 g Xoài xanh
+- 50 g cà rốt
+- 40 g đậu phộng
+- 10 g vừng
+- 10 g rau thơm
+- 1 quả chanh
+- 10 g tỏi
+- 1 quả ớt
+
+### Cách làm (Steps):
+1. Sứa rửa sạch
+2. chần qua nước ấm
+3. để ráo. Xoài
+4. cà rốt bào sợi. Pha nước trộn nộm. Trộn tất cả các nguyên liệu
+5. rắc đậu phộng mè rang.
+
+---
+
+## Món ăn: Canh lá đắng Thanh Hóa
+- **Mã món (ID):** canh-la-dang-thanh-hoa
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 20 phút. Tổng: 35 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 250 calo, 20g protein, 5g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn đặc sản của vùng núi Thanh Hóa.
+
+### Nguyên liệu cần chuẩn bị:
+- 50 g Lá đắng rừng
+- 400 g lòng heo hoặc thịt băm
+- 30 g mẻ
+- 10 g mắm tôm
+- 15 g hành tỏi
+- 30 g sả
+- 2 quả ớt
+- 5 g Hạt nêm
+- 3 g Bột canh
+
+### Cách làm (Steps):
+1. Lá đắng thái nhỏ. Phi thơm hành tỏi sả
+2. xào lòng heo/thịt. Cho mẻ mắm tôm vào đảo cùng. Đổ nước đun sôi rồi cho lá đắng vào nấu chín.
+
+---
+
+## Món ăn: Đậu phụ Mơ rán
+- **Mã món (ID):** dau-phu-mo
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 5 phút, Nấu 10 phút. Tổng: 15 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 180 calo, 14g protein, 4g carbs, 12g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** vegetarian
+- **Mô tả:** Đặc sản nức tiếng của Hà Nội cổ.
+
+### Nguyên liệu cần chuẩn bị:
+- 5 bìa Đậu phụ Mơ
+- 30 ml mắm tôm
+- 2 quả chanh
+- 1 quả ớt
+- 10 g Đường kính
+- 2 ml Rượu trắng
+
+### Cách làm (Steps):
+1. Đậu phụ rửa sơ
+2. để ráo. Rán vàng hoặc luộc nóng. Chấm mắm tôm đánh bông với chanh ớt.
+
+---
+
+## Món ăn: Canh cá nấu ám
+- **Mã món (ID):** canh-ca-nau-am
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 25 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 280 calo, 24g protein, 10g carbs, 15g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Một kiểu nấu canh cá cổ của người Hà Nội.
+
+### Nguyên liệu cần chuẩn bị:
+- 700 g Cá quả (cá chuối)
+- 200 g rau cần
+- 3 quả quả dọc
+- 150 g cà chua
+- 20 g hành hoa
+- 20 g thì là
+- 15 ml Nước mắm
+- 8 g Bột canh
+- 10 g Nghệ tươi
+- 5 g Gừng
+
+### Cách làm (Steps):
+1. Cá rán sơ. Đun nước với quả dọc/tai chua lấy vị chua. Cho cá và cà chua vào nấu chín. Cho rau cần vào đun sôi bùng
+2. rắc hành thì là.
+
+---
+
+## Món ăn: Bánh chưng Bờ Đậu
+- **Mã món (ID):** banh-chung-bo-dau
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch, dinner
+- **Thời gian:** Chuẩn bị 360 phút, Nấu 600 phút. Tổng: 960 phút.
+- **Độ khó:** hard
+- **Khẩu phần:** 4 người ăn.
+- **Dinh dưỡng (ước tính):** 550 calo, 18g protein, 75g carbs, 20g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản bánh chưng nổi tiếng của làng nghề Bờ Đậu - Thái Nguyên, làm từ nếp cái hoa vàng Định Hóa và thịt heo sạch.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 kg Gạo nếp nương
+- 400 g Đậu xanh không vỏ
+- 500 g Thịt ba chỉ heo
+- 20 lá Lá dong
+- 10 sợi Lạt tre
+- 2 muỗng cà phê Muối
+- 1 muỗng cà phê Tiêu xay
+
+### Cách làm (Steps):
+1. Ngâm gạo nếp và đậu xanh qua đêm cho nở mềm
+2. Đậu xanh hấp chín rồi giã nhuyễn nắm thành viên
+3. Thịt ba chỉ cắt miếng dài ướp muối và nhiều tiêu
+4. Xếp lá dong vào khuôn hoặc gói vo tay
+5. Cho một lớp nếp rồi đến đậu xanh thịt heo rồi thêm lớp nếp lên trên
+6. Gói chặt tay và buộc bằng lạt tre
+7. Xếp bánh vào nồi lớn luộc liên tục trong 8 đến 10 tiếng
+8. Vớt bánh ra rửa sạch nước hàng rồi ép bớt nước dồn chặt
+
+---
+
+## Món ăn: Bún ốc nguội Hà Nội
+- **Mã món (ID):** bun-oc-nguoi-ha-noi
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch
+- **Thời gian:** Chuẩn bị 120 phút, Nấu 45 phút. Tổng: 165 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 380 calo, 15g protein, 50g carbs, 8g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** light
+- **Mô tả:** Món ăn mộc mạc tinh tế của Hà Nội, nước dùng trong vắt vị chua thanh dịu từ dấm bỗng kết hợp ốc mít giòn sần sật.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 kg Ốc mít
+- 500 g Bún lá nhỏ
+- 200 ml Dấm bỗng nếp
+- 2 muỗng canh Ớt chưng
+- 3 củ Hành tím
+- 1 nhánh Gừng
+- 2 cây Sả
+- 1 muỗng cà phê Muối
+- 2 muỗng canh Nước mắm
+
+### Cách làm (Steps):
+1. Ngâm ốc với nước vo gạo và ớt để sạch bùn đất
+2. Luộc ốc với sả gừng vừa chín tới rồi khêu lấy thịt ốc bỏ phần ruột bẩn
+3. Lọc lấy phần nước luộc ốc trong suốt để riêng
+4. Đun sôi nước luộc ốc nêm nếm nước mắm muối và dấm bỗng nếp cho vị chua dịu ngọt thanh
+5. Để nước dùng thật nguội
+6. Khi ăn xếp bún lá ra đĩa
+7. Múc ốc ra bát nước dùng nguội thêm chút ớt chưng cay nồng
+
+---
+
+## Món ăn: Khâu nhục Lạng Sơn
+- **Mã món (ID):** khau-nhuc-lang-son
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** dinner
+- **Thời gian:** Chuẩn bị 60 phút, Nấu 240 phút. Tổng: 300 phút.
+- **Độ khó:** hard
+- **Khẩu phần:** 4 người ăn.
+- **Dinh dưỡng (ước tính):** 650 calo, 25g protein, 15g carbs, 55g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn truyền thống của người Tày Ngạn ở Lạng Sơn, thịt ba chỉ chế biến công phu, béo ngậy mềm rục tan trong miệng.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 kg Thịt ba chỉ heo
+- 20 g Địa liền
+- 1 quả Thảo quả
+- 2 bông Tai vị
+- 3 viên Chao đỏ
+- 2 muỗng canh Mật ong
+- 1 củ Tỏi băm
+- 2 củ Hành tím băm
+- 300 g Khoai môn
+- 500 ml Dầu ăn
+
+### Cách làm (Steps):
+1. Luộc sơ thịt ba chỉ rồi dùng kim châm thật kỹ lên lớp da heo
+2. Thoa đều mật ong lên phần da rồi đem chiên ngập dầu cho da phồng rộp vàng giòn
+3. Ngâm miếng thịt vừa chiên vào nước lạnh cho phần da mềm ra rồi thái miếng dày
+4. Khoai môn gọt vỏ cắt miếng dày rồi chiên vàng đều
+5. Trộn hỗn hợp gia vị gồm chao đỏ tỏi hành băm địa liền thảo quả tai vị xay nhuyễn
+6. Ướp thịt với hỗn hợp gia vị trong 30 phút
+7. Xếp khoai môn xuống đáy tô rồi xếp thịt lên trên tưới nước ướp vào
+8. Cho vào nồi hấp cách thủy liên tục từ 3 đến 4 tiếng cho thịt mềm nhừ nhuyễn
+
+---
+
+## Món ăn: Bún tôm Châu Trúc
+- **Mã món (ID):** bun-tom-chau-truc
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 20 phút. Tổng: 50 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 350 calo, 18g protein, 55g carbs, 5g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** light
+- **Mô tả:** Món bún độc đáo Bình Định, dùng tôm đất đầm Châu Trúc tươi sống giã nhuyễn quết hành tiêu và chan nước bún ép tại chỗ.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Tôm đất tươi sống
+- 300 g Gạo làm bún
+- 20 g Hành lá
+- 1 muỗng cà phê Tiêu xay
+- 1 quả Ớt tươi
+- 10 củ Củ nén
+- 1 ít Gia vị thông dụng
+
+### Cách làm (Steps):
+1. Tôm đất rửa sạch bỏ đầu đuôi rồi cho vào cối giã cùng củ nén và tiêu muối
+2. Gạo ngâm xay mịn thành bột rồi ép khuôn trực tiếp vào nồi nước sôi để làm sợi bún tươi
+3. Múc một muỗng tôm giã cho vào tô thêm chút bột ngọt và hành lá
+4. Ép bún chín tới vớt ngay cho vào tô tôm
+5. Chan nước luộc bún đang sôi sùng sục vào tô để làm chín tôm
+6. Quấy đều cho tôm bông lên rắc thêm tiêu và thưởng thức nồng nàn
+
+---
+
+## Món ăn: Thắng cố Lào Cai
+- **Mã món (ID):** thang-co-lao-cai
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 45 phút, Nấu 120 phút. Tổng: 165 phút.
+- **Độ khó:** hard
+- **Khẩu phần:** 4 người ăn.
+- **Dinh dưỡng (ước tính):** 480 calo, 28g protein, 5g carbs, 35g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** Keto / Low-carb
+- **Mô tả:** Món ăn đặc trưng tinh túy của người H'Mông vùng cao Lào Cai, nấu từ thịt, nội tạng ngựa kết hợp 12 loại thảo mộc núi rừng.
+
+### Nguyên liệu cần chuẩn bị:
+- 1.5 kg Thịt ngựa và nội tạng ngựa
+- 50 g Lá thắng cố
+- 2 quả Thảo quả
+- 1 củ Địa liền
+- 10 g Quế chi
+- 4 cây Sả
+- 1 củ Gừng
+- 1 ít Gia vị thông dụng
+- 50 ml Rượu ngô
+
+### Cách làm (Steps):
+1. Làm sạch nội tạng ngựa thật kỹ bằng muối và rượu ngô để khử mùi hôi
+2. Chặt thịt và nội tạng thành các miếng vừa ăn
+3. Rang thơm các loại gia vị thảo mộc gồm thảo quả quế sả địa liền gừng
+4. Cho thịt và nội tạng vào chảo lớn xào săn với gia vị thảo mộc
+5. Đổ nước ngập thịt đun sôi sùng sục rồi hạ lửa ninh liu riu trong vài tiếng
+6. Thường xuyên hớt bọt để nước dùng trong ngọt đậm đà
+7. Ăn kèm lá thắng cố và chấm muối ớt đặc trưng vùng cao
+
+---
+
+## Món ăn: Bún chìa Buôn Ma Thuột
+- **Mã món (ID):** bun-chia-buon-ma-thuot
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 120 phút. Tổng: 150 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 550 calo, 32g protein, 55g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món bún độc đáo xứ ban mê Đắk Lắk với khúc giò chìa heo lớn hầm mềm nhừ dai dẻo dồi dào dinh dưỡng.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 kg Giò chìa heo
+- 500 g Xương ống bò
+- 500 g Bún sợi lớn
+- 5 nhánh Sả cây
+- 1 củ Hành tây
+- 1 muỗng canh Mắm ruốc Huế
+- 2 muỗng canh Dầu điều
+- 20 g Hành lá
+- 100 g Giá đỗ
+- 1 ít Gia vị
+
+### Cách làm (Steps):
+1. Trần sơ xương ống bò và giò chìa heo trong nước sôi rồi rửa sạch
+2. Ninh xương ống bò với hành tây để lấy nước dùng ngọt trong
+3. Cho giò chìa vào nồi ninh cùng sả cây đập dập đến khi thịt chín mềm dẻo
+4. Hòa mắm ruốc với nước lọc lấy nước trong đổ vào nồi nước dùng
+5. Phi thơm hành tím với dầu màu điều rồi trút vào nồi nước dùng để tạo màu sắc bắt mắt
+6. Nếm gia vị muối đường cho vừa ăn
+7. Trụng bún xếp vào tô đặt một khúc giò chìa lớn lên trên chan nước dùng ngập bún rắc hành lá hành tây xắt mỏng
+
+---
+
+## Món ăn: Pa pỉnh tộp (Cá suối nướng Tây Bắc)
+- **Mã món (ID):** pa-pinh-top-ca-suoi-nuong-tay-bac
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 30 phút. Tổng: 60 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 320 calo, 22g protein, 2g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** Keto / Low-carb
+- **Mô tả:** Món cá nướng gập đặc sản đỉnh cao của đồng bào Thái Tây Bắc, dậy mùi mắc khén, hạt dổi hoang dã.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 con Cá chép suối
+- 2 muỗng cà phê Hạt mắc khén
+- 2 hạt Hạt dổi
+- 1 củ Gừng
+- 3 cây Sả
+- 2 quả Ớt tươi
+- 50 g Rau thơm các loại
+- 10 củ Hành tăm
+- 1 muỗng cà phê Muối
+
+### Cách làm (Steps):
+1. Mổ cá dọc sống lưng từ đầu xuống đuôi để gập cá dễ dàng rửa sạch bỏ mật không cạo vảy
+2. Khía các đường nhẹ ngoài da cá để thấm gia vị
+3. Giã nhuyễn mắc khén hạt dổi gừng sả ớt hành tăm và các loại rau thơm
+4. Nhồi hỗn hợp gia vị dồi dào vào bên trong bụng cá
+5. Gập ngang thân cá lại sao cho đầu và đuôi chạm nhau
+6. Kẹp cá vào vỉ tre hoặc vỉ nướng chuyên dụng
+7. Nướng cá liu riu trên bếp than hồng xoay lật đều tay cho thịt chín đều vàng ươm bên ngoài và không bị khô
+
+---
+
+## Món ăn: Bún nước Bình Định
+- **Mã món (ID):** bun-nuoc-binh-dinh
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 15 phút. Tổng: 35 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 390 calo, 18g protein, 55g carbs, 6g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** light
+- **Mô tả:** Món ăn bình dị Quy Nhơn, bún tươi làm cơ quy trình khép kín chan nước sôi trực tiếp lên lòng tôm thịt bò băm tươi rói.
+
+### Nguyên liệu cần chuẩn bị:
+- 50 g Thịt bò mềm
+- 50 g Tôm tươi bóc vỏ
+- 150 g Bún gạo tươi
+- 30 g Hành lá
+- 1 muỗng cà phê Tiêu đen
+- 1 quả Ớt tươi giã
+- 0 g Muối
+- 1 ít Bột ngọt
+
+### Cách làm (Steps):
+1. Băm nhỏ tôm tươi và thịt bò rồi quết đều với chút muối tiêu và bột ngọt
+2. Cho hành lá xắt thật nhiều vào đáy tô cùng ớt giã và tiêu
+3. Múc hỗn hợp tôm thịt bò quết vào tô hành
+4. Ép bún tươi trực tiếp vào nồi nước sôi kế bên luộc chín vớt ra cho ngay vào tô hành
+5. Múc nước luộc bún đang sôi sùng sục chan thẳng vào tô quấy nhanh tay để làm chín tôm thịt bò bông lên
+6. Ăn kèm bánh tráng nướng giòn rụm
+
+---
+
+## Món ăn: Don Quảng Ngãi
+- **Mã món (ID):** don-quang-ngai
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 30 phút. Tổng: 60 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 280 calo, 12g protein, 35g carbs, 3g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** light
+- **Mô tả:** Đặc sản độc nhất vô nhị từ sông Trà sông Vệ, nước don luộc ngọt dịu tự nhiên ăn kèm bánh tráng nướng bẻ nhỏ.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 kg Con don tươi
+- 2 cái Bánh tráng
+- 20 g Hành tây
+- 15 g Hành lá
+- 3 quả Ớt xiêm xanh
+- 1 muỗng cà phê Tiêu xay
+- 1 muỗng canh Nước mắm
+- 1 ít Gia vị
+
+### Cách làm (Steps):
+1. Ngâm don nhiều lần trong nước sạch để nhả hết cát bẩn
+2. Cho don vào nồi luộc với nước sâm sấp đến khi don há miệng
+3. Đổ don ra rổ đãi lấy phần ruột nhỏ xíu và gạn lấy phần nước luộc trong vắt ngọt lịm
+4. Đun sôi lại nước luộc don nêm chút nước mắm muối bột ngọt cho vừa miệng
+5. Cho ruột don vào tô thêm thật nhiều hành lá và hành tây cắt mỏng cùng ớt xiêm bẻ đôi
+6. Chan nước dùng nóng hổi lên trên rắc tiêu xay
+7. Bẻ bánh tráng nướng thả vào tô cho ngấm nước rồi thưởng thức
+
+---
+
+## Món ăn: Hủ tiếu mực Sài Gòn
+- **Mã món (ID):** hu-tieu-muc-sai-gon
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, dinner
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 60 phút. Tổng: 85 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 420 calo, 20g protein, 58g carbs, 9g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn đường phố Sài Gòn hiện đại, mực ống tươi giòn kết hợp nước dùng súp thanh ngọt ninh từ mực khô và sườn heo.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Mực ống tươi
+- 150 g Thịt heo băm
+- 500 g Xương ống heo
+- 2 con Mực khô nhỏ
+- 400 g Hủ tiếu khô
+- 30 g Cần tây
+- 20 g Hành lá
+- 2 muỗng canh Hành tím phi
+- 1 củ Củ cải trắng
+- 1 ít Gia vị
+
+### Cách làm (Steps):
+1. Ninh xương ống heo với củ cải trắng và mực khô đã nướng thơm để tạo nước dùng ngọt đậm đà
+2. Làm sạch mực ống khía hoa rồi cắt khoanh vừa ăn
+3. Trộn thịt băm với hành tím gia vị tiêu rồi vo viên nhỏ thả vào nồi nước dùng nấu chín
+4. Chần chín mực ống trong nồi nước sôi riêng để giữ mực giòn không bị dai
+5. Trụng sợi hủ tiếu mềm vừa tới cho vào tô thêm mỡ hành hành phi
+6. Xếp mực ống chín giòn thịt băm viên lên tô hủ tiếu
+7. Chan nước dùng nóng hổi ngập mặt rắc cần tây hành lá và chút tiêu
+
+---
+
+## Món ăn: Bún nước lèo Sóc Trăng
+- **Mã món (ID):** bun-nuoc-leo-soc-trang
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 60 phút. Tổng: 90 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 420 calo, 22g protein, 55g carbs, 10g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản kết hợp tinh tế tinh hoa ẩm thực Kinh - Khmer - Hoa với nước dùng mắm bò hóc thanh ngọt tự nhiên kết hợp ngải bún thơm nồng.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Bún sợi nhỏ
+- 100 g Mắm bò hóc
+- 300 g Cá lóc
+- 100 g Tôm tươi
+- 100 g Thịt heo quay
+- 50 g Ngải bún
+- 3 cây Sả
+- 5 củ Hành tím
+- 100 g Rau ăn kèm
+
+### Cách làm (Steps):
+1. Nấu rã mắm bò hóc với nước sôi rồi lọc lấy nước cốt trong bỏ cặn bã
+2. Đập dập ngải bún sả và hành tím rồi thả vào nồi nước dùng nấu cho dậy mùi thơm
+3. Luộc chín cá lóc và tôm tươi trong nồi nước dùng rồi vớt ra gỡ lấy thịt cá lóc sạch xương lột vỏ tôm
+4. Nêm nếm lại nồi nước dùng với chút muối và đường phèn cho vừa vị ngọt thanh dịu đặc trưng
+5. Trụng bún sợi nhỏ cho vào tô xếp thịt cá lóc tôm và thịt heo quay cắt miếng lên trên mặt
+6. Chan nước dùng nóng hổi ngập mặt bún rồi rắc hẹ xắt nhỏ ăn kèm các loại rau sống miền Tây
+
+---
+
+## Món ăn: Bánh mì phá lấu Sài Gòn
+- **Mã món (ID):** banh-mi-pha-lau-sai-gon
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 45 phút, Nấu 90 phút. Tổng: 135 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 480 calo, 25g protein, 45g carbs, 22g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** high-fat
+- **Mô tả:** Món ăn đường phố kinh điển của Sài Gòn với nội tạng heo hoặc bò hầm mềm béo ngậy trong súp nước cốt dừa thơm nức vị ngũ vị hương.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 cái Bánh mì
+- 500 g Lòng bò hoặc lòng heo
+- 200 ml Nước cốt dừa
+- 1 gói Ngũ vị hương
+- 2 bông Đại hồi
+- 1 muỗng canh Tỏi băm
+- 1 muỗng canh Hành băm
+- 2 muỗng canh Nước tắc
+
+### Cách làm (Steps):
+1. Sơ chế và bóp lòng bò thật kỹ với muối gừng và giấm để khử sạch mùi hôi đặc trưng
+2. Ướp lòng với gói ngũ vị hương tỏi hành băm nước tương đường tiêu trong khoảng 30 phút cho ngấm
+3. Phi thơm tỏi hành băm trên chảo rồi cho lòng bò vào xào săn lại
+4. Đổ nước dừa dão và đại hồi vào nồi hầm lòng bò liu riu trên lửa nhỏ cho đến khi thịt mềm
+5. Thêm nước cốt dừa đặc vào nồi nấu sôi trở lại nêm nếm gia vị vừa miệng béo ngọt mặn hài hòa
+6. Dùng kéo cắt nhỏ phá lấu cho vào chén chan nước sốt nóng hổi lên rồi ăn kèm bánh mì giòn chấm mắm tắc chua ngọt
+
+---
+
+## Món ăn: Bún suông Trà Vinh
+- **Mã món (ID):** bun-suong-tra-vinh
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch, dinner
+- **Thời gian:** Chuẩn bị 40 phút, Nấu 60 phút. Tổng: 100 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 410 calo, 20g protein, 56g carbs, 12g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món bún độc đáo của Trà Vinh với sợi chả tôm được quết dai khéo léo tạo hình giống con suông thả vào súp tương hột đậm đà.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Tôm đất tươi
+- 200 g Bún sợi nhỏ
+- 500 g Xương ống heo
+- 2 muỗng canh Tương hột giã nhuyễn
+- 2 muỗng canh Nước cốt me
+- 1 muỗng canh Dầu điều
+- 1 muỗng canh Tỏi băm
+- 100 g Rau sống ăn kèm
+
+### Cách làm (Steps):
+1. Ninh xương ống heo với nước sạch để làm phần nước súp ngọt trong
+2. Lột vỏ tôm đất rút chỉ đen rồi giã nhuyễn quết với đầu hành tiêu muối băm nhỏ đến khi hỗn hợp chả đạt độ dai dẻo
+3. Cho phần chả tôm đã quết dai vào túi bắt kem cắt một đầu nhỏ vừa phải
+4. Phi tỏi băm thơm với dầu màu điều rồi cho tương hột giã nhuyễn vào xào trút toàn bộ vào nồi nước dùng hầm xương
+5. Thêm nước cốt me vào nồi nêm nếm gia vị cho ra vị nước dùng chua mặn ngọt thanh dịu
+6. Bóp túi bắt kem nặn chả tôm thành các sợi dài tròn thẳng vào nồi nước dùng đang sôi sùng sục đến khi nổi lên là chín
+7. Trụng bún cho vào tô xếp các sợi suông tôm lên trên rồi chan nước dùng nóng hổi ăn kèm rau sống
+
+---
+
+## Món ăn: Bánh mì xíu mại Đà Lạt
+- **Mã món (ID):** banh-mi-xiu-mai-da-lat
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 30 phút. Tổng: 50 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 390 calo, 18g protein, 42g carbs, 16g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn sáng ấm áp giữa tiết trời se lạnh Đà Lạt gồm viên xíu mại mềm thịt ngọt chan súp thanh thanh ăn cùng bánh mì giòn.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Thịt heo xay có mỡ
+- 50 g Củ sắn (đậu)
+- 2 cái Bánh mì
+- 300 g Xương heo nạc
+- 30 g Hành lá
+- 2 muỗng canh Hành tím băm
+- 0 muối đường hạt nêm nước mắm Gia vị
+
+### Cách làm (Steps):
+1. Củ sắn gọt vỏ băm nhỏ vắt thật kiệt nước rồi đem trộn đều với thịt heo xay hành tím băm muối tiêu đường
+2. Vo thịt chặt tay thành các viên xíu mại nhỏ vừa ăn
+3. Ninh xương heo nạc với nước để lấy nước dùng ngọt thanh tự nhiên
+4. Thả nhẹ nhàng các viên xíu mại vào nồi nước dùng xương heo đun liu riu trên lửa nhỏ cho chín mềm dẻo
+5. Nêm nếm nước súp vừa vị thanh nhạt không quá mặn
+6. Múc xíu mại kèm nước súp nóng hổi ra chén nhỏ rắc thật nhiều hành lá xắt nhỏ và thêm muỗng sa tế cay
+7. Chấm bánh mì giòn rụm vào ăn nóng ngay khi còn bốc khói
+
+---
+
+## Món ăn: Bún đỏ Buôn Ma Thuột
+- **Mã món (ID):** bun-do-buon-ma-thuot
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 50 phút. Tổng: 80 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 450 calo, 22g protein, 58g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn bình dân đặc sắc của thủ phủ cà phê với sợi bún lớn nhuộm màu đỏ gạch từ dầu điều nấu cùng riêu cua đồng và trứng cút.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Bún sợi lớn
+- 300 g Cua đồng xay
+- 5 quả Trứng cút
+- 100 g Thịt heo băm
+- 1 quả Trứng gà
+- 2 muỗng canh Hạt điều màu
+- 50 g Rau cải ngọt
+- 50 g Giá đỗ
+
+### Cách làm (Steps):
+1. Giã lọc cua đồng xay với nước sạch rồi đun sôi liu riu cho mảng riêu cua kết tủa nổi lên vớt ra để riêng
+2. Trộn mảng riêu cua với thịt băm trứng gà và gia vị đem hấp chín thành bánh chả riêu cua
+3. Thắng hạt điều màu lấy phần dầu điều đỏ trút vào nồi nước dùng cua để nhuộm màu sợi bún đỏ rực
+4. Cho trứng cút luộc chín bóc vỏ vào nồi nước dùng đun cùng
+5. Thả bún sợi lớn vào nồi nước dùng điều nấu liu riu cho thấm màu đỏ và sợi bún chín mềm dẻo
+6. Trụng rau cải ngọt giá đỗ đặt đáy tô xếp bún sợi lớn lên chan nước dùng nóng cùng trứng cút và chả riêu cắt miếng
+
+---
+
+## Món ăn: Bánh tôm Hồ Tây
+- **Mã món (ID):** banh-tom-ho-tay
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 20 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 360 calo, 14g protein, 48g carbs, 12g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món quà bánh lâu đời tinh tế của Hà Nội với tôm tươi ngọt lịm nguyên con nằm trên lớp vỏ bột chiên khoai lang sợi giòn tan.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Tôm tươi nguyên con
+- 200 g Khoai lang ngọt
+- 100 g Bột mì
+- 20 g Bột năng
+- 1 muỗng cà phê Bột nghệ
+- 2 muỗng canh Nước mắm
+- 50 g Đu đủ xanh
+- 100 g Rau sống
+
+### Cách làm (Steps):
+1. Khoai lang gọt vỏ nạo sợi nhỏ ngâm ngay vào nước muối loãng cho bớt nhựa rồi vớt ra ráo nước
+2. Hòa bột mì bột năng bột nghệ nước lọc thành hỗn hợp sệt mịn vừa phải rồi trộn khoai lang sợi vào đều
+3. Tôm rửa sạch cắt bớt râu chân dài đem ướp chút muối tiêu cho đậm vị
+4. Múc một vá hỗn hợp bột kèm khoai lang sợi nạo rồi đặt nhẹ nhàng 1 đến 2 con tôm lên trên mặt bánh
+5. Thả nhẹ vá bánh vào chảo dầu nóng già chiên ngập dầu trên lửa vừa cho bánh chín vàng ruộm đều
+6. Vớt bánh ra khay thấm ráo dầu cắt miếng vừa ăn kèm rau sống và nước mắm đu đủ chua ngọt
+
+---
+
+## Món ăn: Bún kèn Phú Quốc
+- **Mã món (ID):** bun-ken-phu-quoc
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 40 phút. Tổng: 70 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 460 calo, 24g protein, 52g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản biển Đảo Ngọc lạ miệng với thịt cá biển luộc giã nhuyễn bông xào thơm nức vị bột cà ri và nước cốt dừa béo ngậy.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Cá ngân hoặc cá nhàu tươi
+- 200 g Bún tươi
+- 250 ml Nước cốt dừa
+- 1 muỗng canh Bột cà ri
+- 50 g Đu đủ xanh bào sợi
+- 50 g Giá đỗ
+- 2 muỗng canh Hành tỏi băm
+- 30 g Rau thơm
+
+### Cách làm (Steps):
+1. Luộc chín cá biển tươi gỡ bỏ sạch xương lấy phần thịt cá đem đi giã hoặc xay nhuyễn cho bông mịn lên
+2. Phi thơm hành tỏi băm cùng bột cà ri trên chảo rồi cho thịt cá xay vào đảo đều xào săn thơm phức
+3. Đổ nước luộc cá lọc trong và nước cốt dừa vào nấu sôi liu riu nêm nếm gia vị đậm đà tạo độ sệt nhẹ
+4. Xếp giá đỗ đu đủ xanh bào sợi và bún tươi sợi nhỏ vào đáy tô
+5. Rưới phần nước sốt cà ri cá sệt béo ngậy nóng hổi lên trên mặt bún
+6. Trộn đều tô bún cùng rau thơm xắt nhỏ và chút nước mắm chua ngọt đậm đà vùng biển Phú Quốc
+
+---
+
+## Món ăn: Bánh mì nướng muối ớt
+- **Mã món (ID):** banh-mi-nuong-muoi-ot
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 10 phút. Tổng: 25 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 320 calo, 10g protein, 38g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn vặt đường phố hot trend của giới trẻ Nam Bộ với bánh mì ép dẹp phết nước sốt muối ớt bơ rồi đem nướng giòn rụm thơm phức.
+
+### Nguyên liệu cần chuẩn bị:
+- 2 cái Bánh mì cũ
+- 2 muỗng canh Bơ lạt
+- 1 muỗng canh Sa tế ớt
+- 1 muỗng cà phê Muối tôm hoặc muối ớt
+- 20 g Chà bông heo
+- 2 muỗng canh Tép mỡ hành
+- 1 muỗng canh Sốt mayonnaise
+- 1 muỗng canh Tương ớt
+
+### Cách làm (Steps):
+1. Dùng cây cán bột hoặc tay ép dẹp ổ bánh mì cho dẹt mỏng lại
+2. Pha hỗn hợp nước sốt gồm bơ lạt đun chảy sa tế ớt muối tôm muối ớt và một chút đường quấy tan
+3. Dùng cọ phết đều hỗn hợp nước sốt muối ớt bơ lên khắp hai mặt của ổ bánh mì dẹp
+4. Cho ổ bánh mì lên bếp than hồng nướng hoặc bỏ vào máy kẹp nướng đến khi vỏ bánh vàng giòn rụm dậy mùi thơm
+5. Dùng kéo cắt bánh mì thành các miếng nhỏ vừa ăn xếp ngay ngắn ra đĩa
+6. Rắc mỡ hành chà bông heo tép khô rang lên trên mặt đĩa bánh mì rồi rưới tương ớt sốt mayonnaise
+
+---
+
+## Món ăn: Phở khô Gia Lai
+- **Mã món (ID):** pho-kho-gia-lai
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch, dinner
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 60 phút. Tổng: 85 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 490 calo, 28g protein, 62g carbs, 15g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản phở hai tô danh tiếng của phố núi Gia Lai gồm một tô phở khô trộn tương hột lên men đậm đà và một tô súp bò thanh ngọt.
+
+### Nguyên liệu cần chuẩn bị:
+- 150 g Bánh phở khô Gia Lai
+- 50 g Thịt bò phi lê
+- 5 viên Bò viên
+- 50 g Thịt heo băm
+- 500 g Xương ống bò
+- 2 muỗng canh Tương hột xay pha đường
+- 1 muỗng canh Hành phi
+- 50 g Giá trụng
+
+### Cách làm (Steps):
+1. Ninh xương ống bò trong nhiều giờ cùng gừng hành tím nướng thơm và hớt bọt liên tục để có nước súp phở trong veo ngọt lịm
+2. Xào chín thịt heo băm với chút gia vị tiêu hành làm topping khô
+3. Trụng bánh phở khô đặc biệt của Gia Lai vừa chín tới đạt độ dai ngon cho vào một tô riêng thêm giá trụng thịt băm hành phi mỡ tỏi
+4. Cho phần tương hột xay pha chế đặc trưng (tương đen) vào tô phở khô để riêng
+5. Sắp thịt bò phi lê xắt mỏng tái chần sơ và bò viên vào tô thứ hai rồi chan nước súp bò nóng hổi rắc ngò tiêu
+6. Khi ăn thực khách tự trộn đều tương đen ở tô khô và dùng kèm tô nước súp ngọt lịm bên cạnh
+
+---
+
+## Món ăn: Bánh tráng trộn Sài Gòn
+- **Mã món (ID):** banh-trang-tron-sai-gon
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 5 phút. Tổng: 20 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 310 calo, 12g protein, 45g carbs, 11g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn vặt quốc dân huyền thoại đường phố Sài Gòn với bánh tráng cắt sợi trộn đều cùng muối tôm, nước sốt bò, trứng cút và xoài xanh sợi.
+
+### Nguyên liệu cần chuẩn bị:
+- 100 g Bánh tráng vụn cắt sợi
+- 30 g Xoài xanh bào sợi
+- 3 quả Trứng cút luộc
+- 15 g Khô bò xé
+- 15 g Khô mực xé
+- 1 muỗng canh Tép khô rang
+- 1 muỗng canh Nước sốt bò sệt
+- 1 muỗng canh Nước cốt tắc
+- 20 g Rau răm
+- 1 muỗng canh Đậu phộng rang
+
+### Cách làm (Steps):
+1. Dùng kéo cắt bánh tráng thành các sợi vừa ăn bỏ vào một chiếc tô trộn lớn sạch sẽ khô ráo
+2. Cho xoài xanh bào sợi khô bò khô mực tép khô và một chút muối tôm vào chung tô bánh tráng
+3. Rưới nước sốt bò sệt đậm đà hành phi mỡ hành và nước cốt tắc tươi vào tô bánh tráng
+4. Dùng đũa trộn đều nhẹ tay liên tục cho bánh tráng thấm đẫm đều các gia vị và vừa mềm mại tới
+5. Cắt rau răm thả vào tô trộn thêm trứng cút luộc cắt đôi và đậu phộng rang giã dập lên trên mặt
+6. Trộn sơ một lần nữa rồi bày ra đĩa ăn ngay tránh để lâu bánh tráng bị dính cục chảy nước
+
+---
+
+## Món ăn: Hủ tiếu Sa Đéc
+- **Mã món (ID):** hu-tieu-sa-dec
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 60 phút. Tổng: 90 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 450 calo, 22g protein, 65g carbs, 12g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản Đồng Tháp nổi tiếng với sợi hủ tiếu dai giòn sần sật, nước sốt trộn đậm đà đặc quánh và nước súp sườn heo ngọt lịm.
+
+### Nguyên liệu cần chuẩn bị:
+- 150 g Hủ tiếu Sa Đéc khô
+- 100 g Sườn non heo
+- 50 g Gan heo
+- 2 con Tôm tươi
+- 50 g Thịt băm
+- 1 muỗng canh Tỏi phi
+- 2 muỗng canh Nước tương
+- 1 muỗng cà phê Hắc xì dầu
+- 300 ml Súp ngọt xương
+- 50 g Giá hẹ
+
+### Cách làm (Steps):
+1. Ninh xương ống heo lấy nước súp trong vắt nêm nếm gia vị vừa ăn
+2. Luộc chín sườn non heo gan heo và tôm tươi rồi cắt miếng vừa ăn lòng heo làm sạch
+3. Phi thơm tỏi băm rồi làm nước sốt trộn hủ tiếu gồm nước tương hắc xì dầu đường tiêu dầu hào nấu sánh sệt
+4. Trụng sợi hủ tiếu Sa Đéc đặc trưng qua nước sôi sao cho vừa dai mềm rồi vớt ra xóc với mỡ tỏi
+5. Xếp hủ tiếu vào tô thêm thịt băm gan heo tôm sườn non lên trên mặt
+6. Rưới nước sốt sệt vào tô hủ tiếu khô
+7. Múc nước súp nóng hổi ra tô riêng kèm hành hẹ xắt nhỏ
+
+---
+
+## Món ăn: Bánh tráng cuốn sốt bơ
+- **Mã món (ID):** banh-trang-cuon-sot-bo
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 5 phút. Tổng: 20 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 340 calo, 10g protein, 42g carbs, 15g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn vặt đường phố Nam Bộ hấp dẫn với bánh tráng đỏ cuốn chặt tay nhân trứng cút, bò khô, rau răm rồi chấm nước sốt bơ béo ngậy.
+
+### Nguyên liệu cần chuẩn bị:
+- 5 cái Bánh tráng tôm dẻo
+- 5 quả Trứng cút luộc
+- 20 g Khô bò xé sợi
+- 1 muỗng canh Tép khô rang
+- 2 muỗng canh Bơ vàng làm bánh
+- 1 muỗng canh Sốt mayonnaise
+- 20 g Xoài xanh bào sợi
+- 10 g Rau răm
+- 1 muỗng canh Đậu phộng rang
+
+### Cách làm (Steps):
+1. Luộc chín trứng cút bóc vỏ rồi cắt đôi hoặc xắt lát mỏng
+2. Nạo xoài xanh thành sợi mỏng nhỏ và nhặt sạch rau răm cắt nhỏ
+3. Trải phẳng miếng bánh tráng tôm dẻo lên đĩa sạch
+4. Xếp lần lượt rau răm xoài sợi khô bò tép khô và trứng cút vào mép bánh tráng
+5. Cuộn tròn bánh tráng thật chặt tay và đều đặn thành cuộn dài
+6. Dùng kéo cắt bánh tráng cuộn thành các khúc ngắn vừa ăn xếp ra đĩa
+7. Pha nước sốt chấm gồm bơ vàng sốt mayonnaise một chút tương ớt và nước bò xé quấy đều
+8. Rưới sốt bơ béo ngậy lên đĩa bánh tráng rắc thêm đậu phộng rang giã dập
+
+---
+
+## Món ăn: Hủ tiếu Mỹ Tho
+- **Mã món (ID):** hu-tieu-my-tho
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 75 phút. Tổng: 105 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 430 calo, 24g protein, 60g carbs, 11g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Niềm tự hào ẩm thực Tiền Giang với sợi hủ tiếu làm từ gạo Gò Cát dẻo dai đặc trưng nức tiếng nấu cùng nước dùng tôm khô mực nướng đậm đà.
+
+### Nguyên liệu cần chuẩn bị:
+- 150 g Hủ tiếu Mỹ Tho khô
+- 400 g Xương ống heo
+- 3 con Tôm tươi
+- 50 g Thịt xá xíu
+- 50 g Lòng heo
+- 20 g Tôm khô
+- 1 con Mực khô nhỏ
+- 1 củ Củ cải trắng
+- 2 muỗng canh Tỏi băm phi vàng
+- 0 g Giá hẹ
+- 50 g rau cần
+
+### Cách làm (Steps):
+1. Ninh xương ống heo cùng củ cải trắng và tôm khô mực khô nướng thơm để lấy nước dùng ngọt đậm đà
+2. Luộc chín lòng heo tôm tươi thịt heo làm xá xíu rồi thái lát mỏng vừa ăn
+3. Trụng sợi hủ tiếu Mỹ Tho khô qua nước sôi nhanh tay cho chín tới mà vẫn giữ độ dai giòn ráo nước
+4. Cho hủ tiếu vào tô trộn đều với tỏi phi thơm bám đều sợi bánh
+5. Xếp tôm lột vỏ thịt xá xíu lòng heo xắt miếng lên trên tô hủ tiếu
+6. Nêm nếm lại nồi nước dùng với muối đường phèn hạt nêm cho vừa vị ngọt thanh
+7. Chan nước dùng nóng hổi vào tô hủ tiếu rắc thêm hẹ rau cần xắt nhỏ hành phi và chút tiêu
+
+---
+
+## Món ăn: Bánh mướt Nghệ An
+- **Mã món (ID):** banh-muot-nghe-an
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 40 phút, Nấu 20 phút. Tổng: 60 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 290 calo, 6g protein, 58g carbs, 4g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** light
+- **Mô tả:** Món ăn sáng bình dị của xứ Nghệ, tấm bánh tráng mỏng mịn, trắng trong, dai mềm cuộn tròn thơm nức mùi hành tăm phi vàng.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Gạo tẻ ngon
+- 50 g Hành tăm (củ nén)
+- 4 muỗng canh Dầu ăn
+- 2 muỗng canh Nước mắm ngon
+- 1 muỗng canh Nước cốt chanh
+- 1 muỗng cà phê Đường
+- 1 quả Ớt tươi
+
+### Cách làm (Steps):
+1. Ngâm gạo tẻ qua đêm rồi xay nhuyễn với nước lọc thành hỗn hợp bột loãng mịn để lắng gạn bớt nước chua
+2. Đun sôi nước trong nồi tráng bánh căng tấm vải mỏng lên trên miệng nồi
+3. Múc một gáo bột nhỏ láng thật mỏng đều khắp mặt vải đậy vung hấp chín bằng hơi nước trong 1 phút
+4. Dùng thanh tre khéo léo nhấc tấm bánh mướt ra đĩa phết một lớp dầu hành tăm phi thơm
+5. Cuộn tròn tấm bánh mướt lại rồi cắt thành các khúc dài khoảng 5 đến 7cm
+6. Phi vàng thật nhiều hành tăm với dầu ăn cho dậy mùi thơm nồng nức mũi
+7. Xếp bánh mướt ra đĩa rắc hành tăm phi giòn lên trên
+8. Pha nước mắm chanh tỏi ớt chua ngọt thanh nhẹ để chấm kèm hoặc ăn cùng súp lươn
+
+---
+
+## Món ăn: Bún cá Châu Đốc
+- **Mã món (ID):** bun-ca-chau-doc
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 45 phút. Tổng: 75 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 380 calo, 20g protein, 52g carbs, 8g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản vùng biên thùy An Giang màu vàng rực rỡ của nghệ, nước dùng thơm lừng ngải bún và mắm linh, mắm sặc ăn cùng cá lóc đồng ngọt thịt.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 con Cá lóc đồng
+- 200 g Bún tươi
+- 50 g Nghệ tươi giã nhuyễn
+- 30 g Ngải bún
+- 2 muỗng canh Sả băm
+- 50 g Mắm cá linh
+- 50 g Mắm cá sặc
+- 100 g Thịt heo quay
+- 0 g Bông điên điển
+- 100 g rau nhút
+
+### Cách làm (Steps):
+1. Luộc chín cá lóc đồng với chút gừng sả rồi vớt ra gỡ sạch xương lấy phi lê thịt cá nguyên vẹn
+2. Nấu rã mắm cá linh và mắm cá sặc với nước sôi rồi lọc qua rây lấy nước cốt đổ vào nồi nước luộc cá
+3. Giã nhuyễn nghệ tươi ngải bún sả đập dập rồi cho vào nồi nước dùng nấu liu riu cho dậy hương và màu vàng đẹp
+4. Phi thơm sả băm hành tím rồi cho thịt cá lóc vào xào sơ với chút bột nghệ cho thấm vị thơm giòn bùi
+5. Nêm nếm lại nước dùng bún với đường phèn muối cho điều hòa vị mắm đậm đà
+6. Trụng bún và rau nhút bông điên điển vào tô xếp cá lóc heo quay cắt miếng lên
+7. Chan nước dùng mắm cá vàng rực nóng hổi ngập bát bún
+
+---
+
+## Món ăn: Bánh đa xúc hến miền Trung
+- **Mã món (ID):** banh-da-xuc-hen-mien-trung
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 15 phút. Tổng: 40 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 310 calo, 14g protein, 38g carbs, 9g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** light
+- **Mô tả:** Món ăn dân dã đậm tình miền Trung với hến sông xào săn thơm lừng củ nén, hành tây, rau răm xộc vị cay ăn cùng bánh đa mè nướng giòn rụm.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Thịt hến tươi luộc
+- 2 cái Bánh đa mè (bánh tráng nướng)
+- 20 g Củ nén (hành tăm)
+- 30 g Rau răm
+- 1 / củ Hành tây
+- 2 quả Ớt tươi
+- 2 muỗng canh Đậu phộng rang
+- 1 muỗng canh Sả băm
+- 1 ít Gia vị thông dụng
+
+### Cách làm (Steps):
+1. Hến rửa sạch lại nhiều lần để loại bỏ hoàn toàn cát bẩn rồi để ráo nước
+2. Củ nén đập dập hành tây cắt hạt lựu nhỏ rau răm và ớt tươi xắt nhỏ
+3. Đun nóng dầu ăn trên chảo phi thơm củ nén sả băm cho vàng ruộm dậy mùi
+4. Trút thịt hến vào chảo xào nhanh tay trên lửa lớn cho hến săn lại không bị ra nước
+5. Thêm hành tây vào đảo cùng nêm nước mắm hạt nêm bột ngọt và ớt xắt cho vị đậm đà cay nồng
+6. Cho tiếp rau răm xắt nhỏ vào đảo đều trong 1 phút rồi tắt bếp
+7. Múc hến xào ra đĩa rắc đậu phộng rang giã dập và hành phi lên trên mặt
+8. Bẻ nhỏ bánh đa mè nướng dùng để xúc hến xào ăn trực tiếp
+
+---
+
+## Món ăn: Bún sứa Nha Trang
+- **Mã món (ID):** bun-sua-nha-trang
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch, dinner
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 45 phút. Tổng: 70 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 360 calo, 19g protein, 50g carbs, 7g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** light
+- **Mô tả:** Đặc sản thành phố biển Nha Trang, nước dùng trong vắt thanh ngọt ninh từ cá liệt, ăn cùng những miếng sứa trắng phau giòn sần sật.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Sứa biển tươi sạch
+- 100 g Chả cá Nha Trang
+- 200 g Bún tươi
+- 500 g Cá liệt hoặc xương cá cờ
+- 2 quả Cà chua
+- 1 / quả Thơm (dứa)
+- 0 g Hành lá
+- 20 g ngò rí
+- 1 muỗng canh Màu dầu điều
+- 0 g Giá đỗ
+- 50 g rau sống
+
+### Cách làm (Steps):
+1. Ninh xương cá biển cá liệt cùng hành tím nướng để có nước dùng thanh ngọt tự nhiên lọc lấy nước trong bỏ xương
+2. Cà chua cắt múi cau thơm cắt miếng xéo mỏng rồi cho vào nồi nước dùng nấu chín
+3. Thêm chút màu dầu điều để nồi nước dùng có màu sắc óng ánh bắt mắt nêm nếm gia vị vừa miệng
+4. Sứa biển rửa sạch nhiều lần ngâm nước đá cho thật giòn rồi cắt miếng vừa ăn để ráo
+5. Chả cá chiên hoặc hấp cắt lát mỏng vừa ăn
+6. Trụng bún tươi và giá đỗ cho vào tô xếp chả cá lên trên
+7. Chan nước dùng nóng hổi thơm cà chua vào tô rồi xếp sứa giòn lên trên cùng
+8. Thưởng thức nóng kèm rau sống xắt nhỏ và mắm tôm hoặc mắm ruốc
+
+---
+
+## Món ăn: Bánh gio Bắc Kạn
+- **Mã món (ID):** banh-gio-bac-kan
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 1440 phút, Nấu 360 phút. Tổng: 1800 phút.
+- **Độ khó:** hard
+- **Khẩu phần:** 4 người ăn.
+- **Dinh dưỡng (ước tính):** 180 calo, 2g protein, 42g carbs, 0g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** low-fat
+- **Mô tả:** Món bánh truyền thống độc đáo làm từ gạo nếp ngâm nước tro loại cây rừng tinh khiết, bánh chín trong suốt như hổ phách, dẻo thơm chấm mật mía.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 kg Gạo nếp nương sạch
+- 200 g Tro cây rừng tinh khiết
+- 2 muỗng canh Nước vôi trong
+- 30 lá Lá chít hoặc lá dong non
+- 200 ml Mật mía nguyên chất
+- 15 sợi Lạt tre gói bánh
+
+### Cách làm (Steps):
+1. Hòa tro cây rừng vào nước lọc để qua đêm rồi lọc lấy phần nước tro trong suốt
+2. Ngâm gạo nếp vào nước tro hòa thêm chút nước vôi trong từ 15 đến 24 tiếng cho nếp ngấm đổi màu rồi xả nhẹ nước ráo
+3. Luộc sơ lá chít hoặc lá dong non cho mềm dẻo để dễ gói bánh không bị rách
+4. Khéo léo xếp lá tạo hình phễu đổ gạo nếp ngâm tro vào rồi quấn chặt tay thành hình chiếc bánh thuôn dài
+5. Buộc chặt bánh bằng lạt tre tránh để gạo nếp bị lọt ra ngoài khi luộc
+6. Xếp bánh vào nồi đổ ngập nước luộc liên tục từ 5 đến 6 tiếng cho bánh chín nhừ trong suốt
+7. Vớt bánh ra ngâm nước lạnh rồi treo lên chỗ thoáng mát cho ráo
+8. Bóc vỏ bánh dùng lạt cắt miếng vừa ăn chấm ngập mật mía ngọt lịm bùi mát
+
+---
+
+## Món ăn: Cháo lươn Nghệ An
+- **Mã món (ID):** chao-luon-nghe-an
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 60 phút. Tổng: 90 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 340 calo, 16g protein, 45g carbs, 10g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Niềm tự hào xứ Nghệ với hạt cháo ninh nguyên hạt nở mềm trong súp ngọt lịm từ xương lươn, thịt lươn xào nghệ cay nồng xé lưỡi.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Lươn đồng tươi
+- 100 g Gạo tẻ ngon
+- 20 g Gạo nếp
+- 30 g Củ nén (hành tăm)
+- 2 muỗng canh Nghệ tươi giã lấy nước
+- 1 muỗng cà phê Ớt bột cay
+- 0 g Hành lá
+- 30 g rau răm
+- 1 muỗng canh Dầu điều màu
+- 0 nước mắm muối tiêu Gia vị
+
+### Cách làm (Steps):
+1. Lươn bóp muối giấm cho sạch nhớt luộc chín cùng chút gừng rồi gỡ lấy thịt lươn nguyên sợi bỏ xương
+2. Cho phần xương lươn vào giã nhỏ lọc lấy nước ngọt nấu cháo cùng gạo tẻ và gạo nếp ninh liu riu cho cháo nở mềm nguyên hạt
+3. Phi thơm thật nhiều củ nén băm nhỏ với dầu màu điều trên chảo
+4. Cho thịt lươn vào xào săn nhẹ tay nêm nước cốt nghệ tươi ớt bột nước mắm gia vị tiêu cho thấm đậm vị cay nồng
+5. Khi cháo trong nồi đã chín nhừ sánh mượt múc cháo trắng ra tô
+6. Múc một vá lớn lươn xào nghệ cay thơm cùng nước sốt dầu điều vàng óng rưới lên mặt tô cháo
+7. Rắc thật nhiều rau răm hành lá xắt nhỏ và tiêu đen xay rồi thưởng thức lúc nóng hổi
+
+---
+
+## Món ăn: Bánh tai Phú Thọ
+- **Mã món (ID):** banh-tai-phu-tho
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 45 phút, Nấu 30 phút. Tổng: 75 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 240 calo, 8g protein, 38g carbs, 6g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món bánh dân dã vùng đất tổ Phú Thọ có hình dáng cong cong như chiếc tai heo, làm bằng bột gạo tẻ dẻo bùi ôm lấy nhân thịt heo băm đậm đà.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Gạo tẻ ngon hạt tròn
+- 200 g Thịt ba chỉ hoặc nạc vai heo
+- 50 g Hành tím
+- 1 muỗng cà phê Muối
+- 1 muỗng cà phê Tiêu đen xay
+- 1 muỗng cà phê Hạt nêm
+
+### Cách làm (Steps):
+1. Gạo tẻ ngâm nước vài tiếng đem xay mịn với nước rồi ép ráo để thu được khối bột tinh khiết mềm dẻo
+2. Thịt heo băm nhỏ trộn đều với hành tím băm nhuyễn muối tiêu hạt nêm xào sơ cho chín tái làm nhân bánh
+3. Lấy từng phần bột gạo tẻ nhào thật kỹ rồi nặn thành khối tròn ấn dẹt
+4. Cho một muỗng nhân thịt heo hành tím vào giữa miếng bột dẹt
+5. Khéo léo gập đôi miếng bột lại miết nhẹ mép bánh tạo hình dáng cong cong dẹt hai đầu giống hình chiếc tai
+6. Xếp lần lượt bánh tai vào xửng hấp cách thủy trên lửa lớn
+7. Hấp liên tục trong khoảng 30 phút đến khi lớp vỏ bột chín chuyển màu trắng trong bóng mịn bùi dẻo
+8. Lấy bánh ra ăn nóng trực tiếp hoặc chấm nước mắm tỏi ớt nhẹ
+
+---
+
+## Món ăn: Súp lươn Nghệ An
+- **Mã món (ID):** sup-luon-nghe-an
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 45 phút. Tổng: 75 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 310 calo, 18g protein, 12g carbs, 15g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản xứ Nghệ ngon trứ danh với thịt lươn đồng xào săn đậm đà vị nghệ và ớt cay nồng ăn kèm bánh mì hoặc bánh mướt.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Lươn đồng tươi
+- 2 muỗng canh Nghệ tươi giã nhỏ
+- 20 g Củ nén
+- 1 muỗng cà phê Ớt bột
+- 0 g Hành lá
+- 20 g rau răm
+- 1 ít Gia vị thông dụng
+
+### Cách làm (Steps):
+1. Làm sạch lươn bằng muối và giấm rồi luộc chín
+2. Gỡ lấy thịt lươn dọc theo xương để riêng
+3. Phi thơm củ nén đập dập trên chảo dầu
+4. Cho thịt lươn vào xào săn cùng nước cốt nghệ và ớt bột
+5. Chế nước luộc lươn đã lọc trong vào đun sôi
+6. Nêm nếm gia vị vừa ăn rồi rắc hành lá rau răm xắt nhỏ
+
+---
+
+## Món ăn: Bánh ngải người Tày
+- **Mã món (ID):** banh-ngai-nguoi-tay
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 60 phút, Nấu 30 phút. Tổng: 90 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 220 calo, 4g protein, 45g carbs, 3g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** vegetarian
+- **Mô tả:** Món bánh truyền thống của người Tày làm từ gạo nếp nương đồ xôi giã nhuyễn với lá ngải cứu tạo màu xanh sẫm ôm trọn nhân vừng đường ngọt bùi.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Gạo nếp nương
+- 200 g Lá ngải cứu non
+- 100 g Vừng đen
+- 100 g Đường phèn hoặc đường thẻ
+- 1 muỗng canh Nước vôi trong
+
+### Cách làm (Steps):
+1. Nhặt lá ngải cứu non rửa sạch rồi đem đun với nước vôi trong cho mềm rục
+2. Vắt kiệt nước lá ngải rồi giã nhuyễn
+3. Gạo nếp ngâm qua đêm đem đồ thành xôi dẻo quánh
+4. Cho xôi nóng và lá ngải giã nhuyễn vào cối giã liên tục đến khi hỗn hợp mịn dẻo màu xanh sẫm
+5. Giã vừng đen rang chín trộn với đường làm nhân
+6. Chia bột bánh thành các viên nhỏ ấn dẹt cho nhân vừng đường vào giữa rồi vo tròn ấn bẹt
+
+---
+
+## Món ăn: Bánh hỏi lòng heo Bình Định
+- **Mã món (ID):** banh-hoi-long-heo-binh-dinh
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 45 phút. Tổng: 75 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 480 calo, 26g protein, 50g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản trứ danh đất võ Bình Định gồm đĩa bánh hỏi mướt mỡ hẹ ăn kèm lòng heo luộc giòn ngọt và chén cháo huyết nóng hổi.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Bánh hỏi tươi
+- 300 g Lòng heo tổng hợp
+- 50 g Hẹ tươi
+- 3 củ Hành tím
+- 1 nhánh Gừng
+- 1 ít Gia vị thông dụng
+
+### Cách làm (Steps):
+1. Làm sạch lòng heo bằng muối chanh và gừng đập dập
+2. Luộc lòng heo trong nồi nước sôi cùng hành tím đến khi chín tới vớt ra ngâm nước đá cho giòn
+3. Xắt nhỏ lá hẹ tươi rồi cho vào chảo dầu nóng phi thơm thành mỡ hẹ
+4. Thoa đều mỡ hẹ lên từng lá bánh hỏi xếp chồng lên nhau
+5. Thái lát mỏng lòng heo luộc xếp ra đĩa bên cạnh bánh hỏi
+6. Pha nước mắm tỏi ớt chua ngọt đậm vị để chấm kèm
+
+---
+
+## Món ăn: Bánh tẻ Chờ Bắc Ninh
+- **Mã món (ID):** banh-te-cho-bac-ninh
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 45 phút, Nấu 30 phút. Tổng: 75 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 260 calo, 8g protein, 40g carbs, 7g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món bánh mộc mạc làng Chờ - Bắc Ninh làm bằng bột gạo tẻ quấy trong nhân thịt heo mộc nhĩ hành khô giòn sần sật.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Gạo tẻ ngon
+- 150 g Thịt nạc vai heo
+- 30 g Mộc nhĩ
+- 50 g Hành khô
+- 15 lá Lá dong non
+- 10 sợi Lạt tre
+
+### Cách làm (Steps):
+1. Ngâm gạo tẻ xay mịn thành bột loãng rồi cho vào nồi đun nhỏ lửa quấy đều tay đến khi bột đặc sệt nửa chín nửa sống
+2. Mộc nhĩ ngâm nở băm nhỏ thịt heo băm nhỏ hành khô băm nhỏ xào săn cùng muối tiêu làm nhân
+3. Trải lá dong sạch ra mâm múc một vá bột gạo dàn mỏng dọc theo lá
+4. Cho nhân thịt mộc nhĩ vào giữa rồi túm hai mép lá dong cuộn tròn lại
+5. Buộc chặt bánh bằng lạt tre rồi đem xếp vào xửng hấp cách thủy trong 30 phút cho bánh chín hoàn toàn
+
+---
+
+## Món ăn: Ram tôm đất Bình Định
+- **Mã món (ID):** ram-tom-dat-binh-dinh
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 15 phút. Tổng: 40 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 340 calo, 16g protein, 28g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ram nhỏ xinh giòn tan rôm rốp của Bình Định với nhân tôm đất đầm ngọt thịt và một miếng mỡ gáy béo ngậy.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Tôm đất tươi
+- 100 g Thịt ba chỉ heo
+- 1 xấp Bánh tráng phơi sương Bình Định
+- 5 củ Hành tím
+- 1 ít Gia vị thông dụng
+
+### Cách làm (Steps):
+1. Tôm đất cắt bỏ râu rửa sạch giữ nguyên vỏ ướp chút muối tiêu
+2. Thịt ba chỉ cắt miếng nhỏ dài bằng con tôm
+3. Hành tím thái lát mỏng xào sơ cho thơm
+4. Đặt miếng bánh tráng nhỏ lên mâm xếp một con tôm đất một miếng thịt ba chỉ và vài lát hành tím vào mép
+5. Khéo léo cuộn chặt tay miếng ram thành hình trụ nhỏ xinh bằng ngón tay
+6. Cho dầu vào chảo đun nóng già rồi thả ram vào chiên ngập dầu trên lửa nhỏ để vỏ bánh giòn lâu
+7. Vớt ram ra đĩa lót giấy thấm dầu ăn kèm rau sống và nước mắm chua ngọt
+
+---
+
+## Món ăn: Bánh khúc Hà Nội
+- **Mã món (ID):** banh-khuc-ha-noi
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, dinner
+- **Thời gian:** Chuẩn bị 45 phút, Nấu 45 phút. Tổng: 90 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 380 calo, 10g protein, 58g carbs, 11g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món xôi quà bánh kinh điển của đêm đông Hà Nội với vỏ nếp dẻo thơm ôm trọn lớp bột lá khúc bùi bùi và nhân đậu xanh thịt ba chỉ tiêu sọ cay nồng.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Gạo nếp cái hoa vàng
+- 200 g Lá khúc tươi
+- 200 g Đậu xanh tách vỏ
+- 150 g Thịt ba chỉ heo
+- 30 g Hành tím băm
+- 0 muối Gia vị
+- 0 g tiêu sọ xay
+
+### Cách làm (Steps):
+1. Đậu xanh ngâm nở hấp chín giã nhuyễn
+2. Gạo nếp ngâm qua đêm vớt ra để ráo
+3. Lá khúc rửa sạch đem giã nhuyễn vắt lấy nước trộn đều cùng bột gạo tẻ làm vỏ bánh
+4. Thịt ba chỉ cắt nhỏ xào săn với hành tím băm và thật nhiều tiêu sọ
+5. Bọc nhân thịt heo vào giữa phần đậu xanh giã nhuyễn vo thành viên tròn
+6. Lấy bột lá khúc bọc xung quanh viên đậu xanh thịt heo
+7. Lăn viên bánh khúc qua lớp gạo nếp để gạo bám đều bên ngoài
+8. Xếp vào chõ hấp cách thủy hông trong 45 phút cho nếp chín dẻo mềm óng ánh
+
+---
+
+## Món ăn: Nem lụi Huế
+- **Mã món (ID):** nem-lui-hue
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 20 phút. Tổng: 50 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 360 calo, 22g protein, 15g carbs, 24g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn tinh tế cố đô Huế với thịt heo quết nhuyễn bọc quanh cây sả tươi nướng than hồng dậy mùi thơm ăn cùng nước lèo đậu phộng gan heo đặc sánh.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Thịt nạc heo giò sống
+- 100 g Mỡ heo hạt lựu
+- 15 cây Sả cây
+- 50 g Gan heo làm sốt
+- 2 muỗng canh Tương hột giã
+- 50 g Đậu phộng rang
+- 0 ngũ vị hương Gia vị
+- 0 g hành tỏi băm
+
+### Cách làm (Steps):
+1. Quết thật kỹ thịt nạc heo giò sống và mỡ hạt lựu với hành tỏi băm nước mắm tiêu đường đến khi dẻo dai
+2. Bọc một lượng thịt vừa đủ quanh phần gốc của từng cây sả tươi dập nhẹ đầu
+3. Xếp các xiên nem lụi lên bếp than hoa nướng xoay đều tay đến khi vàng ươm xém cạnh dậy mùi thơm phức
+4. Làm nước sốt lèo bằng cách xay gan heo tương hột đậu phộng nấu sôi sánh sệt béo bùi
+5. Dọn nem lụi ra ăn kèm bánh tráng rau sống khế chua chuối chát và chấm nước lèo
+
+---
+
+## Món ăn: Bánh đùm Thái Bình
+- **Mã món (ID):** banh-dum-thai-binh
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 40 phút, Nấu 30 phút. Tổng: 70 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 280 calo, 9g protein, 42g carbs, 8g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản mộc mạc quê lúa Thái Bình hình dáng như một chiếc túi đùm túm gọn, làm bằng bột gạo tẻ ôm nhân thịt heo hành mộc nhĩ đậm đà.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Bột gạo tẻ ngon
+- 150 g Thịt heo nạc dăm
+- 20 g Mộc nhĩ
+- 40 g Hành khô
+- 10 miếng Lá chuối sạch
+- 0 muối Gia vị thông dụng
+- 0 g tiêu
+- 0 g mì chính
+
+### Cách làm (Steps):
+1. Hòa bột gạo tẻ với nước lọc rồi đun nhỏ lửa quấy liên tục cho bột chín tái đặc quánh lại
+2. Băm nhỏ thịt nạc dăm mộc nhĩ hành khô rồi đem xào chín nêm nếm gia vị đậm đà nhiều tiêu
+3. Lấy một phần bột gạo dàn mỏng lên lòng bàn tay cho nhân thịt mộc nhĩ vào giữa
+4. Khéo léo túm các mép bột lại đùm kín nhân vo thành khối tròn trụ dẹt底部
+5. Gói bánh bằng lá chuối sạch túm phần đầu buộc lạt tre cố định
+6. Xếp bánh vào xửng hấp cách thủy trên lửa lớn trong 30 phút cho chín dẻo
+
+---
+
+## Món ăn: Nem chua Thanh Hóa
+- **Mã món (ID):** nem-chua-thanh-hoa
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 45 phút, Nấu 0 phút. Tổng: 45 phút.
+- **Độ khó:** hard
+- **Khẩu phần:** 4 người ăn.
+- **Dinh dưỡng (ước tính):** 160 calo, 18g protein, 2g carbs, 9g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** Keto / Low-carb
+- **Mô tả:** Đặc sản nức tiếng xứ Thanh từ thịt heo nạc quết nhuyễn trộn bì heo xắt sợi mỏng, lên men tự nhiên bằng lá chuối dậy vị chua thanh cay nồng.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Thịt đùi sau heo tươi rói
+- 200 g Bì heo làm sạch sợi mỏng
+- 2 muỗng canh Thính gạo
+- 0 g Tỏi lát
+- 20 g ớt lát
+- 50 g Lá đinh lăng
+- 0 g Lá chuối tươi
+- 0 g dây thun
+
+### Cách làm (Steps):
+1. Thịt heo lọc sạch mỡ xắt nhỏ cho vào máy xay nhuyễn mịn dẻo khi thịt còn ráo ấm
+2. Trộn thịt xay với bì heo xắt sợi thính gạo muối tiêu đường tỏi băm thật đều tay
+3. Định hình hỗn hợp thịt thành các thanh trụ nhỏ vừa ăn
+4. Đặt một lát tỏi một lát ớt và lá đinh lăng lên thanh thịt nem
+5. Quấn chặt nem bằng màng bọc thực phẩm rồi bọc nhiều lớp lá chuối dày bên ngoài cột thun
+6. Để nem ở nhiệt độ phòng nơi thoáng mát từ 2 đến 3 ngày cho nem lên men chua thanh chín tự nhiên
+
+---
+
+## Món ăn: Bánh hỏi thịt nướng miền Tây
+- **Mã món (ID):** banh-hoi-thit-nuong-mien-tay
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 25 phút. Tổng: 55 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 460 calo, 24g protein, 52g carbs, 16g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món ăn Nam Bộ phổ biến với từng xấp bánh hỏi trắng mịn đượm mỡ hành béo ngậy ăn cùng thịt nạc vai nướng sả mè vàng ươm mặn ngọt.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Bánh hỏi tươi xấp nhỏ
+- 300 g Thịt nạc vai heo
+- 2 muỗng canh Sả băm nhuyễn
+- 1 muỗng canh Mật ong
+- 50 g Hành lá
+- 20 g Đậu phộng rang
+- 0 nước mắm Gia vị
+- 0 g ngũ vị hương
+
+### Cách làm (Steps):
+1. Thịt nạc vai heo thái lát mỏng vừa phải đem ướp sả băm mật ong ngũ vị hương nước mắm trong 30 phút
+2. Xếp thịt heo lên vỉ nướng trên bếp than hoa chín vàng đều hai mặt dậy mùi thơm
+3. Cắt nhỏ hành lá rồi dội dầu ăn đun sôi lên tạo hỗn hợp mỡ hành xanh mướt
+4. Phết mỡ hành lên khắp các lá bánh hỏi tươi cuốn tròn nhẹ
+5. Xếp bánh hỏi mỡ hành ra đĩa cùng thịt nướng cắt miếng vừa ăn rắc đậu phộng rang giã dập
+6. Ăn kèm rau sống xà lách và chén nước mắm tỏi ớt chua ngọt pha loãng vị miền Tây
+
+---
+
+## Món ăn: Nem nướng Ninh Hòa
+- **Mã món (ID):** nem-nuong-ninh-hoa
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 40 phút, Nấu 20 phút. Tổng: 60 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 390 calo, 23g protein, 24g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản Khánh Hòa lừng danh với những xiên nem thịt heo quết dai nướng vàng ruộm ăn kèm bánh tráng cuốn rau sống và sốt nếp béo bùi vàng óng.
+
+### Nguyên liệu cần chuẩn bị:
+- 400 g Thịt đùi heo giò sống
+- 100 g Mỡ heo cắt hạt lựu
+- 10 cái Bánh tráng cuốn ram giòn
+- 50 g Nếp thơm làm sốt
+- 50 g Gan heo làm sốt
+- 0 g Gia vị nêm nếm
+- 0 g Rau sống các loại
+
+### Cách làm (Steps):
+1. Quết kỹ thịt đùi heo giò sống mỡ hạt lựu hành tỏi băm đường tiêu đến khi dẻo quánh
+2. Bọc thịt quanh que tre thành các thanh dài đem nướng trên bếp than hoa chín vàng đều
+3. Cuộn bánh tráng thành ống nhỏ rồi đem chiên ngập dầu thật giòn làm bánh ram
+4. Nấu chín nếp thơm rồi đem xay nhuyễn cùng gan heo xào tương hột dầu điều để nấu thành nước sốt chấm sệt béo bùi
+5. Bày nem nướng cắt đôi bánh ram chiên giòn xà lách rau thơm khế chua chuối chát ra mẹt lớn và thưởng thức
+
+---
+
+## Món ăn: Lẩu bò nhúng giấm
+- **Mã món (ID):** lau-bo-nhung-giam
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 30 phút. Tổng: 50 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 4 người ăn.
+- **Dinh dưỡng (ước tính):** 450 calo, 32g protein, 18g carbs, 22g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món lẩu khoái khẩu với thịt bò phi lê mềm mại nhúng vào nước dùng giấm nuôi hòa nước dừa tươi chua thanh ngọt dịu cuốn bánh tráng mắm nêm.
+
+### Nguyên liệu cần chuẩn bị:
+- 500 g Thịt bò phi lê mềm
+- 150 ml Giấm gạo nuôi
+- 1 lít Nước dừa xiêm tươi
+- 3 nhánh Sả cây
+- 1 củ Hành tây
+- 1 / quả Thơm (dứa)
+- 4 muỗng canh Mắm nêm ngon
+- 0 g Bánh tráng
+- 0 g rau sống
+- 0 g bún
+
+### Cách làm (Steps):
+1. Thịt bò phi lê đem xắt lát thật mỏng bày ra đĩa tròn
+2. Nấu nước dùng lẩu gồm nước dừa tươi giấm gạo sả cây đập dập hành tây cắt múi cau và chút gia vị đun sôi
+3. Giã nhuyễn thơm tỏi ớt rồi pha trộn đều với mắm nêm đường nước cốt tắc thành nước chấm đậm đà
+4. Đặt nồi nước lẩu giấm lên bếp đun sôi sùng sục tại bàn ăn
+5. Nhúng từng lát thịt bò mỏng vào nồi nước lẩu cho chín tái mềm ngọt
+6. Cuốn thịt bò tái với bánh tráng bún tươi rau sống chấm ngập chén mắm nêm chua cay ngọt bùi
+
+---
+
+## Món ăn: Bánh khoái Huế
+- **Mã món (ID):** banh-khoai-hue
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 20 phút. Tổng: 50 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 380 calo, 16g protein, 42g carbs, 15g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món bánh chiên đặc sản Huế có lớp vỏ bột vàng ươm dày giòn rụm ôm lấy nhân tôm, thịt heo, chả và giá đỗ chấm súp tương gan béo ngậy cầu kỳ.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Bột gạo tẻ ngon
+- 1 muỗng cà phê Bột nghệ
+- 100 g Tôm tươi
+- 100 g Thịt ba chỉ heo
+- 50 g Giá đỗ
+- 50 g Gan heo làm sốt
+- 2 muỗng canh Tương bột Huế
+- 20 g Đậu phộng rang
+
+### Cách làm (Steps):
+1. Hòa bột gạo tẻ bột nghệ trứng gà với nước lọc thành hỗn hợp sệt loãng vừa phải để nghỉ 15 phút
+2. Làm sạch gan heo băm nhỏ xay cùng tương bột đậu phộng nấu sôi thành nước lèo chấm đặc sánh béo bùi
+3. Cho ít dầu vào chảo lòng sâu đun nóng già múc bột láng đều chảo
+4. Xếp tôm luộc thịt heo xắt mỏng và giá đỗ vào một nửa mặt bánh
+5. Chiên trên lửa vừa đến khi lớp vỏ bánh vàng giòn rụm ráo dầu
+6. Gập đôi miếng bánh lại thành hình bán nguyệt úp ngược ra đĩa ăn kèm vả trộn rau sống chấm sốt gan
+
+---
+
+## Món ăn: Lẩu dê cơm cháy Ninh Bình
+- **Mã món (ID):** lau-de-com-chay-ninh-binh
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 60 phút. Tổng: 90 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 4 người ăn.
+- **Dinh dưỡng (ước tính):** 520 calo, 35g protein, 40g carbs, 25g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Sự kết hợp hoàn hảo giữa thịt dê núi Ninh Bình hầm thuốc bắc thơm nức, ngọt lịm và những miếng cơm cháy chiên giòn rụm chấm nước súp lẩu.
+
+### Nguyên liệu cần chuẩn bị:
+- 600 g Thịt dê núi tươi
+- 400 g Xương ống dê
+- 1 gói Gói thuốc bắc hầm lẩu
+- 1 bánh lớn Cơm cháy Ninh Bình khô
+- 0 g Hành tím
+- 50 g gừng
+- 0 g Rau nhúng lẩu (rau muống
+- 200 g tía tô)
+
+### Cách làm (Steps):
+1. Trần sơ thịt dê và xương dê với nước sôi gừng rượu trắng để khử sạch mùi hôi núi rừng
+2. Ninh xương dê cùng hành gừng nướng và gói thuốc bắc trong nhiều giờ để lấy nước dùng lẩu thơm ngọt đậm đà
+3. Chặt thịt dê thành miếng vừa ăn xào săn với sả ớt rồi trút vào nồi nước dùng ninh cho mềm nhừ dẻo
+4. Bẻ nhỏ bánh cơm cháy khô đem chiên ngập dầu trên chảo nóng đến khi phồng rộp giòn tan vàng ruộm
+5. Bày nồi nước lẩu dê thuốc bắc đun sôi trên bếp kèm các loại rau nhúng
+6. Thực khách múc nước súp lẩu dê nóng hổi tưới lên cơm cháy chiên giòn bốc khói rôm rốp
+
+---
+
+## Món ăn: Bánh ít lá gai Bình Định
+- **Mã món (ID):** banh-it-la-gai-binh-dinh
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** N/A
+- **Thời gian:** Chuẩn bị 60 phút, Nấu 45 phút. Tổng: 105 phút.
+- **Độ khó:** hard
+- **Khẩu phần:** 4 người ăn.
+- **Dinh dưỡng (ước tính):** 240 calo, 4g protein, 48g carbs, 4g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** vegetarian
+- **Mô tả:** Món bánh truyền thống Bình Định dẻo quánh màu đen mun đặc trưng từ lá gai, nhân dừa đậu xanh ngào gừng cay nhẹ ngọt lịm tim.
+
+### Nguyên liệu cần chuẩn bị:
+- 300 g Lá gai tươi sạch
+- 500 g Gạo nếp ngự
+- 200 g Đậu xanh không vỏ
+- 100 g Sợi dừa nạo
+- 250 g Đường cát hoặc đường phèn
+- 1 nhánh Gừng tươi
+- 0 g Lá chuối gói bánh
+
+### Cách làm (Steps):
+1. Lá gai tước bỏ gân rửa sạch luộc chín mềm rồi đem giã nhuyễn vắt lấy nước cốt màu đen sẫm
+2. Gạo nếp xay mịn ép ráo nước trộn đều giã nhuyễn với nước cốt lá gai và đường thành khối bột dẻo mịn màu đen
+3. Hấp chín đậu xanh giã tơi sên trên chảo cùng sợi dừa nạo đường và gừng băm nhỏ thành viên nhân tròn ngọt
+4. Chia bột lá gai thành các phần vo tròn ấn dẹt cho nhân đậu xanh dừa gừng vào giữa bọc kín lại
+5. Hơ lá chuối cho mềm dẻo rồi cuộn thành hình tháp nhọn gói kín viên bánh ít
+6. Xếp bánh vào chõ hấp cách thủy trong 45 phút trên lửa lớn đến khi bột chín trong dẻo quánh
+
+---
+
+## Món ăn: Lẩu gà ớt hiểm miền Tây
+- **Mã món (ID):** lau-ga-ot-hiem-mien-tay
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 25 phút, Nấu 40 phút. Tổng: 65 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 4 người ăn.
+- **Dinh dưỡng (ước tính):** 450 calo, 30g protein, 15g carbs, 22g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món lẩu đặc sắc miền Tây với thịt gà dai ngọt chiên sơ rồi hầm cùng ớt hiểm xanh cay nồng và nấm đông cô thanh mát.
+
+### Nguyên liệu cần chuẩn bị:
+- 1.2 kg Gà ta
+- 50 g Ớt hiểm xanh
+- 10 g Kỷ tử
+- 100 g Nấm đông cô
+- 1 củ Củ cải trắng
+- 1 lít Nước dừa tươi
+- 0 g Hành tím
+- 2 muỗng canh tỏi băm
+- 0 nước mắm Gia vị
+- 0 g hạt nêm
+- 0 g đường
+
+### Cách làm (Steps):
+1. Làm sạch gà chặt miếng vừa ăn rồi ướp gia vị hành tỏi băm trong 20 phút
+2. Chiên sơ thịt gà trên chảo nóng cho da gà vàng săn lại
+3. Đập dập nhẹ ớt hiểm xanh để tạo vị cay nồng tự nhiên
+4. Đun sôi nước dừa tươi cùng củ cải trắng xắt khoanh và ớt hiểm
+5. Thả thịt gà đã chiên sơ và nấm đông cô kỷ tử vào nồi hầm liu riu trong 30 phút
+6. Nếm nếm lại gia vị cho vừa ăn vị ngọt cay hài hòa
+7. Bày nồi lẩu ra bếp ăn kèm các loại rau mồng tơi xà lách xoong và bún tươi
+
+---
+
+## Món ăn: Bánh giá Chợ Gạo
+- **Mã món (ID):** banh-gia-cho-gao
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast
+- **Thời gian:** Chuẩn bị 30 phút, Nấu 15 phút. Tổng: 45 phút.
+- **Độ khó:** medium
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 320 calo, 12g protein, 35g carbs, 14g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Đặc sản Tiền Giang giòn rụm với vỏ bột gạo bọc nhân gan heo, thịt đùi, tôm và giá đỗ chiên ngập dầu trên vá chuyên dụng.
+
+### Nguyên liệu cần chuẩn bị:
+- 200 g Bột gạo tẻ ngon
+- 50 g Bột năng
+- 100 g Tôm tươi
+- 50 g Gan heo
+- 100 g Thịt đùi heo
+- 150 g Giá đỗ
+- 30 g Đậu phộng rang
+- 1 ít Gia vị nêm nếm
+
+### Cách làm (Steps):
+1. Hòa bột gạo bột năng với nước và chút muối thành hỗn hợp lỏng mịn để bột nghỉ 15 phút
+2. Gan heo và thịt đùi heo cắt lát mỏng xào sơ qua cho chín tái
+3. Trộn giá đỗ với một ít bột gạo sệt để làm phần nền nhân bánh
+4. Đun nóng dầu ăn trong chảo sâu lòng nhúng vá đổ bánh vào dầu cho nóng
+5. Múc một lớp bột vào vá xếp giá đỗ gan heo thịt heo và tôm tươi lên trên mặt rồi rưới thêm lớp bột mỏng và đậu phộng
+6. Thả vá bánh vào chảo chiên ngập dầu trên lửa vừa đến khi bánh tự tróc khỏi vá
+7. Chiên tiếp cho bánh vàng ruộm giòn tan hai mặt vớt ra thấm dầu
+8. Ăn kèm rau sống xà lách chấm nước mắm tỏi ớt chua ngọt
+
+---
+
+## Món ăn: Lẩu cá bớp măng chua
+- **Mã món (ID):** lau-ca-bop-mang-chua
+- **Vùng miền:** Nam
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 30 phút. Tổng: 50 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 4 người ăn.
+- **Dinh dưỡng (ước tính):** 410 calo, 28g protein, 12g carbs, 18g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món lẩu biển Nam Bộ thanh mát với thịt cá bớp béo ngọt, măng chua thanh dịu và các loại rau đặc trưng miền sông nước.
+
+### Nguyên liệu cần chuẩn bị:
+- 600 g Cá bớp tươi
+- 300 g Măng chua
+- 2 quả Cà chua
+- 1 / quả Thơm (dứa)
+- 0 g Ngò gai
+- 30 g rau ngổ
+- 1.2 lít Nước xương hầm
+- 0 g Sả
+- 0 g ớt
+- 2 muỗng canh hành tím băm
+- 0 mắm Gia vị
+- 0 g đường
+- 0 g muối
+
+### Cách làm (Steps):
+1. Cá bớp làm sạch cắt lát dày vừa ăn rồi ướp chút đầu hành tiêu muối
+2. Măng chua rửa sạch vắt ráo nước cà chua xắt múi cau thơm xắt lát
+3. Phi thơm sả hành tím băm trên nồi rồi cho cà chua thơm măng chua vào xào săn
+4. Đổ nước xương hầm vào đun sôi sùng sục nêm nước mắm đường phèn hạt nêm cho vừa vị chua ngọt đậm đà
+5. Thả các lát cá bớp vào nồi lẩu nấu chín trong 10 phút
+6. Thêm ngò gai rau ngổ xắt nhỏ và vài lát ớt sừng
+7. Bày nồi lẩu ra bàn ăn kèm bún tươi và rau nhúng
 
 ---
 
