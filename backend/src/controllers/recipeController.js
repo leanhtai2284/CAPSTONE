@@ -31,7 +31,7 @@ GUIDELINES:
 3. Be professional, engaging, and brief (3-4 sentences, max 150 words).
 4. Do not list the recipes, just summarize the nutritional synergy. Format with Markdown bold/italic.`;
 
-    const response = await llm.invoke([
+    const response = await llm.call([
       new SystemMessage(systemPrompt),
       new HumanMessage(`Danh sách món ăn được lọc ra hôm nay:\n${recipeNames}\n\nDanh sách nguyên liệu hiện có trong tủ lạnh:\n${pantryList}`)
     ]);
@@ -348,7 +348,8 @@ export async function suggestMenu(req, res) {
     }
 
     const items = await suggestDailyMenu(prefs, pantryItems);
-    res.json({ items });
+    const aiAnalysis = await generateAIExplanation(items, prefs, pantryItems);
+    res.json({ items, aiAnalysis });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "Internal error" });
@@ -379,7 +380,17 @@ export async function suggestWeeklyMenuEndpoint(req, res) {
     }
 
     const weeklyMenu = await suggestWeeklyMenu(prefs, pantryItems);
-    res.json({ weeklyMenu });
+
+    // Gom một vài món để AI phân tích tuần
+    const sampleRecipes = [];
+    (weeklyMenu || []).forEach(day => {
+      if (day.meals) {
+        sampleRecipes.push(...day.meals);
+      }
+    });
+
+    const aiAnalysis = await generateAIExplanation(sampleRecipes.slice(0, 5), prefs, pantryItems);
+    res.json({ weeklyMenu, aiAnalysis });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "Internal error" });

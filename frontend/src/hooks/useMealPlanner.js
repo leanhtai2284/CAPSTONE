@@ -18,6 +18,10 @@ export default function useMealPlanner() {
     "weeklyMenu",
     [],
   );
+  const [aiAnalysis, setAiAnalysis, removeAiAnalysis] = useLocalStorage(
+    "aiAnalysis",
+    "",
+  );
   const [userPreferences, setUserPreferences] = useState({});
 
   const [viewMode, setViewMode] = useState("today");
@@ -136,15 +140,19 @@ export default function useMealPlanner() {
       if (viewMode === "weekly") {
         const res = await suggestWeeklyApi(payload);
         const menu = res.weeklyMenu || [];
+        const analysis = res.aiAnalysis || "";
 
         setWeeklyMenu(menu);
         setMealFromAI([]);
+        setAiAnalysis(analysis);
         setUserPreferences(payload);
         setSelectedDay(new Date().getDay());
       } else {
         const res = await suggestMenuApi(payload);
         const items = res.items || [];
+        const analysis = res.aiAnalysis || "";
         setMealFromAI(items);
+        setAiAnalysis(analysis);
         setUserPreferences(payload);
         setViewMode("today");
       }
@@ -163,10 +171,12 @@ export default function useMealPlanner() {
   const resetPlan = () => {
     setMealFromAI([]);
     setWeeklyMenu([]);
+    setAiAnalysis("");
     setUserPreferences({});
     try {
       removeMealFromAI();
       removeWeeklyMenu();
+      removeAiAnalysis();
     } catch (err) {
       console.error("Failed to remove local storage keys:", err);
     }
@@ -190,7 +200,9 @@ export default function useMealPlanner() {
           setIsGenerating(true);
           const res = await suggestWeeklyApi(userPreferences);
           const menu = res.weeklyMenu || [];
+          const analysis = res.aiAnalysis || "";
           setWeeklyMenu(menu);
+          setAiAnalysis(analysis);
         } catch (err) {
           console.error("Failed to load weekly menu:", err);
           toast.error("Không thể tải thực đơn tuần. Vui lòng thử lại.");
@@ -422,5 +434,6 @@ export default function useMealPlanner() {
     isCookingMealId,
     trackingToday,
     lastPantryDeducted,
+    aiAnalysis,
   };
 }
