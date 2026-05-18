@@ -36,7 +36,18 @@ const groupSchema = new mongoose.Schema(
     },
     goal: {
       type: String,
-      enum: ["healthy", "fitness", "weight_loss", "muscle_gain", "balanced"],
+      enum: [
+        "healthy",
+        "fitness",
+        "weight_loss",
+        "muscle_gain",
+        "balanced",
+        "picnic",
+        "family",
+        "party",
+        "office",
+        "diet_challenge",
+      ],
       default: "healthy",
     },
     privacy: {

@@ -2,19 +2,22 @@
  * Tiện ích tính TDEE (Total Daily Energy Expenditure)
  * Công thức: Mifflin-St Jeor (chuẩn khuyến nghị bởi các chuyên gia dinh dưỡng)
  */
+// Nam: (10 × Cân nặng) + (6.25 × Chiều cao) - (5 × Tuổi) + 5
+// Nữ: (10 × Cân nặng) + (6.25 × Chiều cao) - (5 × Tuổi) - 161
+// Sau đó nhân với Hệ số vận động để ra được TDEE (Tổng calo tiêu thụ mỗi ngày).
 
 // Hệ số hoạt động
 const ACTIVITY_MULTIPLIER = {
-  low:      1.2,    // Ít vận động (ngồi nhiều)
-  moderate: 1.375,  // Vận động nhẹ (1-3 ngày/tuần)
-  high:     1.55,   // Vận động nhiều (4-5 ngày/tuần)
+  low: 1.2, // Ít vận động (ngồi nhiều)
+  moderate: 1.375, // Vận động nhẹ (1-3 ngày/tuần)
+  high: 1.55, // Vận động nhiều (4-5 ngày/tuần)
 };
 
 // Điều chỉnh theo mục tiêu
 const GOAL_ADJUSTMENT = {
-  lose:     -400, // Thâm hụt calo để giảm cân
-  maintain:    0, // Duy trì cân nặng
-  gain:     +400, // Dư thừa calo để tăng cân
+  lose: -400, // Thâm hụt calo để giảm cân
+  maintain: 0, // Duy trì cân nặng
+  gain: +400, // Dư thừa calo để tăng cân
 };
 
 /**
@@ -37,7 +40,11 @@ export function calcBMR(weight_kg, height_cm, age, gender) {
  * @param {string} goal           - "lose" | "maintain" | "gain"
  * @returns {object} Kết quả TDEE chi tiết
  */
-export function calcTDEE(fitnessProfile, activityLevel = "moderate", goal = "maintain") {
+export function calcTDEE(
+  fitnessProfile,
+  activityLevel = "moderate",
+  goal = "maintain",
+) {
   const { height_cm, weight_kg, age, gender } = fitnessProfile || {};
 
   // Kiểm tra đủ dữ liệu chưa
@@ -45,7 +52,7 @@ export function calcTDEE(fitnessProfile, activityLevel = "moderate", goal = "mai
     return null; // Chưa đủ thông tin → trả null → dùng mặc định
   }
 
-  const bmr  = Math.round(calcBMR(weight_kg, height_cm, age, gender));
+  const bmr = Math.round(calcBMR(weight_kg, height_cm, age, gender));
   const tdee = Math.round(bmr * (ACTIVITY_MULTIPLIER[activityLevel] ?? 1.375));
   const goalAdj = GOAL_ADJUSTMENT[goal] ?? 0;
   const dailyCalorieTarget = Math.round(tdee + goalAdj);
@@ -54,15 +61,15 @@ export function calcTDEE(fitnessProfile, activityLevel = "moderate", goal = "mai
   // Protein: 30% calo → 1g protein = 4 kcal
   // Fat:     25% calo → 1g fat = 9 kcal
   // Carbs:   45% calo → 1g carbs = 4 kcal
-  const protein_g = Math.round((dailyCalorieTarget * 0.30) / 4);
-  const fat_g     = Math.round((dailyCalorieTarget * 0.25) / 9);
-  const carbs_g   = Math.round((dailyCalorieTarget * 0.45) / 4);
+  const protein_g = Math.round((dailyCalorieTarget * 0.3) / 4);
+  const fat_g = Math.round((dailyCalorieTarget * 0.25) / 9);
+  const carbs_g = Math.round((dailyCalorieTarget * 0.45) / 4);
 
   // Calo mỗi bữa (sáng 25%, trưa 40%, tối 35%)
   const mealTargets = {
     breakfast: Math.round(dailyCalorieTarget * 0.25),
-    lunch:     Math.round(dailyCalorieTarget * 0.40),
-    dinner:    Math.round(dailyCalorieTarget * 0.35),
+    lunch: Math.round(dailyCalorieTarget * 0.4),
+    dinner: Math.round(dailyCalorieTarget * 0.35),
   };
 
   return {
@@ -93,9 +100,12 @@ export function calcTDEE(fitnessProfile, activityLevel = "moderate", goal = "mai
  */
 export function getFallbackCalorieTarget(goal) {
   switch (goal) {
-    case "lose":     return 1700;
-    case "gain":     return 2500;
+    case "lose":
+      return 1700;
+    case "gain":
+      return 2500;
     case "maintain":
-    default:         return 2000;
+    default:
+      return 2000;
   }
 }

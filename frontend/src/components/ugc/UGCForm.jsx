@@ -41,20 +41,23 @@ export default function UGCForm() {
   const videoRef = useRef(null);
   const imageInputRef = useRef(null);
 
-  const handleImageFiles = useCallback((files) => {
-    if (!files || files.length === 0) return;
-    const newFiles = Array.from(files).slice(0, 5 - recipeImages.length);
-    if (newFiles.length === 0) {
-      toast.warning("Tối đa 5 ảnh");
-      return;
-    }
-    const withPreview = newFiles.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    setRecipeImages((prev) => [...prev, ...withPreview].slice(0, 5));
-    if (imageInputRef.current) imageInputRef.current.value = "";
-  }, [recipeImages.length]);
+  const handleImageFiles = useCallback(
+    (files) => {
+      if (!files || files.length === 0) return;
+      const newFiles = Array.from(files).slice(0, 5 - recipeImages.length);
+      if (newFiles.length === 0) {
+        toast.warning("Tối đa 5 ảnh");
+        return;
+      }
+      const withPreview = newFiles.map((file) => ({
+        file,
+        preview: URL.createObjectURL(file),
+      }));
+      setRecipeImages((prev) => [...prev, ...withPreview].slice(0, 5));
+      if (imageInputRef.current) imageInputRef.current.value = "";
+    },
+    [recipeImages.length],
+  );
 
   const removeImage = useCallback((index) => {
     setRecipeImages((prev) => {
@@ -95,51 +98,6 @@ export default function UGCForm() {
   const mergeUnique = (existing, incoming) => {
     const out = new Set([...(existing || []), ...(incoming || [])]);
     return Array.from(out).filter(Boolean);
-  };
-
-  const handleAutoEstimate = async () => {
-    const usableIngredients = (formData.ingredients || []).filter(
-      (item) => item?.name && String(item.name).trim(),
-    );
-    if (!usableIngredients.length) {
-      toast.warning("Vui lòng nhập ít nhất 1 nguyên liệu để ước tính");
-      return;
-    }
-
-    try {
-      const res = await recipeService.estimateUGC({
-        name_vi: formData.name_vi,
-        ingredients: usableIngredients,
-        steps: formData.steps || [],
-        servings: formData.servings,
-        spice_level: formData.spice_level,
-      });
-      const estimation = res?.data || {};
-
-      setFormData((prev) => ({
-        ...prev,
-        nutrition: estimation.nutrition || prev.nutrition,
-        price_estimate: estimation.price_estimate || prev.price_estimate,
-        diet_tags: mergeUnique(prev.diet_tags, estimation.diet_tags),
-        allergens: mergeUnique(prev.allergens, estimation.allergens),
-        taste_profile: mergeUnique(
-          prev.taste_profile,
-          estimation.taste_profile,
-        ),
-        utensils: mergeUnique(prev.utensils, estimation.utensils),
-        suitable_for: mergeUnique(prev.suitable_for, estimation.suitable_for),
-        avoid_for: mergeUnique(prev.avoid_for, estimation.avoid_for),
-      }));
-
-      toast.success(
-        estimation.source === "dataset"
-          ? "Đã ước tính từ dataset món"
-          : "Đã ước tính từ nguyên liệu (fallback)",
-      );
-    } catch (err) {
-      console.error(err);
-      toast.error(err.message || "Không thể ước tính");
-    }
   };
 
   const handleIngredientChange = (index, field, value) => {
@@ -310,14 +268,6 @@ export default function UGCForm() {
         "steps",
         JSON.stringify(formData.steps.filter((s) => s && s.trim())),
       );
-      fd.append("nutrition", JSON.stringify(formData.nutrition));
-      fd.append("price_estimate", JSON.stringify(formData.price_estimate));
-      fd.append("diet_tags", JSON.stringify(formData.diet_tags));
-      fd.append("allergens", JSON.stringify(formData.allergens));
-      fd.append("taste_profile", JSON.stringify(formData.taste_profile));
-      fd.append("utensils", JSON.stringify(formData.utensils));
-      fd.append("suitable_for", JSON.stringify(formData.suitable_for));
-      fd.append("avoid_for", JSON.stringify(formData.avoid_for));
 
       // Append recipe images
       recipeImages.forEach((img) => {
@@ -343,22 +293,6 @@ export default function UGCForm() {
         spice_level: 0,
         ingredients: [{ name: "", amount: "", unit: "", scalable: true }],
         steps: [""],
-        utensils: [],
-        diet_tags: [],
-        allergens: [],
-        taste_profile: [],
-        suitable_for: [],
-        avoid_for: [],
-        nutrition: {
-          calories: "",
-          protein_g: "",
-          carbs_g: "",
-          fat_g: "",
-          fiber_g: "",
-          sodium_mg: "",
-          sugar_g: "",
-        },
-        price_estimate: { min: "", max: "", currency: "VND" },
       });
       if (cookingVideo && cookingVideo.preview)
         URL.revokeObjectURL(cookingVideo.preview);
@@ -745,231 +679,7 @@ export default function UGCForm() {
               ))}
             </div>
 
-            {/* Nutrition & Price */}
-            <div className="border-t pt-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Thông tin dinh dưỡng
-                </h3>
-                <button
-                  type="button"
-                  onClick={handleAutoEstimate}
-                  className="text-sm px-3 py-1 rounded border border-amber-500 text-amber-700 hover:bg-amber-50"
-                >
-                  ⚡ Ước tính tự động
-                </button>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <input
-                      type="number"
-                      name="nutrition.calories"
-                      value={formData.nutrition.calories}
-                      onChange={handleChange}
-                      placeholder="Calories"
-                      required
-                      className="w-full px-4 py-3 border rounded-xl placeholder-gray-400"
-                    />
-                    <input
-                      type="number"
-                      name="nutrition.protein_g"
-                      value={formData.nutrition.protein_g}
-                      onChange={handleChange}
-                      placeholder="Protein (g)"
-                      className="w-full px-4 py-3 border rounded-xl placeholder-gray-400"
-                    />
-                    <input
-                      type="number"
-                      name="nutrition.carbs_g"
-                      value={formData.nutrition.carbs_g}
-                      onChange={handleChange}
-                      placeholder="Carbs (g)"
-                      className="w-full px-4 py-3 border rounded-xl placeholder-gray-400"
-                    />
-                    <input
-                      type="number"
-                      name="nutrition.fat_g"
-                      value={formData.nutrition.fat_g}
-                      onChange={handleChange}
-                      placeholder="Fat (g)"
-                      className="w-full px-4 py-3 border rounded-xl placeholder-gray-400"
-                    />
-                    <input
-                      type="number"
-                      name="nutrition.fiber_g"
-                      value={formData.nutrition.fiber_g}
-                      onChange={handleChange}
-                      placeholder="Fiber (g)"
-                      className="w-full px-4 py-3 border rounded-xl placeholder-gray-400"
-                    />
-                    <input
-                      type="number"
-                      name="nutrition.sodium_mg"
-                      value={formData.nutrition.sodium_mg}
-                      onChange={handleChange}
-                      placeholder="Sodium (mg)"
-                      className="w-full px-4 py-3 border rounded-xl placeholder-gray-400"
-                    />
-                    <input
-                      type="number"
-                      name="nutrition.sugar_g"
-                      value={formData.nutrition.sugar_g}
-                      onChange={handleChange}
-                      placeholder="Sugar (g)"
-                      className="w-full px-4 py-3 border rounded-xl placeholder-gray-400"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-                    Ước tính giá
-                  </h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <input
-                      type="number"
-                      name="price_estimate.min"
-                      value={formData.price_estimate.min}
-                      onChange={handleChange}
-                      placeholder="Giá tối thiểu (VND)"
-                      className="w-full px-4 py-3 border rounded-xl placeholder-gray-400"
-                    />
-                    <input
-                      type="number"
-                      name="price_estimate.max"
-                      value={formData.price_estimate.max}
-                      onChange={handleChange}
-                      placeholder="Giá tối đa (VND)"
-                      className="w-full px-4 py-3 border rounded-xl placeholder-gray-400"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* (No inline media) Video will be at the end per design */}
-
-            {/* Extra tags */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Diet Tags (phân cách bằng dấu phẩy)
-                </label>
-                <input
-                  type="text"
-                  value={formData.diet_tags.join(", ")}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      diet_tags: e.target.value
-                        .split(",")
-                        .map((t) => t.trim())
-                        .filter(Boolean),
-                    }))
-                  }
-                  className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Allergens (phân cách bằng dấu phẩy)
-                </label>
-                <input
-                  type="text"
-                  value={formData.allergens.join(", ")}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      allergens: e.target.value
-                        .split(",")
-                        .map((t) => t.trim())
-                        .filter(Boolean),
-                    }))
-                  }
-                  className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Taste Profile (phân cách bằng dấu phẩy)
-                </label>
-                <input
-                  type="text"
-                  value={formData.taste_profile.join(", ")}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      taste_profile: e.target.value
-                        .split(",")
-                        .map((t) => t.trim())
-                        .filter(Boolean),
-                    }))
-                  }
-                  className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Utensils (phân cách bằng dấu phẩy)
-                </label>
-                <input
-                  type="text"
-                  value={formData.utensils.join(", ")}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      utensils: e.target.value
-                        .split(",")
-                        .map((t) => t.trim())
-                        .filter(Boolean),
-                    }))
-                  }
-                  className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Suitable For (phân cách bằng dấu phẩy)
-                </label>
-                <input
-                  type="text"
-                  value={formData.suitable_for.join(", ")}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      suitable_for: e.target.value
-                        .split(",")
-                        .map((t) => t.trim())
-                        .filter(Boolean),
-                    }))
-                  }
-                  className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Avoid For (phân cách bằng dấu phẩy)
-                </label>
-                <input
-                  type="text"
-                  value={formData.avoid_for.join(", ")}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      avoid_for: e.target.value
-                        .split(",")
-                        .map((t) => t.trim())
-                        .filter(Boolean),
-                    }))
-                  }
-                  className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-              </div>
-            </div>
 
             {/* Video (moved to end) */}
             <div className="mt-4">
@@ -1032,22 +742,6 @@ export default function UGCForm() {
                       { name: "", amount: "", unit: "", scalable: true },
                     ],
                     steps: [""],
-                    utensils: [],
-                    diet_tags: [],
-                    allergens: [],
-                    taste_profile: [],
-                    suitable_for: [],
-                    avoid_for: [],
-                    nutrition: {
-                      calories: "",
-                      protein_g: "",
-                      carbs_g: "",
-                      fat_g: "",
-                      fiber_g: "",
-                      sodium_mg: "",
-                      sugar_g: "",
-                    },
-                    price_estimate: { min: "", max: "", currency: "VND" },
                   });
                   recipeImages.forEach(
                     (f) => f.preview && URL.revokeObjectURL(f.preview),

@@ -2,6 +2,10 @@ import Recipe from "../models/Recipe.js";
 import { estimateRecipe } from "../utils/recipeEstimate.js";
 import { retrieveNutritionFromDataset } from "../utils/dishNutritionRetrieval.js";
 import { createNotification } from "./notificationController.js";
+import { uploadImage, uploadVideo } from "../services/cloudinary.js";
+
+const UGC_IMAGE_FOLDER = "smartmeal/ugc/images";
+const UGC_VIDEO_FOLDER = "smartmeal/ugc/videos";
 
 const parseJson = (value, fallback) => {
   if (value === undefined || value === null || value === "") return fallback;
@@ -173,9 +177,24 @@ export const estimateUGC = async (req, res) => {
     });
 
     if (!datasetEstimate) {
-      return res.status(404).json({
-        success: false,
-        message: "Không tìm thấy món tương tự trong dataset để ước tính",
+      const fallbackNutrition = normalizeNutrition(estimation?.nutrition || {});
+      const fallbackPrice = normalizePrice(estimation?.price_estimate || {});
+
+      return res.json({
+        success: true,
+        data: {
+          nutrition: fallbackNutrition,
+          price_estimate: fallbackPrice,
+          diet_tags: normalizeHeuristicList(estimation?.diet_tags || []),
+          allergens: normalizeHeuristicList(estimation?.allergens || []),
+          taste_profile: normalizeHeuristicList(
+            estimation?.taste_profile || [],
+          ),
+          utensils: normalizeHeuristicList(estimation?.utensils || []),
+          suitable_for: normalizeHeuristicList(estimation?.suitable_for || []),
+          avoid_for: normalizeHeuristicList(estimation?.avoid_for || []),
+          source: "ingredient",
+        },
       });
     }
 
@@ -239,15 +258,12 @@ export const createUGC = async (req, res) => {
       ingredients: ingredientNames,
     });
 
-    if (!datasetEstimate) {
-      return res.status(422).json({
-        success: false,
-        message: "Không tìm thấy món tương tự trong dataset để ước tính",
-      });
-    }
-
-    const nutrition = normalizeNutrition(datasetEstimate.nutrition || {});
-    const priceEstimate = normalizePrice(datasetEstimate.price_estimate || {});
+    const nutrition = normalizeNutrition(
+      datasetEstimate?.nutrition || estimation?.nutrition || {},
+    );
+    const priceEstimate = normalizePrice(
+      datasetEstimate?.price_estimate || estimation?.price_estimate || {},
+    );
 
     const dietTags = normalizeHeuristicList(estimation?.diet_tags || []);
     const allergens = normalizeHeuristicList(estimation?.allergens || []);
@@ -294,10 +310,16 @@ export const createUGC = async (req, res) => {
       ? req.files.recipe_images
       : [];
     if (imageFiles.length > 0) {
-      payload.image_url = `/uploads/ugc/${imageFiles[0].filename}`;
-      payload.additional_images = imageFiles.map(
-        (f) => `/uploads/ugc/${f.filename}`,
+      const uploads = await Promise.all(
+        imageFiles.map((file) =>
+          uploadImage(file.buffer, { folder: UGC_IMAGE_FOLDER }),
+        ),
       );
+      const urls = uploads.map((item) => item?.secure_url).filter(Boolean);
+      if (urls.length > 0) {
+        payload.image_url = urls[0];
+        payload.additional_images = urls;
+      }
     }
 
     // Handle uploaded video
@@ -306,14 +328,17 @@ export const createUGC = async (req, res) => {
       : req.file || null;
 
     if (videoFile) {
-      payload.cooking_video_url = `/uploads/ugc/${videoFile.filename}`;
+      const uploaded = await uploadVideo(videoFile.buffer, {
+        folder: UGC_VIDEO_FOLDER,
+      });
+      payload.cooking_video_url = uploaded?.secure_url || "";
     }
 
     const recipe = await Recipe.create(payload);
     const data = recipe.toObject();
 
-    if (videoFile && !data.cooking_video_url) {
-      data.cooking_video_url = `/uploads/ugc/${videoFile.filename}`;
+    if (videoFile && !data.cooking_video_url && payload.cooking_video_url) {
+      data.cooking_video_url = payload.cooking_video_url;
     }
 
     res.status(201).json({ success: true, data });

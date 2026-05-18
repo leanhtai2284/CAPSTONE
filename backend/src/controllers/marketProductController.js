@@ -1,6 +1,9 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Store from "../models/Store.js";
 import MarketProduct from "../models/MarketProduct.js";
+import { uploadImage } from "../services/cloudinary.js";
+
+const MARKET_PRODUCT_FOLDER = "smartmeal/market/products";
 
 const canManageStore = (user, store) =>
   user?.role === "admin" || store?.owner?.toString() === user?._id?.toString();
@@ -192,7 +195,10 @@ export const uploadProductImage = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Không có file ảnh" });
   }
 
-  const url = `/uploads/market/${req.file.filename}`;
+  const uploaded = await uploadImage(req.file.buffer, {
+    folder: MARKET_PRODUCT_FOLDER,
+  });
+  const url = uploaded?.secure_url || "";
 
   return res.status(200).json({ success: true, data: { url } });
 });

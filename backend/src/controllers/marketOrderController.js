@@ -4,12 +4,23 @@ import Store from "../models/Store.js";
 import MarketProduct from "../models/MarketProduct.js";
 import MarketOrder from "../models/MarketOrder.js";
 import Pantry from "../models/Pantry.js";
+import { uploadImage } from "../services/cloudinary.js";
+
+const MARKET_RECEIPT_FOLDER = "smartmeal/market/receipts";
 
 const mapToPantryCategory = (marketCategory) => {
   if (!marketCategory) return "other";
   const cat = marketCategory.toLowerCase().trim();
-  
-  if (cat.includes("thịt") || cat.includes("cá") || cat.includes("bò") || cat.includes("heo") || cat.includes("protein") || cat.includes("gà") || cat.includes("hải sản")) {
+
+  if (
+    cat.includes("thịt") ||
+    cat.includes("cá") ||
+    cat.includes("bò") ||
+    cat.includes("heo") ||
+    cat.includes("protein") ||
+    cat.includes("gà") ||
+    cat.includes("hải sản")
+  ) {
     return "protein";
   }
   if (cat.includes("rau") || cat.includes("vegetable") || cat.includes("củ")) {
@@ -18,22 +29,53 @@ const mapToPantryCategory = (marketCategory) => {
   if (cat.includes("quả") || cat.includes("trái") || cat.includes("fruit")) {
     return "fruit";
   }
-  if (cat.includes("sữa") || cat.includes("dairy") || cat.includes("bơ") || cat.includes("cheese")) {
+  if (
+    cat.includes("sữa") ||
+    cat.includes("dairy") ||
+    cat.includes("bơ") ||
+    cat.includes("cheese")
+  ) {
     return "dairy";
   }
-  if (cat.includes("nước") || cat.includes("beverage") || cat.includes("uống") || cat.includes("bia") || cat.includes("ngọt")) {
+  if (
+    cat.includes("nước") ||
+    cat.includes("beverage") ||
+    cat.includes("uống") ||
+    cat.includes("bia") ||
+    cat.includes("ngọt")
+  ) {
     return "beverage";
   }
-  if (cat.includes("gia vị") || cat.includes("condiment") || cat.includes("mắm") || cat.includes("muối") || cat.includes("đường")) {
+  if (
+    cat.includes("gia vị") ||
+    cat.includes("condiment") ||
+    cat.includes("mắm") ||
+    cat.includes("muối") ||
+    cat.includes("đường")
+  ) {
     return "condiment";
   }
-  if (cat.includes("gạo") || cat.includes("grain") || cat.includes("mì") || cat.includes("bột")) {
+  if (
+    cat.includes("gạo") ||
+    cat.includes("grain") ||
+    cat.includes("mì") ||
+    cat.includes("bột")
+  ) {
     return "grain";
   }
-  
-  const allowed = ["protein", "vegetable", "fruit", "grain", "dairy", "condiment", "beverage", "other"];
+
+  const allowed = [
+    "protein",
+    "vegetable",
+    "fruit",
+    "grain",
+    "dairy",
+    "condiment",
+    "beverage",
+    "other",
+  ];
   if (allowed.includes(cat)) return cat;
-  
+
   return "other";
 };
 
@@ -284,7 +326,10 @@ export const getStoreOrders = asyncHandler(async (req, res) => {
 
   // Filter by status (comma-separated or single)
   if (status && status !== "all") {
-    const statuses = status.split(",").map((s) => s.trim()).filter(Boolean);
+    const statuses = status
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
     if (statuses.length === 1) {
       filter.status = statuses[0];
     } else if (statuses.length > 1) {
@@ -371,7 +416,12 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
   }
 
   if (order.status === "cancelled" && status !== "cancelled") {
-    return res.status(400).json({ success: false, message: "Không thể thay đổi trạng thái của đơn hàng đã hủy" });
+    return res
+      .status(400)
+      .json({
+        success: false,
+        message: "Không thể thay đổi trạng thái của đơn hàng đã hủy",
+      });
   }
 
   const previousStatus = order.status;
@@ -387,7 +437,7 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
     for (const item of order.items) {
       const productId = item.product?._id || item.product;
       await MarketProduct.findByIdAndUpdate(productId, {
-        $inc: { stock: item.quantity }
+        $inc: { stock: item.quantity },
       });
     }
   }
@@ -398,32 +448,44 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
       const prod = item.product; // Đã populated
       const category = mapToPantryCategory(prod?.category);
       const unit = mapToPantryUnit(item.unit || prod?.unit);
-      
+
       // Kiểm tra xem có món trùng tên chưa hết hạn không để cộng dồn
       const existingPantryItem = await Pantry.findOne({
         user: order.user,
         name: item.name,
         unit: unit,
-        expiryDate: { $gt: new Date() }
+        expiryDate: { $gt: new Date() },
       });
-      
+
       if (existingPantryItem) {
         existingPantryItem.quantity += item.quantity;
         await existingPantryItem.save();
       } else {
         // Tạo mới Pantry item
-        const expiryDays = category === "protein" ? 3 : category === "vegetable" || category === "fruit" ? 5 : 14;
-        const expiryDate = new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000);
-        
+        const expiryDays =
+          category === "protein"
+            ? 3
+            : category === "vegetable" || category === "fruit"
+              ? 5
+              : 14;
+        const expiryDate = new Date(
+          Date.now() + expiryDays * 24 * 60 * 60 * 1000,
+        );
+
         await Pantry.create({
           user: order.user,
           name: item.name,
           quantity: item.quantity,
           unit: unit,
-          storageLocation: (category === "protein" || category === "dairy") ? "freezer" : (category === "vegetable" || category === "fruit") ? "fridge" : "pantry",
+          storageLocation:
+            category === "protein" || category === "dairy"
+              ? "freezer"
+              : category === "vegetable" || category === "fruit"
+                ? "fridge"
+                : "pantry",
           expiryDate: expiryDate,
           category: category,
-          notes: `Tự động nhập từ đơn hàng Market #${order._id.toString().slice(-6)}`
+          notes: `Tự động nhập từ đơn hàng Market #${order._id.toString().slice(-6)}`,
         });
       }
     }
@@ -466,18 +528,21 @@ export const updatePaymentStatus = asyncHandler(async (req, res) => {
   order.payment.status = status;
   if (method) order.payment.method = method;
   if (transactionId) order.payment.transactionId = transactionId;
-  
+
   if (status === "paid") {
     order.payment.paidAt = new Date();
     if (order.status === "pending") {
       order.status = "paid";
     }
-  } else if ((status === "failed" || status === "refunded") && order.status !== "cancelled") {
+  } else if (
+    (status === "failed" || status === "refunded") &&
+    order.status !== "cancelled"
+  ) {
     // HOÀN TRẢ TỒN KHO NẾU THANH TOÁN THẤT BẠI
     for (const item of order.items) {
       const productId = item.product?._id || item.product;
       await MarketProduct.findByIdAndUpdate(productId, {
-        $inc: { stock: item.quantity }
+        $inc: { stock: item.quantity },
       });
     }
     order.status = "cancelled";
@@ -584,20 +649,28 @@ export const uploadReceipt = asyncHandler(async (req, res) => {
   const order = await MarketOrder.findById(req.params.id);
 
   if (!order) {
-    return res.status(404).json({ success: false, message: "Không tìm thấy đơn hàng" });
+    return res
+      .status(404)
+      .json({ success: false, message: "Không tìm thấy đơn hàng" });
   }
 
   // Chú ý: Chỉ người mua mới được up bill
   if (order.user.toString() !== req.user._id.toString()) {
-    return res.status(403).json({ success: false, message: "Bạn không có quyền thực hiện" });
+    return res
+      .status(403)
+      .json({ success: false, message: "Bạn không có quyền thực hiện" });
   }
 
   if (!req.file) {
-    return res.status(400).json({ success: false, message: "Vui lòng chọn ảnh biên lai" });
+    return res
+      .status(400)
+      .json({ success: false, message: "Vui lòng chọn ảnh biên lai" });
   }
 
-  // Path trả về từ upload middleware (thường là /uploads/...)
-  const imageUrl = `/uploads/${req.file.filename}`;
+  const uploaded = await uploadImage(req.file.buffer, {
+    folder: MARKET_RECEIPT_FOLDER,
+  });
+  const imageUrl = uploaded?.secure_url || "";
 
   order.payment.proofOfPayment = imageUrl;
   order.payment.method = "vietqr";
