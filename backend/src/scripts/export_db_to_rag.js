@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 import path from "path";
 import dotenv from "dotenv";
 
-// Lên cấp để trỏ đúng vào thư mục backend
+//Tao file recipe.md cho RAG
+//Lên cấp để trỏ đúng vào thư mục backend
 const envPath = path.resolve(process.cwd(), ".env");
 dotenv.config({ path: envPath });
 
