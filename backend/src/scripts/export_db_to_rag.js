@@ -15,7 +15,7 @@ async function exportRecipesToRag() {
       process.exit(1);
     }
 
-    console.log("⏳ Đang kết nối MongoDB...");
+    console.log("Đang kết nối MongoDB...");
     await mongoose.connect(process.env.MONGO_URI);
     console.log(" Kết nối thành công!");
 

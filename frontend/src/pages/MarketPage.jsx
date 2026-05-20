@@ -7,6 +7,7 @@ import { useMarketCart } from "../context/MarketCartContext";
 import { generateShoppingListApi } from "../services/recipeApi";
 import { resolveAssetUrl } from "../utils/resolveAssetUrl";
 import { toast } from "react-toastify";
+import StoreMapModal from "../components/ui/StoreMapModal";
 
 const formatCurrency = (value) =>
   new Intl.NumberFormat("vi-VN", {
@@ -44,6 +45,7 @@ const MarketPage = () => {
   const [shoppingError, setShoppingError] = useState("");
   const [userLocation, setUserLocation] = useState(null);
   const [locating, setLocating] = useState(false);
+  const [mapStore, setMapStore] = useState(null);
 
   const getRecipeIdsFromPlan = () => {
     const ids = new Set();
@@ -443,7 +445,11 @@ const MarketPage = () => {
                         }}
                         className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur">
+                      <div 
+                        onClick={() => product.store && setMapStore(product.store)}
+                        className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur cursor-pointer hover:bg-emerald-50 transition"
+                        title="Xem vị trí siêu thị trên bản đồ"
+                      >
                         <Store className="h-3 w-3" />
                         {product.store?.name || "Siêu thị"}
                       </div>
@@ -522,6 +528,14 @@ const MarketPage = () => {
           )}
         </div>
       </section>
+
+      {/* Map Modal */}
+      <StoreMapModal
+        isOpen={!!mapStore}
+        onClose={() => setMapStore(null)}
+        store={mapStore}
+        userLocation={userLocation}
+      />
     </div>
   );
 };

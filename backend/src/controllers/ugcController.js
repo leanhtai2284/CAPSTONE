@@ -246,33 +246,27 @@ export const createUGC = async (req, res) => {
     const servingsNum = toNumber(req.body.servings, 1);
     const spiceLevel = toNumber(req.body.spice_level, 0);
 
-    const estimation = estimateRecipe({
-      ingredients: normalizeIngredientsForHeuristic(rawIngredients),
-      steps,
-      servings: servingsNum,
-      spice_level: spiceLevel,
-    });
+    const nutrition = {
+      calories: 0,
+      protein_g: 0,
+      carbs_g: 0,
+      fat_g: 0,
+      fiber_g: 0,
+      sodium_mg: 0,
+      sugar_g: 0,
+    };
+    const priceEstimate = {
+      min: 0,
+      max: 0,
+      currency: "VND",
+    };
 
-    const datasetEstimate = await retrieveNutritionFromDataset({
-      name: req.body.name_vi,
-      ingredients: ingredientNames,
-    });
-
-    const nutrition = normalizeNutrition(
-      datasetEstimate?.nutrition || estimation?.nutrition || {},
-    );
-    const priceEstimate = normalizePrice(
-      datasetEstimate?.price_estimate || estimation?.price_estimate || {},
-    );
-
-    const dietTags = normalizeHeuristicList(estimation?.diet_tags || []);
-    const allergens = normalizeHeuristicList(estimation?.allergens || []);
-    const tasteProfile = normalizeHeuristicList(
-      estimation?.taste_profile || [],
-    );
-    const utensils = normalizeHeuristicList(estimation?.utensils || []);
-    const suitableFor = normalizeHeuristicList(estimation?.suitable_for || []);
-    const avoidFor = normalizeHeuristicList(estimation?.avoid_for || []);
+    const dietTags = [];
+    const allergens = [];
+    const tasteProfile = [];
+    const utensils = [];
+    const suitableFor = [];
+    const avoidFor = [];
 
     const payload = {
       name_vi: req.body.name_vi,

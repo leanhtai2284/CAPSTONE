@@ -23895,3 +23895,114 @@ Tài liệu này chứa danh sách các món ăn thực tế đang có trên h�
 
 ---
 
+## Món ăn: Cháo gà xé phay
+- **Mã món (ID):** chao-ga-xe-phay
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, dinner
+- **Thời gian:** Chuẩn bị 20 phút, Nấu 40 phút. Tổng: 60 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 2 người ăn.
+- **Dinh dưỡng (ước tính):** 340 calo, 22g protein, 45g carbs, 8g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** light, balanced, low-fat
+- **Mô tả:** Thức quà điểm tâm sáng bồi bổ cơ thể hoặc bữa tối nhẹ nhàng giải cảm mệt mỏi ấm bụng của gia đình Việt, hạt gạo nếp gạo tẻ rang vàng nức nở hầm ninh nhừ sánh mượt trong lòng nước luộc gà ngọt thanh lịm tim, phủ ngập gà ta xé phay giòn da rau răm tiêu sọ ấm nồng nàn dồi dào chất đạm vitamin béo nhẹ lành mạnh tinh khiết.
+
+### Nguyên liệu cần chuẩn bị:
+- 600 g Gà ta thả vườn ngon dầy thớ nạc săn chắc nửa con mập mạp
+- 100 g Gạo tẻ ngon hạt tròn tròn mập dẻo dính se se
+- 20 g Gạo nếp cái hoa vàng nếp nương thơm
+- 50 g Hành lá tươi tươi rau răm nhặt sạch xắt nhỏ ngò rí hành tím phi vàng
+- 0 g Gừng tươi tươi giã nhuyễn củ hành đập dập
+- 0 g Muối tinh muối hạt tinh khiết hạt nêm nước mắm ngon đặc sản tiêu sọ xay mịn ấm nồng nàn sa tế ớt
+- 0 g Nước lọc sạch dồi dào lòng nồi hầm
+
+### Cách làm (Steps):
+1. Gà ta mua về làm sạch ruột mang sát kỹ muối hạt chanh tươi gừng giã rượu trắng rửa sạch nhớt bẩn tanh hôi xả sạch để ráo dứt khoát trút gà vào lòng nồi lớn đổ ngập nước thêm hành đập dập gừng tươi lát chút muối đun sôi sùng sục vớt sạch bọt bẩn liên tục hạ lửa vừa luộc vịt gà trong hai mươi phút chín tới mọng nước ngọt thớ tắt bếp ngâm mười phút mọng thịt ngọt khiết vớt ra thau đá lạnh se giòn da dẻo nạc bóc gỡ phi lê xé phay sợi dài mỏng mảnh giữ miếng da gà bùi béo xóc chút gia vị tiêu mắm nhẹ riêng đĩa lớn
+2. Gạo tẻ gạo nếp vo ngâm nở để ráo rang se se trên chảo chống dính nhỏ lửa đảo đều liên tục dứt khoát chuyển màu đục vàng nhạt thơm mộc mạc gạo rang trút toàn bộ vào nồi nước luộc gà đã gạn váng mỡ đun sôi bùng lửa lớn hạ lửa thật nhỏ liu riu đậy vung hầm ninh nhừ trong vòng ba mươi lăm đến bốn mươi phút nở bung nhũn nhặn dẻo quánh dính mịn mượt sánh đặc sệt ngọt lịm mặn mòi n n nếm gia vị muối hạt nêm muỗng nước mắm ngon vừa vị thanh đạm mộc mạc nhã nhặn ngọt khiết dịu nhẹ bốc khói rực rỡ
+3. Cho giá đỗ rau răm xắt nhạt hành lá thái nhỏ xuống lòng đáy tô múc cháo trắng nhừ sánh dẻo nóng hổi chan đầy ắp sắp xếp thịt gà xé phay chắc ngọt da giòn bùi rắc hành phi tiêu sọ xay mịn nồng nàn ăn nóng đổ mồ hôi giải cảm lạnh bồi bổ sinh lực tốt.
+
+---
+
+## Món ăn: Cơm cá ngừ kho tiêu
+- **Mã món (ID):** com-ca-ngu-kho-tieu
+- **Vùng miền:** Trung
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** lunch, dinner
+- **Thời gian:** Chuẩn bị 15 phút, Nấu 30 phút. Tổng: 45 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 3 người ăn.
+- **Dinh dưỡng (ước tính):** 420 calo, 28g protein, 56g carbs, 11g fat.
+- **Chế độ ăn phù hợp (Diet Tags):** balanced
+- **Mô tả:** Món cá biển kho mặn mòi đưa cơm kinh điển quen thuộc đưa cơm bậc nhất của gia đình miền Trung Trung Bộ biển nắng dạt dào, khoanh cá ngừ đại dương tươi mập béo chắc nạc nướng rán áp chảo săn thớ thịt hầm kho keo sệt nước mắm kẹo đường phèn tiêu sọ giã cay nồng xé lưỡi ăn kèm đĩa cơm trắng nóng hổi dưa leo dưa chuột giòn mát giải ngấy bồi bổ sức khỏe dồi dào đạm kẽm axit béo omega 3 tốt tim mạch trí não.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 đĩa lớn Cơm trắng nóng dẻo thơm hạt gạo tám xoan dẻo
+- 2 khoanh dầy bản (g) Cá ngừ đại dương cắt lát khoanh dày mập thớ săn thịt chắc
+- 2 muỗng cà phê Tiêu đen xay mịn ấm tiêu sọ hạt dập nồng nàn dồi dào
+- 3 muỗng canh Nước mắm cá cơm ngon nguyên chất mặn mòi miền Trung biển nắng
+- 2 muỗng canh Đường cát trắng đường phèn giã mịn thắng nước màu
+- 0 g Tỏi củ băm nhuyễn hành băm hành tím củ sả băm ớt hiểm tươi cay xè đỏ rực cắt lát mỏng dầu màu điều mỡ heo béo gia vị muối hạt bột ngọt hạt nêm
+- 0 g Dưa leo xắt thanh rau sống xà lách xanh mướt ngọt mát dưa chuột dọn kèm bữa cơm nóng hổi sạch sẽ tinh khiết
+
+### Cách làm (Steps):
+1. Cá ngừ đại dương mua khoanh tươi cắt lát dày làm sạch tủy máu bám dọc xương sống ngâm nước muối loãng pha chanh khử tanh xả sạch dưới vòi nước xối mạnh xả nhiều lần thấm thật khô ráo nước bằng khăn giấy sạch sẽ tinh khiết khía vài đường chéo nhẹ ngoài mặt thịt cho thấm vị đem xóc ướp cùng một muỗng mắm tương tỏi hành tím băm nhuyễn tiêu đen xay mịn muối hạt bột ngọt hạt nêm mười lăm phút cho thớ cá săn dầy thịt chắc ngấm thấu gia vị thơm ngon se mặt thớ cá mọng mướt mắt
+2. Cho một muỗng dầu mỡ bơ vào chảo đun nóng thả các lát cá ngừ vào áp chảo chiên sơ nhanh tay lửa vừa hai mươi giây mỗi mặt cho thịt cá se săn thịt chắc dầy nạc giữ trọn vẹn vị ngọt khiết mọng nước của thịt cá biển đại dương không bị vỡ rã khi kho hầm vớt cá ra đĩa lòng nông
+3. Thắng đường cát trắng với muỗng dầu mỡ heo bơ thơm trên chảo dầy sâu lòng đun lửa nhỏ quấy đều tay liên tục dứt khoát mượt mà thành hỗn hợp sốt mật màu cánh gián óng ả óng ánh bắt mắt thơm lừng phi thơm hành tím tỏi băm nhuyễn sả băm sệt vào đảo nhanh tay trút chén mắm kho cá miền Trung pha loãng mắm ngon đường phèn tiêu sọ giã cay xè vào đun sôi sùng sục bốc khói xộc khói xé mũi nồng nàn quạt sả tỏi thơm nức
+4. Khéo léo xếp các lát khoanh cá ngừ đại dương đã chiên áp chảo săn thớ vào nồi nước màu sốt mắm đường đang sôi sùng sục lật đều hai mặt cho ngấm màu óng thả vài lát ớt hiểm tươi cay xè đỏ rực tiêu sọ nguyên chùm đập dập đậy kín nắp vung nồi đất đun lửa lớn nấu sôi bùng
+5. Hạ lửa thật nhỏ liu riu ninh hầm kho cá liu riu trên bếp lửa ấm điều nhiệt trong vòng hai mươi lăm đến ba mươi phút không đảo cá để tránh nát thịt thớ n n nếm gia vị mặn mòi đậm đà vừa vị mặn ngọt cay nồng hương tiêu sọc khói bám dính kho cá đến khi nước mắm kho cạn sánh keo sệt sánh đặc quánh kẹo quấn ôm trọn phủ kín ngập vỏ quanh thớ thịt cá ngừ óng sắc vàng nâu cánh gián bắt mắt bóng bẩy mỡ màng tỏa mùi hương thơm nức mũi điếc mũi quạt mút thèm thuồng vị tiêu sọ ấm nồng rắc ngập tràn tiêu đen xay mịn hành hoa cắt nhỏ tắt bếp nhấc nồi đất cá kho thơm nức mũi ra khay gỗ
+6. Xới đĩa cơm trắng dẻo nóng hạt gạo tám dẻo thơm mượt mà đặt tươm tất gọn gàng cạnh nồi đất cá ngừ kho tiêu đen sánh keo sệt bốc khói nghi ngút bày đĩa rau sống xà lách tươi xanh dưa leo dưa chuột xắt thanh lát thanh mát ngọt dịu ngọt thanh giòn mát giải ngấy
+7. Thực khách dùng đũa gắp miếng nạc cá ngừ chắc ngọt bùi dẻo thơm bùi béo cay nồng vị tiêu sọc khói trộn rưới muỗng sốt mắm mặn ngọt sánh kẹo quẹt cơm trắng đưa vào miệng nhai chậm dứt khoát văn hóa ẩm thực khúc ruột miền Trung nắng gió đại dương dạt dào bồi bổ sức khỏe phục hồi cơ thể tốt lành mạnh béo tốt chắc thịt ngon miệng tột cùng đáng nhớ dạt dào hạnh phúc ngon vị ngọt thịt cá biển thơm phức nức mùi ấm lòng đưa vị đưa cơm cơm trắng dẻo ngon nóng sốt hôi hào sảng
+
+---
+
+## Món ăn: Mỳ ý sốt cua 
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, dinner
+- **Thời gian:** Chuẩn bị 10 phút, Nấu 20 phút. Tổng: 30 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 0 calo, 0g protein, 0g carbs, 0g fat.
+
+### Nguyên liệu cần chuẩn bị:
+- 600 g Cua thịt g (2 con)
+- 250 g Mỳ Ý (chưa luộc) g
+- 50 g Bơ lạt g
+- 50 g Sốt cà chua đậm đặc (tomato paste) g
+- 10 g Hành tỏi băm g
+- 1 chén Nước luộc mì/nước dùng chén
+- 10 lá Lá oregano g (2m)
+- 1 chén Whipping cream/cooking cream chén
+- 20 g Phô mai parmesan g
+- 8 g Hạt nêm g 2m
+- 3 g Nước mắm g (1m)
+- 4 g Đường g (1m)
+
+### Cách làm (Steps):
+1. Phi thơm tỏi băm với 20g bơ, cho thịt cua vào xào săn lại. Cho 30g bơ lên chảo nóng, chờ bơ tan hết thì cho hành và tỏi băm vào phi thơm.
+2. Sau đó cho 2M phần gạch cua đã tách vào, xào săn lại. Nêm thêm 2m Hạt nêm Aji-ngon® Heo.
+3. Cho thêm một ít rượu vang trắng vào xào chung trong 2 phút để bay bớt mùi rượu. Sau đó cho lần lượt nước luộc mì, 1 chén whipping cream, 1m đường, 50g sốt cà chua đậm đặc, 1m lá oregano + 1m nước mắm khuấy tan. Đun nhỏ lửa đến khi phần nước hơi sệt lại. Cho 1/2 thịt cua đã xào trộn chung với hỗn hợp nước xốt rồi xay nhuyễn, 1/2 thịt còn lại để trang trí.
+
+---
+
+## Món ăn: Mỳ ý sốt cua 
+- **Mã món (ID):** undefined
+- **Vùng miền:** Bắc
+- **Loại món (Category):** main
+- **Thích hợp cho bữa:** breakfast, lunch
+- **Thời gian:** Chuẩn bị 10 phút, Nấu 20 phút. Tổng: 30 phút.
+- **Độ khó:** easy
+- **Khẩu phần:** 1 người ăn.
+- **Dinh dưỡng (ước tính):** 0 calo, 0g protein, 0g carbs, 0g fat.
+
+### Nguyên liệu cần chuẩn bị:
+- 1 goi My y
+- 300 g Thit cua
+- 50 g Sot ca chua
+
+### Cách làm (Steps):
+1. DAu tien luoc my
+
+---
+

@@ -20,9 +20,8 @@ export function LoginForm() {
 
   // Xử lí đăng nhập bằng google
   const handleGoogleLogin = () => {
-    window.location.href = `${
-      import.meta.env.VITE_API_URL || "http://localhost:5000"
-    }/api/auth/google`;
+    window.location.href = `${import.meta.env.VITE_API_URL || "http://localhost:5000"
+      }/api/auth/google`;
   };
 
   //  Nếu user đã đăng nhập (ví dụ reload lại trang) → về Home luôn
@@ -74,11 +73,10 @@ export function LoginForm() {
           <input
             type="email"
             placeholder="Email"
-            className={`w-full py-3 pl-10 pr-3 border-b-2 text-gray-200 ${
-              formErrors.email
+            className={`w-full py-3 pl-10 pr-3 border-b-2 text-gray-200 ${formErrors.email
                 ? "border-red-500"
                 : "border-gray-200 focus:border-green-500"
-            } focus:outline-none transition-colors bg-transparent`}
+              } focus:outline-none transition-colors bg-transparent`}
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -99,11 +97,10 @@ export function LoginForm() {
           <input
             type="password"
             placeholder="Mật khẩu"
-            className={`w-full py-3 pl-10 pr-3 border-b-2 text-gray-200 ${
-              formErrors.password
+            className={`w-full py-3 pl-10 pr-3 border-b-2 text-gray-200 ${formErrors.password
                 ? "border-red-500"
                 : "border-gray-200 focus:border-green-500"
-            } focus:outline-none transition-colors bg-transparent`}
+              } focus:outline-none transition-colors bg-transparent`}
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
