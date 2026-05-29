@@ -3,6 +3,37 @@ node_modules/
 frontend/node_modules/
 backend/node_modules/
 
+# Build outputs
+dist/
+build/
+frontend/dist/
+frontend/build/
+backend/dist/
+backend/build/
+
+# Caches and tooling
+.cache/
+.vite/
+.eslintcache
+.parcel-cache/
+.turbo/
+
+# Logs
+*.log
+logs/
+
+# Env files
+.env
+.env.*
+
+# Uploads and temp
+uploads/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
 # Postman auto-generated files
 postman/
 .postman/
