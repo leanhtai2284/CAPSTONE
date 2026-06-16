@@ -121,6 +121,24 @@ export const login = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
   console.log("Found user:", user);
 
+  // Check if user is banned
+  if (user && user.isBanned) {
+    // Check if ban is permanent or temporary
+    if (user.bannedUntil && new Date() > user.bannedUntil) {
+      // Ban has expired, unban the user
+      await User.findByIdAndUpdate(user._id, {
+        isBanned: false,
+        bannedUntil: null,
+        banReason: "",
+      });
+    } else {
+      return res.status(403).json({
+        success: false,
+        message: `Tài khoản của bạn đã bị cấm. Lý do: ${user.banReason || "Vi phạm quy định hệ thống"}`,
+      });
+    }
+  }
+
   if (user) {
     const isMatch = await user.matchPassword(password);
     console.log("Password comparison:", {
@@ -132,6 +150,12 @@ export const login = asyncHandler(async (req, res) => {
 
   // Kiểm tra user tồn tại và mật khẩu đúng
   if (user && (await user.matchPassword(password))) {
+    // Update user online status and last login
+    await User.findByIdAndUpdate(user._id, {
+      isOnline: true,
+      lastLogin: new Date(),
+    });
+
     res.json({
       success: true,
       message: "Đăng nhập thành công",
@@ -140,6 +164,7 @@ export const login = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        isOnline: true,
         token: generateToken(user._id, user.role),
       },
     });

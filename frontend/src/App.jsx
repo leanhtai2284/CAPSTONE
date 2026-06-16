@@ -2,28 +2,40 @@ import React, { Suspense, useState, useEffect } from "react";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "sonner";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./context/AuthProvider";
 import { MealSelectionProvider } from "./context/MealSelectionContext";
+import { GroupProvider } from "./context/GroupContext";
 import NavBar from "./components/layout/NavBar";
 import Sidebar from "./components/layout/Sidebar";
 import AppRouter from "./AppRouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoadingProvider } from "./context/LoadingContext";
 import { LogoutModalProvider } from "./context/LogoutModalContext";
+import { ChatbotInterface } from "./components/chatbot/Chatbot";
+import { MarketCartProvider } from "./context/MarketCartContext";
 
 function AppContent() {
   const location = useLocation();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
+  useEffect(() => {
+    const handleOpenChatbot = () => setIsChatbotOpen(true);
+    window.addEventListener("smartmeal:open-chatbot", handleOpenChatbot);
+    return () =>
+      window.removeEventListener("smartmeal:open-chatbot", handleOpenChatbot);
+  }, []);
+
   const HIDE_NAVBAR_PATHS = ["/auth"];
   const hideNavbar = HIDE_NAVBAR_PATHS.some((path) =>
-    location.pathname.startsWith(path)
+    location.pathname.startsWith(path),
   );
 
   const SIDEBAR_VISIBLE_PATHS = [
@@ -36,7 +48,7 @@ function AppContent() {
     "/help",
   ];
   const showSidebar = SIDEBAR_VISIBLE_PATHS.some((path) =>
-    location.pathname.startsWith(path)
+    location.pathname.startsWith(path),
   );
 
   const sidebarPadding = showSidebar
@@ -69,6 +81,11 @@ function AppContent() {
           </motion.div>
         </AnimatePresence>
       </motion.div>
+
+      <ChatbotInterface
+        isOpen={isChatbotOpen}
+        onClose={() => setIsChatbotOpen(false)}
+      />
     </>
   );
 }
@@ -79,29 +96,34 @@ function App() {
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <AuthProvider>
           {/* 🧠 Đặt Provider này ngoài cùng để modal bao trùm toàn app */}
-          <MealSelectionProvider>
-            <Suspense
-              fallback={<div className="text-center mt-10">Đang tải...</div>}
-            >
-              <LoadingProvider>
-                <LogoutModalProvider>
-                  <AppContent />
-                </LogoutModalProvider>
-              </LoadingProvider>
+          <GroupProvider>
+            <MealSelectionProvider>
+              <Suspense
+                fallback={<div className="text-center mt-10">Đang tải...</div>}
+              >
+                <MarketCartProvider>
+                  <LoadingProvider>
+                    <LogoutModalProvider>
+                      <AppContent />
+                    </LogoutModalProvider>
+                  </LoadingProvider>
+                </MarketCartProvider>
 
-              <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-              />
-            </Suspense>
-          </MealSelectionProvider>
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />
+                <Toaster position="top-right" />
+              </Suspense>
+            </MealSelectionProvider>
+          </GroupProvider>
         </AuthProvider>
       </GoogleOAuthProvider>
     </BrowserRouter>

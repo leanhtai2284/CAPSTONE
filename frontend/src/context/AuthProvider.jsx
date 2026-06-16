@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { AuthContext } from "./auth";
 import { authService } from "../services/authService";
+import { userService } from "../services/userService";
 
 export function AuthProvider({ children }) {
   // Initialize user synchronously from localStorage to avoid a flash of unauthenticated state
@@ -79,6 +80,29 @@ export function AuthProvider({ children }) {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
+  // Fetch latest profile on mount to sync roles and status
+  useEffect(() => {
+    const syncProfile = async () => {
+      if (user && localStorage.getItem("token")) {
+        try {
+          const profileData = await userService.getProfile();
+          if (profileData && profileData.data) {
+            // Update local state and storage
+            setUser(profileData.data);
+            localStorage.setItem("user", JSON.stringify(profileData.data));
+          }
+        } catch (err) {
+          console.error("Failed to sync profile:", err);
+          // If token is invalid/expired, we might want to log out
+          if (err.message && err.message.toLowerCase().includes("thực hiện")) {
+             // Example of handling unauthorized
+          }
+        }
+      }
+    };
+    syncProfile();
+  }, []);
+
   const loginWithGoogle = async (credential) => {
     try {
       setLoading(true);
@@ -100,13 +124,14 @@ export function AuthProvider({ children }) {
       setLoading(true);
       setError(null);
       await authService.logout();
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      setUser(null);
     } catch (err) {
       setError(err.message || "Đăng xuất thất bại");
       throw err;
     } finally {
+      // Ensure UI state is reset even if logout request fails (e.g., expired token)
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      setUser(null);
       setLoading(false);
     }
   };

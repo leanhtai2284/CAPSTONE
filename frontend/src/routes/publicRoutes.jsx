@@ -11,6 +11,7 @@ import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 import TermsPage from "../pages/TermsPage";
 import ComingSoonPage from "../pages/ComingSoonPage";
 import NewsPage from "../pages/NewsPage";
+import MarketPage from "../pages/MarketPage";
 export const publicRoutes = [
   { path: "/", element: <HomePage /> },
 
@@ -27,4 +28,5 @@ export const publicRoutes = [
   { path: "/comingsoon", element: <ComingSoonPage /> },
   { path: "/", element: <HomePage /> },
   { path: "/news", element: <NewsPage /> },
+  { path: "/market", element: <MarketPage /> },
 ];

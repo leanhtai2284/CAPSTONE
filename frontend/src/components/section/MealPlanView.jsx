@@ -11,9 +11,12 @@ const MealPlanView = ({
   onDayChange,
   meals = [],
   onSwapMeal,
+  onFindNearby,
   isSwapping = false,
   onSaveDailyMenu,
   onResetPlan,
+  onMarkAsCooked,
+  isCookingMealId,
 }) => {
   const [mealSets, setMealSets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,16 +32,27 @@ const MealPlanView = ({
   }, [showConfirmReset]);
 
   const normalizeMealsFromApi = (list) => {
-    const breakfast = list.filter((m) =>
-      (m.meal_types || []).includes("breakfast")
-    );
-    const lunch = list.filter((m) => (m.meal_types || []).includes("lunch"));
-    const dinner = list.filter((m) => (m.meal_types || []).includes("dinner"));
+    const buckets = { breakfast: [], lunch: [], dinner: [] };
+
+    list.forEach((meal) => {
+      const assigned = meal.assigned_meal_type;
+      if (assigned && buckets[assigned]) {
+        buckets[assigned].push(meal);
+        return;
+      }
+
+      (meal.meal_types || []).forEach((type) => {
+        if (buckets[type]) buckets[type].push(meal);
+      });
+    });
+
     const arr = [];
-    if (breakfast.length)
-      arr.push({ mealType: "breakfast", dishes: breakfast });
-    if (lunch.length) arr.push({ mealType: "lunch", dishes: lunch });
-    if (dinner.length) arr.push({ mealType: "dinner", dishes: dinner });
+    if (buckets.breakfast.length)
+      arr.push({ mealType: "breakfast", dishes: buckets.breakfast });
+    if (buckets.lunch.length)
+      arr.push({ mealType: "lunch", dishes: buckets.lunch });
+    if (buckets.dinner.length)
+      arr.push({ mealType: "dinner", dishes: buckets.dinner });
     return arr.length ? arr : [{ mealType: "gợi ý", dishes: list }];
   };
 
@@ -114,7 +128,10 @@ const MealPlanView = ({
                 <MealSetSection
                   mealSet={mealSet}
                   onSwapMeal={onSwapMeal}
+                  onFindNearby={onFindNearby}
                   isSwapping={isSwapping}
+                  onMarkAsCooked={onMarkAsCooked}
+                  isCookingMealId={isCookingMealId}
                 />
               </motion.div>
             ))}

@@ -11,6 +11,10 @@ export function buildRecipeQuery(q = {}) {
     max_price,
     spice_level_max,
     time_max,
+    ingredients,
+    ingredient,
+    ingredients_mode,
+    ingredientsMode,
   } = q;
 
   const filter = {};
@@ -87,6 +91,33 @@ export function buildRecipeQuery(q = {}) {
     filter.$expr = {
       $lte: [{ $add: ["$prep_time_min", "$cook_time_min"] }, Number(time_max)],
     };
+  }
+
+  const ingredientSource = ingredients ?? ingredient;
+  if (ingredientSource) {
+    const ingredientList = String(ingredientSource)
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    if (ingredientList.length) {
+      const ingredientClauses = ingredientList.map((name) => ({
+        ingredients: {
+          $elemMatch: {
+            name: { $regex: toAccentRegex(name), $options: "i" },
+          },
+        },
+      }));
+      const mode = String(ingredients_mode ?? ingredientsMode ?? "all")
+        .toLowerCase()
+        .trim();
+
+      if (mode === "any") {
+        filter.$and = [...(filter.$and || []), { $or: ingredientClauses }];
+      } else {
+        filter.$and = [...(filter.$and || []), ...ingredientClauses];
+      }
+    }
   }
   return filter;
 }

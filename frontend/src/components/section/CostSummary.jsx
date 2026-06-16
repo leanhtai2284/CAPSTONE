@@ -1,90 +1,22 @@
 import React, { useMemo } from "react";
 import { FaMoneyBillWave } from "react-icons/fa";
 
-function CostSummary({ meals = [], currency = "VND" }) {
-  const normalizedMeals = useMemo(() => {
-    if (!Array.isArray(meals)) return [];
-    return meals.flatMap((item) => {
-      if (Array.isArray(item?.dishes)) {
-        return item.dishes.filter(Boolean);
-      }
+const COST_TABLE = {
+  low: [40000, 60000],
+  medium: [60000, 80000],
+  high: [90000, 120000],
+};
 
-      // If an item has multiple meal_types (e.g. ['breakfast','lunch'])
-      // the UI may render it multiple times (appearing in both breakfast and lunch).
-      // Expand such items into repeated entries so cost summaries count duplicates
-      // the same way the MealPlan UI does.
-      if (Array.isArray(item?.meal_types) && item.meal_types.length > 0) {
-        return item.meal_types.map(() => item);
-      }
+function CostSummary({ currency = "VND", familySize = 1, budget = "medium" }) {
+  const resolvedFamilySize = Math.max(1, Number(familySize) || 1);
+  const budgetKey = COST_TABLE[budget] ? budget : "medium";
+  const [perPersonMin, perPersonMax] = COST_TABLE[budgetKey];
 
-      return item ? [item] : [];
-    });
-  }, [meals]);
+  const totalMin = perPersonMin * resolvedFamilySize;
+  const totalMax = perPersonMax * resolvedFamilySize;
+  const averageCost = (totalMin + totalMax) / 2;
 
-  // (Don't return here — keep hooks unconditional; we'll skip rendering later)
-
-  const {
-    totalMin,
-    totalMax,
-    averageCost,
-
-    hasPriceData,
-    dishCount,
-    detectedCurrency,
-    totalDishes,
-  } = useMemo(() => {
-    const totals = normalizedMeals.reduce(
-      (acc, meal) => {
-        const minValue = Number(meal?.price_estimate?.min);
-        const maxValue = Number(meal?.price_estimate?.max);
-        const hasMin = Number.isFinite(minValue) && minValue > 0;
-        const hasMax = Number.isFinite(maxValue) && maxValue > 0;
-
-        if (!hasMin && !hasMax) {
-          return acc;
-        }
-
-        const currencyValue = meal?.price_estimate?.currency;
-
-        return {
-          dishCount: acc.dishCount + 1,
-          totalMin: acc.totalMin + (hasMin ? minValue : maxValue),
-          totalMax: acc.totalMax + (hasMax ? maxValue : minValue),
-          currency: acc.currency || currencyValue,
-        };
-      },
-      { dishCount: 0, totalMin: 0, totalMax: 0, currency: null }
-    );
-    const totalDishes = normalizedMeals.length;
-
-    if (totals.dishCount === 0) {
-      return {
-        totalMin: 0,
-        totalMax: 0,
-        averageCost: 0,
-        monthlyCost: 0,
-        hasPriceData: false,
-        dishCount: 0,
-        detectedCurrency: null,
-        totalDishes,
-      };
-    }
-
-    const avg = (totals.totalMin + totals.totalMax) / 2;
-
-    return {
-      totalMin: totals.totalMin,
-      totalMax: totals.totalMax,
-      averageCost: avg,
-      monthlyCost: avg * 30,
-      hasPriceData: true,
-      dishCount: totals.dishCount,
-      detectedCurrency: totals.currency,
-      totalDishes,
-    };
-  }, [normalizedMeals]);
-
-  const resolvedCurrency = detectedCurrency || currency;
+  const resolvedCurrency = currency;
   const formatter = useMemo(() => {
     const locale = resolvedCurrency === "VND" ? "vi-VN" : "en-US";
     return new Intl.NumberFormat(locale, {
@@ -94,13 +26,7 @@ function CostSummary({ meals = [], currency = "VND" }) {
     });
   }, [resolvedCurrency]);
 
-  const formatCurrency = (amount) => {
-    if (!hasPriceData || !amount) return "Đang cập nhật";
-    return formatter.format(Math.round(amount));
-  };
-
-  // If there are no dishes after normalization, don't render the cost summary
-  if (!normalizedMeals || normalizedMeals.length === 0) return null;
+  const formatCurrency = (amount) => formatter.format(Math.round(amount || 0));
 
   return (
     <div className="rounded-2xl p-6 shadow-2xl border border-gray-800">
@@ -113,7 +39,7 @@ function CostSummary({ meals = [], currency = "VND" }) {
           <div className="text-center mb-4">
             <div className="text-5xl font-bold dark:text-amber-400 text-orange-500 mb-2">
               <FaMoneyBillWave className="inline-block w-10 h-10 mr-3" />
-              {hasPriceData ? formatCurrency(averageCost) : "Chưa có dữ liệu"}
+              {formatCurrency(averageCost)}
             </div>
             <div className=" text-sm">Chi phí trung bình/ngày</div>
           </div>
@@ -137,11 +63,7 @@ function CostSummary({ meals = [], currency = "VND" }) {
           </div>
 
           <div className="mt-4 text-center text-xs ">
-            {hasPriceData
-              ? `${dishCount}/${totalDishes} món có báo giá`
-              : totalDishes > 0
-              ? `Chưa có món ăn nào có báo giá (Tổng ${totalDishes} món)`
-              : "Chưa có món ăn nào có báo giá"}
+            Tổng theo {resolvedFamilySize} người
           </div>
         </div>
         <div className="text-xs text-gray-500 font-bold italic p-1 rounded-lg">

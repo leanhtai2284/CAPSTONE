@@ -1,9 +1,30 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-const NutritionSummary = ({ meals = [] }) => {
-  // Note: we normalize meals below using a hook, so only return after that
 
+const CALORIES_TABLE = {
+  lose: {
+    sedentary: 1600,
+    moderate: 1900,
+    active: 2100,
+  },
+  maintain: {
+    sedentary: 1800,
+    moderate: 2200,
+    active: 2500,
+  },
+  gain: {
+    sedentary: 2200,
+    moderate: 2500,
+    active: 2800,
+  },
+};
+
+const NutritionSummary = ({
+  familySize = 1,
+  dietaryGoal = "maintain",
+  activityLevel = "moderate",
+}) => {
   // Helpers for formatting
   const fmtNumber = (v, decimals = 1) => {
     if (v == null || Number.isNaN(Number(v))) return "0";
@@ -19,45 +40,21 @@ const NutritionSummary = ({ meals = [] }) => {
     return `${Math.round(n).toLocaleString()} kcal`;
   };
 
-  // Normalize meals into a flat list of dishes so duplicates count
-  const normalizedMeals = useMemo(() => {
-    if (!Array.isArray(meals)) return [];
-    const dishes = meals.flatMap((item) => {
-      if (Array.isArray(item?.dishes)) return item.dishes.filter(Boolean);
+  const resolvedFamilySize = Math.max(1, Number(familySize) || 1);
+  const goalKey = CALORIES_TABLE[dietaryGoal] ? dietaryGoal : "maintain";
+  const activityKey = CALORIES_TABLE[goalKey][activityLevel]
+    ? activityLevel
+    : "moderate";
 
-      if (Array.isArray(item?.meal_types) && item.meal_types.length > 0) {
-        return item.meal_types.map(() => item);
-      }
+  const perPersonCalories = CALORIES_TABLE[goalKey][activityKey];
+  const totalCalories = perPersonCalories * resolvedFamilySize;
 
-      return item ? [item] : [];
-    });
-
-    return dishes;
-  }, [meals]);
-
-  // If no dishes after normalization, don't render
-  if (!normalizedMeals || normalizedMeals.length === 0) return null;
-
-  // Sum totals from the flattened dishes array (counts duplicates)
-  const totals = normalizedMeals.reduce(
-    (acc, meal) => {
-      const n = meal.nutrition || {};
-      const servings = meal.servings || 1;
-
-      const calories =
-        (n.calories ?? n.calories_kcal ?? n.kcal ?? 0) * servings;
-      const protein = (n.protein_g ?? n.protein ?? 0) * servings;
-      const carbs = (n.carbs_g ?? n.carbs ?? 0) * servings;
-      const fat = (n.fat_g ?? n.fat ?? 0) * servings;
-
-      acc.calories += Number(calories) || 0;
-      acc.protein += Number(protein) || 0;
-      acc.carbs += Number(carbs) || 0;
-      acc.fat += Number(fat) || 0;
-      return acc;
-    },
-    { calories: 0, protein: 0, carbs: 0, fat: 0 }
-  );
+  const totals = {
+    calories: totalCalories,
+    protein: (totalCalories * 0.2) / 4,
+    carbs: (totalCalories * 0.5) / 4,
+    fat: (totalCalories * 0.3) / 9,
+  };
 
   const macroData = [
     { name: "Protein", value: totals.protein, color: "#3CAEA3" },
@@ -112,7 +109,9 @@ const NutritionSummary = ({ meals = [] }) => {
                 {fmtCalories(totals.calories)}
               </span>
             </div>
-            <div className="text-xs text-gray-500">kcal</div>
+            <div className="text-xs text-gray-500">
+              Tổng theo {resolvedFamilySize} người
+            </div>
           </div>
 
           <div className="grid grid-cols-3 gap-2">

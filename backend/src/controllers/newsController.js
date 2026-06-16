@@ -1,7 +1,8 @@
 import News from "../models/News.js";
 import User from "../models/User.js";
-import fs from "fs";
-import path from "path";
+import { uploadImage } from "../services/cloudinary.js";
+
+const NEWS_IMAGE_FOLDER = "smartmeal/news";
 
 // @desc    Get all news with pagination, filter, search
 // @route   GET /api/news
@@ -124,10 +125,6 @@ export const createNews = async (req, res) => {
 
     // Validate required fields
     if (!title || !description || !content || !category) {
-      // Xóa file đã upload nếu có lỗi
-      if (req.file) {
-        fs.unlinkSync(req.file.path);
-      }
       return res.status(400).json({
         success: false,
         message: "Vui lòng điền đầy đủ thông tin bắt buộc",
@@ -135,7 +132,13 @@ export const createNews = async (req, res) => {
     }
 
     // Lấy URL ảnh từ file upload hoặc để trống
-    const imageUrl = req.file ? `/uploads/news/${req.file.filename}` : "";
+    let imageUrl = "";
+    if (req.file) {
+      const uploaded = await uploadImage(req.file.buffer, {
+        folder: NEWS_IMAGE_FOLDER,
+      });
+      imageUrl = uploaded.secure_url || "";
+    }
 
     // Parse tags nếu là string
     let parsedTags = [];
@@ -160,7 +163,7 @@ export const createNews = async (req, res) => {
 
     const populatedNews = await News.findById(news._id).populate(
       "author",
-      "name email"
+      "name email",
     );
 
     res.status(201).json({
@@ -170,10 +173,6 @@ export const createNews = async (req, res) => {
     });
   } catch (error) {
     console.error("Create news error:", error);
-    // Xóa file đã upload nếu có lỗi
-    if (req.file) {
-      fs.unlinkSync(req.file.path);
-    }
     res.status(500).json({
       success: false,
       message: "Lỗi khi tạo tin tức",
@@ -192,9 +191,6 @@ export const updateNews = async (req, res) => {
     const news = await News.findById(req.params.id);
 
     if (!news) {
-      if (req.file) {
-        fs.unlinkSync(req.file.path);
-      }
       return res.status(404).json({
         success: false,
         message: "Không tìm thấy tin tức",
@@ -203,14 +199,10 @@ export const updateNews = async (req, res) => {
 
     // Nếu có file mới được upload
     if (req.file) {
-      // Xóa ảnh cũ nếu có
-      if (news.imageUrl && news.imageUrl.startsWith("/uploads/")) {
-        const oldImagePath = `.${news.imageUrl}`;
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
-        }
-      }
-      news.imageUrl = `/uploads/news/${req.file.filename}`;
+      const uploaded = await uploadImage(req.file.buffer, {
+        folder: NEWS_IMAGE_FOLDER,
+      });
+      news.imageUrl = uploaded.secure_url || "";
     }
 
     // Update fields
@@ -233,7 +225,7 @@ export const updateNews = async (req, res) => {
 
     const updatedNews = await News.findById(news._id).populate(
       "author",
-      "name email"
+      "name email",
     );
 
     res.status(200).json({
@@ -243,9 +235,6 @@ export const updateNews = async (req, res) => {
     });
   } catch (error) {
     console.error("Update news error:", error);
-    if (req.file) {
-      fs.unlinkSync(req.file.path);
-    }
     res.status(500).json({
       success: false,
       message: "Lỗi khi cập nhật tin tức",
@@ -266,14 +255,6 @@ export const deleteNews = async (req, res) => {
         success: false,
         message: "Không tìm thấy tin tức",
       });
-    }
-
-    // Xóa ảnh nếu có
-    if (news.imageUrl && news.imageUrl.startsWith("/uploads/")) {
-      const imagePath = `.${news.imageUrl}`;
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
-      }
     }
 
     await news.deleteOne();
@@ -321,7 +302,7 @@ export const likeNews = async (req, res) => {
 
     const updatedNews = await News.findById(news._id).populate(
       "author",
-      "name email"
+      "name email",
     );
 
     res.status(200).json({

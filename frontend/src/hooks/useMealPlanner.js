@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { toast } from "react-toastify";
 import useLocalStorage from "./useLocalStorage";
 import {
@@ -7,15 +7,20 @@ import {
   swapSingleMealApi,
 } from "../services/recipeApi";
 import { dailyMenuService } from "../services/dailyMenuService";
+import { trackingService } from "../services/trackingService";
 
 export default function useMealPlanner() {
   const [mealFromAI, setMealFromAI, removeMealFromAI] = useLocalStorage(
     "mealPlan",
-    []
+    [],
   );
   const [weeklyMenu, setWeeklyMenu, removeWeeklyMenu] = useLocalStorage(
     "weeklyMenu",
-    []
+    [],
+  );
+  const [aiAnalysis, setAiAnalysis, removeAiAnalysis] = useLocalStorage(
+    "aiAnalysis",
+    "",
   );
   const [userPreferences, setUserPreferences] = useState({});
 
@@ -24,6 +29,9 @@ export default function useMealPlanner() {
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSwapping, setIsSwapping] = useState(null); // Track which meal ID is swapping
+  const [isCookingMealId, setIsCookingMealId] = useState(null); // Track which meal is being marked as cooked
+  const [trackingToday, setTrackingToday] = useState(null); // Today's tracking data
+  const [lastPantryDeducted, setLastPantryDeducted] = useState(null); // Last pantry items deducted
 
   const hasMealPlan = useMemo(() => {
     return (
@@ -47,7 +55,7 @@ export default function useMealPlanner() {
   }, [viewMode, weeklyMenu, mealFromAI, selectedDay]);
 
   const buildPayload = (form) => {
-    const budgetMap = { low: 10000, medium: 45000, high: 100000 };
+    const budgetMap = { low: 180000, medium: 270000, high: 390000 };
     const regionMap = { North: "Bắc", Central: "Trung", South: "Nam" };
 
     // 1) Hệ số theo mức độ hoạt động
@@ -132,22 +140,26 @@ export default function useMealPlanner() {
       if (viewMode === "weekly") {
         const res = await suggestWeeklyApi(payload);
         const menu = res.weeklyMenu || [];
+        const analysis = res.aiAnalysis || "";
 
         setWeeklyMenu(menu);
         setMealFromAI([]);
+        setAiAnalysis(analysis);
         setUserPreferences(payload);
         setSelectedDay(new Date().getDay());
       } else {
         const res = await suggestMenuApi(payload);
         const items = res.items || [];
+        const analysis = res.aiAnalysis || "";
         setMealFromAI(items);
+        setAiAnalysis(analysis);
         setUserPreferences(payload);
         setViewMode("today");
       }
     } catch (err) {
       console.error(err);
       toast.error(
-        "Không lấy được thực đơn từ backend. Kiểm tra server đang chạy."
+        "Không lấy được thực đơn từ backend. Kiểm tra server đang chạy.",
       );
       setMealFromAI([]);
       setWeeklyMenu([]);
@@ -159,10 +171,12 @@ export default function useMealPlanner() {
   const resetPlan = () => {
     setMealFromAI([]);
     setWeeklyMenu([]);
+    setAiAnalysis("");
     setUserPreferences({});
     try {
       removeMealFromAI();
       removeWeeklyMenu();
+      removeAiAnalysis();
     } catch (err) {
       console.error("Failed to remove local storage keys:", err);
     }
@@ -176,7 +190,7 @@ export default function useMealPlanner() {
       if (!Array.isArray(weeklyMenu) || weeklyMenu.length === 0) {
         if (!userPreferences || Object.keys(userPreferences).length === 0) {
           toast.info(
-            "Vui lòng tạo thực đơn (Today) trước khi chuyển sang Weekly."
+            "Vui lòng tạo thực đơn (Today) trước khi chuyển sang Weekly.",
           );
           setViewMode("today");
           return;
@@ -186,7 +200,9 @@ export default function useMealPlanner() {
           setIsGenerating(true);
           const res = await suggestWeeklyApi(userPreferences);
           const menu = res.weeklyMenu || [];
+          const analysis = res.aiAnalysis || "";
           setWeeklyMenu(menu);
+          setAiAnalysis(analysis);
         } catch (err) {
           console.error("Failed to load weekly menu:", err);
           toast.error("Không thể tải thực đơn tuần. Vui lòng thử lại.");
@@ -207,6 +223,7 @@ export default function useMealPlanner() {
     try {
       // 1️ Tìm món cần đổi trong meal plan
       let currentMeal = null;
+      let currentMeals = []; // Tất cả món trong bữa ăn hiện tại
 
       if (
         viewMode === "weekly" &&
@@ -217,13 +234,15 @@ export default function useMealPlanner() {
           weeklyMenu.find((d) => d.day === selectedDay) ||
           weeklyMenu[selectedDay];
         if (dayObj && dayObj.meals) {
+          currentMeals = dayObj.meals;
           currentMeal = dayObj.meals.find(
-            (m) => m._id === mealId || m.id === mealId
+            (m) => m._id === mealId || m.id === mealId,
           );
         }
       } else {
+        currentMeals = mealFromAI;
         currentMeal = mealFromAI.find(
-          (m) => m._id === mealId || m.id === mealId
+          (m) => m._id === mealId || m.id === mealId,
         );
       }
 
@@ -234,21 +253,29 @@ export default function useMealPlanner() {
       // 2️ Lấy diet_tags từ userPreferences
       const dietTags = userPreferences.diet_tags || [];
 
+      // 3️ Loại trừ TẤT CẢ món đang có trong bữa ăn (không chỉ món đang swap)
+      const excludeIds = currentMeals.map((m) => m._id || m.id).filter(Boolean);
+
       console.log("🔄 Đổi món:", {
         mealId,
         mealName: currentMeal.name_vi,
-        mealType: currentMeal.meal_types?.[0],
+        mealType: currentMeal.assigned_meal_type || currentMeal.meal_types?.[0],
         dietTags,
+        excludeIds,
       });
 
-      // 3️ Gọi API với meal object và dietTags
-      const result = await swapSingleMealApi(currentMeal, dietTags);
+      // 4️ Gọi API với meal object, dietTags và excludeIds
+      const result = await swapSingleMealApi(currentMeal, dietTags, excludeIds);
 
       if (!result.meal) {
         throw new Error("Không có món thay thế phù hợp");
       }
 
-      const newMeal = result.meal;
+      const newMeal = {
+        ...result.meal,
+        // Thêm timestamp để đảm bảo unique key khi swap
+        _swapId: `${result.meal._id || result.meal.id}_${Date.now()}`,
+      };
 
       console.log(" Đổi thành:", newMeal.name_vi);
 
@@ -263,7 +290,7 @@ export default function useMealPlanner() {
             return {
               ...dayObj,
               meals: (dayObj.meals || []).map(
-                (m) => (m._id === mealId || m.id === mealId ? newMeal : m) // CHỈ THAY MÓN NÀY
+                (m) => (m._id === mealId || m.id === mealId ? newMeal : m), // CHỈ THAY MÓN NÀY
               ),
             };
           }
@@ -273,7 +300,7 @@ export default function useMealPlanner() {
       } else {
         // Today mode
         const updatedMeals = mealFromAI.map(
-          (m) => (m._id === mealId || m.id === mealId ? newMeal : m) // CHỈ THAY MÓN NÀY
+          (m) => (m._id === mealId || m.id === mealId ? newMeal : m), // CHỈ THAY MÓN NÀY
         );
         setMealFromAI(updatedMeals);
       }
@@ -322,6 +349,70 @@ export default function useMealPlanner() {
     }
   };
 
+  const handleMarkAsCooked = async (mealId, mealName) => {
+    if (!mealId || isCookingMealId) return; // Prevent double-click
+
+    setIsCookingMealId(mealId);
+    try {
+      const response = await trackingService.markAsCooked(mealId);
+      const { data } = response;
+
+      if (data) {
+        // Update tracking data from response
+        setTrackingToday({
+          daily_totals: data.today_totals,
+          progress: data.progress,
+        });
+        setLastPantryDeducted(data.pantry_deducted);
+
+        // Show success toast with meal name
+        toast.success(`✨ Đã ghi nhận: ${mealName || "Bữa ăn"}`, {
+          autoClose: 2000,
+        });
+
+        // Show pantry deduction summary if available
+        if (data.pantry_deducted && data.pantry_deducted.length > 0) {
+          const deductedNames = data.pantry_deducted
+            .map((item) => item.name)
+            .join(", ");
+          toast.info(`🧊 Đã trừ: ${deductedNames}`, { autoClose: 2500 });
+        }
+      }
+    } catch (err) {
+      console.error("Error marking meal as cooked:", err);
+      // Check if it's an auth error
+      if (err.message.includes("401") || err.message.includes("Unauthorized")) {
+        toast.error("Vui lòng đăng nhập lại");
+      } else {
+        toast.error(
+          err.message || "Không thể ghi nhận bữa ăn. Vui lòng thử lại.",
+        );
+      }
+    } finally {
+      setIsCookingMealId(null);
+    }
+  };
+
+  // Load today's tracking data on mount
+  useEffect(() => {
+    const loadTodayTracking = async () => {
+      try {
+        const response = await trackingService.getTodayTracking();
+        if (response.data) {
+          setTrackingToday({
+            daily_totals: response.data.daily_totals,
+            progress: response.data.progress,
+          });
+        }
+      } catch (err) {
+        // Silently fail if not authenticated or data not available
+        console.debug("Could not load today's tracking:", err.message);
+      }
+    };
+
+    loadTodayTracking();
+  }, []);
+
   return {
     mealFromAI,
     weeklyMenu,
@@ -339,5 +430,10 @@ export default function useMealPlanner() {
     handleSwapMeal,
     handleSaveDailyMenu,
     setViewMode,
+    handleMarkAsCooked,
+    isCookingMealId,
+    trackingToday,
+    lastPantryDeducted,
+    aiAnalysis,
   };
 }

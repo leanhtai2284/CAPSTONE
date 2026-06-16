@@ -5,6 +5,10 @@ import {
   updateUserProfile,
   getRecommendations,
 } from "../controllers/userController.js";
+import {
+  updateFitnessProfile,
+  getTDEE,
+} from "../controllers/fitnessController.js";
 
 const router = express.Router();
 
@@ -12,5 +16,9 @@ const router = express.Router();
 router.get("/profile", protect, getUserProfile);
 router.put("/profile", protect, updateUserProfile);
 router.get("/recommendations", protect, getRecommendations);
+
+// Fitness & TDEE routes
+router.put("/fitness-profile", protect, updateFitnessProfile);
+router.get("/tdee", protect, getTDEE);
 
 export default router;

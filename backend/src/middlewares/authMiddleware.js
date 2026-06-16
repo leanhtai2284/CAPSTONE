@@ -19,6 +19,23 @@ export const protect = async (req, res, next) => {
       if (!user) {
         return res.status(401).json({ success: false, message: "User not found" });
       }
+      
+      // Update user online status if they're not banned and haven't been seen recently
+      if (!user.isBanned) {
+        const fifteenSecondsAgo = new Date(Date.now() - 15 * 1000);
+        const lastSeen = user.lastLogin || user.createdAt;
+        
+        // Only update if user hasn't been seen in the last 15 seconds
+        if (!lastSeen || new Date(lastSeen) < fifteenSecondsAgo) {
+          await User.findByIdAndUpdate(user._id, { 
+            isOnline: true,
+            lastLogin: new Date()
+          });
+          user.isOnline = true;
+          user.lastLogin = new Date();
+        }
+      }
+      
       req.user = user;
       next();
     } catch (error) {

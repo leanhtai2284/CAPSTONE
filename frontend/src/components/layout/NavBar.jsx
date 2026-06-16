@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import logo from "../../assets/logo/LOGO2.png";
 import DarkModeToggle from "../ui/DarkModeToggle";
 import UserMenu from "../ui/UserMenu";
@@ -11,7 +11,9 @@ import { useAuth } from "../../hooks/useAuth";
 
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [forYouOpen, setForYouOpen] = useState(false);
   const menuRef = useRef(null);
+  const forYouRef = useRef(null);
   const location = useLocation(); // 🔥 Lấy đường dẫn hiện tại
   const { user } = useAuth(); // Get user info
 
@@ -21,6 +23,9 @@ const NavBar = () => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
       }
+      if (forYouRef.current && !forYouRef.current.contains(event.target)) {
+        setForYouOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -28,9 +33,14 @@ const NavBar = () => {
 
   // ✅ Hàm kiểm tra đang ở trang nào
   const isActive = (path) => location.pathname === path;
+  const handleOpenChatbot = () => {
+    window.dispatchEvent(new CustomEvent("smartmeal:open-chatbot"));
+    setForYouOpen(false);
+    setMenuOpen(false);
+  };
 
   return (
-    <header className="sticky top-0 left-0 w-full bg-white/80 dark:bg-black/80 backdrop-blur-lg text-gray-950 dark:text-gray-100 shadow-md transition-colors duration-300 z-50">
+    <header className="sticky top-0 left-0 w-full  bg-white/80 dark:bg-black/80 backdrop-blur-lg text-gray-950 dark:text-gray-100 shadow-md transition-colors duration-300 z-50">
       <div className="container mx-auto flex items-center justify-between px-4 py-2">
         {/* Logo */}
         <Link
@@ -61,27 +71,147 @@ const NavBar = () => {
             to="/"
             className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
               isActive("/")
-                ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
+                ? "bg-primary text-white shadow-md"
                 : "hover:text-green-500"
             }`}
           >
             Trang Chủ
           </Link>
+
+          <div ref={forYouRef} className="relative z-40">
+            <button
+              type="button"
+              onClick={() => setForYouOpen((prev) => !prev)}
+              className={`flex items-center gap-2 px-4 py-2 font-semibold text-xl font-serif rounded-lg border border-transparent transition-all ${
+                isActive("/foryou") ||
+                isActive("/pantry") ||
+                isActive("/groups") ||
+                location.pathname.startsWith("/groups/")
+                  ? "bg-primary text-white shadow-md"
+                  : "hover:text-green-500 hover:border-gray-200 dark:hover:border-gray-700"
+              }`}
+            >
+              Dành Cho Bạn
+              <ChevronDown
+                className={`h-5 w-5 transition-transform ${
+                  forYouOpen ? "rotate-180" : "rotate-0"
+                }`}
+              />
+            </button>
+
+            <div
+              aria-hidden={!forYouOpen}
+              className={`absolute left-1/2 top-full mt-0 
+  w-[1100px] max-w-[95vw] 
+  -translate-x-1/2
+  min-h-[240px]
+  border border-gray-200
+  bg-white shadow-2xl
+  dark:border-gray-800 dark:bg-neutral-900
+  rounded-2xl
+  z-[60]
+  transform-gpu transition-all duration-300 ease-out whitespace-normal ${
+    forYouOpen
+      ? "opacity-100 scale-y-100 translate-y-0 pointer-events-auto"
+      : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
+  }`}
+            >
+              <div className="mx-auto max-w-6xl px-8 py-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+                  <div>
+                    <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      Gợi ý thực đơn
+                    </div>
+                    <ul className="mt-4 space-y-2 text-base text-gray-600 dark:text-gray-300">
+                      <li>
+                        <Link
+                          to="/foryou"
+                          onClick={() => setForYouOpen(false)}
+                          className={`hover:text-green-600 ${
+                            isActive("/foryou") ? "text-green-700" : ""
+                          }`}
+                        >
+                          Xem đề xuất thực đơn
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      Nguyên liệu có sẵn
+                    </div>
+                    <ul className="mt-4 space-y-2 text-base text-gray-600 dark:text-gray-300">
+                      <li>
+                        <Link
+                          to="/pantry"
+                          onClick={() => setForYouOpen(false)}
+                          className={`hover:text-green-600 ${
+                            isActive("/pantry") ? "text-green-700" : ""
+                          }`}
+                        >
+                          Quản lý tủ nguyên liệu
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      Nhóm
+                    </div>
+                    <ul className="mt-4 space-y-2 text-base text-gray-600 dark:text-gray-300">
+                      <li>
+                        <Link
+                          to="/groups"
+                          onClick={() => setForYouOpen(false)}
+                          className={`hover:text-green-600 ${
+                            isActive("/groups") ||
+                            location.pathname.startsWith("/groups/")
+                              ? "text-green-700"
+                              : ""
+                          }`}
+                        >
+                          Lập nhóm và chia sẻ menu
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      Smart Chef AI
+                    </div>
+                    <ul className="mt-4 space-y-2 text-base text-gray-600 dark:text-gray-300">
+                      <li>
+                        <button
+                          type="button"
+                          onClick={handleOpenChatbot}
+                          className="hover:text-green-600 text-left"
+                        >
+                          Tư vấn dinh dưỡng cùng Smart Chef
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <Link
-            to="/foryou"
+            to="/market"
             className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
-              isActive("/foryou")
-                ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
+              location.pathname.startsWith("/market")
+                ? "bg-primary text-white shadow-md"
                 : "hover:text-green-500"
             }`}
           >
-            Dành Cho Bạn
+            Mua sắm
           </Link>
+
           <Link
             to="/news"
             className={`p-3 font-semibold text-xl font-serif rounded-lg transition-all ${
               isActive("/news")
-                ? "bg-green-400 text-white dark:bg-green-400 shadow-md"
+                ? "bg-primary text-white shadow-md"
                 : "hover:text-green-500"
             }`}
           >
@@ -145,16 +275,55 @@ const NavBar = () => {
               >
                 Trang Chủ
               </Link>
+              <div className="rounded-lg border border-gray-200 dark:border-gray-700">
+                <div className="px-3 py-2 text-lg font-semibold text-gray-700 dark:text-gray-200">
+                  Dành Cho Bạn
+                </div>
+                <Link
+                  to="/foryou"
+                  onClick={() => setMenuOpen(false)}
+                  className={`block py-2 px-3 text-lg font-semibold transition ${
+                    isActive("/foryou")
+                      ? "bg-yellow-400 text-black dark:bg-yellow-500 shadow-md"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+                >
+                  Gợi ý thực đơn
+                </Link>
+                <Link
+                  to="/pantry"
+                  onClick={() => setMenuOpen(false)}
+                  className={`block py-2 px-3 text-lg font-semibold transition ${
+                    isActive("/pantry")
+                      ? "bg-yellow-400 text-black dark:bg-yellow-500 shadow-md"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+                >
+                  Nguyên liệu có sẵn
+                </Link>
+                <Link
+                  to="/groups"
+                  onClick={() => setMenuOpen(false)}
+                  className={`block py-2 px-3 text-lg font-semibold transition ${
+                    isActive("/groups") ||
+                    location.pathname.startsWith("/groups/")
+                      ? "bg-yellow-400 text-black dark:bg-yellow-500 shadow-md"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+                >
+                  Nhóm
+                </Link>
+              </div>
               <Link
-                to="/foryou"
+                to="/market"
                 onClick={() => setMenuOpen(false)}
                 className={`block py-2 px-3 rounded-lg text-lg font-semibold transition ${
-                  isActive("/foryou")
+                  location.pathname.startsWith("/market")
                     ? "bg-yellow-400 text-black dark:bg-yellow-500 shadow-md"
                     : "hover:bg-gray-100 dark:hover:bg-gray-800"
                 }`}
               >
-                Dành Cho Bạn
+                Mua sắm
               </Link>
               <Link
                 to="/news"

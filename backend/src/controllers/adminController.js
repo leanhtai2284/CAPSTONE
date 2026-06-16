@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import mongoose from "mongoose";
 import { createNotification } from "./notificationController.js";
+import Store from "../models/Store.js";
 
 // @desc    Get all users
 // @route   GET /api/admin/users
@@ -131,14 +132,14 @@ export const updateUser = async (req, res) => {
     const updateData = {};
     if (name) updateData.name = name;
     if (email) updateData.email = email;
-    if (role && ["user", "admin", "moderator"].includes(role)) {
+    if (role && ["user", "store_owner", "admin", "moderator"].includes(role)) {
       updateData.role = role;
     }
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
       { $set: updateData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).select("-password");
 
     res.status(200).json({
@@ -235,10 +236,14 @@ export const updateUserRole = async (req, res) => {
       });
     }
 
-    if (!role || !["user", "admin", "moderator"].includes(role)) {
+    if (
+      !role ||
+      !["user", "store_owner", "admin", "moderator"].includes(role)
+    ) {
       return res.status(400).json({
         success: false,
-        message: "Role không hợp lệ. Phải là: user, admin, hoặc moderator",
+        message:
+          "Role không hợp lệ. Phải là: user, store_owner, admin, hoặc moderator",
       });
     }
 
@@ -261,8 +266,15 @@ export const updateUserRole = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       id,
       { role },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).select("-password");
+
+    // Kích hoạt/Khóa gian hàng tự động khi Admin đổi role
+    if (role === "store_owner") {
+      await Store.findOneAndUpdate({ owner: id }, { isActive: true });
+    } else if (role === "user") {
+      await Store.findOneAndUpdate({ owner: id }, { isActive: false });
+    }
 
     // Thông báo cho chính user được đổi role
     await createNotification({
@@ -313,6 +325,9 @@ export const getUserStats = async (req, res) => {
     const totalAdmins = await User.countDocuments({ role: "admin" });
     const totalModerators = await User.countDocuments({ role: "moderator" });
     const totalRegularUsers = await User.countDocuments({ role: "user" });
+    const totalStoreOwners = await User.countDocuments({ role: "store_owner" });
+    const totalBannedUsers = await User.countDocuments({ isBanned: true });
+    const totalOnlineUsers = await User.countDocuments({ isOnline: true });
 
     // Users created in last 30 days
     const thirtyDaysAgo = new Date();
@@ -328,6 +343,9 @@ export const getUserStats = async (req, res) => {
         totalAdmins,
         totalModerators,
         totalRegularUsers,
+        totalStoreOwners,
+        totalBannedUsers,
+        totalOnlineUsers,
         recentUsers,
       },
     });
@@ -340,3 +358,259 @@ export const getUserStats = async (req, res) => {
   }
 };
 
+// @desc    Ban user
+// @route   PATCH /api/admin/users/:id/ban
+// @access  Private/Admin
+export const banUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reason, bannedUntil } = req.body;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "ID không hợp lệ",
+      });
+    }
+
+    // Prevent banning yourself
+    if (id === req.user._id.toString()) {
+      return res.status(400).json({
+        success: false,
+        message: "Bạn không thể cấm chính mình",
+      });
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy người dùng",
+      });
+    }
+
+    // Prevent banning other admins (optional - you can remove this if you want)
+    if (user.role === "admin" && req.user.role === "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Không thể cấm tài khoản admin khác",
+      });
+    }
+
+    // Set user offline and banned
+    const updateData = {
+      isBanned: true,
+      isOnline: false,
+      banReason: reason || "Vi phạm quy định hệ thống",
+      bannedUntil: bannedUntil ? new Date(bannedUntil) : null,
+      lastLogout: new Date(),
+    };
+
+    const bannedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true, runValidators: true },
+    ).select("-password");
+
+    await createNotification({
+      user: bannedUser._id,
+      audience: "user",
+      title: "Tài khoản bị cấm",
+      message: `Tài khoản của bạn đã bị cấm. Lý do: ${updateData.banReason}`,
+      type: "user_activity",
+      metadata: {
+        bannedUntil: updateData.bannedUntil,
+        reason: updateData.banReason,
+      },
+    });
+
+    await createNotification({
+      user: null,
+      audience: "admin",
+      title: "Đã cấm người dùng",
+      message: `Admin ${req.user?.email || ""} đã cấm tài khoản ${bannedUser.email}. Lý do: ${updateData.banReason}`,
+      type: "user_activity",
+      metadata: {
+        targetUserId: bannedUser._id,
+        email: bannedUser.email,
+        reason: updateData.banReason,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Cấm người dùng thành công",
+      data: bannedUser,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Không thể cấm người dùng",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Unban user
+// @route   PATCH /api/admin/users/:id/unban
+// @access  Private/Admin
+export const unbanUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "ID không hợp lệ",
+      });
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy người dùng",
+      });
+    }
+
+    const updateData = {
+      isBanned: false,
+      bannedUntil: null,
+      banReason: "",
+    };
+
+    const unbannedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true, runValidators: true },
+    ).select("-password");
+
+    await createNotification({
+      user: unbannedUser._id,
+      audience: "user",
+      title: "Tài khoản được mở khóa",
+      message: "Tài khoản của bạn đã được mở khóa. Bạn có thể đăng nhập lại.",
+      type: "user_activity",
+      metadata: {
+        unbannedAt: new Date(),
+      },
+    });
+
+    await createNotification({
+      user: null,
+      audience: "admin",
+      title: "Đã mở khóa người dùng",
+      message: `Admin ${req.user?.email || ""} đã mở khóa tài khoản ${unbannedUser.email}`,
+      type: "user_activity",
+      metadata: {
+        targetUserId: unbannedUser._id,
+        email: unbannedUser.email,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Mở khóa người dùng thành công",
+      data: unbannedUser,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Không thể mở khóa người dùng",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Get pending store registrations
+// @route   GET /api/admin/stores/pending
+// @access  Private/Admin
+export const getPendingStores = async (req, res) => {
+  try {
+    const stores = await Store.find({ isActive: false })
+      .populate("owner", "name email")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: stores,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Không thể lấy danh sách đăng ký",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Approve store registration
+// @route   PATCH /api/admin/stores/:id/approve
+// @access  Private/Admin
+export const approveStore = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: "ID không hợp lệ" });
+    }
+
+    const store = await Store.findById(id);
+    if (!store) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy cửa hàng" });
+    }
+
+    store.isActive = true;
+    await store.save();
+
+    const user = await User.findById(store.owner);
+    if (user && user.role !== "store_owner" && user.role !== "admin") {
+      user.role = "store_owner";
+      await user.save();
+    }
+
+    await createNotification({
+      user: store.owner,
+      audience: "user",
+      title: "Đơn đăng ký được duyệt",
+      message: `Chúc mừng! Đơn đăng ký cửa hàng "${store.name}" của bạn đã được duyệt. Bạn có thể bắt đầu bán hàng.`,
+      type: "user_activity",
+    });
+
+    res.status(200).json({ success: true, message: "Đã duyệt cửa hàng" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Không thể duyệt cửa hàng", error: error.message });
+  }
+};
+
+// @desc    Reject store registration
+// @route   PATCH /api/admin/stores/:id/reject
+// @access  Private/Admin
+export const rejectStore = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: "ID không hợp lệ" });
+    }
+
+    const store = await Store.findById(id);
+    if (!store) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy cửa hàng" });
+    }
+
+    await Store.findByIdAndDelete(id);
+
+    await createNotification({
+      user: store.owner,
+      audience: "user",
+      title: "Đơn đăng ký bị từ chối",
+      message: `Rất tiếc, đơn đăng ký cửa hàng "${store.name}" của bạn đã bị từ chối. Vui lòng liên hệ quản trị viên để biết thêm chi tiết.`,
+      type: "user_activity",
+    });
+
+    res.status(200).json({ success: true, message: "Đã từ chối cửa hàng" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Không thể từ chối cửa hàng", error: error.message });
+  }
+};
